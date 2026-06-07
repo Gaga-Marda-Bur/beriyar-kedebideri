@@ -28,5 +28,19 @@
   "noCharacters": "Aucun caractère trouvé.",
   "noWords": "Aucun mot trouvé.",
   "transcriptionMissing": "Transcription à compléter",
-  "translationMissing": "Traduction à compléter"
+  "translationMissing": "Traduction à compléter",
+  "learningPath": "Parcours d’apprentissage",
+  "learningPathSubtitle": "Apprends par thèmes et unités courtes.",
+  "openUnit": "Ouvrir l’unité",
+  "startUnit": "Commencer l’unité",
+  "characters": "Caractères",
+  "words": "Mots",
+  "lessons": "Leçons",
+  "quizzes": "Quiz",
+  "minutes": "min",
+  "minimumScore": "Score minimum",
+  "unitContent": "Contenu de l’unité",
+  "noThemes": "Aucun thème disponible.",
+  "noLessons": "Aucune leçon disponible.",
+  "noQuizzes": "Aucun quiz disponible."
 }

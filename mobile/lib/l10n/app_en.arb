@@ -28,5 +28,19 @@
   "noCharacters": "No characters found.",
   "noWords": "No words found.",
   "transcriptionMissing": "Transcription missing",
-  "translationMissing": "Translation missing"
+  "translationMissing": "Translation missing",
+  "learningPath": "Learning path",
+  "learningPathSubtitle": "Learn through short themes and units.",
+  "openUnit": "Open unit",
+  "startUnit": "Start unit",
+  "characters": "Characters",
+  "words": "Words",
+  "lessons": "Lessons",
+  "quizzes": "Quizzes",
+  "minutes": "min",
+  "minimumScore": "Minimum score",
+  "unitContent": "Unit content",
+  "noThemes": "No themes available.",
+  "noLessons": "No lessons available.",
+  "noQuizzes": "No quizzes available."
   }

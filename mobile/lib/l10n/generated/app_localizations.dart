@@ -273,6 +273,90 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Traduction à compléter'**
   String get translationMissing;
+
+  /// No description provided for @learningPath.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parcours d’apprentissage'**
+  String get learningPath;
+
+  /// No description provided for @learningPathSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Apprends par thèmes et unités courtes.'**
+  String get learningPathSubtitle;
+
+  /// No description provided for @openUnit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrir l’unité'**
+  String get openUnit;
+
+  /// No description provided for @startUnit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer l’unité'**
+  String get startUnit;
+
+  /// No description provided for @characters.
+  ///
+  /// In fr, this message translates to:
+  /// **'Caractères'**
+  String get characters;
+
+  /// No description provided for @words.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mots'**
+  String get words;
+
+  /// No description provided for @lessons.
+  ///
+  /// In fr, this message translates to:
+  /// **'Leçons'**
+  String get lessons;
+
+  /// No description provided for @quizzes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quiz'**
+  String get quizzes;
+
+  /// No description provided for @minutes.
+  ///
+  /// In fr, this message translates to:
+  /// **'min'**
+  String get minutes;
+
+  /// No description provided for @minimumScore.
+  ///
+  /// In fr, this message translates to:
+  /// **'Score minimum'**
+  String get minimumScore;
+
+  /// No description provided for @unitContent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contenu de l’unité'**
+  String get unitContent;
+
+  /// No description provided for @noThemes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun thème disponible.'**
+  String get noThemes;
+
+  /// No description provided for @noLessons.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune leçon disponible.'**
+  String get noLessons;
+
+  /// No description provided for @noQuizzes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun quiz disponible.'**
+  String get noQuizzes;
 }
 
 class _AppLocalizationsDelegate

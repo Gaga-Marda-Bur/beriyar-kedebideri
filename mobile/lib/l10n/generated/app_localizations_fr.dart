@@ -96,4 +96,46 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get translationMissing => 'Traduction à compléter';
+
+  @override
+  String get learningPath => 'Parcours d’apprentissage';
+
+  @override
+  String get learningPathSubtitle => 'Apprends par thèmes et unités courtes.';
+
+  @override
+  String get openUnit => 'Ouvrir l’unité';
+
+  @override
+  String get startUnit => 'Commencer l’unité';
+
+  @override
+  String get characters => 'Caractères';
+
+  @override
+  String get words => 'Mots';
+
+  @override
+  String get lessons => 'Leçons';
+
+  @override
+  String get quizzes => 'Quiz';
+
+  @override
+  String get minutes => 'min';
+
+  @override
+  String get minimumScore => 'Score minimum';
+
+  @override
+  String get unitContent => 'Contenu de l’unité';
+
+  @override
+  String get noThemes => 'Aucun thème disponible.';
+
+  @override
+  String get noLessons => 'Aucune leçon disponible.';
+
+  @override
+  String get noQuizzes => 'Aucun quiz disponible.';
 }

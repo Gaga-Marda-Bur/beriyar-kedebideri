@@ -28,5 +28,19 @@
   "noCharacters": "لم يتم العثور على حروف.",
   "noWords": "لم يتم العثور على كلمات.",
   "transcriptionMissing": "النسخ غير مكتمل",
-  "translationMissing": "الترجمة غير مكتملة"
+  "translationMissing": "الترجمة غير مكتملة",
+  "learningPath": "مسار التعلم",
+  "learningPathSubtitle": "تعلّم عبر مواضيع ووحدات قصيرة.",
+  "openUnit": "افتح الوحدة",
+  "startUnit": "ابدأ الوحدة",
+  "characters": "الحروف",
+  "words": "الكلمات",
+  "lessons": "الدروس",
+  "quizzes": "الاختبارات",
+  "minutes": "دقيقة",
+  "minimumScore": "الحد الأدنى للنتيجة",
+  "unitContent": "محتوى الوحدة",
+  "noThemes": "لا توجد مواضيع متاحة.",
+  "noLessons": "لا توجد دروس متاحة.",
+  "noQuizzes": "لا توجد اختبارات متاحة."
 }

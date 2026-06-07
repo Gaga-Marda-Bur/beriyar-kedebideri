@@ -96,4 +96,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get translationMissing => 'Translation missing';
+
+  @override
+  String get learningPath => 'Learning path';
+
+  @override
+  String get learningPathSubtitle => 'Learn through short themes and units.';
+
+  @override
+  String get openUnit => 'Open unit';
+
+  @override
+  String get startUnit => 'Start unit';
+
+  @override
+  String get characters => 'Characters';
+
+  @override
+  String get words => 'Words';
+
+  @override
+  String get lessons => 'Lessons';
+
+  @override
+  String get quizzes => 'Quizzes';
+
+  @override
+  String get minutes => 'min';
+
+  @override
+  String get minimumScore => 'Minimum score';
+
+  @override
+  String get unitContent => 'Unit content';
+
+  @override
+  String get noThemes => 'No themes available.';
+
+  @override
+  String get noLessons => 'No lessons available.';
+
+  @override
+  String get noQuizzes => 'No quizzes available.';
 }

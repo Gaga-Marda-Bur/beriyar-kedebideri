@@ -95,4 +95,46 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get translationMissing => 'الترجمة غير مكتملة';
+
+  @override
+  String get learningPath => 'مسار التعلم';
+
+  @override
+  String get learningPathSubtitle => 'تعلّم عبر مواضيع ووحدات قصيرة.';
+
+  @override
+  String get openUnit => 'افتح الوحدة';
+
+  @override
+  String get startUnit => 'ابدأ الوحدة';
+
+  @override
+  String get characters => 'الحروف';
+
+  @override
+  String get words => 'الكلمات';
+
+  @override
+  String get lessons => 'الدروس';
+
+  @override
+  String get quizzes => 'الاختبارات';
+
+  @override
+  String get minutes => 'دقيقة';
+
+  @override
+  String get minimumScore => 'الحد الأدنى للنتيجة';
+
+  @override
+  String get unitContent => 'محتوى الوحدة';
+
+  @override
+  String get noThemes => 'لا توجد مواضيع متاحة.';
+
+  @override
+  String get noLessons => 'لا توجد دروس متاحة.';
+
+  @override
+  String get noQuizzes => 'لا توجد اختبارات متاحة.';
 }
