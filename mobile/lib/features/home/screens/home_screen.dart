@@ -8,6 +8,7 @@ import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
 
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/api/backend_bootstrap_service.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -132,6 +133,53 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(height: 20),
+                FutureBuilder<BackendBootstrapSummary>(
+                  future: BackendBootstrapService().loadSummary(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const GlassCard(
+                        child: Text('Chargement du contenu Django...'),
+                      );
+                    }
+
+                    if (snapshot.hasError) {
+                      return GlassCard(
+                        child: Text(
+                          'Erreur chargement contenu: ${snapshot.error}',
+                        ),
+                      );
+                    }
+
+                    final summary = snapshot.data;
+
+                    if (summary == null) {
+                      return const GlassCard(
+                        child: Text('Aucune donnée chargée.'),
+                      );
+                    }
+
+                    return GlassCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Contenu Django',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: 12),
+                          Text('Caractères: ${summary.charactersCount}'),
+                          Text('Mots: ${summary.wordsCount}'),
+                          Text('Thèmes: ${summary.themesCount}'),
+                          Text('Unités: ${summary.unitsCount}'),
+                          Text('Leçons: ${summary.lessonsCount}'),
+                          Text('Quiz: ${summary.quizzesCount}'),
+                          Text('No Ena: ${summary.noEnaCount}'),
+                        ],
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 20),
                 FilledButton.icon(

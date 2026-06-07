@@ -60,4 +60,35 @@ class ApiClient {
 
     return [];
   }
+
+    Future<Map<String, dynamic>> postMap(
+    String path, {
+    Map<String, dynamic>? body,
+    Map<String, String>? query,
+  }) async {
+    final response = await _client.post(
+      _uri(path, query),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(body ?? {}),
+    );
+
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw Exception(
+        'POST $path failed with status ${response.statusCode}: ${response.body}',
+      );
+    }
+
+    final decoded = jsonDecode(utf8.decode(response.bodyBytes));
+
+    if (decoded is Map<String, dynamic>) {
+      return decoded;
+    }
+
+    return {
+      'data': decoded,
+    };
+  }
 }
