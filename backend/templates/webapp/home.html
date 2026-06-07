@@ -1,0 +1,233 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}Beřiyar Kedebideři — Plateforme Beriya Erfe{% endblock %}
+
+{% block content %}
+<main>
+    <section class="hero">
+        <div class="container hero-grid">
+            <div>
+                <div class="badge">No Ena • Audio-first • Offline-first</div>
+
+                <h1>
+                    La voix Beriya rencontre
+                    <span>son écriture.</span>
+                </h1>
+
+                <p class="hero-text">
+                    Beřiyar Kedebideři aide les locuteurs Beriya/Zaghawa à apprendre
+                    progressivement l’écriture Beriya Erfe à travers l’écoute, la répétition,
+                    les caractères, les mots, les quiz et les contenus culturels validés.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#apprendre" class="btn btn-primary">Commencer à apprendre</a>
+                    <a href="#no-ena" class="btn btn-secondary">Découvrir No Ena</a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-card glass">
+                        <div class="stat-number">{{ stats.themes_count }}</div>
+                        <div class="stat-label">Thèmes</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-number">{{ stats.units_count }}</div>
+                        <div class="stat-label">Unités</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-number">{{ stats.no_ena_count }}</div>
+                        <div class="stat-label">No Ena</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="phone-card glass">
+                    <div class="phone-content">
+                        <div class="mobile-preview-title">Écouter. Lire. Écrire. Transmettre.</div>
+                        <p class="mobile-preview-text">
+                            Une expérience moderne, visuelle et sonore pour découvrir les caractères
+                            Beriya Erfe étape par étape.
+                        </p>
+
+                        <div class="symbol-showcase">
+                            <div class="symbol-box">𖺠</div>
+                            <div class="symbol-box">𖺡</div>
+                            <div class="symbol-box">𖺢</div>
+                            <div class="symbol-box">𖺣</div>
+                            <div class="symbol-box">𖺤</div>
+                            <div class="symbol-box">𖺥</div>
+                        </div>
+
+                        <div style="margin-top: 24px;">
+                            <a href="/api/alphabet/characters/" class="btn btn-primary">Voir l’alphabet API</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="mission" class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker">Mission</div>
+                <h2 class="section-title">Préserver la langue, transmettre l’écriture.</h2>
+                <p class="section-text">
+                    Le projet repose sur une idée simple : beaucoup de locuteurs connaissent déjà
+                    la langue oralement. L’application et le web doivent transformer cette connaissance
+                    orale en lecture, écriture et transmission culturelle.
+                </p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="feature-card glass">
+                    <div class="feature-icon">🎧</div>
+                    <h3>Audio-first</h3>
+                    <p>
+                        L’utilisateur commence par écouter des sons qu’il connaît déjà,
+                        puis les associe progressivement aux caractères Beriya Erfe.
+                    </p>
+                </div>
+
+                <div class="feature-card glass">
+                    <div class="feature-icon">📦</div>
+                    <h3>Offline-first</h3>
+                    <p>
+                        Les packs d’apprentissage permettent d’apprendre même sans connexion,
+                        avec audios, mots, leçons, quiz et progression locale.
+                    </p>
+                </div>
+
+                <div class="feature-card glass">
+                    <div class="feature-icon">✨</div>
+                    <h3>Visual-first</h3>
+                    <p>
+                        L’interface utilise des cartes claires, des caractères visibles,
+                        des images validées et des signaux simples pour guider l’apprenant.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="apprendre" class="section">
+        <div class="container learning-grid">
+            <div class="learning-panel glass">
+                <div class="section-kicker">Parcours</div>
+                <h2 class="section-title">Apprendre par thèmes et unités.</h2>
+                <p class="section-text">
+                    Chaque unité reste courte : quelques caractères, quelques mots, une leçon orale
+                    et des quiz. L’utilisateur ne voit jamais tout le corpus d’un coup.
+                </p>
+
+                <div style="margin-top: 24px;">
+                    <a href="/api/learning/themes/" class="btn btn-primary">Explorer les thèmes API</a>
+                </div>
+            </div>
+
+            <div class="theme-list">
+                {% for theme in learning_themes %}
+                    <div class="theme-item glass">
+                        <strong>{{ theme.title_fr }}</strong>
+                        <span>
+                            {{ theme.description_fr|default:"Thème d’apprentissage Beriya Erfe." }}
+                        </span>
+                        <div style="margin-top: 12px; color: #D4AF37; font-weight: 800;">
+                            {{ theme.units.count }} unité(s)
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="theme-item glass">
+                        <strong>Aucun thème publié pour le moment</strong>
+                        <span>Ajoute un LearningTheme publié depuis l’administration.</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="no-ena" class="section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker">No Ena</div>
+                <h2 class="section-title">Contenu qui mérite d’être regardé.</h2>
+                <p class="section-text">
+                    No Ena valorise les images, vidéos courtes, récits, proverbes et démonstrations
+                    liés à la langue et à la culture Beriya. Ce n’est pas une galerie de démonstration :
+                    seulement du contenu réel, validé et utile.
+                </p>
+            </div>
+
+            <div class="no-ena-grid">
+                {% for item in featured_no_ena %}
+                    <article class="no-ena-card glass">
+                        <div class="no-ena-media">
+                            {% if item.thumbnail %}
+                                <img src="{{ item.thumbnail.url }}" alt="{{ item.title_fr }}">
+                            {% elif item.image_file %}
+                                <img src="{{ item.image_file.url }}" alt="{{ item.title_fr }}">
+                            {% elif item.video_file %}
+                                <video muted controls>
+                                    <source src="{{ item.video_file.url }}">
+                                </video>
+                            {% else %}
+                                No Ena
+                            {% endif %}
+                        </div>
+
+                        <div class="no-ena-content">
+                            <div class="no-ena-type">{{ item.get_publication_type_display }}</div>
+                            <h3>{{ item.title_fr }}</h3>
+                            <p>{{ item.caption_fr|truncatewords:20 }}</p>
+                        </div>
+                    </article>
+                {% empty %}
+                    <article class="no-ena-card glass">
+                        <div class="no-ena-media">No Ena</div>
+                        <div class="no-ena-content">
+                            <div class="no-ena-type">À venir</div>
+                            <h3>Ajoute une publication No Ena</h3>
+                            <p>Publie une image ou vidéo validée depuis l’administration.</p>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+
+            <div style="margin-top: 28px;">
+                <a href="/api/no-ena/publications/" class="btn btn-secondary">Voir No Ena API</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="packs" class="section">
+        <div class="container">
+            <div class="announcement glass">
+                <div>
+                    <div class="section-kicker">Starter Pack</div>
+                    <h2 class="section-title" style="margin-bottom: 8px;">Premier apprentissage hors connexion.</h2>
+                    {% if starter_pack %}
+                        <p class="section-text">
+                            Le pack <strong>{{ starter_pack.title_fr }}</strong> est disponible.
+                            Il contient les premières unités, caractères, mots, leçons, quiz et audios.
+                        </p>
+                    {% else %}
+                        <p class="section-text">
+                            Crée et publie le Starter Pack depuis l’administration pour permettre
+                            le premier apprentissage hors connexion.
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {% if starter_pack and starter_pack.file %}
+                        <a href="{{ starter_pack.file.url }}" class="btn btn-primary">Télécharger le pack</a>
+                    {% else %}
+                        <a href="/api/offline-packs/" class="btn btn-primary">Voir les packs API</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

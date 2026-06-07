@@ -1,10 +1,6 @@
-from django.http import HttpResponse
 from django.urls import path
 
-
-def home(request):
-    return HttpResponse("Beřiyar Kedebideři — backend clean is running.")
-
+from .views import home
 
 urlpatterns = [
     path('', home, name='web-home'),

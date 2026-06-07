@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Beřiyar Kedebideři{% endblock %}</title>
+    <meta name="description" content="Plateforme d’apprentissage, de transmission et de valorisation de la langue Beriya Erfe.">
+    <link rel="stylesheet" href="{% static 'webapp/css/brand.css' %}">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="navbar">
+            <div class="container nav-inner">
+                <a href="{% url 'web-home' %}" class="brand">
+                    <div class="brand-mark">BK</div>
+                    <div>
+                        <div class="brand-title">Beřiyar Kedebideři</div>
+                        <div class="brand-subtitle">Écouter. Lire. Écrire. Transmettre.</div>
+                    </div>
+                </a>
+
+                <nav class="nav-links">
+                    <a href="#mission">Mission</a>
+                    <a href="#apprendre">Apprendre</a>
+                    <a href="#no-ena">No Ena</a>
+                    <a href="#packs">Packs</a>
+                    <a href="/admin/">Admin</a>
+                </nav>
+
+                <div class="nav-actions">
+                    <a href="#apprendre" class="btn btn-secondary">Explorer</a>
+                    <a href="#packs" class="btn btn-primary">Commencer</a>
+                </div>
+
+                <a href="#footer" class="btn btn-secondary mobile-menu-button">Menu</a>
+            </div>
+        </header>
+
+        {% block content %}{% endblock %}
+
+        <footer id="footer" class="footer">
+            <div class="container footer-grid">
+                <div>
+                    <div class="brand" style="margin-bottom: 14px;">
+                        <div class="brand-mark">BK</div>
+                        <div>
+                            <div class="brand-title">Beřiyar Kedebideři</div>
+                            <div class="brand-subtitle">Plateforme Beriya Erfe</div>
+                        </div>
+                    </div>
+                    <p>
+                        Une plateforme audio-first, visual-first et offline-first pour transmettre
+                        l’écriture Beriya Erfe et valoriser la culture Beriya.
+                    </p>
+                </div>
+
+                <div>
+                    <h4>Apprendre</h4>
+                    <a href="#apprendre">Parcours</a>
+                    <a href="/api/alphabet/characters/">Alphabet API</a>
+                    <a href="/api/vocabulary/words/">Vocabulaire API</a>
+                    <a href="/api/quizzes/">Quiz API</a>
+                </div>
+
+                <div>
+                    <h4>Culture</h4>
+                    <a href="#no-ena">No Ena</a>
+                    <a href="/api/no-ena/publications/">Publications API</a>
+                    <a href="/api/feedback/create/">Signaler</a>
+                </div>
+
+                <div>
+                    <h4>Projet</h4>
+                    <a href="#mission">Mission</a>
+                    <a href="#packs">Packs offline</a>
+                    <a href="/admin/">Administration</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
