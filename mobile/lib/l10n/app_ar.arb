@@ -1,0 +1,23 @@
+{
+  "@@locale": "ar",
+  "appName": "Beřiyar Kedebideři",
+  "appTagline": "استمع. اقرأ. اكتب. انقل.",
+  "home": "الرئيسية",
+  "learn": "تعلّم",
+  "alphabet": "الأبجدية",
+  "vocabulary": "المفردات",
+  "noEna": "نو إينا",
+  "settings": "الإعدادات",
+  "startLearning": "ابدأ التعلم",
+  "backendStatus": "حالة الخادم",
+  "connected": "متصل",
+  "notConnected": "غير متصل",
+  "retry": "إعادة المحاولة",
+  "language": "اللغة",
+  "french": "الفرنسية",
+  "english": "الإنجليزية",
+  "arabic": "العربية",
+  "welcomeTitle": "صوت بيريا يلتقي بكتابته.",
+  "welcomeSubtitle": "تعلّم بيريا إرفي عبر الاستماع والحروف والكلمات والدروس والاختبارات.",
+  "openSettings": "فتح الإعدادات"
+}

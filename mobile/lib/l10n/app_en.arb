@@ -1,0 +1,23 @@
+{
+  "@@locale": "en",
+  "appName": "Beřiyar Kedebideři",
+  "appTagline": "Listen. Read. Write. Transmit.",
+  "home": "Home",
+  "learn": "Learn",
+  "alphabet": "Alphabet",
+  "vocabulary": "Vocabulary",
+  "noEna": "No Ena",
+  "settings": "Settings",
+  "startLearning": "Start learning",
+  "backendStatus": "Backend status",
+  "connected": "Connected",
+  "notConnected": "Not connected",
+  "retry": "Retry",
+  "language": "Language",
+  "french": "French",
+  "english": "English",
+  "arabic": "Arabic",
+  "welcomeTitle": "The Beriya voice meets its writing.",
+  "welcomeSubtitle": "Learn Beriya Erfe through listening, characters, words, lessons and quizzes.",
+  "openSettings": "Open settings"
+}
