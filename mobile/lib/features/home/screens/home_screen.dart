@@ -7,6 +7,8 @@ import '../../../core/widgets/app_background.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
 
+import '../../../core/theme/app_text_styles.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -68,6 +70,22 @@ class HomeScreen extends StatelessWidget {
                 Text(
                   loc.welcomeTitle,
                   style: Theme.of(context).textTheme.displayLarge,
+                ),
+                const SizedBox(height: 24),
+                const GlassCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '𖺠 𖺡 𖺢 𖺣 𖺤',
+                        style: AppTextStyles.beriyaLarge,
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Test affichage Beriya Erfe',
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Text(

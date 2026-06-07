@@ -1,3 +1,11 @@
+@font-face {
+    font-family: "Kedebideri";
+    src: url("../fonts/Kedebideri-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 :root {
     --brand-green: #1B4D3E;
     --brand-night: #0F3227;
@@ -808,4 +816,11 @@ video {
     .no-ena-detail-layout {
         grid-template-columns: 1fr;
     }
+}
+
+.beriya-font,
+.character-symbol,
+.word-text,
+.symbol-box {
+    font-family: "Kedebideri", Inter, system-ui, sans-serif;
 }
