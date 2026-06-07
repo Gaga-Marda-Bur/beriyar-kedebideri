@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/audio/audio_url_player.dart';
-import '../../../core/theme/app_colors.dart';
+
 import '../../../core/widgets/app_background.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../models/word_model.dart';
 import '../vocabulary_api_service.dart';
+import '../../../core/theme/app_text_styles.dart';
 
 class VocabularyScreen extends StatefulWidget {
   const VocabularyScreen({super.key});
@@ -203,12 +204,7 @@ class _WordCard extends StatelessWidget {
         children: [
           Text(
             word.beriyaText,
-            style: const TextStyle(
-              fontSize: 42,
-              fontWeight: FontWeight.w900,
-              color: AppColors.gold,
-              height: 1.1,
-            ),
+            style: AppTextStyles.beriyaMedium,
           ),
           const SizedBox(height: 8),
           Text(

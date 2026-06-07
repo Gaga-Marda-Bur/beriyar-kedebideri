@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/audio/audio_url_player.dart';
-import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_background.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../alphabet_api_service.dart';
 import '../models/character_model.dart';
+import '../../../core/theme/app_text_styles.dart';
 
 class AlphabetScreen extends StatefulWidget {
   const AlphabetScreen({super.key});
@@ -123,12 +123,7 @@ class _AlphabetScreenState extends State<AlphabetScreen> {
                         children: [
                           Text(
                             item.symbol,
-                            style: const TextStyle(
-                              fontSize: 54,
-                              fontWeight: FontWeight.w900,
-                              color: AppColors.gold,
-                              height: 1,
-                            ),
+                            style: AppTextStyles.beriyaLarge,
                           ),
                           const SizedBox(height: 10),
                           Text(
