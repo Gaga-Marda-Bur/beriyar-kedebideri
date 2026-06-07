@@ -8,6 +8,9 @@ import '../l10n/generated/app_localizations.dart';
 import '../core/theme/app_theme.dart';
 import 'app_state.dart';
 
+import '../features/alphabet/screens/alphabet_screen.dart';
+import '../features/vocabulary/screens/vocabulary_screen.dart';
+
 class BeriyarApp extends StatelessWidget {
   const BeriyarApp({super.key});
 
@@ -30,6 +33,8 @@ class BeriyarApp extends StatelessWidget {
       routes: {
         '/': (_) => const HomeScreen(),
         '/settings': (_) => const SettingsScreen(),
+        '/alphabet': (_) => const AlphabetScreen(),
+        '/vocabulary': (_) => const VocabularyScreen(),
       },
     );
   }

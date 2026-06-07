@@ -19,5 +19,14 @@
   "arabic": "Arabe",
   "welcomeTitle": "La voix Beriya rencontre son écriture.",
   "welcomeSubtitle": "Apprends Beriya Erfe avec l’écoute, les caractères, les mots, les leçons et les quiz.",
-  "openSettings": "Ouvrir les paramètres"
+  "openSettings": "Ouvrir les paramètres",
+  "loading": "Chargement...",
+  "errorLoading": "Erreur de chargement",
+  "listen": "Écouter",
+  "search": "Rechercher",
+  "searchVocabulary": "Rechercher un mot, une transcription ou une traduction...",
+  "noCharacters": "Aucun caractère trouvé.",
+  "noWords": "Aucun mot trouvé.",
+  "transcriptionMissing": "Transcription à compléter",
+  "translationMissing": "Traduction à compléter"
 }

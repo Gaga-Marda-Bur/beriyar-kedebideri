@@ -134,6 +134,18 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: () => Navigator.pushNamed(context, '/alphabet'),
+                  icon: const Icon(Icons.abc_rounded),
+                  label: Text(loc.alphabet),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: () => Navigator.pushNamed(context, '/vocabulary'),
+                  icon: const Icon(Icons.menu_book_rounded),
+                  label: Text(loc.vocabulary),
+                ),
                 const SizedBox(height: 20),
                 FutureBuilder<BackendBootstrapSummary>(
                   future: BackendBootstrapService().loadSummary(),

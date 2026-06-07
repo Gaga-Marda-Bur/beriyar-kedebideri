@@ -19,5 +19,14 @@
   "arabic": "العربية",
   "welcomeTitle": "صوت بيريا يلتقي بكتابته.",
   "welcomeSubtitle": "تعلّم بيريا إرفي عبر الاستماع والحروف والكلمات والدروس والاختبارات.",
-  "openSettings": "فتح الإعدادات"
+  "openSettings": "فتح الإعدادات",
+  "loading": "جار التحميل...",
+  "errorLoading": "خطأ في التحميل",
+  "listen": "استمع",
+  "search": "بحث",
+  "searchVocabulary": "ابحث عن كلمة أو نسخ أو ترجمة...",
+  "noCharacters": "لم يتم العثور على حروف.",
+  "noWords": "لم يتم العثور على كلمات.",
+  "transcriptionMissing": "النسخ غير مكتمل",
+  "translationMissing": "الترجمة غير مكتملة"
 }

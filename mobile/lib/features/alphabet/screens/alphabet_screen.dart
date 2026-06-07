@@ -1,0 +1,175 @@
+import 'package:flutter/material.dart';
+
+import '../../../core/audio/audio_url_player.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/widgets/app_background.dart';
+import '../../../core/widgets/glass_card.dart';
+import '../../../l10n/generated/app_localizations.dart';
+import '../alphabet_api_service.dart';
+import '../models/character_model.dart';
+
+class AlphabetScreen extends StatefulWidget {
+  const AlphabetScreen({super.key});
+
+  @override
+  State<AlphabetScreen> createState() => _AlphabetScreenState();
+}
+
+class _AlphabetScreenState extends State<AlphabetScreen> {
+  final AlphabetApiService _service = AlphabetApiService();
+  final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
+
+  late Future<List<CharacterModel>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = _service.fetchCharacters();
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  Future<void> _reload() async {
+    setState(() {
+      _future = _service.fetchCharacters();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(loc.alphabet),
+      ),
+      body: AppBackground(
+        child: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: _reload,
+            child: FutureBuilder<List<CharacterModel>>(
+              future: _future,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return ListView(
+                    padding: const EdgeInsets.all(20),
+                    children: [
+                      GlassCard(
+                        child: Text(loc.loading),
+                      ),
+                    ],
+                  );
+                }
+
+                if (snapshot.hasError) {
+                  return ListView(
+                    padding: const EdgeInsets.all(20),
+                    children: [
+                      GlassCard(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              loc.errorLoading,
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            const SizedBox(height: 10),
+                            Text(snapshot.error.toString()),
+                            const SizedBox(height: 16),
+                            FilledButton(
+                              onPressed: _reload,
+                              child: Text(loc.retry),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                }
+
+                final characters = snapshot.data ?? [];
+
+                if (characters.isEmpty) {
+                  return ListView(
+                    padding: const EdgeInsets.all(20),
+                    children: [
+                      GlassCard(
+                        child: Text(loc.noCharacters),
+                      ),
+                    ],
+                  );
+                }
+
+                return GridView.builder(
+                  padding: const EdgeInsets.all(20),
+                  itemCount: characters.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 14,
+                    crossAxisSpacing: 14,
+                    childAspectRatio: 0.82,
+                  ),
+                  itemBuilder: (context, index) {
+                    final item = characters[index];
+
+                    return GlassCard(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            item.symbol,
+                            style: const TextStyle(
+                              fontSize: 54,
+                              fontWeight: FontWeight.w900,
+                              color: AppColors.gold,
+                              height: 1,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            item.unicodeCode,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            item.latinTranscription.isNotEmpty
+                                ? item.latinTranscription
+                                : loc.transcriptionMissing,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          if (item.arabicTranscription.isNotEmpty) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              item.arabicTranscription,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                          const Spacer(),
+                          FilledButton.icon(
+                            onPressed: item.audioUrl == null
+                                ? null
+                                : () => _audioPlayer.playUrl(item.audioUrl),
+                            icon: const Icon(Icons.volume_up_rounded),
+                            label: Text(loc.listen),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

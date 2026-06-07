@@ -68,4 +68,31 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get openSettings => 'فتح الإعدادات';
+
+  @override
+  String get loading => 'جار التحميل...';
+
+  @override
+  String get errorLoading => 'خطأ في التحميل';
+
+  @override
+  String get listen => 'استمع';
+
+  @override
+  String get search => 'بحث';
+
+  @override
+  String get searchVocabulary => 'ابحث عن كلمة أو نسخ أو ترجمة...';
+
+  @override
+  String get noCharacters => 'لم يتم العثور على حروف.';
+
+  @override
+  String get noWords => 'لم يتم العثور على كلمات.';
+
+  @override
+  String get transcriptionMissing => 'النسخ غير مكتمل';
+
+  @override
+  String get translationMissing => 'الترجمة غير مكتملة';
 }

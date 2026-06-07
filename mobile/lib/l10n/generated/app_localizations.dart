@@ -219,6 +219,60 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Ouvrir les paramètres'**
   String get openSettings;
+
+  /// No description provided for @loading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chargement...'**
+  String get loading;
+
+  /// No description provided for @errorLoading.
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur de chargement'**
+  String get errorLoading;
+
+  /// No description provided for @listen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écouter'**
+  String get listen;
+
+  /// No description provided for @search.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rechercher'**
+  String get search;
+
+  /// No description provided for @searchVocabulary.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rechercher un mot, une transcription ou une traduction...'**
+  String get searchVocabulary;
+
+  /// No description provided for @noCharacters.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun caractère trouvé.'**
+  String get noCharacters;
+
+  /// No description provided for @noWords.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun mot trouvé.'**
+  String get noWords;
+
+  /// No description provided for @transcriptionMissing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Transcription à compléter'**
+  String get transcriptionMissing;
+
+  /// No description provided for @translationMissing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Traduction à compléter'**
+  String get translationMissing;
 }
 
 class _AppLocalizationsDelegate

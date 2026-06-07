@@ -68,4 +68,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openSettings => 'Open settings';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get errorLoading => 'Loading error';
+
+  @override
+  String get listen => 'Listen';
+
+  @override
+  String get search => 'Search';
+
+  @override
+  String get searchVocabulary =>
+      'Search a word, transcription or translation...';
+
+  @override
+  String get noCharacters => 'No characters found.';
+
+  @override
+  String get noWords => 'No words found.';
+
+  @override
+  String get transcriptionMissing => 'Transcription missing';
+
+  @override
+  String get translationMissing => 'Translation missing';
 }

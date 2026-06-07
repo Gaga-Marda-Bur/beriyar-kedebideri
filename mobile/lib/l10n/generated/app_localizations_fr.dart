@@ -68,4 +68,32 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get openSettings => 'Ouvrir les paramètres';
+
+  @override
+  String get loading => 'Chargement...';
+
+  @override
+  String get errorLoading => 'Erreur de chargement';
+
+  @override
+  String get listen => 'Écouter';
+
+  @override
+  String get search => 'Rechercher';
+
+  @override
+  String get searchVocabulary =>
+      'Rechercher un mot, une transcription ou une traduction...';
+
+  @override
+  String get noCharacters => 'Aucun caractère trouvé.';
+
+  @override
+  String get noWords => 'Aucun mot trouvé.';
+
+  @override
+  String get transcriptionMissing => 'Transcription à compléter';
+
+  @override
+  String get translationMissing => 'Traduction à compléter';
 }

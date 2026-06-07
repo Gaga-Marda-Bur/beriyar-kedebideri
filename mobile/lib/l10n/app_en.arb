@@ -19,5 +19,14 @@
   "arabic": "Arabic",
   "welcomeTitle": "The Beriya voice meets its writing.",
   "welcomeSubtitle": "Learn Beriya Erfe through listening, characters, words, lessons and quizzes.",
-  "openSettings": "Open settings"
-}
+  "openSettings": "Open settings",
+  "loading": "Loading...",
+  "errorLoading": "Loading error",
+  "listen": "Listen",
+  "search": "Search",
+  "searchVocabulary": "Search a word, transcription or translation...",
+  "noCharacters": "No characters found.",
+  "noWords": "No words found.",
+  "transcriptionMissing": "Transcription missing",
+  "translationMissing": "Translation missing"
+  }
