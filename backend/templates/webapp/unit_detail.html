@@ -1,0 +1,114 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}{{ unit.title_fr }} — Beřiyar Kedebideři{% endblock %}
+
+{% block content %}
+<main>
+    <section class="page-header">
+        <div class="container">
+            <div class="badge">{{ unit.theme.title_fr }}</div>
+            <h1>{{ unit.title_fr }}</h1>
+            <p>{{ unit.description_fr }}</p>
+
+            <div class="unit-stats">
+                <span class="pill">{{ unit.characters.count }} caractères</span>
+                <span class="pill">{{ unit.words.count }} mots</span>
+                <span class="pill">{{ unit.estimated_minutes }} min</span>
+                <span class="pill">Score minimum {{ unit.min_score_to_pass }}%</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top: 20px;">
+        <div class="container unit-layout">
+            <div>
+                <div class="theme-block glass">
+                    <div class="section-kicker">Caractères de l’unité</div>
+                    <div class="alphabet-grid" style="margin-top: 18px;">
+                        {% for character in unit.characters.all %}
+                            <div class="character-card glass">
+                                <div class="character-symbol">{{ character.symbol }}</div>
+                                <div class="character-code">{{ character.unicode_code }}</div>
+                                {% if character.latin_transcription %}
+                                    <div class="character-transcription">{{ character.latin_transcription }}</div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="theme-block glass">
+                    <div class="section-kicker">Leçons</div>
+                    <div class="lesson-list" style="margin-top: 18px;">
+                        {% for lesson in lessons %}
+                            <article class="lesson-card glass">
+                                <h3>{{ lesson.title_fr }}</h3>
+                                <p class="word-meta">{{ lesson.description_fr }}</p>
+
+                                {% for item in lesson.items.all %}
+                                    {% if item.is_active %}
+                                        <div class="lesson-item">
+                                            <strong>{{ item.title_fr|default:item.item_type }}</strong>
+                                            <div class="word-meta">
+                                                {{ item.oral_prompt_fr }}
+                                            </div>
+
+                                            {% with link=item.audio_links.first %}
+                                                {% if link and link.audio_asset.file %}
+                                                    <button class="audio-button" data-audio="{{ link.audio_asset.file.url }}">
+                                                        Écouter
+                                                    </button>
+                                                {% endif %}
+                                            {% endwith %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </article>
+                        {% empty %}
+                            <div class="empty-state glass">Aucune leçon pour cette unité.</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <aside>
+                <div class="detail-panel glass">
+                    <h2>Mots de l’unité</h2>
+                    {% for word in unit.words.all %}
+                        <div class="lesson-item">
+                            <div class="word-text" style="font-size: 28px;">{{ word.beriya_text }}</div>
+                            <div>{{ word.french_translation }}</div>
+                        </div>
+                    {% empty %}
+                        <p class="word-meta">Aucun mot lié.</p>
+                    {% endfor %}
+                </div>
+
+                <div class="detail-panel glass" style="margin-top: 18px;">
+                    <h2>Quiz</h2>
+                    <div class="quiz-preview">
+                        {% for quiz in quizzes %}
+                            <div class="quiz-card glass">
+                                <strong>{{ quiz.get_question_type_display }}</strong>
+                                <div class="word-meta">{{ quiz.prompt_fr }}</div>
+                                <div class="pill" style="margin-top: 10px;">{{ quiz.options.count }} options</div>
+                            </div>
+                        {% empty %}
+                            <p class="word-meta">Aucun quiz lié.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+</main>
+
+<script>
+document.querySelectorAll('[data-audio]').forEach(function(button) {
+    button.addEventListener('click', function() {
+        const audio = new Audio(button.dataset.audio);
+        audio.play();
+    });
+});
+</script>
+{% endblock %}

@@ -1,7 +1,21 @@
 from django.urls import path
 
-from .views import home
+from .views import (
+    alphabet_page,
+    home,
+    learning_path_page,
+    no_ena_detail_page,
+    no_ena_list_page,
+    unit_detail_page,
+    vocabulary_page,
+)
 
 urlpatterns = [
     path('', home, name='web-home'),
+    path('alphabet/', alphabet_page, name='web-alphabet'),
+    path('vocabulaire/', vocabulary_page, name='web-vocabulary'),
+    path('parcours/', learning_path_page, name='web-learning-path'),
+    path('parcours/<slug:slug>/', unit_detail_page, name='web-unit-detail'),
+    path('no-ena/', no_ena_list_page, name='web-no-ena-list'),
+    path('no-ena/<slug:slug>/', no_ena_detail_page, name='web-no-ena-detail'),
 ]

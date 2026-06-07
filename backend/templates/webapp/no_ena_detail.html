@@ -1,0 +1,117 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}{{ publication.title_fr }} — No Ena{% endblock %}
+
+{% block content %}
+<main>
+    <section class="page-header">
+        <div class="container">
+            <div class="badge">No Ena • {{ publication.get_publication_type_display }}</div>
+            <h1>{{ publication.title_fr }}</h1>
+            <p>{{ publication.caption_fr }}</p>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top: 20px;">
+        <div class="container no-ena-detail-layout">
+            <div class="media-frame glass">
+                {% if publication.video_file %}
+                    <video controls>
+                        <source src="{{ publication.video_file.url }}">
+                    </video>
+                {% elif publication.image_file %}
+                    <img src="{{ publication.image_file.url }}" alt="{{ publication.title_fr }}">
+                {% elif publication.thumbnail %}
+                    <img src="{{ publication.thumbnail.url }}" alt="{{ publication.title_fr }}">
+                {% else %}
+                    <div style="color: #D4AF37; font-size: 42px;">No Ena</div>
+                {% endif %}
+            </div>
+
+            <aside class="detail-panel glass">
+                <h2>Détails</h2>
+
+                {% if publication.beriya_title %}
+                    <div class="word-text" style="font-size: 30px;">{{ publication.beriya_title }}</div>
+                {% endif %}
+
+                {% if publication.primary_audio_asset and publication.primary_audio_asset.file %}
+                    <button class="audio-button" data-audio="{{ publication.primary_audio_asset.file.url }}">
+                        Écouter l’audio
+                    </button>
+                {% endif %}
+
+                <div class="detail-meta">
+                    {% if publication.contributor_name %}
+                        <div>Contributeur : {{ publication.contributor_name }}</div>
+                    {% endif %}
+                    {% if publication.culture_theme %}
+                        <div>Thème : {{ publication.culture_theme }}</div>
+                    {% endif %}
+                    {% if publication.related_character %}
+                        <div>Caractère lié : {{ publication.related_character.symbol }}</div>
+                    {% endif %}
+                    {% if publication.related_word %}
+                        <div>Mot lié : {{ publication.related_word.beriya_text }}</div>
+                    {% endif %}
+                    {% if publication.related_unit %}
+                        <div>
+                            Unité liée :
+                            <a style="color: #D4AF37;" href="{% url 'web-unit-detail' publication.related_unit.slug %}">
+                                {{ publication.related_unit.title_fr }}
+                            </a>
+                        </div>
+                    {% endif %}
+                    <div>Vues : {{ publication.view_count }}</div>
+                </div>
+
+                <div style="margin-top: 22px;">
+                    <a href="{% url 'web-no-ena-list' %}" class="btn btn-secondary">Retour à No Ena</a>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top: 10px;">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-kicker">À voir aussi</div>
+                <h2 class="section-title">Autres contenus No Ena</h2>
+            </div>
+
+            <div class="no-ena-list-grid">
+                {% for item in related_publications %}
+                    <article class="no-ena-card glass">
+                        <a href="{% url 'web-no-ena-detail' item.slug %}">
+                            <div class="no-ena-media">
+                                {% if item.thumbnail %}
+                                    <img src="{{ item.thumbnail.url }}" alt="{{ item.title_fr }}">
+                                {% elif item.image_file %}
+                                    <img src="{{ item.image_file.url }}" alt="{{ item.title_fr }}">
+                                {% else %}
+                                    No Ena
+                                {% endif %}
+                            </div>
+                            <div class="no-ena-content">
+                                <div class="no-ena-type">{{ item.get_publication_type_display }}</div>
+                                <h3>{{ item.title_fr }}</h3>
+                            </div>
+                        </a>
+                    </article>
+                {% empty %}
+                    <div class="empty-state glass">Aucun contenu lié pour le moment.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+document.querySelectorAll('[data-audio]').forEach(function(button) {
+    button.addEventListener('click', function() {
+        const audio = new Audio(button.dataset.audio);
+        audio.play();
+    });
+});
+</script>
+{% endblock %}

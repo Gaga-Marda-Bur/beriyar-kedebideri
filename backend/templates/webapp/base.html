@@ -21,16 +21,17 @@
                 </a>
 
                 <nav class="nav-links">
-                    <a href="#mission">Mission</a>
-                    <a href="#apprendre">Apprendre</a>
-                    <a href="#no-ena">No Ena</a>
-                    <a href="#packs">Packs</a>
+                    <a href="{% url 'web-home' %}#mission">Mission</a>
+                    <a href="{% url 'web-learning-path' %}">Parcours</a>
+                    <a href="{% url 'web-alphabet' %}">Alphabet</a>
+                    <a href="{% url 'web-vocabulary' %}">Vocabulaire</a>
+                    <a href="{% url 'web-no-ena-list' %}">No Ena</a>
                     <a href="/admin/">Admin</a>
                 </nav>
 
                 <div class="nav-actions">
-                    <a href="#apprendre" class="btn btn-secondary">Explorer</a>
-                    <a href="#packs" class="btn btn-primary">Commencer</a>
+                    <a href="{% url 'web-learning-path' %}" class="btn btn-secondary">Explorer</a>
+                    <a href="{% url 'web-vocabulary' %}" class="btn btn-primary">Commencer</a>
                 </div>
 
                 <a href="#footer" class="btn btn-secondary mobile-menu-button">Menu</a>
@@ -57,15 +58,15 @@
 
                 <div>
                     <h4>Apprendre</h4>
-                    <a href="#apprendre">Parcours</a>
-                    <a href="/api/alphabet/characters/">Alphabet API</a>
-                    <a href="/api/vocabulary/words/">Vocabulaire API</a>
+                    <a href="{% url 'web-learning-path' %}">Parcours</a>
+                    <a href="{% url 'web-alphabet' %}">Alphabet</a>
+                    <a href="{% url 'web-vocabulary' %}">Vocabulaire</a>
                     <a href="/api/quizzes/">Quiz API</a>
                 </div>
 
                 <div>
                     <h4>Culture</h4>
-                    <a href="#no-ena">No Ena</a>
+                    <a href="{% url 'web-no-ena-list' %}">No Ena</a>
                     <a href="/api/no-ena/publications/">Publications API</a>
                     <a href="/api/feedback/create/">Signaler</a>
                 </div>

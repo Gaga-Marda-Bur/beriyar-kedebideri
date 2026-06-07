@@ -1,0 +1,93 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}Vocabulaire Beriya — Beřiyar Kedebideři{% endblock %}
+
+{% block content %}
+<main>
+    <section class="page-header">
+        <div class="container">
+            <div class="badge">Dictionnaire Beriya</div>
+            <h1>Explorer les mots et traductions.</h1>
+            <p>
+                Recherche les mots Beriya, consulte les transcriptions, les traductions
+                et écoute les audios validés.
+            </p>
+
+            <form method="get" class="toolbar">
+                <div class="form-inline glass" style="padding: 14px; border-radius: 24px;">
+                    <input
+                        class="input"
+                        type="text"
+                        name="q"
+                        value="{{ search }}"
+                        placeholder="Rechercher un mot, une transcription ou une traduction..."
+                    >
+
+                    <select class="select" name="category">
+                        <option value="">Toutes les catégories</option>
+                        {% for category in categories %}
+                            <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>
+                                {{ category.name_fr }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <button class="btn btn-primary" type="submit">Rechercher</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top: 20px;">
+        <div class="container">
+            <div class="words-grid">
+                {% for word in words %}
+                    <article class="word-card glass">
+                        <div class="word-text">{{ word.beriya_text }}</div>
+
+                        <div class="word-translation">
+                            {{ word.french_translation|default:"Traduction française à compléter" }}
+                        </div>
+
+                        <div class="word-meta">
+                            {% if word.english_translation %}
+                                EN: {{ word.english_translation }}<br>
+                            {% endif %}
+                            {% if word.arabic_translation %}
+                                AR: {{ word.arabic_translation }}<br>
+                            {% endif %}
+                            {% if word.latin_transcription %}
+                                Latin: {{ word.latin_transcription }}<br>
+                            {% endif %}
+                            {% if word.category %}
+                                Catégorie: {{ word.category.name_fr }}
+                            {% endif %}
+                        </div>
+
+                        {% with link=word.audio_links.first %}
+                            {% if link and link.audio_asset.file %}
+                                <button class="audio-button" data-audio="{{ link.audio_asset.file.url }}">
+                                    Écouter
+                                </button>
+                            {% endif %}
+                        {% endwith %}
+                    </article>
+                {% empty %}
+                    <div class="empty-state glass">
+                        Aucun mot trouvé.
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+document.querySelectorAll('[data-audio]').forEach(function(button) {
+    button.addEventListener('click', function() {
+        const audio = new Audio(button.dataset.audio);
+        audio.play();
+    });
+});
+</script>
+{% endblock %}

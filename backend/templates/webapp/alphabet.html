@@ -1,0 +1,62 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}Alphabet Beriya Erfe — Beřiyar Kedebideři{% endblock %}
+
+{% block content %}
+<main>
+    <section class="page-header">
+        <div class="container">
+            <div class="badge">Alphabet Beriya Erfe</div>
+            <h1>Écouter et reconnaître les caractères.</h1>
+            <p>
+                Consulte les caractères Beriya Erfe, leurs transcriptions et leurs audios
+                lorsqu’ils sont validés dans le corpus.
+            </p>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top: 20px;">
+        <div class="container">
+            <div class="alphabet-grid">
+                {% for character in characters %}
+                    <article class="character-card glass">
+                        <div class="character-symbol">{{ character.symbol }}</div>
+                        <div class="character-code">{{ character.unicode_code }}</div>
+
+                        {% if character.latin_transcription %}
+                            <div class="character-transcription">{{ character.latin_transcription }}</div>
+                        {% else %}
+                            <div class="character-transcription">Transcription à compléter</div>
+                        {% endif %}
+
+                        {% if character.arabic_transcription %}
+                            <div class="character-code">{{ character.arabic_transcription }}</div>
+                        {% endif %}
+
+                        {% with link=character.audio_links.first %}
+                            {% if link and link.audio_asset.file %}
+                                <button class="audio-button" data-audio="{{ link.audio_asset.file.url }}">
+                                    Écouter
+                                </button>
+                            {% endif %}
+                        {% endwith %}
+                    </article>
+                {% empty %}
+                    <div class="empty-state glass">
+                        Aucun caractère actif. Lance la commande seed puis active les caractères.
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+document.querySelectorAll('[data-audio]').forEach(function(button) {
+    button.addEventListener('click', function() {
+        const audio = new Audio(button.dataset.audio);
+        audio.play();
+    });
+});
+</script>
+{% endblock %}

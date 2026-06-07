@@ -1,0 +1,57 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}Parcours d’apprentissage — Beřiyar Kedebideři{% endblock %}
+
+{% block content %}
+<main>
+    <section class="page-header">
+        <div class="container">
+            <div class="badge">Parcours</div>
+            <h1>Apprendre par thèmes et unités.</h1>
+            <p>
+                Chaque unité contient peu de caractères, quelques mots, une leçon orale
+                et des exercices pour éviter de tout mélanger.
+            </p>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top: 20px;">
+        <div class="container">
+            {% for theme in themes %}
+                <section class="theme-block glass">
+                    <div class="section-kicker">{{ theme.level }}</div>
+                    <h2 style="margin: 8px 0 8px;">{{ theme.title_fr }}</h2>
+                    <p class="section-text">{{ theme.description_fr }}</p>
+
+                    <div class="units-grid">
+                        {% for unit in theme.units.all %}
+                            {% if unit.is_active %}
+                                <article class="unit-card">
+                                    <h3>{{ unit.title_fr }}</h3>
+                                    <p class="word-meta">{{ unit.description_fr|truncatewords:24 }}</p>
+
+                                    <div class="unit-stats">
+                                        <span class="pill">{{ unit.characters.count }} caractères</span>
+                                        <span class="pill">{{ unit.words.count }} mots</span>
+                                        <span class="pill">{{ unit.estimated_minutes }} min</span>
+                                    </div>
+
+                                    <a href="{% url 'web-unit-detail' unit.slug %}" class="btn btn-primary">
+                                        Ouvrir l’unité
+                                    </a>
+                                </article>
+                            {% endif %}
+                        {% empty %}
+                            <div class="empty-state glass">Aucune unité dans ce thème.</div>
+                        {% endfor %}
+                    </div>
+                </section>
+            {% empty %}
+                <div class="empty-state glass">
+                    Aucun thème publié pour le moment.
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% endblock %}

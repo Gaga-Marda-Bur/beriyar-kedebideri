@@ -1,0 +1,66 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}No Ena — Beřiyar Kedebideři{% endblock %}
+
+{% block content %}
+<main>
+    <section class="page-header">
+        <div class="container">
+            <div class="badge">No Ena</div>
+            <h1>Contenu qui mérite d’être regardé.</h1>
+            <p>
+                Images, vidéos courtes, récits, proverbes et démonstrations validés
+                pour valoriser la langue et la culture Beriya.
+            </p>
+
+            <div class="toolbar">
+                <a href="{% url 'web-no-ena-list' %}" class="btn {% if not selected_type %}btn-primary{% else %}btn-secondary{% endif %}">
+                    Tous
+                </a>
+
+                {% for value,label in publication_types %}
+                    <a href="?type={{ value }}" class="btn {% if selected_type == value %}btn-primary{% else %}btn-secondary{% endif %}">
+                        {{ label }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top: 20px;">
+        <div class="container">
+            <div class="no-ena-list-grid">
+                {% for item in publications %}
+                    <article class="no-ena-card glass">
+                        <a href="{% url 'web-no-ena-detail' item.slug %}">
+                            <div class="no-ena-media">
+                                {% if item.thumbnail %}
+                                    <img src="{{ item.thumbnail.url }}" alt="{{ item.title_fr }}">
+                                {% elif item.image_file %}
+                                    <img src="{{ item.image_file.url }}" alt="{{ item.title_fr }}">
+                                {% elif item.video_file %}
+                                    <video muted>
+                                        <source src="{{ item.video_file.url }}">
+                                    </video>
+                                {% else %}
+                                    No Ena
+                                {% endif %}
+                            </div>
+
+                            <div class="no-ena-content">
+                                <div class="no-ena-type">{{ item.get_publication_type_display }}</div>
+                                <h3>{{ item.title_fr }}</h3>
+                                <p>{{ item.caption_fr|truncatewords:20 }}</p>
+                            </div>
+                        </a>
+                    </article>
+                {% empty %}
+                    <div class="empty-state glass">
+                        Aucune publication No Ena publiée pour le moment.
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
