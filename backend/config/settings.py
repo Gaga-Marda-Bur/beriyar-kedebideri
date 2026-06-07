@@ -37,9 +37,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+     # Third-party
+    'rest_framework',
+    'corsheaders',
+
+    # Local apps
+    'core',
+    'audio_assets',
+    'alphabet',
+    'vocabulary',
+    'learning',
+    'lessons',
+    'quizzes',
+    'offline_packs',
+    'progress',
+    'feedback',
+    'no_ena',
+    'webapp',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -114,4 +132,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+from pathlib import Path
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 STATIC_URL = 'static/'
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 50,
+}
