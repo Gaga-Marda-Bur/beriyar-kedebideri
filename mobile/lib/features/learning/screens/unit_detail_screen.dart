@@ -12,6 +12,7 @@ import '../../quiz/models/quiz_question_model.dart';
 import '../../quiz/quiz_api_service.dart';
 import '../learning_api_service.dart';
 import '../models/learning_unit_model.dart';
+import 'unit_practice_screen.dart';
 
 class UnitDetailScreen extends StatefulWidget {
   final String unitSlug;
@@ -197,9 +198,12 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                             width: double.infinity,
                             child: FilledButton.icon(
                               onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(loc.startUnit),
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => UnitPracticeScreen(
+                                      unitSlug: unit.slug,
+                                    ),
                                   ),
                                 );
                               },

@@ -138,4 +138,40 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get noQuizzes => 'Aucun quiz disponible.';
+
+  @override
+  String get practice => 'Pratique';
+
+  @override
+  String get next => 'Suivant';
+
+  @override
+  String get previous => 'Précédent';
+
+  @override
+  String get finishUnit => 'Terminer l’unité';
+
+  @override
+  String get restartUnit => 'Recommencer l’unité';
+
+  @override
+  String get unitFinished => 'Unité terminée';
+
+  @override
+  String get listenRepeat => 'Écoute et répète';
+
+  @override
+  String get reviewCharacters => 'Réviser les caractères';
+
+  @override
+  String get reviewWords => 'Réviser les mots';
+
+  @override
+  String get practiceLessons => 'Suivre les leçons';
+
+  @override
+  String get practiceQuiz => 'Réviser les quiz';
+
+  @override
+  String get step => 'Étape';
 }

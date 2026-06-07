@@ -42,5 +42,17 @@
   "unitContent": "Unit content",
   "noThemes": "No themes available.",
   "noLessons": "No lessons available.",
-  "noQuizzes": "No quizzes available."
+  "noQuizzes": "No quizzes available.",
+  "practice": "Practice",
+  "next": "Next",
+  "previous": "Previous",
+  "finishUnit": "Finish unit",
+  "restartUnit": "Restart unit",
+  "unitFinished": "Unit finished",
+  "listenRepeat": "Listen and repeat",
+  "reviewCharacters": "Review characters",
+  "reviewWords": "Review words",
+  "practiceLessons": "Follow lessons",
+  "practiceQuiz": "Review quizzes",
+  "step": "Step"
   }

@@ -137,4 +137,40 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get noQuizzes => 'لا توجد اختبارات متاحة.';
+
+  @override
+  String get practice => 'تدريب';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get previous => 'السابق';
+
+  @override
+  String get finishUnit => 'إنهاء الوحدة';
+
+  @override
+  String get restartUnit => 'إعادة الوحدة';
+
+  @override
+  String get unitFinished => 'اكتملت الوحدة';
+
+  @override
+  String get listenRepeat => 'استمع وكرر';
+
+  @override
+  String get reviewCharacters => 'راجع الحروف';
+
+  @override
+  String get reviewWords => 'راجع الكلمات';
+
+  @override
+  String get practiceLessons => 'اتبع الدروس';
+
+  @override
+  String get practiceQuiz => 'راجع الاختبارات';
+
+  @override
+  String get step => 'خطوة';
 }

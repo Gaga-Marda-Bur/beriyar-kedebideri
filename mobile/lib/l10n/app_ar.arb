@@ -42,5 +42,17 @@
   "unitContent": "محتوى الوحدة",
   "noThemes": "لا توجد مواضيع متاحة.",
   "noLessons": "لا توجد دروس متاحة.",
-  "noQuizzes": "لا توجد اختبارات متاحة."
+  "noQuizzes": "لا توجد اختبارات متاحة.",
+  "practice": "تدريب",
+  "next": "التالي",
+  "previous": "السابق",
+  "finishUnit": "إنهاء الوحدة",
+  "restartUnit": "إعادة الوحدة",
+  "unitFinished": "اكتملت الوحدة",
+  "listenRepeat": "استمع وكرر",
+  "reviewCharacters": "راجع الحروف",
+  "reviewWords": "راجع الكلمات",
+  "practiceLessons": "اتبع الدروس",
+  "practiceQuiz": "راجع الاختبارات",
+  "step": "خطوة"
 }

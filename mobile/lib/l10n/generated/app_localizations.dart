@@ -357,6 +357,78 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Aucun quiz disponible.'**
   String get noQuizzes;
+
+  /// No description provided for @practice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pratique'**
+  String get practice;
+
+  /// No description provided for @next.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suivant'**
+  String get next;
+
+  /// No description provided for @previous.
+  ///
+  /// In fr, this message translates to:
+  /// **'Précédent'**
+  String get previous;
+
+  /// No description provided for @finishUnit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Terminer l’unité'**
+  String get finishUnit;
+
+  /// No description provided for @restartUnit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recommencer l’unité'**
+  String get restartUnit;
+
+  /// No description provided for @unitFinished.
+  ///
+  /// In fr, this message translates to:
+  /// **'Unité terminée'**
+  String get unitFinished;
+
+  /// No description provided for @listenRepeat.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écoute et répète'**
+  String get listenRepeat;
+
+  /// No description provided for @reviewCharacters.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réviser les caractères'**
+  String get reviewCharacters;
+
+  /// No description provided for @reviewWords.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réviser les mots'**
+  String get reviewWords;
+
+  /// No description provided for @practiceLessons.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suivre les leçons'**
+  String get practiceLessons;
+
+  /// No description provided for @practiceQuiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réviser les quiz'**
+  String get practiceQuiz;
+
+  /// No description provided for @step.
+  ///
+  /// In fr, this message translates to:
+  /// **'Étape'**
+  String get step;
 }
 
 class _AppLocalizationsDelegate

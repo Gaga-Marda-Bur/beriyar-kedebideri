@@ -138,4 +138,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noQuizzes => 'No quizzes available.';
+
+  @override
+  String get practice => 'Practice';
+
+  @override
+  String get next => 'Next';
+
+  @override
+  String get previous => 'Previous';
+
+  @override
+  String get finishUnit => 'Finish unit';
+
+  @override
+  String get restartUnit => 'Restart unit';
+
+  @override
+  String get unitFinished => 'Unit finished';
+
+  @override
+  String get listenRepeat => 'Listen and repeat';
+
+  @override
+  String get reviewCharacters => 'Review characters';
+
+  @override
+  String get reviewWords => 'Review words';
+
+  @override
+  String get practiceLessons => 'Follow lessons';
+
+  @override
+  String get practiceQuiz => 'Review quizzes';
+
+  @override
+  String get step => 'Step';
 }

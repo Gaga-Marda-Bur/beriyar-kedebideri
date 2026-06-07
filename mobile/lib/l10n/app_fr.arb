@@ -42,5 +42,17 @@
   "unitContent": "Contenu de l’unité",
   "noThemes": "Aucun thème disponible.",
   "noLessons": "Aucune leçon disponible.",
-  "noQuizzes": "Aucun quiz disponible."
+  "noQuizzes": "Aucun quiz disponible.",
+  "practice": "Pratique",
+  "next": "Suivant",
+  "previous": "Précédent",
+  "finishUnit": "Terminer l’unité",
+  "restartUnit": "Recommencer l’unité",
+  "unitFinished": "Unité terminée",
+  "listenRepeat": "Écoute et répète",
+  "reviewCharacters": "Réviser les caractères",
+  "reviewWords": "Réviser les mots",
+  "practiceLessons": "Suivre les leçons",
+  "practiceQuiz": "Réviser les quiz",
+  "step": "Étape"
 }
