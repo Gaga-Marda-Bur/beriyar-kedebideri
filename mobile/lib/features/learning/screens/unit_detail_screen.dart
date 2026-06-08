@@ -13,6 +13,8 @@ import '../../quiz/quiz_api_service.dart';
 import '../learning_api_service.dart';
 import '../models/learning_unit_model.dart';
 import 'unit_practice_screen.dart';
+import '../../progress/models/unit_progress_local_model.dart';
+import '../../progress/services/unit_progress_local_storage.dart';
 
 class UnitDetailScreen extends StatefulWidget {
   final String unitSlug;
@@ -31,6 +33,8 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
   final LessonsApiService _lessonsService = LessonsApiService();
   final QuizApiService _quizService = QuizApiService();
   final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
+  final UnitProgressLocalStorage _progressStorage = UnitProgressLocalStorage();
+  UnitProgressLocalModel? _localProgress;
 
   late Future<_UnitDetailData> _future;
 
@@ -52,7 +56,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
       (item) => item.slug == widget.unitSlug,
       orElse: () => throw Exception('Unit not found: ${widget.unitSlug}'),
     );
-
+    _localProgress = await _progressStorage.getProgress(widget.unitSlug);
     final lessons = await _lessonsService.fetchLessons(unit: widget.unitSlug);
     final quizzes = await _quizService.fetchQuizzes(unit: widget.unitSlug);
 
@@ -193,6 +197,18 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                               ),
                             ],
                           ),
+                          if (_localProgress != null) ...[
+                            const SizedBox(height: 14),
+                            Text(
+                              _localProgress!.completed
+                                  ? 'Unité terminée • meilleur score ${_localProgress!.bestScorePercent}%'
+                                  : 'Progression : étape ${_localProgress!.currentStep + 1}/${_localProgress!.totalSteps}',
+                              style: const TextStyle(
+                                color: AppColors.gold,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ],
                           const SizedBox(height: 18),
                           SizedBox(
                             width: double.infinity,
@@ -208,7 +224,11 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                                 );
                               },
                               icon: const Icon(Icons.play_arrow_rounded),
-                              label: Text(loc.startUnit),
+                              label: Text(
+                                _localProgress != null && !_localProgress!.completed
+                                    ? 'Reprendre l’unité'
+                                    : loc.startUnit,
+                              ),
                             ),
                           ),
                         ],
@@ -222,12 +242,11 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: unit.characters.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
                         mainAxisSpacing: 12,
                         crossAxisSpacing: 12,
-                        childAspectRatio: 0.88,
+                        childAspectRatio: 0.95,
                       ),
                       itemBuilder: (context, index) {
                         final character = unit.characters[index];

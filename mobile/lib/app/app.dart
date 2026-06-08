@@ -10,6 +10,7 @@ import 'app_state.dart';
 
 import '../features/alphabet/screens/alphabet_screen.dart';
 import '../features/vocabulary/screens/vocabulary_screen.dart';
+import '../features/learning/screens/learning_path_screen.dart';
 
 class BeriyarApp extends StatelessWidget {
   const BeriyarApp({super.key});
@@ -35,6 +36,7 @@ class BeriyarApp extends StatelessWidget {
         '/settings': (_) => const SettingsScreen(),
         '/alphabet': (_) => const AlphabetScreen(),
         '/vocabulary': (_) => const VocabularyScreen(),
+        '/learning': (_) => const LearningPathScreen(),
       },
     );
   }

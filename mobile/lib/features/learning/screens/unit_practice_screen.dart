@@ -12,6 +12,7 @@ import '../../quiz/models/quiz_question_model.dart';
 import '../../quiz/quiz_api_service.dart';
 import '../learning_api_service.dart';
 import '../models/learning_unit_model.dart';
+import '../../progress/services/unit_progress_local_storage.dart';
 
 class UnitPracticeScreen extends StatefulWidget {
   final String unitSlug;
@@ -30,6 +31,7 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
   final LessonsApiService _lessonsService = LessonsApiService();
   final QuizApiService _quizService = QuizApiService();
   final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
+  final UnitProgressLocalStorage _progressStorage = UnitProgressLocalStorage();
 
   late Future<_PracticeData> _future;
 
@@ -57,33 +59,89 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
     final lessons = await _lessonsService.fetchLessons(unit: widget.unitSlug);
     final quizzes = await _quizService.fetchQuizzes(unit: widget.unitSlug);
 
-    return _PracticeData(
+    final data = _PracticeData(
       unit: unit,
       lessons: lessons,
       quizzes: quizzes,
     );
+
+    final totalSteps = _buildStepsCount();
+    final progress = await _progressStorage.startOrGet(
+      unitSlug: widget.unitSlug,
+      totalSteps: totalSteps,
+    );
+
+    _currentStep = progress.currentStep.clamp(0, totalSteps - 1);
+
+    return data;
   }
 
-  void _next(int maxSteps) {
+  int _buildStepsCount() {
+    return 6;
+  }
+
+  Future<void> _next(int maxSteps) async {
     if (_currentStep < maxSteps - 1) {
+      final nextStep = _currentStep + 1;
+
       setState(() {
-        _currentStep++;
+        _currentStep = nextStep;
       });
+
+      await _progressStorage.updateStep(
+        unitSlug: widget.unitSlug,
+        currentStep: nextStep,
+        totalSteps: maxSteps,
+        lastStage: _stageName(nextStep),
+      );
     }
   }
 
-  void _previous() {
+  Future<void> _previous() async {
     if (_currentStep > 0) {
+      final previousStep = _currentStep - 1;
+
       setState(() {
-        _currentStep--;
+        _currentStep = previousStep;
       });
+
+      await _progressStorage.updateStep(
+        unitSlug: widget.unitSlug,
+        currentStep: previousStep,
+        totalSteps: _buildStepsCount(),
+        lastStage: _stageName(previousStep),
+      );
     }
   }
 
-  void _restart() {
+  Future<void> _restart() async {
+    await _progressStorage.restartUnit(
+      unitSlug: widget.unitSlug,
+      totalSteps: _buildStepsCount(),
+    );
+
     setState(() {
       _currentStep = 0;
     });
+  }
+
+  String _stageName(int step) {
+    switch (step) {
+      case 0:
+        return 'intro';
+      case 1:
+        return 'characters';
+      case 2:
+        return 'words';
+      case 3:
+        return 'lessons';
+      case 4:
+        return 'quiz';
+      case 5:
+        return 'result';
+      default:
+        return 'intro';
+    }
   }
 
   String _localized(String lang, String fr, String en, String ar) {
@@ -189,9 +247,19 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
                     previousLabel: loc.previous,
                     nextLabel: loc.next,
                     finishLabel: loc.finishUnit,
-                    onPrevious: _previous,
-                    onNext: () => _next(totalSteps),
-                    onFinish: () {
+                   onPrevious: () {
+                      _previous();
+                    },
+                    onNext: () {
+                      _next(totalSteps);
+                    },
+                    onFinish: () async {
+                      await _progressStorage.completeUnit(
+                        unitSlug: widget.unitSlug,
+                        totalSteps: totalSteps,
+                        scorePercent: 100,
+                      );
+
                       setState(() {
                         _currentStep = totalSteps - 1;
                       });
@@ -293,7 +361,9 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
               SizedBox(
                 width: double.infinity,
                 child: FilledButton.icon(
-                  onPressed: _restart,
+                  onPressed: () {
+                    _restart();
+                  },
                   icon: const Icon(Icons.refresh_rounded),
                   label: Text(loc.restartUnit),
                 ),
