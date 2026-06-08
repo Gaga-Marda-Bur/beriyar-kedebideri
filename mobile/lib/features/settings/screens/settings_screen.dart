@@ -5,6 +5,7 @@ import '../../../app/app_state.dart';
 import '../../../core/widgets/app_background.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
+import '../../../core/sync/sync_manager.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -46,6 +47,48 @@ class SettingsScreen extends StatelessWidget {
                       title: loc.arabic,
                       code: 'ar',
                       selected: state.locale.languageCode == 'ar',
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 18),
+              GlassCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      loc.sync,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'UnitProgressLocalModel → Django UnitProgress',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        onPressed: () async {
+                          final messenger = ScaffoldMessenger.of(context);
+
+                          final result = await SyncManager().syncAll();
+
+                          if (!context.mounted) return;
+
+                          messenger.showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                result.success
+                                    ? '${loc.syncSuccess} • ${loc.syncedItems}: ${result.progressSyncedCount}'
+                                    : '${loc.syncFailed}: ${result.errorMessage ?? ''}',
+                              ),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.sync_rounded),
+                        label: Text(loc.syncNow),
+                      ),
                     ),
                   ],
                 ),

@@ -54,5 +54,10 @@
   "reviewWords": "Réviser les mots",
   "practiceLessons": "Suivre les leçons",
   "practiceQuiz": "Réviser les quiz",
-  "step": "Étape"
+  "step": "Étape",
+  "sync": "Synchronisation",
+  "syncNow": "Synchroniser maintenant",
+  "syncSuccess": "Synchronisation réussie",
+  "syncFailed": "Synchronisation échouée",
+  "syncedItems": "Éléments synchronisés"
 }

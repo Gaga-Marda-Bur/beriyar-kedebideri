@@ -174,4 +174,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get step => 'Step';
+
+  @override
+  String get sync => 'Sync';
+
+  @override
+  String get syncNow => 'Sync now';
+
+  @override
+  String get syncSuccess => 'Sync successful';
+
+  @override
+  String get syncFailed => 'Sync failed';
+
+  @override
+  String get syncedItems => 'Synced items';
 }

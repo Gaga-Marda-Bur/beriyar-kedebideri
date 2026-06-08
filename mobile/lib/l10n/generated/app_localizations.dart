@@ -429,6 +429,36 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Étape'**
   String get step;
+
+  /// No description provided for @sync.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchronisation'**
+  String get sync;
+
+  /// No description provided for @syncNow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchroniser maintenant'**
+  String get syncNow;
+
+  /// No description provided for @syncSuccess.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchronisation réussie'**
+  String get syncSuccess;
+
+  /// No description provided for @syncFailed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Synchronisation échouée'**
+  String get syncFailed;
+
+  /// No description provided for @syncedItems.
+  ///
+  /// In fr, this message translates to:
+  /// **'Éléments synchronisés'**
+  String get syncedItems;
 }
 
 class _AppLocalizationsDelegate

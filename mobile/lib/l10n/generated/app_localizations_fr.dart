@@ -174,4 +174,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get step => 'Étape';
+
+  @override
+  String get sync => 'Synchronisation';
+
+  @override
+  String get syncNow => 'Synchroniser maintenant';
+
+  @override
+  String get syncSuccess => 'Synchronisation réussie';
+
+  @override
+  String get syncFailed => 'Synchronisation échouée';
+
+  @override
+  String get syncedItems => 'Éléments synchronisés';
 }

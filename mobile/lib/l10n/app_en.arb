@@ -54,5 +54,10 @@
   "reviewWords": "Review words",
   "practiceLessons": "Follow lessons",
   "practiceQuiz": "Review quizzes",
-  "step": "Step"
+  "step": "Step",
+  "sync": "Sync",
+  "syncNow": "Sync now",
+  "syncSuccess": "Sync successful",
+  "syncFailed": "Sync failed",
+  "syncedItems": "Synced items"
   }

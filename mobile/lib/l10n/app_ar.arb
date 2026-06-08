@@ -54,5 +54,10 @@
   "reviewWords": "راجع الكلمات",
   "practiceLessons": "اتبع الدروس",
   "practiceQuiz": "راجع الاختبارات",
-  "step": "خطوة"
+  "step": "خطوة",
+  "sync": "المزامنة",
+  "syncNow": "زامن الآن",
+  "syncSuccess": "تمت المزامنة بنجاح",
+  "syncFailed": "فشلت المزامنة",
+  "syncedItems": "العناصر التي تمت مزامنتها"
 }

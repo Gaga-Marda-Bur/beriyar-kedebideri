@@ -173,4 +173,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get step => 'خطوة';
+
+  @override
+  String get sync => 'المزامنة';
+
+  @override
+  String get syncNow => 'زامن الآن';
+
+  @override
+  String get syncSuccess => 'تمت المزامنة بنجاح';
+
+  @override
+  String get syncFailed => 'فشلت المزامنة';
+
+  @override
+  String get syncedItems => 'العناصر التي تمت مزامنتها';
 }
