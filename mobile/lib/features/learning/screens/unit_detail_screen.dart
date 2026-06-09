@@ -15,6 +15,7 @@ import '../models/learning_unit_model.dart';
 import 'unit_practice_screen.dart';
 import '../../progress/models/unit_progress_local_model.dart';
 import '../../progress/services/unit_progress_local_storage.dart';
+import '../../offline_packs/services/offline_content_service.dart';
 
 class UnitDetailScreen extends StatefulWidget {
   final String unitSlug;
@@ -35,6 +36,7 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
   final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
   final UnitProgressLocalStorage _progressStorage = UnitProgressLocalStorage();
   UnitProgressLocalModel? _localProgress;
+  final OfflineContentService _offlineService = OfflineContentService();
 
   late Future<_UnitDetailData> _future;
 
@@ -51,15 +53,28 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
   }
 
   Future<_UnitDetailData> _load() async {
-    final units = await _learningService.fetchUnits();
+    List<LearningUnitModel> units = [];
+    List<LessonModel> lessons = [];
+    List<QuizQuestionModel> quizzes = [];
+
+    try {
+      units = await _learningService.fetchUnits();
+      lessons = await _lessonsService.fetchLessons(unit: widget.unitSlug);
+      quizzes = await _quizService.fetchQuizzes(unit: widget.unitSlug);
+    } catch (_) {
+      units = await _offlineService.loadUnits();
+      lessons = await _offlineService.loadLessons();
+      quizzes = await _offlineService.loadQuizzes();
+
+      lessons = lessons.where((lesson) => lesson.unitSlug == widget.unitSlug).toList();
+      quizzes = quizzes.where((quiz) => quiz.unitSlug == widget.unitSlug).toList();
+    }
+
     final unit = units.firstWhere(
       (item) => item.slug == widget.unitSlug,
       orElse: () => throw Exception('Unit not found: ${widget.unitSlug}'),
     );
     _localProgress = await _progressStorage.getProgress(widget.unitSlug);
-    final lessons = await _lessonsService.fetchLessons(unit: widget.unitSlug);
-    final quizzes = await _quizService.fetchQuizzes(unit: widget.unitSlug);
-
     return _UnitDetailData(
       unit: unit,
       lessons: lessons,

@@ -13,6 +13,8 @@ import '../../quiz/quiz_api_service.dart';
 import '../learning_api_service.dart';
 import '../models/learning_unit_model.dart';
 import '../../progress/services/unit_progress_local_storage.dart';
+import '../../../core/sync/sync_manager.dart';
+import '../../offline_packs/services/offline_content_service.dart';
 
 class UnitPracticeScreen extends StatefulWidget {
   final String unitSlug;
@@ -32,6 +34,8 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
   final QuizApiService _quizService = QuizApiService();
   final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
   final UnitProgressLocalStorage _progressStorage = UnitProgressLocalStorage();
+  final SyncManager _syncManager = SyncManager();
+  final OfflineContentService _offlineService = OfflineContentService();
 
   late Future<_PracticeData> _future;
 
@@ -50,14 +54,27 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
   }
 
   Future<_PracticeData> _load() async {
-    final units = await _learningService.fetchUnits();
+    List<LearningUnitModel> units = [];
+    List<LessonModel> lessons = [];
+    List<QuizQuestionModel> quizzes = [];
+
+    try {
+      units = await _learningService.fetchUnits();
+      lessons = await _lessonsService.fetchLessons(unit: widget.unitSlug);
+      quizzes = await _quizService.fetchQuizzes(unit: widget.unitSlug);
+    } catch (_) {
+      units = await _offlineService.loadUnits();
+      lessons = await _offlineService.loadLessons();
+      quizzes = await _offlineService.loadQuizzes();
+
+      lessons = lessons.where((lesson) => lesson.unitSlug == widget.unitSlug).toList();
+      quizzes = quizzes.where((quiz) => quiz.unitSlug == widget.unitSlug).toList();
+    }
+
     final unit = units.firstWhere(
       (item) => item.slug == widget.unitSlug,
       orElse: () => throw Exception('Unit not found: ${widget.unitSlug}'),
     );
-
-    final lessons = await _lessonsService.fetchLessons(unit: widget.unitSlug);
-    final quizzes = await _quizService.fetchQuizzes(unit: widget.unitSlug);
 
     final data = _PracticeData(
       unit: unit,
@@ -259,6 +276,7 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
                         totalSteps: totalSteps,
                         scorePercent: 100,
                       );
+                      await _syncManager.syncAll();
 
                       setState(() {
                         _currentStep = totalSteps - 1;

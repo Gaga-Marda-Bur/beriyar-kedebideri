@@ -7,6 +7,7 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../alphabet_api_service.dart';
 import '../models/character_model.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../offline_packs/services/offline_content_service.dart';
 
 class AlphabetScreen extends StatefulWidget {
   const AlphabetScreen({super.key});
@@ -18,13 +19,28 @@ class AlphabetScreen extends StatefulWidget {
 class _AlphabetScreenState extends State<AlphabetScreen> {
   final AlphabetApiService _service = AlphabetApiService();
   final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
+  final OfflineContentService _offlineService = OfflineContentService();
 
   late Future<List<CharacterModel>> _future;
 
   @override
   void initState() {
     super.initState();
-    _future = _service.fetchCharacters();
+    _future = _loadCharacters();
+  }
+
+  Future<List<CharacterModel>> _loadCharacters() async {
+    try {
+      final online = await _service.fetchCharacters();
+
+      if (online.isNotEmpty) {
+        return online;
+      }
+    } catch (_) {
+      // fallback offline
+    }
+
+    return _offlineService.loadCharacters();
   }
 
   @override
@@ -35,7 +51,7 @@ class _AlphabetScreenState extends State<AlphabetScreen> {
 
   Future<void> _reload() async {
     setState(() {
-      _future = _service.fetchCharacters();
+      _future = _loadCharacters();
     });
   }
 

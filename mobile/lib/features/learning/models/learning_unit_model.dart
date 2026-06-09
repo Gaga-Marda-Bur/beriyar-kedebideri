@@ -79,8 +79,24 @@ class LearningUnitModel {
       words: _asMapList(json['words'])
           .map((item) => WordModel.fromJson(item))
           .toList(),
-      characterIds: _asIntList(json['character_ids']),
-      wordIds: _asIntList(json['word_ids']),
+      characterIds: _asIntList(
+        json['character_ids'] ??
+            (json['characters'] is List
+                ? (json['characters'] as List).map((item) {
+                    if (item is Map<String, dynamic>) return item['id'];
+                    return item;
+                  }).toList()
+                : []),
+        ),
+        wordIds: _asIntList(
+          json['word_ids'] ??
+              (json['words'] is List
+                  ? (json['words'] as List).map((item) {
+                      if (item is Map<String, dynamic>) return item['id'];
+                      return item;
+                    }).toList()
+                  : []),
+        ),
       estimatedMinutes: _asInt(json['estimated_minutes']),
       minScoreToPass: _asInt(json['min_score_to_pass']),
       orderIndex: _asInt(json['order_index']),

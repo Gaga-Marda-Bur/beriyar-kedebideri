@@ -8,6 +8,7 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../models/no_ena_publication_model.dart';
 import '../no_ena_api_service.dart';
 import 'no_ena_detail_screen.dart';
+import '../../../core/widgets/smart_image.dart';
 
 class NoEnaScreen extends StatefulWidget {
   const NoEnaScreen({super.key});
@@ -280,12 +281,10 @@ class _NoEnaMediaPreview extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             if (imageUrl != null)
-              Image.network(
-                imageUrl,
+              SmartImage(
+                path: imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return const _NoEnaFallbackIcon();
-                },
+                fallback: const _NoEnaFallbackIcon(),
               )
             else
               const _NoEnaFallbackIcon(),

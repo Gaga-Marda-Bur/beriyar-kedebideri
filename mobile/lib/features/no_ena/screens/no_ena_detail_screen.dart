@@ -8,6 +8,7 @@ import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../models/no_ena_publication_model.dart';
 import '../no_ena_api_service.dart';
+import '../../../core/widgets/smart_image.dart';
 
 class NoEnaDetailScreen extends StatefulWidget {
   final NoEnaPublicationModel publication;
@@ -226,13 +227,11 @@ class _DetailMediaFrame extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               if (imageUrl != null)
-                Image.network(
-                  imageUrl,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return const _NoEnaLargeFallback();
-                  },
-                )
+                SmartImage(
+                path: imageUrl,
+                fit: BoxFit.cover,
+                fallback: const _NoEnaLargeFallback(),
+              )
               else
                 const _NoEnaLargeFallback(),
               if (item.hasVideo)

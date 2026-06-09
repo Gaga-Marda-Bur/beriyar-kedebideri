@@ -22,12 +22,14 @@ class ApiClient {
     String path, {
     Map<String, String>? query,
   }) async {
-    final response = await _client.get(
-      _uri(path, query),
-      headers: {
-        'Accept': 'application/json',
-      },
-    );
+    final response = await _client
+      .get(
+        _uri(path, query),
+        headers: {
+          'Accept': 'application/json',
+        },
+      )
+      .timeout(const Duration(seconds: 4));
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception(
@@ -66,14 +68,16 @@ class ApiClient {
     Map<String, dynamic>? body,
     Map<String, String>? query,
   }) async {
-    final response = await _client.post(
-      _uri(path, query),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(body ?? {}),
-    );
+    final response = await _client
+      .post(
+        _uri(path, query),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(body ?? {}),
+      )
+      .timeout(const Duration(seconds: 4));
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception(

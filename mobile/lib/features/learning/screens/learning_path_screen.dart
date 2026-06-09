@@ -6,6 +6,7 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../learning_api_service.dart';
 import '../models/learning_theme_model.dart';
 import 'unit_detail_screen.dart';
+import '../../offline_packs/services/offline_content_service.dart';
 
 class LearningPathScreen extends StatefulWidget {
   const LearningPathScreen({super.key});
@@ -16,19 +17,34 @@ class LearningPathScreen extends StatefulWidget {
 
 class _LearningPathScreenState extends State<LearningPathScreen> {
   final LearningApiService _service = LearningApiService();
+  final OfflineContentService _offlineService = OfflineContentService();
 
   late Future<List<LearningThemeModel>> _future;
 
   @override
   void initState() {
     super.initState();
-    _future = _service.fetchThemes();
+    _future = _loadThemes();
   }
 
   Future<void> _reload() async {
     setState(() {
-      _future = _service.fetchThemes();
+      _future = _loadThemes();
     });
+  }
+
+  Future<List<LearningThemeModel>> _loadThemes() async {
+    try {
+      final online = await _service.fetchThemes();
+
+      if (online.isNotEmpty) {
+        return online;
+      }
+    } catch (_) {
+      // fallback offline
+    }
+
+    return _offlineService.loadThemes();
   }
 
   String _titleForLocale(
