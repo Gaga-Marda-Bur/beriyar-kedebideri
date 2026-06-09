@@ -459,6 +459,180 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Éléments synchronisés'**
   String get syncedItems;
+
+  /// No description provided for @noEnaSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contenu qui mérite d’être regardé.'**
+  String get noEnaSubtitle;
+
+  /// No description provided for @featured.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mis en avant'**
+  String get featured;
+
+  /// No description provided for @cultureTheme.
+  ///
+  /// In fr, this message translates to:
+  /// **'Thème culturel'**
+  String get cultureTheme;
+
+  /// No description provided for @contributor.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contributeur'**
+  String get contributor;
+
+  /// No description provided for @views.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vues'**
+  String get views;
+
+  /// No description provided for @openContent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrir'**
+  String get openContent;
+
+  /// No description provided for @noNoEna.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune publication No Ena disponible.'**
+  String get noNoEna;
+
+  /// No description provided for @image.
+  ///
+  /// In fr, this message translates to:
+  /// **'Image'**
+  String get image;
+
+  /// No description provided for @video.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vidéo'**
+  String get video;
+
+  /// No description provided for @audio.
+  ///
+  /// In fr, this message translates to:
+  /// **'Audio'**
+  String get audio;
+
+  /// No description provided for @playAudio.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lire l’audio'**
+  String get playAudio;
+
+  /// No description provided for @relatedContent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contenu lié'**
+  String get relatedContent;
+
+  /// No description provided for @relatedCharacter.
+  ///
+  /// In fr, this message translates to:
+  /// **'Caractère lié'**
+  String get relatedCharacter;
+
+  /// No description provided for @relatedWord.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot lié'**
+  String get relatedWord;
+
+  /// No description provided for @relatedUnit.
+  ///
+  /// In fr, this message translates to:
+  /// **'Unité liée'**
+  String get relatedUnit;
+
+  /// No description provided for @offlinePacks.
+  ///
+  /// In fr, this message translates to:
+  /// **'Packs hors ligne'**
+  String get offlinePacks;
+
+  /// No description provided for @offlinePacksSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Télécharge une fois, apprends ensuite sans internet.'**
+  String get offlinePacksSubtitle;
+
+  /// No description provided for @download.
+  ///
+  /// In fr, this message translates to:
+  /// **'Télécharger'**
+  String get download;
+
+  /// No description provided for @downloaded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléchargé'**
+  String get downloaded;
+
+  /// No description provided for @installing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Installation...'**
+  String get installing;
+
+  /// No description provided for @installedPacks.
+  ///
+  /// In fr, this message translates to:
+  /// **'Packs installés'**
+  String get installedPacks;
+
+  /// No description provided for @availablePacks.
+  ///
+  /// In fr, this message translates to:
+  /// **'Packs disponibles'**
+  String get availablePacks;
+
+  /// No description provided for @packSize.
+  ///
+  /// In fr, this message translates to:
+  /// **'Taille'**
+  String get packSize;
+
+  /// No description provided for @packItems.
+  ///
+  /// In fr, this message translates to:
+  /// **'Éléments'**
+  String get packItems;
+
+  /// No description provided for @packVersion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Version'**
+  String get packVersion;
+
+  /// No description provided for @openPack.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrir le pack'**
+  String get openPack;
+
+  /// No description provided for @noPacks.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun pack disponible.'**
+  String get noPacks;
+
+  /// No description provided for @downloadSuccess.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pack téléchargé avec succès'**
+  String get downloadSuccess;
+
+  /// No description provided for @downloadFailed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Échec du téléchargement'**
+  String get downloadFailed;
 }
 
 class _AppLocalizationsDelegate

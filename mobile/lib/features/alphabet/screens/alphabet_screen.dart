@@ -111,51 +111,60 @@ class _AlphabetScreenState extends State<AlphabetScreen> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 14,
                     crossAxisSpacing: 14,
-                    childAspectRatio: 0.82,
+                    childAspectRatio: 0.72,
                   ),
                   itemBuilder: (context, index) {
                     final item = characters[index];
 
                     return GlassCard(
                       padding: const EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            item.symbol,
-                            style: AppTextStyles.beriyaLarge,
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            item.unicodeCode,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            item.latinTranscription.isNotEmpty
-                                ? item.latinTranscription
-                                : loc.transcriptionMissing,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          if (item.arabicTranscription.isNotEmpty) ...[
-                            const SizedBox(height: 4),
+                      child: SingleChildScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                             Text(
-                              item.arabicTranscription,
+                              item.symbol,
+                              style: AppTextStyles.beriyaLarge.copyWith(fontSize: 48),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              item.unicodeCode,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              item.latinTranscription.isNotEmpty
+                                  ? item.latinTranscription
+                                  : loc.transcriptionMissing,
                               textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            if (item.arabicTranscription.isNotEmpty) ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                item.arabicTranscription,
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                            const SizedBox(height: 8),
+                            FilledButton.icon(
+                              onPressed: item.audioUrl == null
+                                  ? null
+                                  : () => _audioPlayer.playUrl(item.audioUrl),
+                              icon: const Icon(Icons.volume_up_rounded, size: 18),
+                              label: Text(loc.listen),
                             ),
                           ],
-                          const Spacer(),
-                          FilledButton.icon(
-                            onPressed: item.audioUrl == null
-                                ? null
-                                : () => _audioPlayer.playUrl(item.audioUrl),
-                            icon: const Icon(Icons.volume_up_rounded),
-                            label: Text(loc.listen),
-                          ),
-                        ],
+                        ),
                       ),
                     );
                   },

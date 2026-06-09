@@ -189,4 +189,92 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get syncedItems => 'Synced items';
+
+  @override
+  String get noEnaSubtitle => 'Content worth watching.';
+
+  @override
+  String get featured => 'Featured';
+
+  @override
+  String get cultureTheme => 'Culture theme';
+
+  @override
+  String get contributor => 'Contributor';
+
+  @override
+  String get views => 'Views';
+
+  @override
+  String get openContent => 'Open';
+
+  @override
+  String get noNoEna => 'No No Ena publication available.';
+
+  @override
+  String get image => 'Image';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get audio => 'Audio';
+
+  @override
+  String get playAudio => 'Play audio';
+
+  @override
+  String get relatedContent => 'Related content';
+
+  @override
+  String get relatedCharacter => 'Related character';
+
+  @override
+  String get relatedWord => 'Related word';
+
+  @override
+  String get relatedUnit => 'Related unit';
+
+  @override
+  String get offlinePacks => 'Offline packs';
+
+  @override
+  String get offlinePacksSubtitle =>
+      'Download once, then learn without internet.';
+
+  @override
+  String get download => 'Download';
+
+  @override
+  String get downloaded => 'Downloaded';
+
+  @override
+  String get installing => 'Installing...';
+
+  @override
+  String get installedPacks => 'Installed packs';
+
+  @override
+  String get availablePacks => 'Available packs';
+
+  @override
+  String get packSize => 'Size';
+
+  @override
+  String get packItems => 'Items';
+
+  @override
+  String get packVersion => 'Version';
+
+  @override
+  String get openPack => 'Open pack';
+
+  @override
+  String get noPacks => 'No packs available.';
+
+  @override
+  String get downloadSuccess => 'Pack downloaded successfully';
+
+  @override
+  String get downloadFailed => 'Download failed';
 }

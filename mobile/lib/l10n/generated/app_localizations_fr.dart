@@ -189,4 +189,92 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get syncedItems => 'Éléments synchronisés';
+
+  @override
+  String get noEnaSubtitle => 'Contenu qui mérite d’être regardé.';
+
+  @override
+  String get featured => 'Mis en avant';
+
+  @override
+  String get cultureTheme => 'Thème culturel';
+
+  @override
+  String get contributor => 'Contributeur';
+
+  @override
+  String get views => 'Vues';
+
+  @override
+  String get openContent => 'Ouvrir';
+
+  @override
+  String get noNoEna => 'Aucune publication No Ena disponible.';
+
+  @override
+  String get image => 'Image';
+
+  @override
+  String get video => 'Vidéo';
+
+  @override
+  String get audio => 'Audio';
+
+  @override
+  String get playAudio => 'Lire l’audio';
+
+  @override
+  String get relatedContent => 'Contenu lié';
+
+  @override
+  String get relatedCharacter => 'Caractère lié';
+
+  @override
+  String get relatedWord => 'Mot lié';
+
+  @override
+  String get relatedUnit => 'Unité liée';
+
+  @override
+  String get offlinePacks => 'Packs hors ligne';
+
+  @override
+  String get offlinePacksSubtitle =>
+      'Télécharge une fois, apprends ensuite sans internet.';
+
+  @override
+  String get download => 'Télécharger';
+
+  @override
+  String get downloaded => 'Téléchargé';
+
+  @override
+  String get installing => 'Installation...';
+
+  @override
+  String get installedPacks => 'Packs installés';
+
+  @override
+  String get availablePacks => 'Packs disponibles';
+
+  @override
+  String get packSize => 'Taille';
+
+  @override
+  String get packItems => 'Éléments';
+
+  @override
+  String get packVersion => 'Version';
+
+  @override
+  String get openPack => 'Ouvrir le pack';
+
+  @override
+  String get noPacks => 'Aucun pack disponible.';
+
+  @override
+  String get downloadSuccess => 'Pack téléchargé avec succès';
+
+  @override
+  String get downloadFailed => 'Échec du téléchargement';
 }

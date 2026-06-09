@@ -151,6 +151,18 @@ class HomeScreen extends StatelessWidget {
                   icon: const Icon(Icons.play_arrow_rounded),
                   label: Text(loc.startLearning),
                 ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: () => Navigator.pushNamed(context, '/no-ena'),
+                  icon: const Icon(Icons.auto_awesome_rounded),
+                  label: Text(loc.noEna),
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: () => Navigator.pushNamed(context, '/offline-packs'),
+                  icon: const Icon(Icons.download_for_offline_rounded),
+                  label: Text(loc.offlinePacks),
+                ),
                 const SizedBox(height: 20),
                 FutureBuilder<BackendBootstrapSummary>(
                   future: BackendBootstrapService().loadSummary(),

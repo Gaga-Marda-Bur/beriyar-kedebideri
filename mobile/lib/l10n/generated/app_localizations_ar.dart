@@ -188,4 +188,92 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get syncedItems => 'العناصر التي تمت مزامنتها';
+
+  @override
+  String get noEnaSubtitle => 'محتوى يستحق المشاهدة.';
+
+  @override
+  String get featured => 'مميز';
+
+  @override
+  String get cultureTheme => 'الموضوع الثقافي';
+
+  @override
+  String get contributor => 'المساهم';
+
+  @override
+  String get views => 'المشاهدات';
+
+  @override
+  String get openContent => 'فتح';
+
+  @override
+  String get noNoEna => 'لا توجد منشورات نو إينا متاحة.';
+
+  @override
+  String get image => 'صورة';
+
+  @override
+  String get video => 'فيديو';
+
+  @override
+  String get audio => 'صوت';
+
+  @override
+  String get playAudio => 'تشغيل الصوت';
+
+  @override
+  String get relatedContent => 'محتوى مرتبط';
+
+  @override
+  String get relatedCharacter => 'حرف مرتبط';
+
+  @override
+  String get relatedWord => 'كلمة مرتبطة';
+
+  @override
+  String get relatedUnit => 'وحدة مرتبطة';
+
+  @override
+  String get offlinePacks => 'حزم بدون إنترنت';
+
+  @override
+  String get offlinePacksSubtitle =>
+      'حمّل مرة واحدة وتعلّم لاحقًا بدون إنترنت.';
+
+  @override
+  String get download => 'تحميل';
+
+  @override
+  String get downloaded => 'تم التحميل';
+
+  @override
+  String get installing => 'جار التثبيت...';
+
+  @override
+  String get installedPacks => 'الحزم المثبتة';
+
+  @override
+  String get availablePacks => 'الحزم المتاحة';
+
+  @override
+  String get packSize => 'الحجم';
+
+  @override
+  String get packItems => 'العناصر';
+
+  @override
+  String get packVersion => 'الإصدار';
+
+  @override
+  String get openPack => 'فتح الحزمة';
+
+  @override
+  String get noPacks => 'لا توجد حزم متاحة.';
+
+  @override
+  String get downloadSuccess => 'تم تحميل الحزمة بنجاح';
+
+  @override
+  String get downloadFailed => 'فشل التحميل';
 }
