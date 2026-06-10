@@ -191,7 +191,7 @@ class _QuizScreenState extends State<QuizScreen> {
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             const SizedBox(height: 8),
-                            Text(snapshot.error.toString()),
+                            Text(loc.errorLoading),
                             const SizedBox(height: 16),
                             FilledButton(
                               onPressed: _reload,

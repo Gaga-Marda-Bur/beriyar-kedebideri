@@ -1,7 +1,8 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/foundation.dart';
 
 import '../api/api_client.dart';
+import '../config/app_environment.dart';
+import '../utils/app_logger.dart';
 
 class BackendStatusService {
   static DateTime? _lastCheckedAt;
@@ -14,13 +15,15 @@ class BackendStatusService {
   }) : _apiClient = apiClient ?? ApiClient();
 
   Future<bool> isBackendReachable({
-    Duration cacheDuration = const Duration(seconds: 3),
+    Duration? cacheDuration,
   }) async {
     final now = DateTime.now();
+    final effectiveCacheDuration =
+        cacheDuration ?? AppEnvironment.backendStatusCacheDuration;
 
     if (_lastCheckedAt != null &&
-        now.difference(_lastCheckedAt!) < cacheDuration) {
-      debugPrint('BACKEND STATUS cache=$_lastResult');
+        now.difference(_lastCheckedAt!) < effectiveCacheDuration) {
+      AppLogger.debug('BACKEND STATUS cache=$_lastResult');
       return _lastResult;
     }
 
@@ -28,24 +31,30 @@ class BackendStatusService {
 
     if (connectivity.contains(ConnectivityResult.none)) {
       _saveResult(false);
-      debugPrint('BACKEND STATUS no internet');
+      AppLogger.debug('BACKEND STATUS no internet');
       return false;
     }
 
     try {
       final items = await _apiClient
           .getList('/alphabet/characters/')
-          .timeout(const Duration(milliseconds: 1200));
+          .timeout(AppEnvironment.backendCheckTimeout);
 
       final reachable = items.isNotEmpty;
 
       _saveResult(reachable);
-      debugPrint('BACKEND STATUS reachable=$reachable items=${items.length}');
+      AppLogger.debug(
+        'BACKEND STATUS reachable=$reachable items=${items.length}',
+      );
 
       return reachable;
     } catch (error) {
       _saveResult(false);
-      debugPrint('BACKEND STATUS error=$error');
+
+      AppLogger.debug(
+        'BACKEND STATUS unreachable: ${error.runtimeType}',
+      );
+
       return false;
     }
   }

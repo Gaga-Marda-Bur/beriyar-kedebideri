@@ -128,7 +128,7 @@ class _OfflinePacksScreenState extends State<OfflinePacksScreen> {
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             const SizedBox(height: 10),
-                            Text(snapshot.error.toString()),
+                            Text(loc.errorLoading),
                             const SizedBox(height: 16),
                             FilledButton(
                               onPressed: _reload,

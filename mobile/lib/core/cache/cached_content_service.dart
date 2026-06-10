@@ -15,7 +15,7 @@ import '../../features/vocabulary/vocabulary_api_service.dart';
 import '../network/backend_status_service.dart';
 import 'cache_keys.dart';
 import 'online_content_cache_service.dart';
-import 'package:flutter/foundation.dart';
+import '../utils/app_logger.dart';
 
 class CachedContentService {
   final BackendStatusService _backendStatusService;
@@ -79,13 +79,13 @@ class CachedContentService {
   Future<List<CharacterModel>> loadCharacters() async {
   final online = await _backendStatusService.isBackendReachable();
 
-  debugPrint('CACHED LOAD characters: backendOnline=$online');
+  AppLogger.debug('CACHED LOAD characters: backendOnline=$online');
 
   if (online) {
     try {
       final items = await _alphabetApiService.fetchCharacters();
 
-      debugPrint('CACHED LOAD characters: API=${items.length}');
+      AppLogger.debug('CACHED LOAD characters: API=${items.length}');
 
       if (items.isNotEmpty) {
         await _cacheService.saveList(
@@ -95,14 +95,18 @@ class CachedContentService {
 
         return items;
       }
-    } catch (error) {
-      debugPrint('CACHED LOAD characters API ERROR: $error');
+    } catch (error, stackTrace) {
+      AppLogger.error(
+        'CACHED LOAD characters API failed',
+        error: error,
+        stackTrace: stackTrace,
+      );
     }
   }
 
   final cached = await _cacheService.readList(key: CacheKeys.characters);
 
-  debugPrint('CACHED LOAD characters: cache=${cached.length}');
+  AppLogger.debug('CACHED LOAD characters: cache=${cached.length}');
 
   if (cached.isNotEmpty) {
     return cached.map(CharacterModel.fromJson).toList();
@@ -110,7 +114,7 @@ class CachedContentService {
 
   final offline = await _offlineContentService.loadCharacters();
 
-  debugPrint('CACHED LOAD characters: pack=${offline.length}');
+  AppLogger.debug('CACHED LOAD characters: pack=${offline.length}');
 
   return offline;
 }
@@ -130,7 +134,13 @@ class CachedContentService {
 
           return items;
         }
-      } catch (_) {}
+      } catch (error, stackTrace) {
+          AppLogger.error(
+            'CACHED LOAD words API failed',
+            error: error,
+            stackTrace: stackTrace,
+          );
+        }
     }
 
     final cached = await _cacheService.readList(key: CacheKeys.words);

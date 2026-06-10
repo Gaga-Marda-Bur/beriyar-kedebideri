@@ -7,7 +7,6 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../models/character_model.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../core/cache/cached_content_service.dart';
-import '../../../core/network/backend_status_service.dart';
 
 class AlphabetScreen extends StatefulWidget {
   const AlphabetScreen({super.key});
@@ -29,7 +28,6 @@ class _AlphabetScreenState extends State<AlphabetScreen> {
   }
 
   Future<List<CharacterModel>> _loadCharacters() {
-    BackendStatusService.resetCache();
     return _cachedContentService.loadCharacters();
   }
   @override

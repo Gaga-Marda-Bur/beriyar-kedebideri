@@ -7,6 +7,8 @@ import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../../../core/sync/sync_manager.dart';
 import '../../../core/cache/online_content_cache_service.dart';
+import '../../../core/config/app_environment.dart';
+import '../../../core/network/backend_status_service.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -52,6 +54,36 @@ class SettingsScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              if (AppEnvironment.showDevTools) ...[
+                const SizedBox(height: 18),
+                GlassCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Dev tools',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      const SizedBox(height: 12),
+                      Text('Flavor: ${AppEnvironment.flavor.name}'),
+                      const SizedBox(height: 12),
+                      OutlinedButton.icon(
+                        onPressed: () {
+                          BackendStatusService.resetCache();
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Backend status cache reset'),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.refresh_rounded),
+                        label: const Text('Reset backend cache'),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
               const SizedBox(height: 18),
               GlassCard(
                 child: Column(

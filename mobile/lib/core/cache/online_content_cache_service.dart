@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
+import '../utils/app_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnlineContentCacheService {
@@ -18,7 +18,7 @@ class OnlineContentCacheService {
         'items': items,
       }),
     );
-    debugPrint('CACHE SAVE [$key]: ${items.length} items');
+  AppLogger.debug('CACHE SAVE [$key]: ${items.length} items');
   }
 
   Future<List<Map<String, dynamic>>> readList({
@@ -36,7 +36,7 @@ class OnlineContentCacheService {
 
       if (decoded is Map<String, dynamic>) {
         final items = decoded['items'];
-        debugPrint('CACHE READ [$key]: ${items.length} raw items');
+        AppLogger.debug('CACHE READ [$key]: empty');
         if (items is List) {
           return items
               .whereType<Map<String, dynamic>>()
@@ -44,11 +44,11 @@ class OnlineContentCacheService {
               .toList();
         }
       }
-    } catch (_) {
-      debugPrint('CACHE READ [$key]: empty');
+    } catch (error, stackTrace) {
+      AppLogger.error('CACHE READ [$key] failed', error: error, stackTrace: stackTrace);
       return [];
     }
-    debugPrint('CACHE READ [$key]: empty');
+    AppLogger.error('CACHE READ [$key] failed: invalid cached data format');
     return [];
   }
 
