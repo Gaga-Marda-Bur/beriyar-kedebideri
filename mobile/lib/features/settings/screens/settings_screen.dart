@@ -9,6 +9,7 @@ import '../../../core/sync/sync_manager.dart';
 import '../../../core/cache/online_content_cache_service.dart';
 import '../../../core/config/app_environment.dart';
 import '../../../core/network/backend_status_service.dart';
+import '../../../core/cache/memory_content_cache.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -129,6 +130,7 @@ class SettingsScreen extends StatelessWidget {
                       child: OutlinedButton.icon(
                         onPressed: () async {
                           await OnlineContentCacheService().clearAll();
+                          MemoryContentCache.instance.clear();
 
                           if (!context.mounted) return;
 

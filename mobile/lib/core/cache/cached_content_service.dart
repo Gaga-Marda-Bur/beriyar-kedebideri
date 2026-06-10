@@ -16,6 +16,7 @@ import '../network/backend_status_service.dart';
 import 'cache_keys.dart';
 import 'online_content_cache_service.dart';
 import '../utils/app_logger.dart';
+import 'memory_content_cache.dart';
 
 class CachedContentService {
   final BackendStatusService _backendStatusService;
@@ -28,6 +29,7 @@ class CachedContentService {
   final LessonsApiService _lessonsApiService;
   final QuizApiService _quizApiService;
   final NoEnaApiService _noEnaApiService;
+  final MemoryContentCache _memoryCache;
 
   CachedContentService({
     BackendStatusService? backendStatusService,
@@ -39,6 +41,7 @@ class CachedContentService {
     LessonsApiService? lessonsApiService,
     QuizApiService? quizApiService,
     NoEnaApiService? noEnaApiService,
+    MemoryContentCache? memoryCache,
   })  : _backendStatusService = backendStatusService ?? BackendStatusService(),
         _cacheService = cacheService ?? OnlineContentCacheService(),
         _offlineContentService = offlineContentService ?? OfflineContentService(),
@@ -47,14 +50,34 @@ class CachedContentService {
         _learningApiService = learningApiService ?? LearningApiService(),
         _lessonsApiService = lessonsApiService ?? LessonsApiService(),
         _quizApiService = quizApiService ?? QuizApiService(),
-        _noEnaApiService = noEnaApiService ?? NoEnaApiService();
+        _noEnaApiService = noEnaApiService ?? NoEnaApiService(),
+        _memoryCache = memoryCache ?? MemoryContentCache.instance;
 
-  /*Future<List<CharacterModel>> loadCharacters() async {
+
+  Future<List<CharacterModel>> loadCharacters({
+    bool forceRefresh = false,
+  }) async {
+    if (!forceRefresh) {
+      final memory = _memoryCache.get<List<CharacterModel>>(
+        CacheKeys.memoryCharacters,
+        maxAge: const Duration(minutes: 10),
+      );
+
+      if (memory != null && memory.isNotEmpty) {
+        AppLogger.debug('MEMORY HIT characters: ${memory.length}');
+        return memory;
+      }
+    }
+
     final online = await _backendStatusService.isBackendReachable();
+
+    AppLogger.debug('CACHED LOAD characters: backendOnline=$online');
 
     if (online) {
       try {
         final items = await _alphabetApiService.fetchCharacters();
+
+        AppLogger.debug('CACHED LOAD characters: API=${items.length}');
 
         if (items.isNotEmpty) {
           await _cacheService.saveList(
@@ -62,85 +85,83 @@ class CachedContentService {
             items: items.map((item) => item.toJson()).toList(),
           );
 
-          return items;
-        }
-      } catch (_) {}
-    }
-
-    final cached = await _cacheService.readList(key: CacheKeys.characters);
-
-    if (cached.isNotEmpty) {
-      return cached.map(CharacterModel.fromJson).toList();
-    }
-
-    return _offlineContentService.loadCharacters();
-  }*/
-
-  Future<List<CharacterModel>> loadCharacters() async {
-  final online = await _backendStatusService.isBackendReachable();
-
-  AppLogger.debug('CACHED LOAD characters: backendOnline=$online');
-
-  if (online) {
-    try {
-      final items = await _alphabetApiService.fetchCharacters();
-
-      AppLogger.debug('CACHED LOAD characters: API=${items.length}');
-
-      if (items.isNotEmpty) {
-        await _cacheService.saveList(
-          key: CacheKeys.characters,
-          items: items.map((item) => item.toJson()).toList(),
-        );
-
-        return items;
-      }
-    } catch (error, stackTrace) {
-      AppLogger.error(
-        'CACHED LOAD characters API failed',
-        error: error,
-        stackTrace: stackTrace,
-      );
-    }
-  }
-
-  final cached = await _cacheService.readList(key: CacheKeys.characters);
-
-  AppLogger.debug('CACHED LOAD characters: cache=${cached.length}');
-
-  if (cached.isNotEmpty) {
-    return cached.map(CharacterModel.fromJson).toList();
-  }
-
-  final offline = await _offlineContentService.loadCharacters();
-
-  AppLogger.debug('CACHED LOAD characters: pack=${offline.length}');
-
-  return offline;
-}
-
-  Future<List<WordModel>> loadWords({String? search}) async {
-    final online = await _backendStatusService.isBackendReachable();
-
-    if (online) {
-      try {
-        final items = await _vocabularyApiService.fetchWords(search: search);
-
-        if (items.isNotEmpty) {
-          await _cacheService.saveList(
-            key: CacheKeys.words,
-            items: items.map((item) => item.toJson()).toList(),
-          );
+          _memoryCache.set(CacheKeys.memoryCharacters, items);
 
           return items;
         }
       } catch (error, stackTrace) {
-          AppLogger.error(
-            'CACHED LOAD words API failed',
-            error: error,
-            stackTrace: stackTrace,
-          );
+        AppLogger.error(
+          'CACHED LOAD characters API failed',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      }
+    }
+
+    final cached = await _cacheService.readList(key: CacheKeys.characters);
+
+    AppLogger.debug('CACHED LOAD characters: cache=${cached.length}');
+
+    if (cached.isNotEmpty) {
+      final items = cached.map(CharacterModel.fromJson).toList();
+      _memoryCache.set(CacheKeys.memoryCharacters, items);
+      return items;
+    }
+
+    final offline = await _offlineContentService.loadCharacters();
+
+    AppLogger.debug('CACHED LOAD characters: pack=${offline.length}');
+
+    _memoryCache.set(CacheKeys.memoryCharacters, offline);
+
+    return offline;
+  }
+
+  Future<List<WordModel>> loadWords({
+    String? search,
+    bool forceRefresh = false,
+  }) async {
+    final query = search?.trim().toLowerCase() ?? '';
+
+    if (!forceRefresh && query.isEmpty) {
+      final memory = _memoryCache.get<List<WordModel>>(
+        CacheKeys.memoryWords,
+        maxAge: const Duration(minutes: 10),
+      );
+
+      if (memory != null && memory.isNotEmpty) {
+        AppLogger.debug('MEMORY HIT words: ${memory.length}');
+        return memory;
+      }
+    }
+
+    final online = await _backendStatusService.isBackendReachable();
+
+    if (online) {
+      try {
+        final items = await _vocabularyApiService.fetchWords(
+          search: query.isEmpty ? null : query,
+        );
+
+        if (items.isNotEmpty) {
+          if (query.isEmpty) {
+            await _cacheService.saveList(
+              key: CacheKeys.words,
+              items: items.map((item) => item.toJson()).toList(),
+            );
+
+            _memoryCache.set(CacheKeys.memoryWords, items);
+          }
+
+          return items;
         }
+      } catch (error, stackTrace) {
+        AppLogger.error(
+          'CACHED LOAD words API failed',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      }
     }
 
     final cached = await _cacheService.readList(key: CacheKeys.words);
@@ -149,9 +170,8 @@ class CachedContentService {
         ? cached.map(WordModel.fromJson).toList()
         : await _offlineContentService.loadWords();
 
-    final query = search?.trim().toLowerCase() ?? '';
-
     if (query.isEmpty) {
+      _memoryCache.set(CacheKeys.memoryWords, source);
       return source;
     }
 
@@ -167,7 +187,21 @@ class CachedContentService {
     }).toList();
   }
 
-  Future<List<LearningThemeModel>> loadThemes() async {
+  Future<List<LearningThemeModel>> loadThemes({
+    bool forceRefresh = false,
+  }) async {
+    if (!forceRefresh) {
+      final memory = _memoryCache.get<List<LearningThemeModel>>(
+        CacheKeys.memoryThemes,
+        maxAge: const Duration(minutes: 10),
+      );
+
+      if (memory != null && memory.isNotEmpty) {
+        AppLogger.debug('MEMORY HIT themes: ${memory.length}');
+        return memory;
+      }
+    }
+
     final online = await _backendStatusService.isBackendReachable();
 
     if (online) {
@@ -180,21 +214,49 @@ class CachedContentService {
             items: items.map((item) => item.toJson()).toList(),
           );
 
+          _memoryCache.set(CacheKeys.memoryThemes, items);
+
           return items;
         }
-      } catch (_) {}
+      } catch (error, stackTrace) {
+        AppLogger.error(
+          'CACHED LOAD themes API failed',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      }
     }
 
     final cached = await _cacheService.readList(key: CacheKeys.themes);
 
     if (cached.isNotEmpty) {
-      return cached.map(LearningThemeModel.fromJson).toList();
+      final items = cached.map(LearningThemeModel.fromJson).toList();
+      _memoryCache.set(CacheKeys.memoryThemes, items);
+      return items;
     }
 
-    return _offlineContentService.loadThemes();
+    final offline = await _offlineContentService.loadThemes();
+
+    _memoryCache.set(CacheKeys.memoryThemes, offline);
+
+    return offline;
   }
 
-  Future<List<LearningUnitModel>> loadUnits() async {
+  Future<List<LearningUnitModel>> loadUnits({
+    bool forceRefresh = false,
+  }) async {
+    if (!forceRefresh) {
+      final memory = _memoryCache.get<List<LearningUnitModel>>(
+        CacheKeys.memoryUnits,
+        maxAge: const Duration(minutes: 10),
+      );
+
+      if (memory != null && memory.isNotEmpty) {
+        AppLogger.debug('MEMORY HIT units: ${memory.length}');
+        return memory;
+      }
+    }
+
     final online = await _backendStatusService.isBackendReachable();
 
     if (online) {
@@ -207,23 +269,52 @@ class CachedContentService {
             items: items.map((item) => item.toJson()).toList(),
           );
 
+          _memoryCache.set(CacheKeys.memoryUnits, items);
+
           return items;
         }
-      } catch (_) {}
+      } catch (error, stackTrace) {
+        AppLogger.error(
+          'CACHED LOAD units API failed',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      }
     }
 
     final cached = await _cacheService.readList(key: CacheKeys.units);
 
     if (cached.isNotEmpty) {
-      return cached.map(LearningUnitModel.fromJson).toList();
+      final items = cached.map(LearningUnitModel.fromJson).toList();
+      _memoryCache.set(CacheKeys.memoryUnits, items);
+      return items;
     }
 
-    return _offlineContentService.loadUnits();
+    final offline = await _offlineContentService.loadUnits();
+
+    _memoryCache.set(CacheKeys.memoryUnits, offline);
+
+    return offline;
   }
 
   Future<List<LessonModel>> loadLessons({
     String? unitSlug,
+    bool forceRefresh = false,
   }) async {
+    final memoryKey = '${CacheKeys.memoryLessons}_${unitSlug ?? 'all'}';
+
+    if (!forceRefresh) {
+      final memory = _memoryCache.get<List<LessonModel>>(
+        memoryKey,
+        maxAge: const Duration(minutes: 10),
+      );
+
+      if (memory != null && memory.isNotEmpty) {
+        AppLogger.debug('MEMORY HIT lessons[$unitSlug]: ${memory.length}');
+        return memory;
+      }
+    }
+
     final online = await _backendStatusService.isBackendReachable();
 
     if (online) {
@@ -252,9 +343,17 @@ class CachedContentService {
             items: merged.map((item) => item.toJson()).toList(),
           );
 
+          _memoryCache.set(memoryKey, items);
+
           return items;
         }
-      } catch (_) {}
+      } catch (error, stackTrace) {
+        AppLogger.error(
+          'CACHED LOAD lessons API failed',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      }
     }
 
     final cached = await _cacheService.readList(key: CacheKeys.lessons);
@@ -263,16 +362,33 @@ class CachedContentService {
         ? cached.map(LessonModel.fromJson).toList()
         : await _offlineContentService.loadLessons();
 
-    if (unitSlug == null || unitSlug.isEmpty) {
-      return source;
-    }
+    final filtered = unitSlug == null || unitSlug.isEmpty
+        ? source
+        : source.where((lesson) => lesson.unitSlug == unitSlug).toList();
 
-    return source.where((lesson) => lesson.unitSlug == unitSlug).toList();
+    _memoryCache.set(memoryKey, filtered);
+
+    return filtered;
   }
 
   Future<List<QuizQuestionModel>> loadQuizzes({
     String? unitSlug,
+    bool forceRefresh = false,
   }) async {
+    final memoryKey = '${CacheKeys.memoryQuizzes}_${unitSlug ?? 'all'}';
+
+    if (!forceRefresh) {
+      final memory = _memoryCache.get<List<QuizQuestionModel>>(
+        memoryKey,
+        maxAge: const Duration(minutes: 10),
+      );
+
+      if (memory != null && memory.isNotEmpty) {
+        AppLogger.debug('MEMORY HIT quizzes[$unitSlug]: ${memory.length}');
+        return memory;
+      }
+    }
+
     final online = await _backendStatusService.isBackendReachable();
 
     if (online) {
@@ -301,9 +417,17 @@ class CachedContentService {
             items: merged.map((item) => item.toJson()).toList(),
           );
 
+          _memoryCache.set(memoryKey, items);
+
           return items;
         }
-      } catch (_) {}
+      } catch (error, stackTrace) {
+        AppLogger.error(
+          'CACHED LOAD quizzes API failed',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      }
     }
 
     final cached = await _cacheService.readList(key: CacheKeys.quizzes);
@@ -312,14 +436,30 @@ class CachedContentService {
         ? cached.map(QuizQuestionModel.fromJson).toList()
         : await _offlineContentService.loadQuizzes();
 
-    if (unitSlug == null || unitSlug.isEmpty) {
-      return source;
-    }
+    final filtered = unitSlug == null || unitSlug.isEmpty
+        ? source
+        : source.where((quiz) => quiz.unitSlug == unitSlug).toList();
 
-    return source.where((quiz) => quiz.unitSlug == unitSlug).toList();
+    _memoryCache.set(memoryKey, filtered);
+
+    return filtered;
   }
 
-  Future<List<NoEnaPublicationModel>> loadNoEna() async {
+  Future<List<NoEnaPublicationModel>> loadNoEna({
+    bool forceRefresh = false,
+  }) async {
+    if (!forceRefresh) {
+      final memory = _memoryCache.get<List<NoEnaPublicationModel>>(
+        CacheKeys.memoryNoEna,
+        maxAge: const Duration(minutes: 10),
+      );
+
+      if (memory != null && memory.isNotEmpty) {
+        AppLogger.debug('MEMORY HIT no_ena: ${memory.length}');
+        return memory;
+      }
+    }
+
     final online = await _backendStatusService.isBackendReachable();
 
     if (online) {
@@ -332,15 +472,25 @@ class CachedContentService {
             items: items.map((item) => item.toJson()).toList(),
           );
 
+          _memoryCache.set(CacheKeys.memoryNoEna, items);
+
           return items;
         }
-      } catch (_) {}
+      } catch (error, stackTrace) {
+        AppLogger.error(
+          'CACHED LOAD no_ena API failed',
+          error: error,
+          stackTrace: stackTrace,
+        );
+      }
     }
 
     final cached = await _cacheService.readList(key: CacheKeys.noEna);
 
     if (cached.isNotEmpty) {
-      return cached.map(NoEnaPublicationModel.fromJson).toList();
+      final items = cached.map(NoEnaPublicationModel.fromJson).toList();
+      _memoryCache.set(CacheKeys.memoryNoEna, items);
+      return items;
     }
 
     return [];
