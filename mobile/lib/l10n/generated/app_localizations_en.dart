@@ -286,4 +286,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quiz => 'Quiz';
+
+  @override
+  String get myDownloads => 'My downloads';
+
+  @override
+  String get myDownloadsSubtitle => 'Manage packs installed on this device.';
+
+  @override
+  String get deletePack => 'Delete pack';
+
+  @override
+  String get deletePackConfirm =>
+      'Do you really want to delete this offline pack?';
+
+  @override
+  String get packDeleted => 'Pack deleted';
+
+  @override
+  String get packContent => 'Pack content';
+
+  @override
+  String get themes => 'Themes';
+
+  @override
+  String get units => 'Units';
+
+  @override
+  String get localPath => 'Local path';
+
+  @override
+  String get cancel => 'Cancel';
 }

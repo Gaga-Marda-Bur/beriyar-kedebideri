@@ -285,4 +285,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get quiz => 'اختبار';
+
+  @override
+  String get myDownloads => 'تنزيلاتي';
+
+  @override
+  String get myDownloadsSubtitle => 'إدارة الحزم المثبتة على هذا الجهاز.';
+
+  @override
+  String get deletePack => 'حذف الحزمة';
+
+  @override
+  String get deletePackConfirm => 'هل تريد حقًا حذف هذه الحزمة بدون إنترنت؟';
+
+  @override
+  String get packDeleted => 'تم حذف الحزمة';
+
+  @override
+  String get packContent => 'محتوى الحزمة';
+
+  @override
+  String get themes => 'المواضيع';
+
+  @override
+  String get units => 'الوحدات';
+
+  @override
+  String get localPath => 'المسار المحلي';
+
+  @override
+  String get cancel => 'إلغاء';
 }

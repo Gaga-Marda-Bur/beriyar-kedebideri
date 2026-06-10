@@ -651,6 +651,66 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Quiz'**
   String get quiz;
+
+  /// No description provided for @myDownloads.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes téléchargements'**
+  String get myDownloads;
+
+  /// No description provided for @myDownloadsSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gère les packs installés sur cet appareil.'**
+  String get myDownloadsSubtitle;
+
+  /// No description provided for @deletePack.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer le pack'**
+  String get deletePack;
+
+  /// No description provided for @deletePackConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voulez-vous vraiment supprimer ce pack hors ligne ?'**
+  String get deletePackConfirm;
+
+  /// No description provided for @packDeleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pack supprimé'**
+  String get packDeleted;
+
+  /// No description provided for @packContent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contenu du pack'**
+  String get packContent;
+
+  /// No description provided for @themes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Thèmes'**
+  String get themes;
+
+  /// No description provided for @units.
+  ///
+  /// In fr, this message translates to:
+  /// **'Unités'**
+  String get units;
+
+  /// No description provided for @localPath.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chemin local'**
+  String get localPath;
+
+  /// No description provided for @cancel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler'**
+  String get cancel;
 }
 
 class _AppLocalizationsDelegate

@@ -286,4 +286,36 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get quiz => 'Quiz';
+
+  @override
+  String get myDownloads => 'Mes téléchargements';
+
+  @override
+  String get myDownloadsSubtitle =>
+      'Gère les packs installés sur cet appareil.';
+
+  @override
+  String get deletePack => 'Supprimer le pack';
+
+  @override
+  String get deletePackConfirm =>
+      'Voulez-vous vraiment supprimer ce pack hors ligne ?';
+
+  @override
+  String get packDeleted => 'Pack supprimé';
+
+  @override
+  String get packContent => 'Contenu du pack';
+
+  @override
+  String get themes => 'Thèmes';
+
+  @override
+  String get units => 'Unités';
+
+  @override
+  String get localPath => 'Chemin local';
+
+  @override
+  String get cancel => 'Annuler';
 }

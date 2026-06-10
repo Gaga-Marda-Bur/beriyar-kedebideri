@@ -9,6 +9,7 @@ import '../models/local_pack_model.dart';
 import '../services/local_pack_reader_service.dart';
 import '../services/offline_pack_api_service.dart';
 import '../services/offline_pack_download_service.dart';
+import 'my_packs_screen.dart';
 
 class OfflinePacksScreen extends StatefulWidget {
   const OfflinePacksScreen({super.key});
@@ -159,6 +160,23 @@ class _OfflinePacksScreenState extends State<OfflinePacksScreen> {
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const MyPacksScreen(),
+                            ),
+                          ).then((_) => _reload());
+                        },
+                        icon: const Icon(Icons.folder_copy_rounded),
+                        label: Text(loc.myDownloads),
                       ),
                     ),
                     const SizedBox(height: 18),

@@ -87,4 +87,27 @@ class LocalPackReaderService {
 
     return [];
   }
+  
+  Future<void> deletePack({
+    required String slug,
+    required int version,
+  }) async {
+    final packDir = await AppDirectories.getExtractedPackDirectory(
+      slug: slug,
+      version: version,
+    );
+
+    if (await packDir.exists()) {
+      await packDir.delete(recursive: true);
+    }
+
+    final zipFile = await AppDirectories.getDownloadedZipFile(
+      slug: slug,
+      version: version,
+    );
+
+    if (await zipFile.exists()) {
+      await zipFile.delete();
+    }
+  }
 }

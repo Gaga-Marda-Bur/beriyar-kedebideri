@@ -91,5 +91,19 @@
   "downloadFailed": "Download failed",
   "clearCache": "Clear local cache",
   "cacheCleared": "Local cache cleared",
-  "quiz": "Quiz"
-  }
+  "quiz": "Quiz",
+  "myDownloads": "My downloads",
+  "myDownloadsSubtitle": "Manage packs installed on this device.",
+  "deletePack": "Delete pack",
+  "deletePackConfirm": "Do you really want to delete this offline pack?",
+  "packDeleted": "Pack deleted",
+  "packContent": "Pack content",
+  "characters": "Characters",
+  "words": "Words",
+  "lessons": "Lessons",
+  "quizzes": "Quizzes",
+  "themes": "Themes",
+  "units": "Units",
+  "localPath": "Local path",
+  "cancel": "Cancel"
+}

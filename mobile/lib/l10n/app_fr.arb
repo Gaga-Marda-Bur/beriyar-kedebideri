@@ -91,5 +91,19 @@
   "downloadFailed": "Échec du téléchargement",
   "clearCache": "Vider le cache local",
   "cacheCleared": "Cache local vidé",
-  "quiz": "Quiz"
+  "quiz": "Quiz",
+  "myDownloads": "Mes téléchargements",
+  "myDownloadsSubtitle": "Gère les packs installés sur cet appareil.",
+  "deletePack": "Supprimer le pack",
+  "deletePackConfirm": "Voulez-vous vraiment supprimer ce pack hors ligne ?",
+  "packDeleted": "Pack supprimé",
+  "packContent": "Contenu du pack",
+  "characters": "Caractères",
+  "words": "Mots",
+  "lessons": "Leçons",
+  "quizzes": "Quiz",
+  "themes": "Thèmes",
+  "units": "Unités",
+  "localPath": "Chemin local",
+  "cancel": "Annuler"
 }
