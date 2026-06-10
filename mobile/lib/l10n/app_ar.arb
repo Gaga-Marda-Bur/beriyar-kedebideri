@@ -88,5 +88,7 @@
   "openPack": "فتح الحزمة",
   "noPacks": "لا توجد حزم متاحة.",
   "downloadSuccess": "تم تحميل الحزمة بنجاح",
-  "downloadFailed": "فشل التحميل"
+  "downloadFailed": "فشل التحميل",
+  "clearCache": "مسح التخزين المؤقت المحلي",
+  "cacheCleared": "تم مسح التخزين المؤقت المحلي"
 }

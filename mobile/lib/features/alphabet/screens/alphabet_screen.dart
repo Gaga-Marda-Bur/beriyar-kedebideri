@@ -4,10 +4,9 @@ import '../../../core/audio/audio_url_player.dart';
 import '../../../core/widgets/app_background.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
-import '../alphabet_api_service.dart';
 import '../models/character_model.dart';
 import '../../../core/theme/app_text_styles.dart';
-import '../../offline_packs/services/offline_content_service.dart';
+import '../../../core/cache/cached_content_service.dart';
 
 class AlphabetScreen extends StatefulWidget {
   const AlphabetScreen({super.key});
@@ -17,9 +16,8 @@ class AlphabetScreen extends StatefulWidget {
 }
 
 class _AlphabetScreenState extends State<AlphabetScreen> {
-  final AlphabetApiService _service = AlphabetApiService();
   final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
-  final OfflineContentService _offlineService = OfflineContentService();
+  final CachedContentService _cachedContentService = CachedContentService();
 
   late Future<List<CharacterModel>> _future;
 
@@ -29,18 +27,8 @@ class _AlphabetScreenState extends State<AlphabetScreen> {
     _future = _loadCharacters();
   }
 
-  Future<List<CharacterModel>> _loadCharacters() async {
-    try {
-      final online = await _service.fetchCharacters();
-
-      if (online.isNotEmpty) {
-        return online;
-      }
-    } catch (_) {
-      // fallback offline
-    }
-
-    return _offlineService.loadCharacters();
+  Future<List<CharacterModel>> _loadCharacters() {
+    return _cachedContentService.loadCharacters();
   }
 
   @override

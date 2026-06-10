@@ -6,10 +6,8 @@ import '../../../core/widgets/app_background.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../models/word_model.dart';
-import '../vocabulary_api_service.dart';
 import '../../../core/theme/app_text_styles.dart';
-import '../../offline_packs/services/offline_content_service.dart';
-
+import '../../../core/cache/cached_content_service.dart';
 
 class VocabularyScreen extends StatefulWidget {
   const VocabularyScreen({super.key});
@@ -19,10 +17,9 @@ class VocabularyScreen extends StatefulWidget {
 }
 
 class _VocabularyScreenState extends State<VocabularyScreen> {
-  final VocabularyApiService _service = VocabularyApiService();
   final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
   final TextEditingController _searchController = TextEditingController();
-  final OfflineContentService _offlineService = OfflineContentService();
+  final CachedContentService _cachedContentService = CachedContentService();
 
   late Future<List<WordModel>> _future;
 
@@ -32,34 +29,9 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
     _future = _loadWords();
   }
 
-  Future<List<WordModel>> _loadWords({String? search}) async {
-    try {
-      final online = await _service.fetchWords(search: search);
-
-      if (online.isNotEmpty) {
-        return online;
-      }
-    } catch (_) {
-      // fallback offline
-    }
-
-    final offline = await _offlineService.loadWords();
-
-    final query = search?.trim().toLowerCase() ?? '';
-
-    if (query.isEmpty) {
-      return offline;
-    }
-
-    return offline.where((word) {
-      return word.beriyaText.toLowerCase().contains(query) ||
-          word.latinTranscription.toLowerCase().contains(query) ||
-          word.translationFr.toLowerCase().contains(query) ||
-          word.translationEn.toLowerCase().contains(query) ||
-          word.translationAr.toLowerCase().contains(query);
-    }).toList();
+  Future<List<WordModel>> _loadWords({String? search}) {
+    return _cachedContentService.loadWords(search: search);
   }
-
   @override
   void dispose() {
     _searchController.dispose();

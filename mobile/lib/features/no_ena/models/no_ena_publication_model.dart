@@ -140,4 +140,41 @@ class NoEnaPublicationModel {
     if (value is bool) return value;
     return value?.toString() == 'true' || value?.toString() == '1';
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'slug': slug,
+      'title_fr': titleFr,
+      'title_en': titleEn,
+      'title_ar': titleAr,
+      'beriya_title': beriyaTitle,
+      'caption_fr': captionFr,
+      'caption_en': captionEn,
+      'caption_ar': captionAr,
+      'beriya_caption': beriyaCaption,
+      'publication_type': publicationType,
+      'image_url': imageUrl,
+      'thumbnail_url': thumbnailUrl,
+      'video_url': videoUrl,
+      'audio_url': audioUrl,
+      'primary_audio_asset': primaryAudioAsset,
+      'related_character': relatedCharacter,
+      'related_character_symbol': relatedCharacterSymbol,
+      'related_word': relatedWord,
+      'related_word_text': relatedWordText,
+      'related_unit': relatedUnit,
+      'related_unit_slug': relatedUnitSlug,
+      'contributor_name': contributorName,
+      'culture_theme': cultureTheme,
+      'order_index': orderIndex,
+      'view_count': viewCount,
+      'favorite_count': favoriteCount,
+      'status': status,
+      'is_active': isActive,
+      'is_featured': isFeatured,
+      'available_offline': availableOffline,
+      'published_at': publishedAt,
+    };
+  }
 }

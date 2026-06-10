@@ -276,4 +276,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get downloadFailed => 'فشل التحميل';
+
+  @override
+  String get clearCache => 'مسح التخزين المؤقت المحلي';
+
+  @override
+  String get cacheCleared => 'تم مسح التخزين المؤقت المحلي';
 }

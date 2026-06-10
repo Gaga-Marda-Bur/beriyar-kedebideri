@@ -129,4 +129,33 @@ class LearningUnitModel {
     if (value is bool) return value;
     return value?.toString() == 'true' || value?.toString() == '1';
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'theme': theme,
+      'theme_slug': themeSlug,
+      'theme_title_fr': themeTitleFr,
+      'theme_title_en': themeTitleEn,
+      'theme_title_ar': themeTitleAr,
+      'slug': slug,
+      'title_fr': titleFr,
+      'title_en': titleEn,
+      'title_ar': titleAr,
+      'description_fr': descriptionFr,
+      'description_en': descriptionEn,
+      'description_ar': descriptionAr,
+      'level': level,
+      'characters': characters.map((item) => item.toJson()).toList(),
+      'words': words.map((item) => item.toJson()).toList(),
+      'character_ids': characterIds,
+      'word_ids': wordIds,
+      'estimated_minutes': estimatedMinutes,
+      'min_score_to_pass': minScoreToPass,
+      'order_index': orderIndex,
+      'status': status,
+      'is_active': isActive,
+      'available_offline': availableOffline,
+    };
+  }
 }

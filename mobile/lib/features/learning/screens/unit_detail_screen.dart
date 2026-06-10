@@ -6,16 +6,13 @@ import '../../../core/theme/app_text_styles.dart';
 import '../../../core/widgets/app_background.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
-import '../../lessons/lessons_api_service.dart';
 import '../../lessons/models/lesson_model.dart';
 import '../../quiz/models/quiz_question_model.dart';
-import '../../quiz/quiz_api_service.dart';
-import '../learning_api_service.dart';
 import '../models/learning_unit_model.dart';
 import 'unit_practice_screen.dart';
 import '../../progress/models/unit_progress_local_model.dart';
 import '../../progress/services/unit_progress_local_storage.dart';
-import '../../offline_packs/services/offline_content_service.dart';
+import '../../../core/cache/cached_content_service.dart';
 
 class UnitDetailScreen extends StatefulWidget {
   final String unitSlug;
@@ -30,13 +27,10 @@ class UnitDetailScreen extends StatefulWidget {
 }
 
 class _UnitDetailScreenState extends State<UnitDetailScreen> {
-  final LearningApiService _learningService = LearningApiService();
-  final LessonsApiService _lessonsService = LessonsApiService();
-  final QuizApiService _quizService = QuizApiService();
   final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
   final UnitProgressLocalStorage _progressStorage = UnitProgressLocalStorage();
   UnitProgressLocalModel? _localProgress;
-  final OfflineContentService _offlineService = OfflineContentService();
+  final CachedContentService _cachedContentService = CachedContentService();
 
   late Future<_UnitDetailData> _future;
 
@@ -53,26 +47,19 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
   }
 
   Future<_UnitDetailData> _load() async {
-    List<LearningUnitModel> units = [];
-    List<LessonModel> lessons = [];
-    List<QuizQuestionModel> quizzes = [];
-
-    try {
-      units = await _learningService.fetchUnits();
-      lessons = await _lessonsService.fetchLessons(unit: widget.unitSlug);
-      quizzes = await _quizService.fetchQuizzes(unit: widget.unitSlug);
-    } catch (_) {
-      units = await _offlineService.loadUnits();
-      lessons = await _offlineService.loadLessons();
-      quizzes = await _offlineService.loadQuizzes();
-
-      lessons = lessons.where((lesson) => lesson.unitSlug == widget.unitSlug).toList();
-      quizzes = quizzes.where((quiz) => quiz.unitSlug == widget.unitSlug).toList();
-    }
+    final units = await _cachedContentService.loadUnits();
 
     final unit = units.firstWhere(
       (item) => item.slug == widget.unitSlug,
       orElse: () => throw Exception('Unit not found: ${widget.unitSlug}'),
+    );
+
+    final lessons = await _cachedContentService.loadLessons(
+      unitSlug: widget.unitSlug,
+    );
+
+    final quizzes = await _cachedContentService.loadQuizzes(
+      unitSlug: widget.unitSlug,
     );
     _localProgress = await _progressStorage.getProgress(widget.unitSlug);
     return _UnitDetailData(

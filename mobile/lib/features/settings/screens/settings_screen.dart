@@ -6,6 +6,7 @@ import '../../../core/widgets/app_background.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../../../core/sync/sync_manager.dart';
+import '../../../core/cache/online_content_cache_service.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -88,6 +89,25 @@ class SettingsScreen extends StatelessWidget {
                         },
                         icon: const Icon(Icons.sync_rounded),
                         label: Text(loc.syncNow),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton.icon(
+                        onPressed: () async {
+                          await OnlineContentCacheService().clearAll();
+
+                          if (!context.mounted) return;
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(loc.cacheCleared),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.cleaning_services_rounded),
+                        label: Text(loc.clearCache),
                       ),
                     ),
                   ],

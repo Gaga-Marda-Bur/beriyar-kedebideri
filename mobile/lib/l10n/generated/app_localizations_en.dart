@@ -277,4 +277,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get downloadFailed => 'Download failed';
+
+  @override
+  String get clearCache => 'Clear local cache';
+
+  @override
+  String get cacheCleared => 'Local cache cleared';
 }

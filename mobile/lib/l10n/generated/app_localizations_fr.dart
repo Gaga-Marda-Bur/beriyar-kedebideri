@@ -277,4 +277,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get downloadFailed => 'Échec du téléchargement';
+
+  @override
+  String get clearCache => 'Vider le cache local';
+
+  @override
+  String get cacheCleared => 'Cache local vidé';
 }

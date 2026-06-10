@@ -73,6 +73,26 @@ class LearningThemeModel {
     if (value is bool) return value;
     return value?.toString() == 'true' || value?.toString() == '1';
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'slug': slug,
+      'title_fr': titleFr,
+      'title_en': titleEn,
+      'title_ar': titleAr,
+      'description_fr': descriptionFr,
+      'description_en': descriptionEn,
+      'description_ar': descriptionAr,
+      'level': level,
+      'order_index': orderIndex,
+      'status': status,
+      'is_active': isActive,
+      'available_offline': availableOffline,
+      'units_count': unitsCount,
+      'units': units.map((item) => item.toJson()).toList(),
+    };
+  }
 }
 
 class LearningUnitCompactModel {
@@ -149,5 +169,28 @@ class LearningUnitCompactModel {
   static bool _asBool(dynamic value) {
     if (value is bool) return value;
     return value?.toString() == 'true' || value?.toString() == '1';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'theme': theme,
+      'slug': slug,
+      'title_fr': titleFr,
+      'title_en': titleEn,
+      'title_ar': titleAr,
+      'description_fr': descriptionFr,
+      'description_en': descriptionEn,
+      'description_ar': descriptionAr,
+      'level': level,
+      'estimated_minutes': estimatedMinutes,
+      'min_score_to_pass': minScoreToPass,
+      'order_index': orderIndex,
+      'status': status,
+      'is_active': isActive,
+      'available_offline': availableOffline,
+      'characters_count': charactersCount,
+      'words_count': wordsCount,
+    };
   }
 }

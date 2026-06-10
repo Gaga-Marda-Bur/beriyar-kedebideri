@@ -6,9 +6,9 @@ import '../../../core/widgets/app_background.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../models/no_ena_publication_model.dart';
-import '../no_ena_api_service.dart';
 import 'no_ena_detail_screen.dart';
 import '../../../core/widgets/smart_image.dart';
+import '../../../core/cache/cached_content_service.dart';
 
 class NoEnaScreen extends StatefulWidget {
   const NoEnaScreen({super.key});
@@ -18,19 +18,18 @@ class NoEnaScreen extends StatefulWidget {
 }
 
 class _NoEnaScreenState extends State<NoEnaScreen> {
-  final NoEnaApiService _service = NoEnaApiService();
-
+  final CachedContentService _cachedContentService = CachedContentService();
   late Future<List<NoEnaPublicationModel>> _future;
 
   @override
   void initState() {
     super.initState();
-    _future = _service.fetchPublications();
+    _future = _cachedContentService.loadNoEna();
   }
 
   Future<void> _reload() async {
     setState(() {
-      _future = _service.fetchPublications();
+      _future = _cachedContentService.loadNoEna();
     });
   }
 

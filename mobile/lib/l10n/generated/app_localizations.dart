@@ -633,6 +633,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Échec du téléchargement'**
   String get downloadFailed;
+
+  /// No description provided for @clearCache.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vider le cache local'**
+  String get clearCache;
+
+  /// No description provided for @cacheCleared.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cache local vidé'**
+  String get cacheCleared;
 }
 
 class _AppLocalizationsDelegate

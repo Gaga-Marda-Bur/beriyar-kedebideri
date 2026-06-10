@@ -9,6 +9,7 @@ import '../../../l10n/generated/app_localizations.dart';
 
 import '../../../core/theme/app_text_styles.dart';
 import '../../../core/api/backend_bootstrap_service.dart';
+import '../../../core/network/backend_status_service.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -164,6 +165,28 @@ class HomeScreen extends StatelessWidget {
                   label: Text(loc.offlinePacks),
                 ),
                 const SizedBox(height: 20),
+                FutureBuilder<bool>(
+                future: BackendStatusService().isBackendReachable(),
+                builder: (context, snapshot) {
+                  final online = snapshot.data == true;
+
+                  return GlassCard(
+                    child: Row(
+                      children: [
+                        Icon(
+                          online ? Icons.cloud_done_rounded : Icons.offline_bolt_rounded,
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          online ? 'Mode online Django' : 'Mode offline pack local',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 18),
                 FutureBuilder<BackendBootstrapSummary>(
                   future: BackendBootstrapService().loadSummary(),
                   builder: (context, snapshot) {

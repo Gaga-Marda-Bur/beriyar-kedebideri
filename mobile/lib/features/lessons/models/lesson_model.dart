@@ -106,6 +106,35 @@ class LessonModel {
     if (value is bool) return value;
     return value?.toString() == 'true' || value?.toString() == '1';
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'unit': unit,
+      'unit_slug': unitSlug,
+      'unit_title_fr': unitTitleFr,
+      'unit_title_en': unitTitleEn,
+      'unit_title_ar': unitTitleAr,
+      'slug': slug,
+      'title_fr': titleFr,
+      'title_en': titleEn,
+      'title_ar': titleAr,
+      'description_fr': descriptionFr,
+      'description_en': descriptionEn,
+      'description_ar': descriptionAr,
+      'oral_intro_fr': oralIntroFr,
+      'oral_intro_en': oralIntroEn,
+      'oral_intro_ar': oralIntroAr,
+      'level': level,
+      'order_index': orderIndex,
+      'estimated_minutes': estimatedMinutes,
+      'status': status,
+      'is_active': isActive,
+      'available_offline': availableOffline,
+      'items_count': itemsCount,
+      'items': items.map((item) => item.toJson()).toList(),
+    };
+  }
 }
 
 class LessonItemModel {
@@ -231,5 +260,38 @@ class LessonItemModel {
   static bool _asBool(dynamic value) {
     if (value is bool) return value;
     return value?.toString() == 'true' || value?.toString() == '1';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'lesson': lesson,
+      'item_type': itemType,
+      'character': character?.toJson(),
+      'character_id': characterId,
+      'word': word?.toJson(),
+      'word_id': wordId,
+      'title_fr': titleFr,
+      'title_en': titleEn,
+      'title_ar': titleAr,
+      'oral_prompt_fr': oralPromptFr,
+      'oral_prompt_en': oralPromptEn,
+      'oral_prompt_ar': oralPromptAr,
+      'explanation_fr': explanationFr,
+      'explanation_en': explanationEn,
+      'explanation_ar': explanationAr,
+      'writing_hint_fr': writingHintFr,
+      'writing_hint_en': writingHintEn,
+      'writing_hint_ar': writingHintAr,
+      'repeat_count': repeatCount,
+      'image_url': imageUrl,
+      'audio_url': audioUrl,
+      'slow_audio_url': slowAudioUrl,
+      'prompt_audio_url': promptAudioUrl,
+      'explanation_audio_url': explanationAudioUrl,
+      'order_index': orderIndex,
+      'is_active': isActive,
+      'available_offline': availableOffline,
+    };
   }
 }

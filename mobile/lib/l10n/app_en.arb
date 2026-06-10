@@ -88,5 +88,7 @@
   "openPack": "Open pack",
   "noPacks": "No packs available.",
   "downloadSuccess": "Pack downloaded successfully",
-  "downloadFailed": "Download failed"
+  "downloadFailed": "Download failed",
+  "clearCache": "Clear local cache",
+  "cacheCleared": "Local cache cleared"
   }

@@ -178,6 +178,52 @@ class QuizQuestionModel {
     if (value is bool) return value;
     return value?.toString() == 'true' || value?.toString() == '1';
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'unit': unit,
+      'unit_slug': unitSlug,
+      'lesson': lesson,
+      'lesson_slug': lessonSlug,
+      'question_type': questionType,
+      'difficulty': difficulty,
+      'prompt_text': promptText,
+      'prompt_text_fr': promptTextFr,
+      'prompt_text_en': promptTextEn,
+      'prompt_text_ar': promptTextAr,
+      'oral_prompt': oralPrompt,
+      'oral_prompt_fr': oralPromptFr,
+      'oral_prompt_en': oralPromptEn,
+      'oral_prompt_ar': oralPromptAr,
+      'character': character,
+      'character_symbol': characterSymbol,
+      'character_name': characterName,
+      'word': word,
+      'word_text': wordText,
+      'word_latin': wordLatin,
+      'question_image_url': questionImageUrl,
+      'question_audio_url': questionAudioUrl,
+      'question_slow_audio_url': questionSlowAudioUrl,
+      'correct_text_answer': correctTextAnswer,
+      'correct_index': correctIndex,
+      'explanation': explanation,
+      'explanation_fr_out': explanationFr,
+      'explanation_en_out': explanationEn,
+      'explanation_ar_out': explanationAr,
+      'explanation_audio_url': explanationAudioUrl,
+      'order_index': orderIndex,
+      'points': points,
+      'min_options_required': minOptionsRequired,
+      'status': status,
+      'is_active': isActive,
+      'available_offline': availableOffline,
+      'options': options.map((item) => item.toJson()).toList(),
+      'options_text_fr': optionsTextFr,
+      'options_text_en': optionsTextEn,
+      'options_text_ar': optionsTextAr,
+    };
+  }
 }
 
 class QuizOptionModel {
@@ -258,5 +304,28 @@ class QuizOptionModel {
   static String? _asNullableString(dynamic value) {
     final text = value?.toString() ?? '';
     return text.isEmpty ? null : text;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'question': question,
+      'text': text,
+      'text_fr': textFr,
+      'text_en': textEn,
+      'text_ar': textAr,
+      'text_fr_out': textFrOut,
+      'text_en_out': textEnOut,
+      'text_ar_out': textArOut,
+      'character': character,
+      'character_symbol': characterSymbol,
+      'character_name': characterName,
+      'character_latin': characterLatin,
+      'word': word,
+      'word_text': wordText,
+      'word_latin': wordLatin,
+      'image_url': imageUrl,
+      'order_index': orderIndex,
+    };
   }
 }
