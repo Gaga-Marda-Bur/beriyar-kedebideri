@@ -114,5 +114,19 @@
   "noEnaHubSubtitle": "Explore No Ena cultural content.",
   "offlinePacksHubSubtitle": "Download packs to learn without internet.",
   "myDownloadsHubSubtitle": "Manage packs already installed on your device.",
-  "open": "Open"
+  "open": "Open",
+  "welcomeHome": "Welcome to Beřiyar Kedebideři",
+  "homeSubtitle": "Learn the Beriya Erfe language with audio, images, quizzes and offline packs.",
+  "startLearning": "Start learning",
+  "quickAccess": "Quick access",
+  "connectionStatus": "Connection status",
+  "onlineMode": "Online mode",
+  "offlineMode": "Offline mode",
+  "onlineModeSubtitle": "The Django server is available.",
+  "offlineModeSubtitle": "The app is using local cache or downloaded packs.",
+  "recentProgress": "Recent progress",
+  "noRecentProgress": "No recent progress yet.",
+  "continueLearning": "Continue learning",
+  "alphabetShort": "Alphabet",
+  "vocabularyShort": "Vocabulary"
 }

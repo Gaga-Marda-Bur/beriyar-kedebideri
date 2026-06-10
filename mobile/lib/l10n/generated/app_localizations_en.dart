@@ -348,4 +348,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get open => 'Open';
+
+  @override
+  String get welcomeHome => 'Welcome to Beřiyar Kedebideři';
+
+  @override
+  String get homeSubtitle =>
+      'Learn the Beriya Erfe language with audio, images, quizzes and offline packs.';
+
+  @override
+  String get quickAccess => 'Quick access';
+
+  @override
+  String get connectionStatus => 'Connection status';
+
+  @override
+  String get onlineMode => 'Online mode';
+
+  @override
+  String get offlineMode => 'Offline mode';
+
+  @override
+  String get onlineModeSubtitle => 'The Django server is available.';
+
+  @override
+  String get offlineModeSubtitle =>
+      'The app is using local cache or downloaded packs.';
+
+  @override
+  String get recentProgress => 'Recent progress';
+
+  @override
+  String get noRecentProgress => 'No recent progress yet.';
+
+  @override
+  String get continueLearning => 'Continue learning';
+
+  @override
+  String get alphabetShort => 'Alphabet';
+
+  @override
+  String get vocabularyShort => 'Vocabulary';
 }

@@ -137,7 +137,8 @@ class UnitProgressLocalStorage {
 
   Future<List<UnitProgressLocalModel>> getAllProgress() async {
     final prefs = await SharedPreferences.getInstance();
-    final results = <UnitProgressLocalModel>[];
+
+    final items = <UnitProgressLocalModel>[];
 
     for (final key in prefs.getKeys()) {
       if (!key.startsWith(_prefix)) continue;
@@ -145,14 +146,21 @@ class UnitProgressLocalStorage {
       final raw = prefs.getString(key);
       if (raw == null || raw.isEmpty) continue;
 
-      final decoded = jsonDecode(raw);
+      try {
+        final decoded = jsonDecode(raw);
 
-      if (decoded is Map<String, dynamic>) {
-        results.add(UnitProgressLocalModel.fromJson(decoded));
+        if (decoded is Map<String, dynamic>) {
+          items.add(UnitProgressLocalModel.fromJson(decoded));
+        }
+      } catch (_) {
+        // ignore corrupted progress
       }
     }
 
-    results.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
-    return results;
+    items.sort((a, b) {
+      return b.updatedAt.compareTo(a.updatedAt);
+    });
+
+    return items;
   }
 }

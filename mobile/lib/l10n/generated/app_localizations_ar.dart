@@ -33,7 +33,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get settings => 'الإعدادات';
 
   @override
-  String get startLearning => 'ابدأ التعلم';
+  String get startLearning => 'ابدأ التعلّم';
 
   @override
   String get backendStatus => 'حالة الخادم';
@@ -343,4 +343,45 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get open => 'فتح';
+
+  @override
+  String get welcomeHome => 'مرحبًا بك في Beřiyar Kedebideři';
+
+  @override
+  String get homeSubtitle =>
+      'تعلّم لغة Beriya Erfe بالصوت والصور والاختبارات والحزم بدون إنترنت.';
+
+  @override
+  String get quickAccess => 'وصول سريع';
+
+  @override
+  String get connectionStatus => 'حالة الاتصال';
+
+  @override
+  String get onlineMode => 'وضع الاتصال';
+
+  @override
+  String get offlineMode => 'وضع بدون إنترنت';
+
+  @override
+  String get onlineModeSubtitle => 'خادم Django متاح.';
+
+  @override
+  String get offlineModeSubtitle =>
+      'يستخدم التطبيق التخزين المحلي أو الحزم المحملة.';
+
+  @override
+  String get recentProgress => 'آخر تقدم';
+
+  @override
+  String get noRecentProgress => 'لا يوجد تقدم حديث بعد.';
+
+  @override
+  String get continueLearning => 'متابعة التعلم';
+
+  @override
+  String get alphabetShort => 'الأبجدية';
+
+  @override
+  String get vocabularyShort => 'المفردات';
 }

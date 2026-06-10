@@ -114,5 +114,19 @@
   "noEnaHubSubtitle": "استكشف محتوى نو إينا الثقافي.",
   "offlinePacksHubSubtitle": "حمّل حزماً للتعلم بدون إنترنت.",
   "myDownloadsHubSubtitle": "إدارة الحزم المثبتة على جهازك.",
-  "open": "فتح"
+  "open": "فتح",
+  "welcomeHome": "مرحبًا بك في Beřiyar Kedebideři",
+  "homeSubtitle": "تعلّم لغة Beriya Erfe بالصوت والصور والاختبارات والحزم بدون إنترنت.",
+  "startLearning": "ابدأ التعلّم",
+  "quickAccess": "وصول سريع",
+  "connectionStatus": "حالة الاتصال",
+  "onlineMode": "وضع الاتصال",
+  "offlineMode": "وضع بدون إنترنت",
+  "onlineModeSubtitle": "خادم Django متاح.",
+  "offlineModeSubtitle": "يستخدم التطبيق التخزين المحلي أو الحزم المحملة.",
+  "recentProgress": "آخر تقدم",
+  "noRecentProgress": "لا يوجد تقدم حديث بعد.",
+  "continueLearning": "متابعة التعلم",
+  "alphabetShort": "الأبجدية",
+  "vocabularyShort": "المفردات"
 }

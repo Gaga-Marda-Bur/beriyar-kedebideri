@@ -765,6 +765,84 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Ouvrir'**
   String get open;
+
+  /// No description provided for @welcomeHome.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bienvenue dans Beřiyar Kedebideři'**
+  String get welcomeHome;
+
+  /// No description provided for @homeSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Apprends la langue Beriya Erfe avec audio, images, quiz et packs hors ligne.'**
+  String get homeSubtitle;
+
+  /// No description provided for @quickAccess.
+  ///
+  /// In fr, this message translates to:
+  /// **'Accès rapide'**
+  String get quickAccess;
+
+  /// No description provided for @connectionStatus.
+  ///
+  /// In fr, this message translates to:
+  /// **'Statut de connexion'**
+  String get connectionStatus;
+
+  /// No description provided for @onlineMode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mode en ligne'**
+  String get onlineMode;
+
+  /// No description provided for @offlineMode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mode hors ligne'**
+  String get offlineMode;
+
+  /// No description provided for @onlineModeSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le serveur Django est disponible.'**
+  String get onlineModeSubtitle;
+
+  /// No description provided for @offlineModeSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'L’app utilise le cache local ou les packs téléchargés.'**
+  String get offlineModeSubtitle;
+
+  /// No description provided for @recentProgress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Progression récente'**
+  String get recentProgress;
+
+  /// No description provided for @noRecentProgress.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune progression récente pour le moment.'**
+  String get noRecentProgress;
+
+  /// No description provided for @continueLearning.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get continueLearning;
+
+  /// No description provided for @alphabetShort.
+  ///
+  /// In fr, this message translates to:
+  /// **'Alphabet'**
+  String get alphabetShort;
+
+  /// No description provided for @vocabularyShort.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vocabulaire'**
+  String get vocabularyShort;
 }
 
 class _AppLocalizationsDelegate

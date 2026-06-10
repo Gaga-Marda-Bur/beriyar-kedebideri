@@ -16,6 +16,7 @@ import '../features/offline_packs/screens/offline_packs_screen.dart';
 import '../features/quiz/screens/quiz_screen.dart';
 import '../features/offline_packs/screens/my_packs_screen.dart';
 import '../features/content_hub/screens/content_hub_screen.dart';
+import '../features/learning/screens/unit_practice_screen.dart';
 
 class BeriyarApp extends StatelessWidget {
   const BeriyarApp({super.key});
@@ -42,11 +43,22 @@ class BeriyarApp extends StatelessWidget {
         '/alphabet': (_) => const AlphabetScreen(),
         '/vocabulary': (_) => const VocabularyScreen(),
         '/learning': (_) => const LearningPathScreen(),
+        '/quiz': (_) => const QuizScreen(),
         '/no-ena': (_) => const NoEnaScreen(),
         '/offline-packs': (_) => const OfflinePacksScreen(),
-        '/quiz': (_) => const QuizScreen(),
         '/my-packs': (_) => const MyPacksScreen(),
         '/content': (_) => const ContentHubScreen(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == '/unit-practice') {
+          final unitSlug = settings.arguments?.toString() ?? '';
+
+          return MaterialPageRoute(
+            builder: (_) => UnitPracticeScreen(unitSlug: unitSlug),
+          );
+        }
+
+        return null;
       },
     );
   }
