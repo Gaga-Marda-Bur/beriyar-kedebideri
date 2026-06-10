@@ -105,5 +105,14 @@
   "themes": "المواضيع",
   "units": "الوحدات",
   "localPath": "المسار المحلي",
-  "cancel": "إلغاء"
+  "cancel": "إلغاء",
+  "contentHub": "مركز المحتوى",
+  "contentHubSubtitle": "اختر كيف تريد أن تتعلم اليوم.",
+  "learnPath": "مسار التعلم",
+  "learnPathSubtitle": "تقدم وحدة بعد وحدة مع الصوت والحروف والكلمات والاختبارات.",
+  "quizHubSubtitle": "راجع بحرية بأسئلة صوتية وبصرية.",
+  "noEnaHubSubtitle": "استكشف محتوى نو إينا الثقافي.",
+  "offlinePacksHubSubtitle": "حمّل حزماً للتعلم بدون إنترنت.",
+  "myDownloadsHubSubtitle": "إدارة الحزم المثبتة على جهازك.",
+  "open": "فتح"
 }

@@ -15,6 +15,7 @@ import '../features/no_ena/screens/no_ena_screen.dart';
 import '../features/offline_packs/screens/offline_packs_screen.dart';
 import '../features/quiz/screens/quiz_screen.dart';
 import '../features/offline_packs/screens/my_packs_screen.dart';
+import '../features/content_hub/screens/content_hub_screen.dart';
 
 class BeriyarApp extends StatelessWidget {
   const BeriyarApp({super.key});
@@ -45,6 +46,7 @@ class BeriyarApp extends StatelessWidget {
         '/offline-packs': (_) => const OfflinePacksScreen(),
         '/quiz': (_) => const QuizScreen(),
         '/my-packs': (_) => const MyPacksScreen(),
+        '/content': (_) => const ContentHubScreen(),
       },
     );
   }

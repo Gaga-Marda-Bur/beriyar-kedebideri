@@ -318,4 +318,35 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cancel => 'Annuler';
+
+  @override
+  String get contentHub => 'Centre de contenu';
+
+  @override
+  String get contentHubSubtitle => 'Choisis comment apprendre aujourd’hui.';
+
+  @override
+  String get learnPath => 'Parcours d’apprentissage';
+
+  @override
+  String get learnPathSubtitle =>
+      'Avance unité par unité avec audio, lettres, mots et quiz.';
+
+  @override
+  String get quizHubSubtitle =>
+      'Révise librement avec des questions audio et visuelles.';
+
+  @override
+  String get noEnaHubSubtitle => 'Découvre les contenus culturels No Ena.';
+
+  @override
+  String get offlinePacksHubSubtitle =>
+      'Télécharge des packs pour apprendre sans internet.';
+
+  @override
+  String get myDownloadsHubSubtitle =>
+      'Gère les packs déjà installés sur ton appareil.';
+
+  @override
+  String get open => 'Ouvrir';
 }

@@ -10,6 +10,7 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../core/api/backend_bootstrap_service.dart';
 import '../../../core/network/backend_status_service.dart';
+import '../../content_hub/screens/content_hub_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -134,6 +135,19 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(height: 12),
+                FilledButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const ContentHubScreen(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.hub_rounded),
+                  label: Text(loc.contentHub),
                 ),
                 const SizedBox(height: 12),
                 OutlinedButton.icon(

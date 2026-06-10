@@ -105,5 +105,14 @@
   "themes": "Thèmes",
   "units": "Unités",
   "localPath": "Chemin local",
-  "cancel": "Annuler"
+  "cancel": "Annuler",
+  "contentHub": "Centre de contenu",
+  "contentHubSubtitle": "Choisis comment apprendre aujourd’hui.",
+  "learnPath": "Parcours d’apprentissage",
+  "learnPathSubtitle": "Avance unité par unité avec audio, lettres, mots et quiz.",
+  "quizHubSubtitle": "Révise librement avec des questions audio et visuelles.",
+  "noEnaHubSubtitle": "Découvre les contenus culturels No Ena.",
+  "offlinePacksHubSubtitle": "Télécharge des packs pour apprendre sans internet.",
+  "myDownloadsHubSubtitle": "Gère les packs déjà installés sur ton appareil.",
+  "open": "Ouvrir"
 }

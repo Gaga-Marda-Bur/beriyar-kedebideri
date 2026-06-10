@@ -315,4 +315,32 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cancel => 'إلغاء';
+
+  @override
+  String get contentHub => 'مركز المحتوى';
+
+  @override
+  String get contentHubSubtitle => 'اختر كيف تريد أن تتعلم اليوم.';
+
+  @override
+  String get learnPath => 'مسار التعلم';
+
+  @override
+  String get learnPathSubtitle =>
+      'تقدم وحدة بعد وحدة مع الصوت والحروف والكلمات والاختبارات.';
+
+  @override
+  String get quizHubSubtitle => 'راجع بحرية بأسئلة صوتية وبصرية.';
+
+  @override
+  String get noEnaHubSubtitle => 'استكشف محتوى نو إينا الثقافي.';
+
+  @override
+  String get offlinePacksHubSubtitle => 'حمّل حزماً للتعلم بدون إنترنت.';
+
+  @override
+  String get myDownloadsHubSubtitle => 'إدارة الحزم المثبتة على جهازك.';
+
+  @override
+  String get open => 'فتح';
 }

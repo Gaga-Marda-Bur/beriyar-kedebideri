@@ -317,4 +317,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get contentHub => 'Content hub';
+
+  @override
+  String get contentHubSubtitle => 'Choose how you want to learn today.';
+
+  @override
+  String get learnPath => 'Learning path';
+
+  @override
+  String get learnPathSubtitle =>
+      'Move unit by unit with audio, letters, words and quizzes.';
+
+  @override
+  String get quizHubSubtitle =>
+      'Review freely with audio and visual questions.';
+
+  @override
+  String get noEnaHubSubtitle => 'Explore No Ena cultural content.';
+
+  @override
+  String get offlinePacksHubSubtitle =>
+      'Download packs to learn without internet.';
+
+  @override
+  String get myDownloadsHubSubtitle =>
+      'Manage packs already installed on your device.';
+
+  @override
+  String get open => 'Open';
 }

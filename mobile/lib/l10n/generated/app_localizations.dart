@@ -711,6 +711,60 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Annuler'**
   String get cancel;
+
+  /// No description provided for @contentHub.
+  ///
+  /// In fr, this message translates to:
+  /// **'Centre de contenu'**
+  String get contentHub;
+
+  /// No description provided for @contentHubSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis comment apprendre aujourd’hui.'**
+  String get contentHubSubtitle;
+
+  /// No description provided for @learnPath.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parcours d’apprentissage'**
+  String get learnPath;
+
+  /// No description provided for @learnPathSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Avance unité par unité avec audio, lettres, mots et quiz.'**
+  String get learnPathSubtitle;
+
+  /// No description provided for @quizHubSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Révise librement avec des questions audio et visuelles.'**
+  String get quizHubSubtitle;
+
+  /// No description provided for @noEnaHubSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Découvre les contenus culturels No Ena.'**
+  String get noEnaHubSubtitle;
+
+  /// No description provided for @offlinePacksHubSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Télécharge des packs pour apprendre sans internet.'**
+  String get offlinePacksHubSubtitle;
+
+  /// No description provided for @myDownloadsHubSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gère les packs déjà installés sur ton appareil.'**
+  String get myDownloadsHubSubtitle;
+
+  /// No description provided for @open.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ouvrir'**
+  String get open;
 }
 
 class _AppLocalizationsDelegate
