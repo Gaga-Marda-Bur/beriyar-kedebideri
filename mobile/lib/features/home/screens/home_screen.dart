@@ -164,6 +164,12 @@ class HomeScreen extends StatelessWidget {
                   icon: const Icon(Icons.download_for_offline_rounded),
                   label: Text(loc.offlinePacks),
                 ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: () => Navigator.pushNamed(context, '/quiz'),
+                  icon: const Icon(Icons.quiz_rounded),
+                  label: Text(loc.quiz),
+                ),
                 const SizedBox(height: 20),
                 FutureBuilder<bool>(
                 future: BackendStatusService().isBackendReachable(),

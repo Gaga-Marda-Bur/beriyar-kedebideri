@@ -283,4 +283,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cacheCleared => 'Local cache cleared';
+
+  @override
+  String get quiz => 'Quiz';
 }

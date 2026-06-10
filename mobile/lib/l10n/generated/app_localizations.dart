@@ -645,6 +645,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Cache local vidé'**
   String get cacheCleared;
+
+  /// No description provided for @quiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quiz'**
+  String get quiz;
 }
 
 class _AppLocalizationsDelegate

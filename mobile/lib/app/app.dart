@@ -13,6 +13,7 @@ import '../features/vocabulary/screens/vocabulary_screen.dart';
 import '../features/learning/screens/learning_path_screen.dart';
 import '../features/no_ena/screens/no_ena_screen.dart';
 import '../features/offline_packs/screens/offline_packs_screen.dart';
+import '../features/quiz/screens/quiz_screen.dart';
 
 class BeriyarApp extends StatelessWidget {
   const BeriyarApp({super.key});
@@ -41,6 +42,7 @@ class BeriyarApp extends StatelessWidget {
         '/learning': (_) => const LearningPathScreen(),
         '/no-ena': (_) => const NoEnaScreen(),
         '/offline-packs': (_) => const OfflinePacksScreen(),
+        '/quiz': (_) => const QuizScreen(),
       },
     );
   }

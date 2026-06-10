@@ -282,4 +282,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cacheCleared => 'تم مسح التخزين المؤقت المحلي';
+
+  @override
+  String get quiz => 'اختبار';
 }

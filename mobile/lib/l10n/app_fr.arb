@@ -90,5 +90,6 @@
   "downloadSuccess": "Pack téléchargé avec succès",
   "downloadFailed": "Échec du téléchargement",
   "clearCache": "Vider le cache local",
-  "cacheCleared": "Cache local vidé"
+  "cacheCleared": "Cache local vidé",
+  "quiz": "Quiz"
 }
