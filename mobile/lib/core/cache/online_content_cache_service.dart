@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnlineContentCacheService {
@@ -18,6 +18,7 @@ class OnlineContentCacheService {
         'items': items,
       }),
     );
+    debugPrint('CACHE SAVE [$key]: ${items.length} items');
   }
 
   Future<List<Map<String, dynamic>>> readList({
@@ -35,7 +36,7 @@ class OnlineContentCacheService {
 
       if (decoded is Map<String, dynamic>) {
         final items = decoded['items'];
-
+        debugPrint('CACHE READ [$key]: ${items.length} raw items');
         if (items is List) {
           return items
               .whereType<Map<String, dynamic>>()
@@ -44,9 +45,10 @@ class OnlineContentCacheService {
         }
       }
     } catch (_) {
+      debugPrint('CACHE READ [$key]: empty');
       return [];
     }
-
+    debugPrint('CACHE READ [$key]: empty');
     return [];
   }
 

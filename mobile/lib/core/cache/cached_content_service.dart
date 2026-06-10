@@ -15,6 +15,7 @@ import '../../features/vocabulary/vocabulary_api_service.dart';
 import '../network/backend_status_service.dart';
 import 'cache_keys.dart';
 import 'online_content_cache_service.dart';
+import 'package:flutter/foundation.dart';
 
 class CachedContentService {
   final BackendStatusService _backendStatusService;
@@ -48,7 +49,7 @@ class CachedContentService {
         _quizApiService = quizApiService ?? QuizApiService(),
         _noEnaApiService = noEnaApiService ?? NoEnaApiService();
 
-  Future<List<CharacterModel>> loadCharacters() async {
+  /*Future<List<CharacterModel>> loadCharacters() async {
     final online = await _backendStatusService.isBackendReachable();
 
     if (online) {
@@ -73,7 +74,46 @@ class CachedContentService {
     }
 
     return _offlineContentService.loadCharacters();
+  }*/
+
+  Future<List<CharacterModel>> loadCharacters() async {
+  final online = await _backendStatusService.isBackendReachable();
+
+  debugPrint('CACHED LOAD characters: backendOnline=$online');
+
+  if (online) {
+    try {
+      final items = await _alphabetApiService.fetchCharacters();
+
+      debugPrint('CACHED LOAD characters: API=${items.length}');
+
+      if (items.isNotEmpty) {
+        await _cacheService.saveList(
+          key: CacheKeys.characters,
+          items: items.map((item) => item.toJson()).toList(),
+        );
+
+        return items;
+      }
+    } catch (error) {
+      debugPrint('CACHED LOAD characters API ERROR: $error');
+    }
   }
+
+  final cached = await _cacheService.readList(key: CacheKeys.characters);
+
+  debugPrint('CACHED LOAD characters: cache=${cached.length}');
+
+  if (cached.isNotEmpty) {
+    return cached.map(CharacterModel.fromJson).toList();
+  }
+
+  final offline = await _offlineContentService.loadCharacters();
+
+  debugPrint('CACHED LOAD characters: pack=${offline.length}');
+
+  return offline;
+}
 
   Future<List<WordModel>> loadWords({String? search}) async {
     final online = await _backendStatusService.isBackendReachable();

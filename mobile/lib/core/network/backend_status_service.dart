@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 
 import '../api/api_client.dart';
 
@@ -13,12 +14,13 @@ class BackendStatusService {
   }) : _apiClient = apiClient ?? ApiClient();
 
   Future<bool> isBackendReachable({
-    Duration cacheDuration = const Duration(seconds: 8),
+    Duration cacheDuration = const Duration(seconds: 3),
   }) async {
     final now = DateTime.now();
 
     if (_lastCheckedAt != null &&
         now.difference(_lastCheckedAt!) < cacheDuration) {
+      debugPrint('BACKEND STATUS cache=$_lastResult');
       return _lastResult;
     }
 
@@ -26,18 +28,24 @@ class BackendStatusService {
 
     if (connectivity.contains(ConnectivityResult.none)) {
       _saveResult(false);
+      debugPrint('BACKEND STATUS no internet');
       return false;
     }
 
     try {
-      await _apiClient
-          .getMap('/core/health/')
-          .timeout(const Duration(milliseconds: 900));
+      final items = await _apiClient
+          .getList('/alphabet/characters/')
+          .timeout(const Duration(milliseconds: 1200));
 
-      _saveResult(true);
-      return true;
-    } catch (_) {
+      final reachable = items.isNotEmpty;
+
+      _saveResult(reachable);
+      debugPrint('BACKEND STATUS reachable=$reachable items=${items.length}');
+
+      return reachable;
+    } catch (error) {
       _saveResult(false);
+      debugPrint('BACKEND STATUS error=$error');
       return false;
     }
   }
