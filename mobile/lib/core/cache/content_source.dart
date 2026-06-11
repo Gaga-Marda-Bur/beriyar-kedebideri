@@ -1,3 +1,5 @@
+import '../utils/app_logger.dart';
+
 enum ContentSourceType {
   online,
   memory,
@@ -15,13 +17,17 @@ class ContentSourceState {
 
   void setSource(String key, ContentSourceType source) {
     _sources[key] = source;
+    AppLogger.debug('SOURCE SET [$key] = ${source.name}');
   }
 
   ContentSourceType getSource(String key) {
-    return _sources[key] ?? ContentSourceType.empty;
+    final source = _sources[key] ?? ContentSourceType.empty;
+    AppLogger.debug('SOURCE GET [$key] = ${source.name}');
+    return source;
   }
 
   void clear() {
     _sources.clear();
+    AppLogger.debug('SOURCE CLEAR');
   }
 }

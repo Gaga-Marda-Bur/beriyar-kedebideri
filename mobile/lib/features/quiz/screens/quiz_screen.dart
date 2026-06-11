@@ -226,6 +226,10 @@ class _QuizScreenState extends State<QuizScreen> {
                               style: Theme.of(context).textTheme.headlineMedium,
                             ),
                             const SizedBox(height: 10),
+                            ContentSourceBadge(
+                              source: ContentSourceState.instance.getSource('${CacheKeys.quizzes}_all'),
+                            ),
+                            const SizedBox(height: 10),
                             const Text(
                               'Aucune question disponible pour le moment.',
                             ),
@@ -313,6 +317,10 @@ class _QuizQuestionView extends StatelessWidget {
               Text(
                 'Question ${currentIndex + 1}/$total',
                 style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 10),
+              ContentSourceBadge(
+                source: ContentSourceState.instance.getSource('${CacheKeys.quizzes}_all'),
               ),
               const SizedBox(height: 12),
               LinearProgressIndicator(

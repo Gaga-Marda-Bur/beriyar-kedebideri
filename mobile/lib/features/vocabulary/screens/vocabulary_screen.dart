@@ -161,13 +161,53 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
                     final words = snapshot.data ?? [];
 
                     if (words.isEmpty) {
-                      return GlassCard(
-                        child: Text(loc.noWords),
+                      return Column(
+                        children: [
+                          GlassCard(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  loc.vocabulary,
+                                  style: Theme.of(context).textTheme.headlineMedium,
+                                ),
+                                const SizedBox(height: 10),
+                                ContentSourceBadge(
+                                  source: ContentSourceState.instance.getSource(
+                                    CacheKeys.words,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 18),
+                          GlassCard(
+                            child: Text(loc.noWords),
+                          ),
+                        ],
                       );
                     }
 
                     return Column(
                       children: [
+                        GlassCard(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                loc.vocabulary,
+                                style: Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              const SizedBox(height: 10),
+                              ContentSourceBadge(
+                                source: ContentSourceState.instance.getSource(
+                                  CacheKeys.words,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 18),
                         for (final word in words) ...[
                           _WordCard(
                             word: word,

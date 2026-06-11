@@ -137,6 +137,10 @@ class _LearningPathScreenState extends State<LearningPathScreen> {
                             loc.learningPath,
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
+                          const SizedBox(height: 10),
+                            ContentSourceBadge(
+                              source: ContentSourceState.instance.getSource(CacheKeys.themes),
+                            ),
                           const SizedBox(height: 8),
                           Text(
                             loc.learningPathSubtitle,

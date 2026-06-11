@@ -119,6 +119,10 @@ class _NoEnaScreenState extends State<NoEnaScreen> {
                             loc.noEna,
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
+                          const SizedBox(height: 10),
+                            ContentSourceBadge(
+                              source: ContentSourceState.instance.getSource(CacheKeys.noEna),
+                            ),
                           const SizedBox(height: 8),
                           Text(
                             loc.noEnaSubtitle,
