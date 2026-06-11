@@ -134,5 +134,11 @@
   "sourceLocalCache": "تخزين محلي",
   "sourceOfflinePack": "حزمة بدون إنترنت",
   "sourceEmpty": "لا توجد بيانات",
-  "contentSource": "المصدر"
+  "contentSource": "المصدر",
+  "packSize": "الحجم",
+  "downloadDate": "تاريخ التنزيل",
+  "installedPack": "حزمة مثبتة",
+  "notInstalledPack": "غير مثبت",
+  "cacheAndPackNotice": "التخزين المؤقت يجعل التطبيق أسرع. الحزم تسمح بالتعلم بدون إنترنت.",
+  "offlineStorage": "التخزين بدون إنترنت"
 }

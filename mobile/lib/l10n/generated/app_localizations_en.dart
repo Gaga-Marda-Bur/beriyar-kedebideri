@@ -407,4 +407,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contentSource => 'Source';
+
+  @override
+  String get downloadDate => 'Downloaded on';
+
+  @override
+  String get installedPack => 'Installed pack';
+
+  @override
+  String get notInstalledPack => 'Not installed';
+
+  @override
+  String get cacheAndPackNotice =>
+      'Cache makes the app faster. Packs allow learning without internet.';
+
+  @override
+  String get offlineStorage => 'Offline storage';
 }

@@ -879,6 +879,36 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Source'**
   String get contentSource;
+
+  /// No description provided for @downloadDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Téléchargé le'**
+  String get downloadDate;
+
+  /// No description provided for @installedPack.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pack installé'**
+  String get installedPack;
+
+  /// No description provided for @notInstalledPack.
+  ///
+  /// In fr, this message translates to:
+  /// **'Non installé'**
+  String get notInstalledPack;
+
+  /// No description provided for @cacheAndPackNotice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le cache accélère l’app. Les packs permettent d’apprendre sans internet.'**
+  String get cacheAndPackNotice;
+
+  /// No description provided for @offlineStorage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Stockage hors ligne'**
+  String get offlineStorage;
 }
 
 class _AppLocalizationsDelegate

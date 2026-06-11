@@ -402,4 +402,20 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get contentSource => 'المصدر';
+
+  @override
+  String get downloadDate => 'تاريخ التنزيل';
+
+  @override
+  String get installedPack => 'حزمة مثبتة';
+
+  @override
+  String get notInstalledPack => 'غير مثبت';
+
+  @override
+  String get cacheAndPackNotice =>
+      'التخزين المؤقت يجعل التطبيق أسرع. الحزم تسمح بالتعلم بدون إنترنت.';
+
+  @override
+  String get offlineStorage => 'التخزين بدون إنترنت';
 }

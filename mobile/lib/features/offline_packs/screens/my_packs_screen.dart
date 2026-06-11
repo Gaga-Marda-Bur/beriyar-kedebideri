@@ -8,6 +8,7 @@ import '../services/local_pack_reader_service.dart';
 import 'pack_detail_screen.dart';
 import '../../../core/cache/memory_content_cache.dart';
 import '../../../core/cache/content_source.dart';
+import '../../../core/theme/app_colors.dart';
 
 class MyPacksScreen extends StatefulWidget {
   const MyPacksScreen({super.key});
@@ -143,6 +144,22 @@ class _MyPacksScreenState extends State<MyPacksScreen> {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 14),
+                    GlassCard(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(
+                            Icons.info_outline_rounded,
+                            color: AppColors.gold,
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(loc.cacheAndPackNotice),
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(height: 18),
                     if (packs.isEmpty)
                       GlassCard(
@@ -212,6 +229,26 @@ class _InstalledPackCard extends StatelessWidget {
               Chip(label: Text('${loc.words}: ${pack.words.length}')),
               Chip(label: Text('${loc.lessons}: ${pack.lessons.length}')),
               Chip(label: Text('${loc.quizzes}: ${pack.quizzes.length}')),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              const Icon(Icons.storage_rounded, size: 18),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text('${loc.packSize}: ${pack.formattedSize}'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              const Icon(Icons.schedule_rounded, size: 18),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text('${loc.downloadDate}: ${pack.formattedDownloadedAt}'),
+              ),
             ],
           ),
           const SizedBox(height: 12),

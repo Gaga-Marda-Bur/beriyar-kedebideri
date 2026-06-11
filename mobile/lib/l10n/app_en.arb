@@ -134,5 +134,11 @@
   "sourceLocalCache": "Local cache",
   "sourceOfflinePack": "Offline pack",
   "sourceEmpty": "No data",
-  "contentSource": "Source"
+  "contentSource": "Source",
+  "packSize": "Size",
+  "downloadDate": "Downloaded on",
+  "installedPack": "Installed pack",
+  "notInstalledPack": "Not installed",
+  "cacheAndPackNotice": "Cache makes the app faster. Packs allow learning without internet.",
+  "offlineStorage": "Offline storage"
 }

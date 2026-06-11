@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../core/cache/content_source.dart';
+import '../../../core/cache/memory_content_cache.dart';
 import '../../../core/storage/app_directories.dart';
 import '../models/lesson_pack_model.dart';
 import 'local_pack_reader_service.dart';
@@ -47,21 +50,43 @@ class OfflinePackDownloadService {
     await extractedDir.create(recursive: true);
 
     final inputStream = InputFileStream(zipFile.path);
-    final archive = ZipDecoder().decodeBuffer(inputStream);
 
-    for (final file in archive.files) {
-      final outputPath = '${extractedDir.path}/${file.name}';
+    try {
+      final archive = ZipDecoder().decodeBuffer(inputStream);
 
-      if (file.isFile) {
-        final outputFile = File(outputPath);
-        await outputFile.parent.create(recursive: true);
-        await outputFile.writeAsBytes(file.content as List<int>, flush: true);
-      } else {
-        await Directory(outputPath).create(recursive: true);
+      for (final file in archive.files) {
+        final outputPath = '${extractedDir.path}/${file.name}';
+
+        if (file.isFile) {
+          final outputFile = File(outputPath);
+          await outputFile.parent.create(recursive: true);
+          await outputFile.writeAsBytes(
+            file.content as List<int>,
+            flush: true,
+          );
+        } else {
+          await Directory(outputPath).create(recursive: true);
+        }
       }
+    } finally {
+      await inputStream.close();
     }
 
-    await inputStream.close();
+    final zipSize = await zipFile.exists() ? await zipFile.length() : 0;
+
+    final localMetadataFile = File('${extractedDir.path}/local_metadata.json');
+
+    await localMetadataFile.writeAsString(
+      jsonEncode({
+        'downloaded_at': DateTime.now().toIso8601String(),
+        'size_bytes': zipSize,
+        'zip_path': zipFile.path,
+      }),
+      flush: true,
+    );
+
+    MemoryContentCache.instance.clear();
+    ContentSourceState.instance.clear();
 
     await _readerService.readPack(
       slug: pack.slug,
@@ -76,6 +101,7 @@ class OfflinePackDownloadService {
     );
 
     final metadataFile = File('${dir.path}/metadata.json');
+
     return metadataFile.exists();
   }
 }

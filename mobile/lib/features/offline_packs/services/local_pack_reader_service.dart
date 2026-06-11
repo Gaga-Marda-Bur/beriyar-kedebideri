@@ -41,6 +41,31 @@ class LocalPackReaderService {
 
   Future<LocalPackModel> _readFromDirectory(Directory dir) async {
     final metadata = await _readJsonMap('${dir.path}/metadata.json');
+    final localMetadata = await _readJsonMap('${dir.path}/local_metadata.json');
+
+    var sizeBytes = int.tryParse(
+          localMetadata['size_bytes']?.toString() ?? '',
+        ) ??
+        0;
+
+    if (sizeBytes <= 0) {
+      sizeBytes = await _directorySize(dir);
+    }
+
+    final downloadedAtRaw = localMetadata['downloaded_at']?.toString();
+
+    var downloadedAt = downloadedAtRaw == null || downloadedAtRaw.isEmpty
+        ? null
+        : DateTime.tryParse(downloadedAtRaw);
+
+    if (downloadedAt == null) {
+      try {
+        final stat = await dir.stat();
+        downloadedAt = stat.modified;
+      } catch (_) {
+        downloadedAt = null;
+      }
+    }
 
     return LocalPackModel(
       metadata: metadata,
@@ -51,6 +76,8 @@ class LocalPackReaderService {
       lessons: await _readJsonList('${dir.path}/lessons.json'),
       quizzes: await _readJsonList('${dir.path}/quizzes.json'),
       localPath: dir.path,
+      sizeBytes: sizeBytes,
+      downloadedAt: downloadedAt,
     );
   }
 
@@ -61,14 +88,22 @@ class LocalPackReaderService {
       return {};
     }
 
-    final content = await file.readAsString();
-    final decoded = jsonDecode(content);
+    try {
+      final content = await file.readAsString();
+      final decoded = jsonDecode(content);
 
-    if (decoded is Map<String, dynamic>) {
-      return decoded;
+      if (decoded is Map<String, dynamic>) {
+        return decoded;
+      }
+
+      if (decoded is Map) {
+        return Map<String, dynamic>.from(decoded);
+      }
+
+      return {};
+    } catch (_) {
+      return {};
     }
-
-    return {};
   }
 
   Future<List<dynamic>> _readJsonList(String path) async {
@@ -78,16 +113,41 @@ class LocalPackReaderService {
       return [];
     }
 
-    final content = await file.readAsString();
-    final decoded = jsonDecode(content);
+    try {
+      final content = await file.readAsString();
+      final decoded = jsonDecode(content);
 
-    if (decoded is List) {
-      return decoded;
+      if (decoded is List) {
+        return decoded;
+      }
+
+      return [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  Future<int> _directorySize(Directory dir) async {
+    if (!await dir.exists()) return 0;
+
+    int total = 0;
+
+    await for (final entity in dir.list(
+      recursive: true,
+      followLinks: false,
+    )) {
+      if (entity is File) {
+        try {
+          total += await entity.length();
+        } catch (_) {
+          // ignore unreadable files
+        }
+      }
     }
 
-    return [];
+    return total;
   }
-  
+
   Future<void> deletePack({
     required String slug,
     required int version,

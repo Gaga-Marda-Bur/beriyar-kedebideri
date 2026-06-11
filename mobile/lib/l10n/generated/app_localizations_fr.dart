@@ -408,4 +408,20 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get contentSource => 'Source';
+
+  @override
+  String get downloadDate => 'Téléchargé le';
+
+  @override
+  String get installedPack => 'Pack installé';
+
+  @override
+  String get notInstalledPack => 'Non installé';
+
+  @override
+  String get cacheAndPackNotice =>
+      'Le cache accélère l’app. Les packs permettent d’apprendre sans internet.';
+
+  @override
+  String get offlineStorage => 'Stockage hors ligne';
 }

@@ -309,6 +309,29 @@ class _OnlinePackCard extends StatelessWidget {
                 ),
             ],
           ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: installed
+                  ? AppColors.gold.withValues(alpha: 0.14)
+                  : Colors.white.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(99),
+              border: Border.all(
+                color: installed
+                    ? AppColors.gold.withValues(alpha: 0.45)
+                    : Colors.white.withValues(alpha: 0.18),
+              ),
+            ),
+            child: Text(
+              installed ? loc.installedPack : loc.notInstalledPack,
+              style: TextStyle(
+                color: installed ? AppColors.gold : AppColors.mutedWhite,
+                fontWeight: FontWeight.w800,
+                fontSize: 12,
+              ),
+            ),
+          ),
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
