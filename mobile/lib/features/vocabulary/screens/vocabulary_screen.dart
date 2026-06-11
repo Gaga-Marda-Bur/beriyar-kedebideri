@@ -8,6 +8,9 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../models/word_model.dart';
 import '../../../core/theme/app_text_styles.dart';
 import '../../../core/cache/cached_content_service.dart';
+import '../../../core/cache/cache_keys.dart';
+import '../../../core/cache/content_source.dart';
+import '../../../core/widgets/content_source_badge.dart';
 
 class VocabularyScreen extends StatefulWidget {
   const VocabularyScreen({super.key});
@@ -138,7 +141,11 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             const SizedBox(height: 10),
-                            Text(snapshot.error.toString()),
+                            ContentSourceBadge(
+                              source: ContentSourceState.instance.getSource(CacheKeys.words),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(loc.errorLoading),
                             const SizedBox(height: 16),
                             FilledButton(
                               onPressed: () => _reload(

@@ -6,6 +6,9 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../models/learning_theme_model.dart';
 import 'unit_detail_screen.dart';
 import '../../../core/cache/cached_content_service.dart';
+import '../../../core/cache/cache_keys.dart';
+import '../../../core/cache/content_source.dart';
+import '../../../core/widgets/content_source_badge.dart';
 
 class LearningPathScreen extends StatefulWidget {
   const LearningPathScreen({super.key});
@@ -95,7 +98,11 @@ class _LearningPathScreenState extends State<LearningPathScreen> {
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             const SizedBox(height: 10),
-                            Text(snapshot.error.toString()),
+                            ContentSourceBadge(
+                              source: ContentSourceState.instance.getSource(CacheKeys.themes),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(loc.errorLoading),
                             const SizedBox(height: 16),
                             FilledButton(
                               onPressed: _reload,

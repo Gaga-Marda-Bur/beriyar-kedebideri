@@ -384,4 +384,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get vocabularyShort => 'المفردات';
+
+  @override
+  String get sourceOnline => 'متصل';
+
+  @override
+  String get sourceMemory => 'ذاكرة سريعة';
+
+  @override
+  String get sourceLocalCache => 'تخزين محلي';
+
+  @override
+  String get sourceOfflinePack => 'حزمة بدون إنترنت';
+
+  @override
+  String get sourceEmpty => 'لا توجد بيانات';
+
+  @override
+  String get contentSource => 'المصدر';
 }

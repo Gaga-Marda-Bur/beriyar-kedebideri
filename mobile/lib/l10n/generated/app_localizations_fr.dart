@@ -390,4 +390,22 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get vocabularyShort => 'Vocabulaire';
+
+  @override
+  String get sourceOnline => 'En ligne';
+
+  @override
+  String get sourceMemory => 'Mémoire rapide';
+
+  @override
+  String get sourceLocalCache => 'Cache local';
+
+  @override
+  String get sourceOfflinePack => 'Pack hors ligne';
+
+  @override
+  String get sourceEmpty => 'Aucune donnée';
+
+  @override
+  String get contentSource => 'Source';
 }

@@ -128,5 +128,11 @@
   "noRecentProgress": "لا يوجد تقدم حديث بعد.",
   "continueLearning": "متابعة التعلم",
   "alphabetShort": "الأبجدية",
-  "vocabularyShort": "المفردات"
+  "vocabularyShort": "المفردات",
+  "sourceOnline": "متصل",
+  "sourceMemory": "ذاكرة سريعة",
+  "sourceLocalCache": "تخزين محلي",
+  "sourceOfflinePack": "حزمة بدون إنترنت",
+  "sourceEmpty": "لا توجد بيانات",
+  "contentSource": "المصدر"
 }

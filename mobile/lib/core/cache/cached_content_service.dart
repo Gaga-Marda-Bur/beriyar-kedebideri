@@ -17,6 +17,7 @@ import 'cache_keys.dart';
 import 'online_content_cache_service.dart';
 import '../utils/app_logger.dart';
 import 'memory_content_cache.dart';
+import 'content_source.dart';
 
 class CachedContentService {
   final BackendStatusService _backendStatusService;
@@ -30,6 +31,7 @@ class CachedContentService {
   final QuizApiService _quizApiService;
   final NoEnaApiService _noEnaApiService;
   final MemoryContentCache _memoryCache;
+  final ContentSourceState _sourceState;
 
   CachedContentService({
     BackendStatusService? backendStatusService,
@@ -42,6 +44,7 @@ class CachedContentService {
     QuizApiService? quizApiService,
     NoEnaApiService? noEnaApiService,
     MemoryContentCache? memoryCache,
+    ContentSourceState? sourceState,
   })  : _backendStatusService = backendStatusService ?? BackendStatusService(),
         _cacheService = cacheService ?? OnlineContentCacheService(),
         _offlineContentService = offlineContentService ?? OfflineContentService(),
@@ -51,7 +54,8 @@ class CachedContentService {
         _lessonsApiService = lessonsApiService ?? LessonsApiService(),
         _quizApiService = quizApiService ?? QuizApiService(),
         _noEnaApiService = noEnaApiService ?? NoEnaApiService(),
-        _memoryCache = memoryCache ?? MemoryContentCache.instance;
+        _memoryCache = memoryCache ?? MemoryContentCache.instance,
+        _sourceState = sourceState ?? ContentSourceState.instance;
 
 
   Future<List<CharacterModel>> loadCharacters({
@@ -64,6 +68,11 @@ class CachedContentService {
       );
 
       if (memory != null && memory.isNotEmpty) {
+        _sourceState.setSource(
+          CacheKeys.characters,
+          ContentSourceType.memory,
+        );
+
         AppLogger.debug('MEMORY HIT characters: ${memory.length}');
         return memory;
       }
@@ -87,6 +96,11 @@ class CachedContentService {
 
           _memoryCache.set(CacheKeys.memoryCharacters, items);
 
+          _sourceState.setSource(
+            CacheKeys.characters,
+            ContentSourceType.online,
+          );
+
           return items;
         }
       } catch (error, stackTrace) {
@@ -104,7 +118,14 @@ class CachedContentService {
 
     if (cached.isNotEmpty) {
       final items = cached.map(CharacterModel.fromJson).toList();
+
       _memoryCache.set(CacheKeys.memoryCharacters, items);
+
+      _sourceState.setSource(
+        CacheKeys.characters,
+        ContentSourceType.localCache,
+      );
+
       return items;
     }
 
@@ -113,6 +134,11 @@ class CachedContentService {
     AppLogger.debug('CACHED LOAD characters: pack=${offline.length}');
 
     _memoryCache.set(CacheKeys.memoryCharacters, offline);
+
+    _sourceState.setSource(
+      CacheKeys.characters,
+      offline.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack,
+    );
 
     return offline;
   }
@@ -130,6 +156,7 @@ class CachedContentService {
       );
 
       if (memory != null && memory.isNotEmpty) {
+        _sourceState.setSource(CacheKeys.words, ContentSourceType.memory);
         AppLogger.debug('MEMORY HIT words: ${memory.length}');
         return memory;
       }
@@ -151,6 +178,7 @@ class CachedContentService {
             );
 
             _memoryCache.set(CacheKeys.memoryWords, items);
+            _sourceState.setSource(CacheKeys.words, ContentSourceType.online);
           }
 
           return items;
@@ -172,6 +200,10 @@ class CachedContentService {
 
     if (query.isEmpty) {
       _memoryCache.set(CacheKeys.memoryWords, source);
+      _sourceState.setSource(
+        CacheKeys.words,
+        source.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack,
+      );
       return source;
     }
 
@@ -197,6 +229,7 @@ class CachedContentService {
       );
 
       if (memory != null && memory.isNotEmpty) {
+        _sourceState.setSource(CacheKeys.themes, ContentSourceType.memory);
         AppLogger.debug('MEMORY HIT themes: ${memory.length}');
         return memory;
       }
@@ -215,7 +248,7 @@ class CachedContentService {
           );
 
           _memoryCache.set(CacheKeys.memoryThemes, items);
-
+          _sourceState.setSource(CacheKeys.themes, ContentSourceType.online);
           return items;
         }
       } catch (error, stackTrace) {
@@ -232,12 +265,14 @@ class CachedContentService {
     if (cached.isNotEmpty) {
       final items = cached.map(LearningThemeModel.fromJson).toList();
       _memoryCache.set(CacheKeys.memoryThemes, items);
+      _sourceState.setSource(CacheKeys.themes, ContentSourceType.localCache);
       return items;
     }
 
     final offline = await _offlineContentService.loadThemes();
 
     _memoryCache.set(CacheKeys.memoryThemes, offline);
+    _sourceState.setSource(CacheKeys.themes, offline.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack);
 
     return offline;
   }
@@ -252,6 +287,7 @@ class CachedContentService {
       );
 
       if (memory != null && memory.isNotEmpty) {
+        _sourceState.setSource(CacheKeys.units, ContentSourceType.memory);
         AppLogger.debug('MEMORY HIT units: ${memory.length}');
         return memory;
       }
@@ -270,6 +306,7 @@ class CachedContentService {
           );
 
           _memoryCache.set(CacheKeys.memoryUnits, items);
+          _sourceState.setSource(CacheKeys.units, ContentSourceType.online);
 
           return items;
         }
@@ -287,12 +324,14 @@ class CachedContentService {
     if (cached.isNotEmpty) {
       final items = cached.map(LearningUnitModel.fromJson).toList();
       _memoryCache.set(CacheKeys.memoryUnits, items);
+      _sourceState.setSource(CacheKeys.units, ContentSourceType.localCache);
       return items;
     }
 
     final offline = await _offlineContentService.loadUnits();
 
     _memoryCache.set(CacheKeys.memoryUnits, offline);
+    _sourceState.setSource(CacheKeys.units, offline.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack);
 
     return offline;
   }
@@ -302,6 +341,7 @@ class CachedContentService {
     bool forceRefresh = false,
   }) async {
     final memoryKey = '${CacheKeys.memoryLessons}_${unitSlug ?? 'all'}';
+    final sourceKey = '${CacheKeys.lessons}_${unitSlug ?? 'all'}';
 
     if (!forceRefresh) {
       final memory = _memoryCache.get<List<LessonModel>>(
@@ -310,6 +350,7 @@ class CachedContentService {
       );
 
       if (memory != null && memory.isNotEmpty) {
+        _sourceState.setSource(sourceKey, ContentSourceType.memory);
         AppLogger.debug('MEMORY HIT lessons[$unitSlug]: ${memory.length}');
         return memory;
       }
@@ -344,6 +385,7 @@ class CachedContentService {
           );
 
           _memoryCache.set(memoryKey, items);
+          _sourceState.setSource(sourceKey, ContentSourceType.online);
 
           return items;
         }
@@ -357,6 +399,7 @@ class CachedContentService {
     }
 
     final cached = await _cacheService.readList(key: CacheKeys.lessons);
+    _sourceState.setSource(sourceKey, ContentSourceType.localCache);
 
     final source = cached.isNotEmpty
         ? cached.map(LessonModel.fromJson).toList()
@@ -367,7 +410,10 @@ class CachedContentService {
         : source.where((lesson) => lesson.unitSlug == unitSlug).toList();
 
     _memoryCache.set(memoryKey, filtered);
-
+    _sourceState.setSource(
+      sourceKey,
+      filtered.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack,
+    );
     return filtered;
   }
 
@@ -376,7 +422,7 @@ class CachedContentService {
     bool forceRefresh = false,
   }) async {
     final memoryKey = '${CacheKeys.memoryQuizzes}_${unitSlug ?? 'all'}';
-
+    final sourceKey = '${CacheKeys.quizzes}_${unitSlug ?? 'all'}';
     if (!forceRefresh) {
       final memory = _memoryCache.get<List<QuizQuestionModel>>(
         memoryKey,
@@ -384,6 +430,7 @@ class CachedContentService {
       );
 
       if (memory != null && memory.isNotEmpty) {
+        _sourceState.setSource(sourceKey, ContentSourceType.memory);
         AppLogger.debug('MEMORY HIT quizzes[$unitSlug]: ${memory.length}');
         return memory;
       }
@@ -418,7 +465,7 @@ class CachedContentService {
           );
 
           _memoryCache.set(memoryKey, items);
-
+          _sourceState.setSource(sourceKey, ContentSourceType.online);
           return items;
         }
       } catch (error, stackTrace) {
@@ -431,6 +478,7 @@ class CachedContentService {
     }
 
     final cached = await _cacheService.readList(key: CacheKeys.quizzes);
+    _sourceState.setSource(sourceKey, ContentSourceType.localCache);
 
     final source = cached.isNotEmpty
         ? cached.map(QuizQuestionModel.fromJson).toList()
@@ -441,6 +489,10 @@ class CachedContentService {
         : source.where((quiz) => quiz.unitSlug == unitSlug).toList();
 
     _memoryCache.set(memoryKey, filtered);
+    _sourceState.setSource(
+      sourceKey,
+      filtered.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack,
+    );
 
     return filtered;
   }
@@ -455,6 +507,7 @@ class CachedContentService {
       );
 
       if (memory != null && memory.isNotEmpty) {
+        _sourceState.setSource(CacheKeys.noEna, ContentSourceType.memory);
         AppLogger.debug('MEMORY HIT no_ena: ${memory.length}');
         return memory;
       }
@@ -473,6 +526,7 @@ class CachedContentService {
           );
 
           _memoryCache.set(CacheKeys.memoryNoEna, items);
+          _sourceState.setSource(CacheKeys.noEna, ContentSourceType.online);
 
           return items;
         }
@@ -490,9 +544,10 @@ class CachedContentService {
     if (cached.isNotEmpty) {
       final items = cached.map(NoEnaPublicationModel.fromJson).toList();
       _memoryCache.set(CacheKeys.memoryNoEna, items);
+      _sourceState.setSource(CacheKeys.noEna, ContentSourceType.localCache);
       return items;
     }
-
+    _sourceState.setSource(CacheKeys.noEna, ContentSourceType.empty);
     return [];
   }
 }

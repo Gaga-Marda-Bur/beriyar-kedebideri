@@ -9,6 +9,9 @@ import '../models/no_ena_publication_model.dart';
 import 'no_ena_detail_screen.dart';
 import '../../../core/widgets/smart_image.dart';
 import '../../../core/cache/cached_content_service.dart';
+import '../../../core/cache/cache_keys.dart';
+import '../../../core/cache/content_source.dart';
+import '../../../core/widgets/content_source_badge.dart';
 
 class NoEnaScreen extends StatefulWidget {
   const NoEnaScreen({super.key});
@@ -77,7 +80,11 @@ class _NoEnaScreenState extends State<NoEnaScreen> {
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             const SizedBox(height: 10),
-                            Text(snapshot.error.toString()),
+                            ContentSourceBadge(
+                              source: ContentSourceState.instance.getSource(CacheKeys.noEna),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(loc.errorLoading),
                             const SizedBox(height: 16),
                             FilledButton(
                               onPressed: _reload,

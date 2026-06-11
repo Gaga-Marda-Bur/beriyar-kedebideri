@@ -5,7 +5,7 @@ import '../../lessons/models/lesson_model.dart';
 import '../../quiz/models/quiz_question_model.dart';
 import '../../vocabulary/models/word_model.dart';
 import 'local_pack_reader_service.dart';
-import 'package:flutter/foundation.dart';
+import '../../../core/utils/app_logger.dart';
 import 'offline_media_resolver.dart';
 
 class OfflineContentService {
@@ -36,13 +36,14 @@ class OfflineContentService {
   Future<List<CharacterModel>> loadCharacters() async {
   final packs = await _readerService.listInstalledPacks();
 
-  debugPrint('OFFLINE PACKS FOUND: ${packs.length}');
+  AppLogger.debug('OFFLINE PACKS FOUND: ${packs.length}');
 
   final map = <int, CharacterModel>{};
 
   for (final pack in packs) {
-    debugPrint('OFFLINE PACK READ: slug=${pack.slug}, path=${pack.localPath}');
-    debugPrint('OFFLINE RAW CHARACTERS: ${pack.characters.length}');
+    AppLogger.debug('OFFLINE PACK READ: slug=${pack.slug}, path=${pack.localPath}');
+    AppLogger.debug('OFFLINE RAW CHARACTERS: ${pack.characters.length}');
+    
 
     for (final raw in pack.characters) {
       if (raw is Map<String, dynamic>) {
@@ -65,7 +66,7 @@ class OfflineContentService {
   final items = map.values.toList();
   items.sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
 
-  debugPrint('OFFLINE CHARACTERS FOUND: ${items.length}');
+  AppLogger.debug('OFFLINE CHARACTERS FOUND: ${items.length}');
 
   return items;
 }

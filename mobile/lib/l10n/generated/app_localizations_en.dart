@@ -389,4 +389,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vocabularyShort => 'Vocabulary';
+
+  @override
+  String get sourceOnline => 'Online';
+
+  @override
+  String get sourceMemory => 'Fast memory';
+
+  @override
+  String get sourceLocalCache => 'Local cache';
+
+  @override
+  String get sourceOfflinePack => 'Offline pack';
+
+  @override
+  String get sourceEmpty => 'No data';
+
+  @override
+  String get contentSource => 'Source';
 }

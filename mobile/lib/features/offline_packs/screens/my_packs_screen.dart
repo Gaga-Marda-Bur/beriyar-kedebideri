@@ -7,6 +7,7 @@ import '../models/local_pack_model.dart';
 import '../services/local_pack_reader_service.dart';
 import 'pack_detail_screen.dart';
 import '../../../core/cache/memory_content_cache.dart';
+import '../../../core/cache/content_source.dart';
 
 class MyPacksScreen extends StatefulWidget {
   const MyPacksScreen({super.key});
@@ -62,6 +63,7 @@ class _MyPacksScreenState extends State<MyPacksScreen> {
       version: pack.version,
     );
     MemoryContentCache.instance.clear();
+    ContentSourceState.instance.clear();
 
     if (!mounted) return;
 

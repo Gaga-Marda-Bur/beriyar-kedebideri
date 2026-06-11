@@ -8,6 +8,9 @@ import '../../../core/widgets/app_background.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../models/quiz_question_model.dart';
+import '../../../core/cache/cache_keys.dart';
+import '../../../core/cache/content_source.dart';
+import '../../../core/widgets/content_source_badge.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
@@ -189,6 +192,10 @@ class _QuizScreenState extends State<QuizScreen> {
                             Text(
                               loc.errorLoading,
                               style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            const SizedBox(height: 10),
+                            ContentSourceBadge(
+                              source: ContentSourceState.instance.getSource('${CacheKeys.quizzes}_all'),
                             ),
                             const SizedBox(height: 8),
                             Text(loc.errorLoading),

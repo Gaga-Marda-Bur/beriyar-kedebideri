@@ -843,6 +843,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Vocabulaire'**
   String get vocabularyShort;
+
+  /// No description provided for @sourceOnline.
+  ///
+  /// In fr, this message translates to:
+  /// **'En ligne'**
+  String get sourceOnline;
+
+  /// No description provided for @sourceMemory.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mémoire rapide'**
+  String get sourceMemory;
+
+  /// No description provided for @sourceLocalCache.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cache local'**
+  String get sourceLocalCache;
+
+  /// No description provided for @sourceOfflinePack.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pack hors ligne'**
+  String get sourceOfflinePack;
+
+  /// No description provided for @sourceEmpty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune donnée'**
+  String get sourceEmpty;
+
+  /// No description provided for @contentSource.
+  ///
+  /// In fr, this message translates to:
+  /// **'Source'**
+  String get contentSource;
 }
 
 class _AppLocalizationsDelegate

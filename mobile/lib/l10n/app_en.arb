@@ -128,5 +128,11 @@
   "noRecentProgress": "No recent progress yet.",
   "continueLearning": "Continue learning",
   "alphabetShort": "Alphabet",
-  "vocabularyShort": "Vocabulary"
+  "vocabularyShort": "Vocabulary",
+  "sourceOnline": "Online",
+  "sourceMemory": "Fast memory",
+  "sourceLocalCache": "Local cache",
+  "sourceOfflinePack": "Offline pack",
+  "sourceEmpty": "No data",
+  "contentSource": "Source"
 }
