@@ -58,6 +58,17 @@ class SettingsScreen extends StatelessWidget {
                   ],
                 ),
               ),
+
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/feedback');
+                  },
+                  icon: const Icon(Icons.feedback_rounded),
+                  label: Text(loc.sendFeedback),
+                ),
+              ),
               if (AppEnvironment.showDevTools) ...[
                 const SizedBox(height: 18),
                 GlassCard(

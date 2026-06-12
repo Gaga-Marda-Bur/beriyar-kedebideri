@@ -423,4 +423,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offlineStorage => 'Offline storage';
+
+  @override
+  String get feedback => 'Feedback';
+
+  @override
+  String get sendFeedback => 'Send feedback';
+
+  @override
+  String get feedbackSubtitle => 'Help us improve the app.';
+
+  @override
+  String get feedbackCategory => 'Category';
+
+  @override
+  String get feedbackMessage => 'Message';
+
+  @override
+  String get feedbackMessageHint => 'Explain the issue or your suggestion...';
+
+  @override
+  String get feedbackSent => 'Feedback sent. Thank you!';
+
+  @override
+  String get feedbackFailed => 'Could not send feedback.';
+
+  @override
+  String get feedbackEmptyMessage => 'Write a message before sending.';
+
+  @override
+  String get feedbackTranslation => 'Translation';
+
+  @override
+  String get feedbackOther => 'Other';
+
+  @override
+  String get feedbackPronunciation => 'Pronunciation';
+
+  @override
+  String get feedbackAudioQuality => 'Audio quality';
+
+  @override
+  String get feedbackWrongCharacter => 'Wrong character';
+
+  @override
+  String get feedbackWrongWord => 'Wrong word';
+
+  @override
+  String get feedbackWrongImage => 'Wrong image';
+
+  @override
+  String get feedbackTechnical => 'Technical problem';
+
+  @override
+  String get feedbackContentSuggestion => 'Content suggestion';
 }

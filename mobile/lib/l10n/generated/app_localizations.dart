@@ -909,6 +909,114 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Stockage hors ligne'**
   String get offlineStorage;
+
+  /// No description provided for @feedback.
+  ///
+  /// In fr, this message translates to:
+  /// **'Feedback'**
+  String get feedback;
+
+  /// No description provided for @sendFeedback.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer un feedback'**
+  String get sendFeedback;
+
+  /// No description provided for @feedbackSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aide-nous à améliorer l’application.'**
+  String get feedbackSubtitle;
+
+  /// No description provided for @feedbackCategory.
+  ///
+  /// In fr, this message translates to:
+  /// **'Catégorie'**
+  String get feedbackCategory;
+
+  /// No description provided for @feedbackMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Message'**
+  String get feedbackMessage;
+
+  /// No description provided for @feedbackMessageHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Explique le problème ou ta suggestion...'**
+  String get feedbackMessageHint;
+
+  /// No description provided for @feedbackSent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Feedback envoyé. Merci !'**
+  String get feedbackSent;
+
+  /// No description provided for @feedbackFailed.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible d’envoyer le feedback.'**
+  String get feedbackFailed;
+
+  /// No description provided for @feedbackEmptyMessage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écris un message avant d’envoyer.'**
+  String get feedbackEmptyMessage;
+
+  /// No description provided for @feedbackTranslation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Traduction'**
+  String get feedbackTranslation;
+
+  /// No description provided for @feedbackOther.
+  ///
+  /// In fr, this message translates to:
+  /// **'Autre'**
+  String get feedbackOther;
+
+  /// No description provided for @feedbackPronunciation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prononciation'**
+  String get feedbackPronunciation;
+
+  /// No description provided for @feedbackAudioQuality.
+  ///
+  /// In fr, this message translates to:
+  /// **'Qualité audio'**
+  String get feedbackAudioQuality;
+
+  /// No description provided for @feedbackWrongCharacter.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mauvais caractère'**
+  String get feedbackWrongCharacter;
+
+  /// No description provided for @feedbackWrongWord.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mauvais mot'**
+  String get feedbackWrongWord;
+
+  /// No description provided for @feedbackWrongImage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mauvaise image'**
+  String get feedbackWrongImage;
+
+  /// No description provided for @feedbackTechnical.
+  ///
+  /// In fr, this message translates to:
+  /// **'Problème technique'**
+  String get feedbackTechnical;
+
+  /// No description provided for @feedbackContentSuggestion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suggestion de contenu'**
+  String get feedbackContentSuggestion;
 }
 
 class _AppLocalizationsDelegate

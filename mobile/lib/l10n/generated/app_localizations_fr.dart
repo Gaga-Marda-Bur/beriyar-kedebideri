@@ -424,4 +424,58 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get offlineStorage => 'Stockage hors ligne';
+
+  @override
+  String get feedback => 'Feedback';
+
+  @override
+  String get sendFeedback => 'Envoyer un feedback';
+
+  @override
+  String get feedbackSubtitle => 'Aide-nous à améliorer l’application.';
+
+  @override
+  String get feedbackCategory => 'Catégorie';
+
+  @override
+  String get feedbackMessage => 'Message';
+
+  @override
+  String get feedbackMessageHint => 'Explique le problème ou ta suggestion...';
+
+  @override
+  String get feedbackSent => 'Feedback envoyé. Merci !';
+
+  @override
+  String get feedbackFailed => 'Impossible d’envoyer le feedback.';
+
+  @override
+  String get feedbackEmptyMessage => 'Écris un message avant d’envoyer.';
+
+  @override
+  String get feedbackTranslation => 'Traduction';
+
+  @override
+  String get feedbackOther => 'Autre';
+
+  @override
+  String get feedbackPronunciation => 'Prononciation';
+
+  @override
+  String get feedbackAudioQuality => 'Qualité audio';
+
+  @override
+  String get feedbackWrongCharacter => 'Mauvais caractère';
+
+  @override
+  String get feedbackWrongWord => 'Mauvais mot';
+
+  @override
+  String get feedbackWrongImage => 'Mauvaise image';
+
+  @override
+  String get feedbackTechnical => 'Problème technique';
+
+  @override
+  String get feedbackContentSuggestion => 'Suggestion de contenu';
 }

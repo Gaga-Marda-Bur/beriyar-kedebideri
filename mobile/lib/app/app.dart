@@ -17,6 +17,7 @@ import '../features/quiz/screens/quiz_screen.dart';
 import '../features/offline_packs/screens/my_packs_screen.dart';
 import '../features/content_hub/screens/content_hub_screen.dart';
 import '../features/learning/screens/unit_practice_screen.dart';
+import '../features/feedback/screens/feedback_screen.dart';
 
 class BeriyarApp extends StatelessWidget {
   const BeriyarApp({super.key});
@@ -48,6 +49,7 @@ class BeriyarApp extends StatelessWidget {
         '/offline-packs': (_) => const OfflinePacksScreen(),
         '/my-packs': (_) => const MyPacksScreen(),
         '/content': (_) => const ContentHubScreen(),
+        '/feedback': (_) => const FeedbackScreen(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == '/unit-practice') {

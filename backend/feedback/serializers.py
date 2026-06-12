@@ -94,6 +94,14 @@ class FeedbackReportSerializer(serializers.ModelSerializer):
         target_app_label = attrs.pop('target_app_label', '')
         target_model = attrs.pop('target_model', '')
 
+        message = attrs.get('message', '').strip()
+        title = attrs.get('title', '').strip()
+
+        if not message and not title:
+            raise serializers.ValidationError(
+                {'message': 'A message or title is required.'}
+            )
+
         if target_app_label and target_model:
             content_type = ContentType.objects.filter(
                 app_label=target_app_label,

@@ -37,18 +37,24 @@ class FeedbackReportAdmin(admin.ModelAdmin):
     ]
 
     raw_id_fields = [
-        'content_type',
-    ]
-    autocomplete_fields = [
         'user',
+        'content_type',
         'audio_feedback',
     ]
 
     readonly_fields = [
+        'device_id',
+        'platform',
+        'app_version',
+        'language_code',
+        'client_created_at',
         'synced_at',
         'created_at',
         'updated_at',
     ]
+
+    date_hierarchy = 'created_at'
+    list_per_page = 25
 
     fieldsets = (
         ('Utilisateur / appareil', {

@@ -418,4 +418,58 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get offlineStorage => 'التخزين بدون إنترنت';
+
+  @override
+  String get feedback => 'ملاحظات';
+
+  @override
+  String get sendFeedback => 'إرسال ملاحظة';
+
+  @override
+  String get feedbackSubtitle => 'ساعدنا على تحسين التطبيق.';
+
+  @override
+  String get feedbackCategory => 'الفئة';
+
+  @override
+  String get feedbackMessage => 'الرسالة';
+
+  @override
+  String get feedbackMessageHint => 'اشرح المشكلة أو اقتراحك...';
+
+  @override
+  String get feedbackSent => 'تم إرسال الملاحظة. شكرًا!';
+
+  @override
+  String get feedbackFailed => 'تعذر إرسال الملاحظة.';
+
+  @override
+  String get feedbackEmptyMessage => 'اكتب رسالة قبل الإرسال.';
+
+  @override
+  String get feedbackTranslation => 'الترجمة';
+
+  @override
+  String get feedbackOther => 'أخرى';
+
+  @override
+  String get feedbackPronunciation => 'النطق';
+
+  @override
+  String get feedbackAudioQuality => 'جودة الصوت';
+
+  @override
+  String get feedbackWrongCharacter => 'حرف خاطئ';
+
+  @override
+  String get feedbackWrongWord => 'كلمة خاطئة';
+
+  @override
+  String get feedbackWrongImage => 'صورة خاطئة';
+
+  @override
+  String get feedbackTechnical => 'مشكلة تقنية';
+
+  @override
+  String get feedbackContentSuggestion => 'اقتراح محتوى';
 }
