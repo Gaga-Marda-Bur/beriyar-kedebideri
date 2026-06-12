@@ -12,6 +12,7 @@ import '../../../core/network/backend_status_service.dart';
 import '../../../core/cache/memory_content_cache.dart';
 import '../../../core/cache/content_source.dart';
 import '../../../core/api/api_config.dart';
+import '../../../core/startup/app_preload_service.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -86,6 +87,22 @@ class SettingsScreen extends StatelessWidget {
                         },
                         icon: const Icon(Icons.refresh_rounded),
                         label: const Text('Reset backend cache'),
+                      ),
+                      const SizedBox(height: 12),
+                      OutlinedButton.icon(
+                        onPressed: () async {
+                          await AppPreloadService.instance.resetAndPreloadAgain();
+
+                          if (!context.mounted) return;
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Preload completed'),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.speed_rounded),
+                        label: const Text('Run preload'),
                       ),
                     ],
                   ),

@@ -9,6 +9,7 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../../content_hub/screens/content_hub_screen.dart';
 import '../../progress/models/unit_progress_local_model.dart';
 import '../../progress/services/unit_progress_local_storage.dart';
+import '../../../core/startup/app_preload_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,6 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _backendFuture = _backendStatusService.isBackendReachable();
     _progressFuture = _progressStorage.getAllProgress();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppPreloadService.instance.startLightPreload();
+    });
   }
 
   Future<void> _reload() async {

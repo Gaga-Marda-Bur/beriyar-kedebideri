@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import '../utils/app_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,31 +26,34 @@ class OnlineContentCacheService {
     required String key,
   }) async {
     final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString('$_prefix$key');
+    final raw = prefs.getString(key);
 
     if (raw == null || raw.isEmpty) {
+      AppLogger.debug('CACHE READ [$key]: empty');
       return [];
     }
 
     try {
-      final decoded = jsonDecode(raw);
+      final decoded = await compute(_decodeJsonList, raw);
 
-      if (decoded is Map<String, dynamic>) {
-        final items = decoded['items'];
-        AppLogger.debug('CACHE READ [$key]: empty');
-        if (items is List) {
-          return items
-              .whereType<Map<String, dynamic>>()
-              .map(Map<String, dynamic>.from)
-              .toList();
-        }
-      }
-    } catch (error, stackTrace) {
-      AppLogger.error('CACHE READ [$key] failed', error: error, stackTrace: stackTrace);
+      AppLogger.debug('CACHE READ [$key]: ${decoded.length} raw items');
+
+      return decoded;
+    } catch (error) {
+      AppLogger.error('CACHE READ [$key] failed', error: error);
       return [];
     }
-    AppLogger.error('CACHE READ [$key] failed: invalid cached data format');
-    return [];
+  }
+
+  List<Map<String, dynamic>> _decodeJsonList(String raw) {
+    final decoded = jsonDecode(raw);
+
+    if (decoded is! List) return [];
+
+    return decoded
+        .whereType<Map>()
+        .map((item) => Map<String, dynamic>.from(item))
+        .toList();
   }
 
   Future<DateTime?> cachedAt({

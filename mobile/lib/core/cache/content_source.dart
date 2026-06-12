@@ -22,7 +22,6 @@ class ContentSourceState {
 
   ContentSourceType getSource(String key) {
     final source = _sources[key] ?? ContentSourceType.empty;
-    AppLogger.debug('SOURCE GET [$key] = ${source.name}');
     return source;
   }
 

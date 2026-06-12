@@ -30,9 +30,9 @@ class AppEnvironment {
 
   static Duration get backendStatusCacheDuration {
     if (isProd) {
-      return const Duration(seconds: 10);
+      return const Duration(seconds: 20);
     }
 
-    return const Duration(seconds: 3);
+    return const Duration(seconds: 8);
   }
 }
