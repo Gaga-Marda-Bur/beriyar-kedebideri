@@ -11,6 +11,7 @@ import '../../../core/config/app_environment.dart';
 import '../../../core/network/backend_status_service.dart';
 import '../../../core/cache/memory_content_cache.dart';
 import '../../../core/cache/content_source.dart';
+import '../../../core/api/api_config.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -68,6 +69,10 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 12),
                       Text('Flavor: ${AppEnvironment.flavor.name}'),
+                      const SizedBox(height: 8),
+                      Text('API flavor: ${ApiConfig.flavorName}'),
+                      const SizedBox(height: 8),
+                      Text('API base URL: ${ApiConfig.baseUrl}'),
                       const SizedBox(height: 12),
                       OutlinedButton.icon(
                         onPressed: () {
