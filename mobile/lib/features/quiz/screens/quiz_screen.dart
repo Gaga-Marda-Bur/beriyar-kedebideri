@@ -397,9 +397,9 @@ class _QuizQuestionView extends StatelessWidget {
             option: question.options[i],
             text: optionText(question.options[i], lang),
             isBeriya: isBeriyaOption(question.options[i]),
-            index: i,
-            correctIndex: correctIndex,
-            selectedIndex: selectedIndex,
+            isSelected: selectedIndex == i,
+            hasAnswered: hasAnswered,
+            isSelectedCorrect: selectedIndex == i && selectedIndex == correctIndex,
             onTap: () => onSelect(i),
           ),
           const SizedBox(height: 12),
@@ -448,36 +448,35 @@ class _AnswerCard extends StatelessWidget {
   final QuizOptionModel option;
   final String text;
   final bool isBeriya;
-  final int index;
-  final int correctIndex;
-  final int? selectedIndex;
+  final bool isSelected;
+  final bool hasAnswered;
+  final bool isSelectedCorrect;
   final VoidCallback onTap;
 
   const _AnswerCard({
     required this.option,
     required this.text,
     required this.isBeriya,
-    required this.index,
-    required this.correctIndex,
-    required this.selectedIndex,
+    required this.isSelected,
+    required this.hasAnswered,
+    required this.isSelectedCorrect,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final hasAnswered = selectedIndex != null;
-    final isSelected = selectedIndex == index;
-    final isCorrect = correctIndex == index;
-
     Color borderColor = Colors.white.withValues(alpha: 0.18);
     IconData icon = Icons.radio_button_unchecked_rounded;
 
-    if (hasAnswered && isCorrect) {
+    if (hasAnswered && isSelected && isSelectedCorrect) {
       borderColor = AppColors.gold;
       icon = Icons.check_circle_rounded;
-    } else if (hasAnswered && isSelected && !isCorrect) {
+    } else if (hasAnswered && isSelected && !isSelectedCorrect) {
       borderColor = Colors.redAccent;
       icon = Icons.cancel_rounded;
+    } else if (hasAnswered) {
+      borderColor = Colors.white.withValues(alpha: 0.10);
+      icon = Icons.radio_button_unchecked_rounded;
     }
 
     return GlassCard(

@@ -28,3 +28,6 @@ mobile/.flutter-plugins-dependencies
 mobile/android/key.properties
 mobile/android/app/*.jks
 mobile/android/app/*.keystore
+
+backend/.env.production
+backend/*.env
