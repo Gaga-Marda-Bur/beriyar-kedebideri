@@ -995,3 +995,48 @@ html[dir="rtl"] .footer-grid {
 html[dir="rtl"] .quiz-option-button {
     text-align: right;
 }
+
+.mobile-menu {
+    display: none;
+    position: sticky;
+    top: 76px;
+    z-index: 25;
+    background: rgba(6, 26, 20, 0.94);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.mobile-menu.is-open {
+    display: block;
+}
+
+.mobile-menu-inner {
+    padding: 16px 0 20px;
+    display: grid;
+    gap: 10px;
+}
+
+.mobile-menu-inner a {
+    padding: 13px 16px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--brand-white);
+    font-weight: 800;
+}
+
+.mobile-menu-inner a:hover {
+    background: rgba(212, 175, 55, 0.16);
+    color: var(--brand-gold);
+}
+
+.mobile-language-switcher {
+    width: fit-content;
+    margin-top: 8px;
+}
+
+@media (min-width: 921px) {
+    .mobile-menu {
+        display: none !important;
+    }
+}

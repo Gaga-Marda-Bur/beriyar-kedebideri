@@ -164,3 +164,4 @@ SECURE_SSL_REDIRECT = config(
     default=False,
     cast=bool,
 )
+SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", default=0, cast=int)

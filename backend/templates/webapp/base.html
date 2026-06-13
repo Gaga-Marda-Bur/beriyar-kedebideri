@@ -41,9 +41,29 @@
                     <a href="/media/downloads/beriyar-kedebideri-v1.apk" class="btn btn-primary">APK Android</a>
                 </div>
 
-                <a href="#footer" class="btn btn-secondary mobile-menu-button">Menu</a>
+                <button type="button" class="btn btn-secondary mobile-menu-button" id="mobileMenuButton">
+                    Menu
+                </button>
             </div>
         </header>
+        <div class="mobile-menu" id="mobileMenu">
+            <div class="container mobile-menu-inner">
+                <a href="{% url 'web-home' %}#mission">Mission</a>
+                <a href="{% url 'web-learning-path' %}">Parcours</a>
+                <a href="{% url 'web-alphabet' %}">Alphabet</a>
+                <a href="{% url 'web-vocabulary' %}">Vocabulaire</a>
+                <a href="{% url 'web-quiz' %}">Quiz</a>
+                <a href="{% url 'web-no-ena-list' %}">No Ena</a>
+                <a href="{% url 'web-feedback' %}">Feedback</a>
+                <a href="/media/downloads/beriyar-kedebideri-v1.apk">APK Android</a>
+
+                <div class="language-switcher mobile-language-switcher">
+                    <a href="?lang=fr">FR</a>
+                    <a href="?lang=en">EN</a>
+                    <a href="?lang=ar">AR</a>
+                </div>
+            </div>
+        </div>
 
         {% block content %}{% endblock %}
 
@@ -88,5 +108,22 @@
             </div>
         </footer>
     </div>
+
+    <script>
+        const mobileMenuButton = document.getElementById("mobileMenuButton");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener("click", function () {
+                mobileMenu.classList.toggle("is-open");
+            });
+
+            mobileMenu.querySelectorAll("a").forEach(function (link) {
+                link.addEventListener("click", function () {
+                    mobileMenu.classList.remove("is-open");
+                });
+            });
+        }
+    </script>
 </body>
 </html>

@@ -331,6 +331,36 @@ class _QuizQuestionView extends StatelessWidget {
     required this.optionOrder,
   });
 
+  bool _shouldShowQuestionCharacter(QuizQuestionModel question) {
+    if (question.characterSymbol.isEmpty) return false;
+
+    // Pour audio_to_character, le caractère est la réponse.
+    // Donc il ne doit jamais être affiché dans la question.
+    if (question.questionType == 'audio_to_character') {
+      return false;
+    }
+
+    // Pour text_to_character, le caractère peut aussi être la réponse.
+    if (question.questionType == 'text_to_character') {
+      return false;
+    }
+
+    // Pour les autres types, afficher le caractère peut être utile.
+    return true;
+  }
+
+  bool _shouldShowQuestionWord(QuizQuestionModel question) {
+    if (question.wordText.isEmpty) return false;
+
+    // Si le quiz demande de choisir un mot/image à partir d’un audio,
+    // ne pas afficher le mot-réponse dans la question.
+    if (question.questionType == 'audio_to_image') {
+      return false;
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final lang = Localizations.localeOf(context).languageCode;
@@ -401,7 +431,7 @@ class _QuizQuestionView extends StatelessWidget {
                 questionText(question, lang),
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
-              if (question.characterSymbol.isNotEmpty) ...[
+              if (_shouldShowQuestionCharacter(question)) ...[
                 const SizedBox(height: 18),
                 Center(
                   child: Text(
@@ -410,7 +440,7 @@ class _QuizQuestionView extends StatelessWidget {
                   ),
                 ),
               ],
-              if (question.wordText.isNotEmpty) ...[
+              if (_shouldShowQuestionWord(question)) ...[
                 const SizedBox(height: 18),
                 Center(
                   child: Text(
