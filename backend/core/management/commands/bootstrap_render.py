@@ -14,8 +14,8 @@ class Command(BaseCommand):
         User = get_user_model()
 
         username = os.environ.get("DJANGO_SUPERUSER_USERNAME", "admin")
-        email = os.environ.get("DJANGO_SUPERUSER_EMAIL", "gagapetitfils@gmail.com")
-        password = os.environ.get("DJANGO_SUPERUSER_PASSWORD", "Marda..05BKa")
+        email = os.environ.get("DJANGO_SUPERUSER_EMAIL", "")
+        password = os.environ.get("DJANGO_SUPERUSER_PASSWORD", "")
 
         if not password:
             self.stdout.write(self.style.WARNING("DJANGO_SUPERUSER_PASSWORD is not set. Superuser skipped."))
@@ -31,9 +31,8 @@ class Command(BaseCommand):
 
         # Seed alphabet si la commande existe
         try:
-            call_command("seed_alphabet")
-            self.stdout.write(self.style.SUCCESS("Alphabet seed completed."))
+            call_command("seed_initial_content")
+            self.stdout.write(self.style.SUCCESS("Initial content seed completed."))
         except Exception as exc:
-            self.stdout.write(self.style.WARNING(f"seed_alphabet skipped: {exc}"))
-
+            self.stdout.write(self.style.WARNING(f"seed_initial_content skipped: {exc}"))
         # Si tu as d'autres seed commands plus tard, on les ajoutera ici.
