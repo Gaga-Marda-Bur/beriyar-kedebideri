@@ -9,7 +9,8 @@ from .views import (
     unit_detail_page,
     vocabulary_page,
     feedback_page,
-    quiz_page,  
+    quiz_page,
+    android_apk_download,
 )
 
 urlpatterns = [
@@ -22,4 +23,5 @@ urlpatterns = [
     path('no-ena/<slug:slug>/', no_ena_detail_page, name='web-no-ena-detail'),
     path("feedback/", feedback_page, name="web-feedback"),
     path("quiz/", quiz_page, name="web-quiz"),
+    path("download/android/", android_apk_download, name="web-download-android"),
 ]

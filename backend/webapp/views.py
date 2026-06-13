@@ -8,6 +8,10 @@ from vocabulary.models import Word
 from django.contrib import messages
 from feedback.models import FeedbackReport
 from quizzes.models import QuizQuestion
+from pathlib import Path
+
+from django.conf import settings
+from django.http import FileResponse, Http404
 
 def get_web_lang(request):
     lang = request.GET.get("lang") or request.session.get("web_lang") or "fr"
@@ -384,4 +388,17 @@ def quiz_page(request):
             "current_lang": lang,
             "is_rtl": lang == "ar",
         },
+    )
+
+def android_apk_download(request):
+    apk_path = Path(settings.MEDIA_ROOT) / "downloads" / "beriyar-kedebideri-v1.apk"
+
+    if not apk_path.exists():
+        raise Http404("APK file not found.")
+
+    return FileResponse(
+        open(apk_path, "rb"),
+        as_attachment=True,
+        filename="beriyar-kedebideri-v1.apk",
+        content_type="application/vnd.android.package-archive",
     )
