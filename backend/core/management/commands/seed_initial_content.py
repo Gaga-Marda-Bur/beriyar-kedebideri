@@ -60,10 +60,35 @@ class Command(BaseCommand):
                 "available_offline": True,
             })
 
+            unicode_code = f"U+{codepoint:04X}"
+
+            defaults = clean_defaults(Character, {
+                "symbol": symbol,
+                "unicode_code": unicode_code,
+                "name": name,
+                "latin_transcription": f"char-{index}",
+                "arabic_transcription": "",
+                "ipa": "",
+                "description": f"Caractère Beriya Erfe numéro {index}.",
+                "order": index,
+                "order_index": index,
+                "is_active": True,
+                "available_offline": True,
+            })
+
+            lookup = {}
+            if "unicode_code" in existing_fields(Character):
+                lookup["unicode_code"] = unicode_code
+            else:
+                lookup["symbol"] = symbol
+
             character, created = Character.objects.get_or_create(
-                symbol=symbol,
+                **lookup,
                 defaults=defaults,
             )
+
+            if not created:
+                set_existing_attrs(character, defaults)
 
             if not created:
                 set_existing_attrs(character, defaults)
