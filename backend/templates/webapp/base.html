@@ -38,7 +38,7 @@
 
                 <div class="nav-actions">
                     <a href="{% url 'web-learning-path' %}" class="btn btn-secondary">Explorer</a>
-                    <a href="{% url 'web-download-android' %}" class="btn btn-primary">APK Android</a>
+                    <a href="{{ ANDROID_APK_URL }}" class="btn btn-primary">APK Android</a>
                 </div>
 
                 <button type="button" class="btn btn-secondary mobile-menu-button" id="mobileMenuButton">
@@ -55,7 +55,7 @@
                 <a href="{% url 'web-quiz' %}">Quiz</a>
                 <a href="{% url 'web-no-ena-list' %}">No Ena</a>
                 <a href="{% url 'web-feedback' %}">Feedback</a>
-                <a href="{% url 'web-download-android' %}">APK Android</a>
+                <a href="{{ ANDROID_APK_URL }}">APK Android</a>
 
                 <div class="language-switcher mobile-language-switcher">
                     <a href="?lang=fr">FR</a>
@@ -102,7 +102,7 @@
                     <a href="#mission">Mission</a>
                     <a href="#packs">Packs offline</a>
                     <a href="/admin/">Administration</a>
-                    <a href="{% url 'web-download-android' %}">Télécharger APK Android</a>
+                    <a href="{{ ANDROID_APK_URL }}">Télécharger APK Android</a>
                     <a href="{% url 'web-feedback' %}">Feedback</a>
                 </div>
             </div>

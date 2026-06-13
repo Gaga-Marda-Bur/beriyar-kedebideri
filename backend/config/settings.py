@@ -30,6 +30,7 @@ INSTALLED_APPS = [
      # Third-party
     'rest_framework',
     'corsheaders',
+    'storages',
 
     # Local apps
     'core',
@@ -70,6 +71,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'webapp.context_processors.public_links',
             ],
         },
     },
@@ -132,8 +134,51 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+USE_R2 = config("USE_R2", default=False, cast=bool)
+
+if USE_R2:
+    AWS_ACCESS_KEY_ID = config("R2_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = config("R2_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = config("R2_BUCKET_NAME")
+    AWS_S3_ENDPOINT_URL = config("R2_ENDPOINT_URL")
+    AWS_S3_REGION_NAME = "auto"
+    AWS_S3_SIGNATURE_VERSION = "s3v4"
+
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = None
+    AWS_QUERYSTRING_AUTH = False
+
+    AWS_S3_OBJECT_PARAMETERS = {
+        "CacheControl": "max-age=86400",
+    }
+
+    R2_PUBLIC_BASE_URL = config("R2_PUBLIC_BASE_URL")
+
+    MEDIA_URL = f"{R2_PUBLIC_BASE_URL}/media/"
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            "OPTIONS": {
+                "location": "media",
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+else:
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = BASE_DIR / "media"
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
 
 STORAGES = {
     "default": {
@@ -178,3 +223,8 @@ SECURE_SSL_REDIRECT = config(
     cast=bool,
 )
 SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", default=0, cast=int)
+
+ANDROID_APK_URL = config(
+    "ANDROID_APK_URL",
+    default="/download/android/",
+)
