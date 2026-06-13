@@ -1,7 +1,7 @@
 # backend/core/management/commands/seed_initial_content.py
 
 from django.core.management.base import BaseCommand
-
+from django.db.models import Q
 
 def existing_fields(model):
     return {field.name for field in model._meta.fields}
@@ -40,62 +40,49 @@ class Command(BaseCommand):
 
         # 1. Alphabet Beriya Erfe
         # Unicode range: U+16EA0..U+16EB8 and U+16EBB..U+16ED3
+        # Nettoyage : retirer les 25 formes non officielles créées par erreur.
+        Character.objects.filter(
+            Q(symbol__gte=chr(0x16EBB), symbol__lte=chr(0x16ED3))
+            | Q(unicode_code__gte="U+16EBB", unicode_code__lte="U+16ED3")
+        ).delete()
+
+        # Alphabet officiel : 25 caractères seulement.
         codepoints = list(range(0x16EA0, 0x16EB9))
 
         characters = []
 
         for index, codepoint in enumerate(codepoints, start=1):
             symbol = chr(codepoint)
+            unicode_code = f"U+{codepoint:04X}"
             name = f"Beriya Erfe {index}"
 
-            defaults = clean_defaults(Character, {
-                "name": name,
-                "latin_transcription": f"char-{index}",
-                "arabic_transcription": "",
-                "ipa": "",
-                "description": f"Caractère Beriya Erfe numéro {index}.",
-                "order": index,
-                "order_index": index,
-                "is_active": True,
-                "available_offline": True,
-            })
-
-            unicode_code = f"U+{codepoint:04X}"
-
-            defaults = clean_defaults(Character, {
+            data = clean_defaults(Character, {
                 "symbol": symbol,
                 "unicode_code": unicode_code,
                 "name": name,
                 "latin_transcription": f"char-{index}",
                 "arabic_transcription": "",
                 "ipa": "",
-                "description": f"Caractère Beriya Erfe numéro {index}.",
+                "description": f"Caractère officiel Beriya Erfe numéro {index}.",
                 "order": index,
                 "order_index": index,
                 "is_active": True,
                 "available_offline": True,
             })
 
-            lookup = {}
+            query = Q(symbol=symbol)
+
             if "unicode_code" in existing_fields(Character):
-                lookup["unicode_code"] = unicode_code
+                query = query | Q(unicode_code=unicode_code)
+
+            character = Character.objects.filter(query).first()
+
+            if character:
+                set_existing_attrs(character, data)
             else:
-                lookup["symbol"] = symbol
-
-            character, created = Character.objects.get_or_create(
-                **lookup,
-                defaults=defaults,
-            )
-
-            if not created:
-                set_existing_attrs(character, defaults)
-
-            if not created:
-                set_existing_attrs(character, defaults)
+                character = Character.objects.create(**data)
 
             characters.append(character)
-
-        self.stdout.write(self.style.SUCCESS(f"Alphabet OK: {len(characters)} caractères."))
 
         # 2. Theme
         theme_defaults = clean_defaults(LearningTheme, {
