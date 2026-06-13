@@ -90,7 +90,10 @@
                         {% for quiz in quizzes %}
                             <div class="quiz-card glass">
                                 <strong>{{ quiz.get_question_type_display }}</strong>
-                                <div class="word-meta">{{ quiz.prompt_fr }}</div>
+                                <div class="word-meta">
+                                    
+                                    {{ quiz.prompt_fr }}
+                                </div>
                                 <div class="pill" style="margin-top: 10px;">{{ quiz.options.count }} options</div>
                             </div>
                         {% empty %}

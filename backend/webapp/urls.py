@@ -8,6 +8,8 @@ from .views import (
     no_ena_list_page,
     unit_detail_page,
     vocabulary_page,
+    feedback_page,
+    quiz_page,  
 )
 
 urlpatterns = [
@@ -18,4 +20,6 @@ urlpatterns = [
     path('parcours/<slug:slug>/', unit_detail_page, name='web-unit-detail'),
     path('no-ena/', no_ena_list_page, name='web-no-ena-list'),
     path('no-ena/<slug:slug>/', no_ena_detail_page, name='web-no-ena-detail'),
+    path("feedback/", feedback_page, name="web-feedback"),
+    path("quiz/", quiz_page, name="web-quiz"),
 ]

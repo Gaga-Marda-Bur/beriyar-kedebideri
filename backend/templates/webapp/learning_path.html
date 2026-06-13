@@ -20,8 +20,24 @@
             {% for theme in themes %}
                 <section class="theme-block glass">
                     <div class="section-kicker">{{ theme.level }}</div>
-                    <h2 style="margin: 8px 0 8px;">{{ theme.title_fr }}</h2>
-                    <p class="section-text">{{ theme.description_fr }}</p>
+                    <h2 style="margin: 8px 0 8px;">
+                        {% if current_lang == "ar" %}
+                            {{ theme.title_ar|default:theme.title_fr }}
+                        {% elif current_lang == "en" %}
+                            {{ theme.title_en|default:theme.title_fr }}
+                        {% else %}
+                            {{ theme.title_fr }}
+                        {% endif %}
+                    </h2>
+                    <p class="section-text">
+                        {% if current_lang == "ar" %}
+                            {{ theme.description_ar|default:theme.description_fr }}
+                        {% elif current_lang == "en" %}
+                            {{ theme.description_en|default:theme.description_fr }}
+                        {% else %}
+                            {{ theme.description_fr }}
+                        {% endif %}
+                    </p>
 
                     <div class="units-grid">
                         {% for unit in theme.units.all %}

@@ -1,13 +1,25 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from alphabet.models import Character
 from learning.models import LearningTheme, LearningUnit
 from no_ena.models import NoEnaPublication
 from offline_packs.models import LessonPack
 from vocabulary.models import Word
+from django.contrib import messages
+from feedback.models import FeedbackReport
+from quizzes.models import QuizQuestion
 
+def get_web_lang(request):
+    lang = request.GET.get("lang") or request.session.get("web_lang") or "fr"
+
+    if lang not in ["fr", "en", "ar"]:
+        lang = "fr"
+
+    request.session["web_lang"] = lang
+    return lang
 
 def home(request):
+    lang = get_web_lang(request)
     featured_no_ena = NoEnaPublication.objects.filter(
         is_active=True,
         status=NoEnaPublication.PUBLISHED,
@@ -58,11 +70,14 @@ def home(request):
             'learning_themes': learning_themes,
             'starter_pack': starter_pack,
             'stats': stats,
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
         },
     )
 
 
 def alphabet_page(request):
+    lang = get_web_lang(request)
     characters = Character.objects.filter(
         is_active=True,
     ).prefetch_related(
@@ -77,11 +92,14 @@ def alphabet_page(request):
         'webapp/alphabet.html',
         {
             'characters': characters,
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
         },
     )
 
 
 def vocabulary_page(request):
+    lang = get_web_lang(request)
     search = request.GET.get('q', '').strip()
     category = request.GET.get('category', '').strip()
 
@@ -132,11 +150,14 @@ def vocabulary_page(request):
             'categories': categories,
             'search': search,
             'selected_category': category,
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
         },
     )
 
 
 def learning_path_page(request):
+    lang = get_web_lang(request)
     themes = LearningTheme.objects.filter(
         is_active=True,
     ).prefetch_related(
@@ -153,11 +174,14 @@ def learning_path_page(request):
         'webapp/learning_path.html',
         {
             'themes': themes,
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
         },
     )
 
 
 def unit_detail_page(request, slug):
+    lang = get_web_lang(request)
     unit = get_object_or_404(
         LearningUnit.objects.select_related(
             'theme',
@@ -205,11 +229,14 @@ def unit_detail_page(request, slug):
             'unit': unit,
             'lessons': lessons,
             'quizzes': quizzes,
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
         },
     )
 
 
 def no_ena_list_page(request):
+    lang = get_web_lang(request)
     publication_type = request.GET.get('type', '').strip()
 
     publications = NoEnaPublication.objects.filter(
@@ -239,11 +266,14 @@ def no_ena_list_page(request):
             'publications': publications,
             'selected_type': publication_type,
             'publication_types': NoEnaPublication.PUBLICATION_TYPE_CHOICES,
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
         },
     )
 
 
 def no_ena_detail_page(request, slug):
+    lang = get_web_lang(request)
     publication = get_object_or_404(
         NoEnaPublication.objects.select_related(
             'primary_audio_asset',
@@ -275,5 +305,83 @@ def no_ena_detail_page(request, slug):
         {
             'publication': publication,
             'related_publications': related_publications,
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
+        },
+    )
+
+def feedback_page(request):
+    lang = get_web_lang(request)
+    if request.method == "POST":
+        feedback_type = request.POST.get("feedback_type", FeedbackReport.OTHER)
+        title = request.POST.get("title", "").strip()
+        message = request.POST.get("message", "").strip()
+        language_code = request.POST.get("language_code", "fr")
+
+        if not title and not message:
+            messages.error(request, "Merci d’écrire un message avant d’envoyer.")
+            return redirect("web-feedback")
+
+        FeedbackReport.objects.create(
+            feedback_type=feedback_type,
+            title=title,
+            message=message,
+            platform="web",
+            language_code=language_code,
+        )
+
+        messages.success(request, "Feedback envoyé. Merci !")
+        return redirect("web-feedback")
+
+    feedback_types = FeedbackReport.FEEDBACK_TYPE_CHOICES
+
+    return render(
+        request,
+        "webapp/feedback.html",
+        {
+            "feedback_types": feedback_types,
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
+        },
+    )
+
+
+def quiz_page(request):
+    lang = request.GET.get("lang", "fr")
+    if lang not in ["fr", "en", "ar"]:
+        lang = "fr"
+
+    unit_slug = request.GET.get("unit")
+
+    quizzes = QuizQuestion.objects.filter(
+        is_active=True,
+        status=QuizQuestion.PUBLISHED,
+    ).select_related(
+        "unit",
+        "lesson",
+        "character",
+        "word",
+    ).prefetch_related(
+        "options",
+        "options__character",
+        "options__word",
+        "audio_links__audio_asset",
+    ).order_by(
+        "unit__order_index",
+        "lesson__order_index",
+        "order_index",
+        "id",
+    )
+
+    if unit_slug:
+        quizzes = quizzes.filter(unit__slug=unit_slug)
+
+    return render(
+        request,
+        "webapp/quiz.html",
+        {
+            "quizzes": quizzes,
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
         },
     )

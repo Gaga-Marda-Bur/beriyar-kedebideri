@@ -1,0 +1,73 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}Feedback — Beřiyar Kedebideři{% endblock %}
+
+{% block content %}
+<main>
+  <section class="page-header">
+    <div class="container">
+      <div class="badge">Feedback</div>
+      {% if current_lang == "ar" %}
+        <h1>إرسال ملاحظة</h1>
+        <p>ساعدنا على تحسين Beřiyar Kedebideři. يمكنك الإبلاغ عن خطأ أو مشكلة صوت أو اقتراح تحسين.</p>
+    {% elif current_lang == "en" %}
+        <h1>Send feedback</h1>
+        <p>Help us improve Beřiyar Kedebideři. You can report a bug, an audio issue, a translation error or suggest an improvement.</p>
+    {% else %}
+        <h1>Envoyer un feedback</h1>
+        <p>Aide-nous à améliorer Beřiyar Kedebideři. Tu peux signaler un bug, une erreur de traduction, un problème audio ou proposer une amélioration.</p>
+    {% endif %}
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="feedback-panel glass">
+        {% if messages %}
+          <div class="messages">
+            {% for message in messages %}
+              <div class="message {{ message.tags }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <form method="post" class="feedback-form">
+          {% csrf_token %}
+
+          <label for="feedback_type">Type de feedback</label>
+          <select id="feedback_type" name="feedback_type">
+            {% for value, label in feedback_types %}
+              <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+          </select>
+
+          <label for="title">Titre</label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            placeholder="Exemple : Problème audio dans l’alphabet"
+          >
+
+          <label for="message">Message</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="6"
+            placeholder="Explique le problème ou ta suggestion..."
+            required
+          ></textarea>
+
+          <input type="hidden" name="language_code" value="{{ current_lang|default:'fr' }}">
+
+          <button type="submit" class="btn btn-primary">
+            {% if current_lang == "ar" %}إرسال{% elif current_lang == "en" %}Send{% else %}Envoyer{% endif %}
+        </button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

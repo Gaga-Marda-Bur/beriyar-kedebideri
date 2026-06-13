@@ -46,21 +46,27 @@
                         <div class="word-text">{{ word.beriya_text }}</div>
 
                         <div class="word-translation">
-                            {{ word.french_translation|default:"Traduction française à compléter" }}
+                            {% if current_lang == "ar" %}
+                                {{ word.arabic_translation|default:word.french_translation }}
+                            {% elif current_lang == "en" %}
+                                {{ word.english_translation|default:word.french_translation }}
+                            {% else %}
+                                {{ word.french_translation }}
+                            {% endif %}
                         </div>
 
                         <div class="word-meta">
-                            {% if word.english_translation %}
-                                EN: {{ word.english_translation }}<br>
-                            {% endif %}
-                            {% if word.arabic_translation %}
-                                AR: {{ word.arabic_translation }}<br>
-                            {% endif %}
-                            {% if word.latin_transcription %}
-                                Latin: {{ word.latin_transcription }}<br>
-                            {% endif %}
-                            {% if word.category %}
-                                Catégorie: {{ word.category.name_fr }}
+
+                            
+                            {% if current_lang == "ar" %}
+                                {{ word.arabic_transcription }}<br>
+                                {{ word.category.name_ar|default:word.category.name_fr }}
+                            {% elif current_lang == "en" %}
+                                {{ word.latin_transcription }}<br>
+                                {{ word.category.name_en|default:word.category.name_fr }}
+                            {% else %}
+                                {{ word.latin_transcription }}<br>
+                                {{ word.category.name_fr }}
                             {% endif %}
                         </div>
 

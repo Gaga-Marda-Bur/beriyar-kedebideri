@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ current_lang|default:'fr' }}" {% if is_rtl %}dir="rtl"{% endif %}>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,12 +26,19 @@
                     <a href="{% url 'web-alphabet' %}">Alphabet</a>
                     <a href="{% url 'web-vocabulary' %}">Vocabulaire</a>
                     <a href="{% url 'web-no-ena-list' %}">No Ena</a>
+                    <a href="{% url 'web-feedback' %}">Feedback</a>
+                    <a href="{% url 'web-quiz' %}">Quiz</a>
                     <a href="/admin/">Admin</a>
+                    <div class="language-switcher">
+                        <a href="?lang=fr">FR</a>
+                        <a href="?lang=en">EN</a>
+                        <a href="?lang=ar">AR</a>
+                    </div>
                 </nav>
 
                 <div class="nav-actions">
                     <a href="{% url 'web-learning-path' %}" class="btn btn-secondary">Explorer</a>
-                    <a href="{% url 'web-vocabulary' %}" class="btn btn-primary">Commencer</a>
+                    <a href="/media/downloads/beriyar-kedebideri-v1.apk" class="btn btn-primary">APK Android</a>
                 </div>
 
                 <a href="#footer" class="btn btn-secondary mobile-menu-button">Menu</a>
@@ -61,14 +68,13 @@
                     <a href="{% url 'web-learning-path' %}">Parcours</a>
                     <a href="{% url 'web-alphabet' %}">Alphabet</a>
                     <a href="{% url 'web-vocabulary' %}">Vocabulaire</a>
-                    <a href="/api/quizzes/">Quiz API</a>
+                    <a href="{% url 'web-quiz' %}">Quiz</a>
                 </div>
 
                 <div>
                     <h4>Culture</h4>
                     <a href="{% url 'web-no-ena-list' %}">No Ena</a>
-                    <a href="/api/no-ena/publications/">Publications API</a>
-                    <a href="/api/feedback/create/">Signaler</a>
+                    <a href="{% url 'web-feedback' %}">Feedback</a>
                 </div>
 
                 <div>
@@ -76,6 +82,8 @@
                     <a href="#mission">Mission</a>
                     <a href="#packs">Packs offline</a>
                     <a href="/admin/">Administration</a>
+                    <a href="/media/downloads/beriyar-kedebideri-v1.apk">Télécharger APK Android</a>
+                    <a href="{% url 'web-feedback' %}">Feedback</a>
                 </div>
             </div>
         </footer>

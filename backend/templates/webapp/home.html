@@ -14,16 +14,49 @@
                     <span>son écriture.</span>
                 </h1>
 
+                {% if current_lang == "ar" %}
+                <h1>
+                    صوت Beriya يلتقي
+                    <span>بكتابته.</span>
+                </h1>
                 <p class="hero-text">
-                    Beřiyar Kedebideři aide les locuteurs Beriya/Zaghawa à apprendre
-                    progressivement l’écriture Beriya Erfe à travers l’écoute, la répétition,
-                    les caractères, les mots, les quiz et les contenus culturels validés.
+                    Beřiyar Kedebideři يساعد المتحدثين بلغة Beriya/Zaghawa على تعلم كتابة Beriya Erfe تدريجيًا من خلال الصوت، التكرار، الحروف، الكلمات والاختبارات.
                 </p>
+                {% elif current_lang == "en" %}
+                <h1>
+                    The Beriya voice meets
+                    <span>its writing.</span>
+                </h1>
+                <p class="hero-text">
+                    Beřiyar Kedebideři helps Beriya/Zaghawa speakers gradually learn Beriya Erfe writing through listening, repetition, characters, words, quizzes and cultural content.
+                </p>
+                {% else %}
+                <h1>
+                    La voix Beriya rencontre
+                    <span>son écriture.</span>
+                </h1>
+                <p class="hero-text">
+                    Beřiyar Kedebideři aide les locuteurs Beriya/Zaghawa à apprendre progressivement l’écriture Beriya Erfe à travers l’écoute, la répétition, les caractères, les mots, les quiz et les contenus culturels validés.
+                </p>
+                {% endif %}
 
                 <div class="hero-actions">
-                    <a href="#apprendre" class="btn btn-primary">Commencer à apprendre</a>
-                    <a href="#no-ena" class="btn btn-secondary">Découvrir No Ena</a>
+                    <a href="{% url 'web-learning-path' %}" class="btn btn-primary">
+                        {% if current_lang == "ar" %}ابدأ التعلم{% elif current_lang == "en" %}Start learning{% else %}Commencer à apprendre{% endif %}
+                    </a>
+
+                    <a href="/media/downloads/beriyar-kedebideri-v1.apk" class="btn btn-secondary">
+                        {% if current_lang == "ar" %}تحميل تطبيق أندرويد{% elif current_lang == "en" %}Download Android app{% else %}Télécharger l’app Android{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-no-ena-list' %}" class="btn btn-secondary">
+                        {% if current_lang == "ar" %}اكتشف No Ena{% elif current_lang == "en" %}Discover No Ena{% else %}Découvrir No Ena{% endif %}
+                    </a>
                 </div>
+
+                <p class="download-note">
+                    Version Android MVP — installation directe APK. Play Store bientôt.
+                </p>
 
                 <div class="hero-stats">
                     <div class="stat-card glass">
@@ -60,7 +93,7 @@
                         </div>
 
                         <div style="margin-top: 24px;">
-                            <a href="/api/alphabet/characters/" class="btn btn-primary">Voir l’alphabet API</a>
+                            <a href="{% url 'web-alphabet' %}" class="btn btn-primary">Voir l’alphabet</a>
                         </div>
                     </div>
                 </div>
@@ -122,7 +155,7 @@
                 </p>
 
                 <div style="margin-top: 24px;">
-                    <a href="/api/learning/themes/" class="btn btn-primary">Explorer les thèmes API</a>
+                    <a href="{% url 'web-learning-path' %}" class="btn btn-primary">Explorer les parcours</a>
                 </div>
             </div>
 
@@ -195,7 +228,7 @@
             </div>
 
             <div style="margin-top: 28px;">
-                <a href="/api/no-ena/publications/" class="btn btn-secondary">Voir No Ena API</a>
+                <a href="{% url 'web-no-ena-list' %}" class="btn btn-secondary">Voir No Ena</a>
             </div>
         </div>
     </section>

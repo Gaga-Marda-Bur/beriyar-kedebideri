@@ -1,0 +1,100 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}Quiz — Beřiyar Kedebideři{% endblock %}
+
+{% block content %}
+<main>
+  <section class="page-header">
+    <div class="container">
+      <div class="badge">Quiz</div>
+
+      {% if current_lang == "ar" %}
+        <h1>اختبارات Beriya Erfe</h1>
+        <p>استمع، اختر، وتدرّب على الحروف والكلمات خطوة بخطوة.</p>
+      {% elif current_lang == "en" %}
+        <h1>Beriya Erfe quizzes</h1>
+        <p>Listen, choose, and practice characters and words step by step.</p>
+      {% else %}
+        <h1>Quiz Beriya Erfe</h1>
+        <p>Écoute, choisis et entraîne-toi avec les caractères et les mots.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div class="quiz-web-grid">
+        {% for quiz in quizzes %}
+          <article class="quiz-web-card glass">
+            <div class="quiz-web-type">
+              {{ quiz.get_question_type_display|default:"Quiz" }}
+            </div>
+
+            <h2>
+              {% if current_lang == "ar" %}
+                {{ quiz.prompt_ar|default:quiz.prompt_fr|default:"اختبار" }}
+              {% elif current_lang == "en" %}
+                {{ quiz.prompt_en|default:quiz.prompt_fr|default:"Quiz" }}
+              {% else %}
+                {{ quiz.prompt_fr|default:"Quiz" }}
+              {% endif %}
+            </h2>
+
+            {% for audio_link in quiz.audio_links.all %}
+              {% if audio_link.role == "question" and audio_link.is_primary and audio_link.audio_asset.file %}
+                <audio controls preload="none">
+                  <source src="{{ audio_link.audio_asset.file.url }}">
+                </audio>
+              {% endif %}
+            {% endfor %}
+
+            {% if quiz.question_image %}
+              <img class="quiz-web-image" src="{{ quiz.question_image.url }}" alt="Quiz image">
+            {% endif %}
+
+            <div class="quiz-options">
+              {% for option in quiz.options.all %}
+                <button type="button" class="quiz-option-button">
+                  {% if option.character %}
+                    <span class="beriya-font">{{ option.character.symbol }}</span>
+                  {% elif option.word %}
+                    <span class="beriya-font">{{ option.word.beriya_text }}</span>
+                  {% else %}
+                    {% if current_lang == "ar" %}
+                      {{ option.text_ar|default:option.text_fr|default:"خيار" }}
+                    {% elif current_lang == "en" %}
+                      {{ option.text_en|default:option.text_fr|default:"Option" }}
+                    {% else %}
+                      {{ option.text_fr|default:"Option" }}
+                    {% endif %}
+                  {% endif %}
+                </button>
+              {% empty %}
+                <div class="empty-state">
+                  {% if current_lang == "ar" %}
+                    لا توجد خيارات لهذا السؤال.
+                  {% elif current_lang == "en" %}
+                    No options for this question.
+                  {% else %}
+                    Aucune option pour cette question.
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          </article>
+        {% empty %}
+          <div class="empty-state glass">
+            {% if current_lang == "ar" %}
+              لا توجد اختبارات منشورة حاليًا.
+            {% elif current_lang == "en" %}
+              No published quizzes yet.
+            {% else %}
+              Aucun quiz publié pour le moment.
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
