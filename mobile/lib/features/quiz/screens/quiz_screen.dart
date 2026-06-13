@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'dart:math';
 import '../../../core/audio/audio_url_player.dart';
 import '../../../core/cache/cached_content_service.dart';
 import '../../../core/theme/app_colors.dart';
@@ -26,6 +26,7 @@ class _QuizScreenState extends State<QuizScreen> {
   late Future<List<QuizQuestionModel>> _future;
 
   List<QuizQuestionModel> _questions = [];
+  List<List<int>> _optionOrders = [];
   int _currentIndex = 0;
   int? _selectedIndex;
   int _correctCount = 0;
@@ -47,6 +48,29 @@ class _QuizScreenState extends State<QuizScreen> {
     final items = await _cachedContentService.loadQuizzes();
 
     items.sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+
+    final random = Random();
+
+    _optionOrders = items.map((question) {
+      final order = List<int>.generate(
+        question.options.length,
+        (index) => index,
+      );
+
+      order.shuffle(random);
+
+      final correctIndex = question.correctIndex;
+
+      // Évite que la bonne réponse tombe en première position après shuffle.
+      if (order.length > 1 && order.first == correctIndex) {
+        final swapIndex = order.length ~/ 2;
+        final temp = order[0];
+        order[0] = order[swapIndex];
+        order[swapIndex] = temp;
+      }
+
+      return order;
+    }).toList();
 
     _questions = items;
 
@@ -120,15 +144,19 @@ class _QuizScreenState extends State<QuizScreen> {
     return option.characterSymbol.isNotEmpty || option.wordText.isNotEmpty;
   }
 
-  void _selectAnswer(int index) {
+  void _selectAnswer(int displayIndex) {
     if (_selectedIndex != null) return;
 
     final question = _questions[_currentIndex];
+    final order = _optionOrders[_currentIndex];
+
+    final originalIndex = order[displayIndex];
     final correctIndex = question.correctIndex;
 
     setState(() {
-      _selectedIndex = index;
-      if (index == correctIndex) {
+      _selectedIndex = displayIndex;
+
+      if (originalIndex == correctIndex) {
         _correctCount++;
       }
     });
@@ -254,6 +282,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   total: _questions.length,
                   selectedIndex: _selectedIndex,
                   correctCount: _correctCount,
+                  optionOrder: _optionOrders[_currentIndex],
                   questionText: _questionText,
                   oralPrompt: _oralPrompt,
                   optionText: _optionText,
@@ -277,6 +306,7 @@ class _QuizQuestionView extends StatelessWidget {
   final int total;
   final int? selectedIndex;
   final int correctCount;
+  final List<int> optionOrder;
   final String Function(QuizQuestionModel, String) questionText;
   final String Function(QuizQuestionModel, String) oralPrompt;
   final String Function(QuizOptionModel, String) optionText;
@@ -298,6 +328,7 @@ class _QuizQuestionView extends StatelessWidget {
     required this.onSelect,
     required this.onNext,
     required this.onPlayAudio,
+    required this.optionOrder,
   });
 
   @override
@@ -392,15 +423,24 @@ class _QuizQuestionView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 18),
-        for (int i = 0; i < question.options.length; i++) ...[
-          _AnswerCard(
-            option: question.options[i],
-            text: optionText(question.options[i], lang),
-            isBeriya: isBeriyaOption(question.options[i]),
-            isSelected: selectedIndex == i,
-            hasAnswered: hasAnswered,
-            isSelectedCorrect: selectedIndex == i && selectedIndex == correctIndex,
-            onTap: () => onSelect(i),
+        for (int displayIndex = 0; displayIndex < optionOrder.length; displayIndex++) ...[
+          Builder(
+            builder: (context) {
+              final originalIndex = optionOrder[displayIndex];
+              final option = question.options[originalIndex];
+              final correctDisplayIndex = optionOrder.indexOf(correctIndex);
+
+              return _AnswerCard(
+                option: option,
+                text: optionText(option, lang),
+                isBeriya: isBeriyaOption(option),
+                isSelected: selectedIndex == displayIndex,
+                hasAnswered: hasAnswered,
+                isSelectedCorrect:
+                    selectedIndex == displayIndex && displayIndex == correctDisplayIndex,
+                onTap: () => onSelect(displayIndex),
+              );
+            },
           ),
           const SizedBox(height: 12),
         ],

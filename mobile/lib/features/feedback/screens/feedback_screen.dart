@@ -54,6 +54,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
   Future<void> _send() async {
     final loc = AppLocalizations.of(context)!;
+    final languageCode = Localizations.localeOf(context).languageCode;
     final message = _messageController.text.trim();
 
     if (message.isEmpty) {
@@ -69,7 +70,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
 
     try {
       final deviceId = await _deviceIdService.getOrCreateDeviceId();
-      final languageCode = Localizations.localeOf(context).languageCode;
       final title = _categoryLabel(loc, _category);
 
       await _feedbackApiService.sendFeedback(
@@ -143,7 +143,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     ),
                     const SizedBox(height: 10),
                     DropdownButtonFormField<FeedbackCategory>(
-                      value: _category,
+                      initialValue: _category,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
