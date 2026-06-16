@@ -152,14 +152,20 @@ if USE_R2:
     }
 
     R2_PUBLIC_BASE_URL = config("R2_PUBLIC_BASE_URL")
+    R2_PUBLIC_DOMAIN = R2_PUBLIC_BASE_URL.replace("https://", "").replace("http://", "").rstrip("/")
 
-    MEDIA_URL = f"{R2_PUBLIC_BASE_URL}/media/"
+    AWS_S3_CUSTOM_DOMAIN = R2_PUBLIC_DOMAIN
+    AWS_S3_URL_PROTOCOL = "https:"
+
+    MEDIA_URL = f"https://{R2_PUBLIC_DOMAIN}/media/"
 
     STORAGES = {
         "default": {
             "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
             "OPTIONS": {
                 "location": "media",
+                "custom_domain": R2_PUBLIC_DOMAIN,
+                "url_protocol": "https:",
             },
         },
         "staticfiles": {
