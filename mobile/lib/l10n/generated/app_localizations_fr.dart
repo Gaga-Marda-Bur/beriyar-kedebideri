@@ -478,4 +478,77 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get feedbackContentSuggestion => 'Suggestion de contenu';
+
+  @override
+  String get studioSticker => 'Studio Sticker';
+
+  @override
+  String get studioStickerTitle => 'Crée tes images et stickers';
+
+  @override
+  String get studioStickerSubtitle =>
+      'Écris en Beriya Erfe, choisis un style, puis partage ton message.';
+
+  @override
+  String get studioWriteText => 'Écris ton texte';
+
+  @override
+  String get studioTextHint => 'Écris ton message...';
+
+  @override
+  String get studioBeriyaKeyboard => 'Clavier Beriya';
+
+  @override
+  String get studioStyle => 'Style';
+
+  @override
+  String get studioClassic => 'Classique';
+
+  @override
+  String get studioPremium => 'Premium';
+
+  @override
+  String get studioCulture => 'Culture';
+
+  @override
+  String get studioChild => 'Enfant';
+
+  @override
+  String get studioCalligraphy => 'Calligraphie';
+
+  @override
+  String get studioColor => 'Couleur';
+
+  @override
+  String get studioOutputMode => 'Mode de sortie';
+
+  @override
+  String get studioPhoto => 'Photo';
+
+  @override
+  String get studioStickerMode => 'Sticker';
+
+  @override
+  String get studioPreview => 'Aperçu en direct';
+
+  @override
+  String get studioEmptyText => 'Écris ton texte';
+
+  @override
+  String get studioDownloadShare => 'Télécharger / Partager';
+
+  @override
+  String get studioCreatedWith => 'Créé avec Beřiyar Kedebideři';
+
+  @override
+  String get studioHubSubtitle => 'Créer une image ou un sticker en Beriya';
+
+  @override
+  String get keyboardSpace => 'Espace';
+
+  @override
+  String get keyboardBackspace => 'Effacer';
+
+  @override
+  String get keyboardClear => 'Vider';
 }

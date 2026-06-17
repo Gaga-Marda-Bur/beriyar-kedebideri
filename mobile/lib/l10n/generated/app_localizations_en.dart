@@ -477,4 +477,77 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get feedbackContentSuggestion => 'Content suggestion';
+
+  @override
+  String get studioSticker => 'Sticker Studio';
+
+  @override
+  String get studioStickerTitle => 'Create images and stickers';
+
+  @override
+  String get studioStickerSubtitle =>
+      'Write in Beriya Erfe, choose a style, then share your message.';
+
+  @override
+  String get studioWriteText => 'Write your text';
+
+  @override
+  String get studioTextHint => 'Write your message...';
+
+  @override
+  String get studioBeriyaKeyboard => 'Beriya Keyboard';
+
+  @override
+  String get studioStyle => 'Style';
+
+  @override
+  String get studioClassic => 'Classic';
+
+  @override
+  String get studioPremium => 'Premium';
+
+  @override
+  String get studioCulture => 'Culture';
+
+  @override
+  String get studioChild => 'Child';
+
+  @override
+  String get studioCalligraphy => 'Calligraphy';
+
+  @override
+  String get studioColor => 'Color';
+
+  @override
+  String get studioOutputMode => 'Output mode';
+
+  @override
+  String get studioPhoto => 'Photo';
+
+  @override
+  String get studioStickerMode => 'Sticker';
+
+  @override
+  String get studioPreview => 'Live preview';
+
+  @override
+  String get studioEmptyText => 'Write your text';
+
+  @override
+  String get studioDownloadShare => 'Download / Share';
+
+  @override
+  String get studioCreatedWith => 'Created with Beřiyar Kedebideři';
+
+  @override
+  String get studioHubSubtitle => 'Create a Beriya image or sticker';
+
+  @override
+  String get keyboardSpace => 'Space';
+
+  @override
+  String get keyboardBackspace => 'Delete';
+
+  @override
+  String get keyboardClear => 'Clear';
 }

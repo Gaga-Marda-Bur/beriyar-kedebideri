@@ -1,15 +1,50 @@
 {% extends "webapp/base.html" %}
 {% load static %}
 
-{% block title %}Studio Sticker — Beřiyar Kedebideři{% endblock %}
+{% block title %}
+    {% if current_lang == "ar" %}
+        استوديو الملصقات — Beřiyar Kedebideři
+    {% elif current_lang == "en" %}
+        Sticker Studio — Beřiyar Kedebideři
+    {% else %}
+        Studio Sticker — Beřiyar Kedebideři
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 <main class="sticker-studio-page">
+
     <section class="page-header">
         <div class="container">
-            <div class="badge">Outils créatifs</div>
-            <h1>Studio Sticker</h1>
-            <p>Écris un texte en Beriya, français, arabe ou anglais, puis télécharge-le comme image ou sticker.</p>
+            <div class="badge">
+                {% if current_lang == "ar" %}
+                    أدوات إبداعية
+                {% elif current_lang == "en" %}
+                    Creative tools
+                {% else %}
+                    Outils créatifs
+                {% endif %}
+            </div>
+
+            <h1>
+                {% if current_lang == "ar" %}
+                    استوديو الملصقات
+                {% elif current_lang == "en" %}
+                    Sticker Studio
+                {% else %}
+                    Studio Sticker
+                {% endif %}
+            </h1>
+
+            <p>
+                {% if current_lang == "ar" %}
+                    اكتب نصاً بلغة بيريَا أو الفرنسية أو العربية أو الإنجليزية، ثم حمّله كصورة أو ملصق.
+                {% elif current_lang == "en" %}
+                    Write text in Beriya, French, Arabic, or English, then download it as a photo or sticker.
+                {% else %}
+                    Écris un texte en Beriya, français, arabe ou anglais, puis télécharge-le comme image ou sticker.
+                {% endif %}
+            </p>
         </div>
     </section>
 
@@ -17,31 +52,83 @@
         <div class="container sticker-studio-layout">
 
             <aside class="glass sticker-controls">
-                <h2>Créer ton visuel</h2>
+                <h2>
+                    {% if current_lang == "ar" %}
+                        أنشئ تصميمك
+                    {% elif current_lang == "en" %}
+                        Create your visual
+                    {% else %}
+                        Créer ton visuel
+                    {% endif %}
+                </h2>
 
-                <label class="sticker-label">1. Écris ton texte</label>
+                <label class="sticker-label" for="stickerText">
+                    {% if current_lang == "ar" %}
+                        1. اكتب النص
+                    {% elif current_lang == "en" %}
+                        1. Write your text
+                    {% else %}
+                        1. Écris ton texte
+                    {% endif %}
+                </label>
+
                 <textarea
                     id="stickerText"
-                    class="sticker-textarea"
+                    class="sticker-textarea beriya-font"
                     maxlength="160"
                     data-beriya-keyboard="true"
-                    placeholder="Écris ton message ici..."
-                >La connaissance éclaire le chemin.</textarea>
+                    placeholder="{% if current_lang == 'ar' %}اكتب رسالتك هنا...{% elif current_lang == 'en' %}Write your message here...{% else %}Écris ton message ici...{% endif %}"
+                >{% if current_lang == "ar" %}المعرفة تنير الطريق.{% elif current_lang == "en" %}Knowledge lights the path.{% else %}La connaissance éclaire le chemin.{% endif %}</textarea>
 
-                <button type="button" class="btn btn-secondary" id="openBeriyaKeyboard">
-                    𖺠 Clavier Beriya
+                <button type="button" class="btn btn-secondary beriya-font" id="openBeriyaKeyboard">
+                    𖺠
+                    {% if current_lang == "ar" %}
+                        لوحة مفاتيح بيريَا
+                    {% elif current_lang == "en" %}
+                        Beriya Keyboard
+                    {% else %}
+                        Clavier Beriya
+                    {% endif %}
                 </button>
 
-                <label class="sticker-label">2. Style</label>
+                <label class="sticker-label">
+                    {% if current_lang == "ar" %}
+                        2. النمط
+                    {% elif current_lang == "en" %}
+                        2. Style
+                    {% else %}
+                        2. Style
+                    {% endif %}
+                </label>
+
                 <div class="sticker-options">
-                    <button type="button" class="sticker-style active" data-style="classic">Classique</button>
-                    <button type="button" class="sticker-style" data-style="premium">Premium</button>
-                    <button type="button" class="sticker-style" data-style="culture">Culture</button>
-                    <button type="button" class="sticker-style" data-style="child">Enfant</button>
-                    <button type="button" class="sticker-style" data-style="calligraphy">Calligraphie</button>
+                    <button type="button" class="sticker-style active" data-style="classic">
+                        {% if current_lang == "ar" %}كلاسيكي{% elif current_lang == "en" %}Classic{% else %}Classique{% endif %}
+                    </button>
+                    <button type="button" class="sticker-style" data-style="premium">
+                        {% if current_lang == "ar" %}مميز{% elif current_lang == "en" %}Premium{% else %}Premium{% endif %}
+                    </button>
+                    <button type="button" class="sticker-style" data-style="culture">
+                        {% if current_lang == "ar" %}ثقافة{% elif current_lang == "en" %}Culture{% else %}Culture{% endif %}
+                    </button>
+                    <button type="button" class="sticker-style" data-style="child">
+                        {% if current_lang == "ar" %}للأطفال{% elif current_lang == "en" %}Child{% else %}Enfant{% endif %}
+                    </button>
+                    <button type="button" class="sticker-style" data-style="calligraphy">
+                        {% if current_lang == "ar" %}خط جميل{% elif current_lang == "en" %}Calligraphy{% else %}Calligraphie{% endif %}
+                    </button>
                 </div>
 
-                <label class="sticker-label">3. Couleur principale</label>
+                <label class="sticker-label">
+                    {% if current_lang == "ar" %}
+                        3. اللون الرئيسي
+                    {% elif current_lang == "en" %}
+                        3. Main color
+                    {% else %}
+                        3. Couleur principale
+                    {% endif %}
+                </label>
+
                 <div class="sticker-colors">
                     <button type="button" data-color="#D4AF37" class="color-dot active" style="background:#D4AF37"></button>
                     <button type="button" data-color="#1B4D3E" class="color-dot" style="background:#1B4D3E"></button>
@@ -51,20 +138,50 @@
                     <button type="button" data-color="#EF4444" class="color-dot" style="background:#EF4444"></button>
                 </div>
 
-                <label class="sticker-label">4. Mode de sortie</label>
+                <label class="sticker-label">
+                    {% if current_lang == "ar" %}
+                        4. نوع الإخراج
+                    {% elif current_lang == "en" %}
+                        4. Output mode
+                    {% else %}
+                        4. Mode de sortie
+                    {% endif %}
+                </label>
+
                 <div class="sticker-options">
-                    <button type="button" class="output-mode active" data-mode="photo">Photo</button>
-                    <button type="button" class="output-mode" data-mode="sticker">Sticker transparent</button>
+                    <button type="button" class="output-mode active" data-mode="photo">
+                        {% if current_lang == "ar" %}صورة{% elif current_lang == "en" %}Photo{% else %}Photo{% endif %}
+                    </button>
+                    <button type="button" class="output-mode" data-mode="sticker">
+                        {% if current_lang == "ar" %}ملصق شفاف{% elif current_lang == "en" %}Transparent sticker{% else %}Sticker transparent{% endif %}
+                    </button>
                 </div>
 
-                <div class="beriya-mini-keyboard" id="beriyaMiniKeyboard" hidden></div>
+                <div class="beriya-mini-keyboard beriya-font" id="beriyaMiniKeyboard" hidden></div>
             </aside>
 
             <section class="glass sticker-preview-panel">
                 <div class="sticker-preview-header">
                     <div>
-                        <h2>Aperçu en direct</h2>
-                        <p>Ton image est générée dans ton navigateur.</p>
+                        <h2>
+                            {% if current_lang == "ar" %}
+                                معاينة مباشرة
+                            {% elif current_lang == "en" %}
+                                Live preview
+                            {% else %}
+                                Aperçu en direct
+                            {% endif %}
+                        </h2>
+
+                        <p>
+                            {% if current_lang == "ar" %}
+                                يتم إنشاء الصورة داخل المتصفح.
+                            {% elif current_lang == "en" %}
+                                Your image is generated directly in your browser.
+                            {% else %}
+                                Ton image est générée dans ton navigateur.
+                            {% endif %}
+                        </p>
                     </div>
                 </div>
 
@@ -74,10 +191,23 @@
 
                 <div class="sticker-actions">
                     <button type="button" class="btn btn-primary" id="downloadPng">
-                        Télécharger PNG
+                        {% if current_lang == "ar" %}
+                            تحميل PNG
+                        {% elif current_lang == "en" %}
+                            Download PNG
+                        {% else %}
+                            Télécharger PNG
+                        {% endif %}
                     </button>
+
                     <button type="button" class="btn btn-secondary" id="downloadSticker">
-                        Télécharger Sticker
+                        {% if current_lang == "ar" %}
+                            تحميل الملصق
+                        {% elif current_lang == "en" %}
+                            Download sticker
+                        {% else %}
+                            Télécharger Sticker
+                        {% endif %}
                     </button>
                 </div>
             </section>
@@ -86,5 +216,15 @@
     </section>
 </main>
 
+<script>
+    window.STICKER_I18N = {
+        brand: "Beřiyar Kedebideři",
+        emptyText: "{% if current_lang == 'ar' %}اكتب النص{% elif current_lang == 'en' %}Write your text{% else %}Écris ton texte{% endif %}",
+        space: "{% if current_lang == 'ar' %}مسافة{% elif current_lang == 'en' %}Space{% else %}Espace{% endif %}",
+        clear: "{% if current_lang == 'ar' %}مسح{% elif current_lang == 'en' %}Clear{% else %}Vider{% endif %}",
+        filenameImage: "beriyar-image.png",
+        filenameSticker: "beriyar-sticker.png"
+    };
+</script>
 <script src="{% static 'webapp/js/sticker_studio.js' %}"></script>
 {% endblock %}

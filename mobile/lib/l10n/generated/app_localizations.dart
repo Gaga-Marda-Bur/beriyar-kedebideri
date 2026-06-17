@@ -1017,6 +1017,150 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Suggestion de contenu'**
   String get feedbackContentSuggestion;
+
+  /// No description provided for @studioSticker.
+  ///
+  /// In fr, this message translates to:
+  /// **'Studio Sticker'**
+  String get studioSticker;
+
+  /// No description provided for @studioStickerTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Crée tes images et stickers'**
+  String get studioStickerTitle;
+
+  /// No description provided for @studioStickerSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écris en Beriya Erfe, choisis un style, puis partage ton message.'**
+  String get studioStickerSubtitle;
+
+  /// No description provided for @studioWriteText.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écris ton texte'**
+  String get studioWriteText;
+
+  /// No description provided for @studioTextHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écris ton message...'**
+  String get studioTextHint;
+
+  /// No description provided for @studioBeriyaKeyboard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Clavier Beriya'**
+  String get studioBeriyaKeyboard;
+
+  /// No description provided for @studioStyle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Style'**
+  String get studioStyle;
+
+  /// No description provided for @studioClassic.
+  ///
+  /// In fr, this message translates to:
+  /// **'Classique'**
+  String get studioClassic;
+
+  /// No description provided for @studioPremium.
+  ///
+  /// In fr, this message translates to:
+  /// **'Premium'**
+  String get studioPremium;
+
+  /// No description provided for @studioCulture.
+  ///
+  /// In fr, this message translates to:
+  /// **'Culture'**
+  String get studioCulture;
+
+  /// No description provided for @studioChild.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enfant'**
+  String get studioChild;
+
+  /// No description provided for @studioCalligraphy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Calligraphie'**
+  String get studioCalligraphy;
+
+  /// No description provided for @studioColor.
+  ///
+  /// In fr, this message translates to:
+  /// **'Couleur'**
+  String get studioColor;
+
+  /// No description provided for @studioOutputMode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mode de sortie'**
+  String get studioOutputMode;
+
+  /// No description provided for @studioPhoto.
+  ///
+  /// In fr, this message translates to:
+  /// **'Photo'**
+  String get studioPhoto;
+
+  /// No description provided for @studioStickerMode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sticker'**
+  String get studioStickerMode;
+
+  /// No description provided for @studioPreview.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aperçu en direct'**
+  String get studioPreview;
+
+  /// No description provided for @studioEmptyText.
+  ///
+  /// In fr, this message translates to:
+  /// **'Écris ton texte'**
+  String get studioEmptyText;
+
+  /// No description provided for @studioDownloadShare.
+  ///
+  /// In fr, this message translates to:
+  /// **'Télécharger / Partager'**
+  String get studioDownloadShare;
+
+  /// No description provided for @studioCreatedWith.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créé avec Beřiyar Kedebideři'**
+  String get studioCreatedWith;
+
+  /// No description provided for @studioHubSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer une image ou un sticker en Beriya'**
+  String get studioHubSubtitle;
+
+  /// No description provided for @keyboardSpace.
+  ///
+  /// In fr, this message translates to:
+  /// **'Espace'**
+  String get keyboardSpace;
+
+  /// No description provided for @keyboardBackspace.
+  ///
+  /// In fr, this message translates to:
+  /// **'Effacer'**
+  String get keyboardBackspace;
+
+  /// No description provided for @keyboardClear.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vider'**
+  String get keyboardClear;
 }
 
 class _AppLocalizationsDelegate

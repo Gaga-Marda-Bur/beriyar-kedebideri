@@ -1040,3 +1040,138 @@ html[dir="rtl"] .quiz-option-button {
         display: none !important;
     }
 }
+
+.sticker-studio-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 420px) 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.sticker-controls,
+.sticker-preview-panel {
+    padding: 24px;
+}
+
+.sticker-controls h2,
+.sticker-preview-panel h2 {
+    margin-top: 0;
+}
+
+.sticker-label {
+    display: block;
+    margin: 18px 0 8px;
+    font-weight: 900;
+    color: var(--brand-gold);
+}
+
+.sticker-textarea {
+    width: 100%;
+    min-height: 140px;
+    border-radius: 20px;
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    background: rgba(0, 0, 0, 0.22);
+    color: var(--brand-white);
+    padding: 16px;
+    resize: vertical;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.sticker-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.sticker-style,
+.output-mode {
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    border-radius: 16px;
+    padding: 11px 14px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--brand-white);
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.sticker-style.active,
+.output-mode.active {
+    border-color: var(--brand-gold);
+    color: var(--brand-gold);
+    background: rgba(212, 175, 55, 0.12);
+}
+
+.sticker-colors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.color-dot {
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+}
+
+.color-dot.active {
+    outline: 3px solid var(--brand-gold);
+    outline-offset: 3px;
+}
+
+.sticker-canvas-wrap {
+    width: 100%;
+    max-width: 620px;
+    margin: 0 auto;
+    border-radius: 28px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(212, 175, 55, 0.18);
+}
+
+#stickerCanvas {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.sticker-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 22px;
+}
+
+.beriya-mini-keyboard {
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.beriya-mini-key {
+    min-height: 46px;
+    border-radius: 14px;
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--brand-white);
+    font-family: "Kedebideri", serif;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.beriya-mini-key.wide {
+    grid-column: span 2;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+@media (max-width: 900px) {
+    .sticker-studio-layout {
+        grid-template-columns: 1fr;
+    }
+}

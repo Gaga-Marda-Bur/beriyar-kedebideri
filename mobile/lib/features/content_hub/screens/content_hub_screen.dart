@@ -9,6 +9,7 @@ import '../../no_ena/screens/no_ena_screen.dart';
 import '../../offline_packs/screens/my_packs_screen.dart';
 import '../../offline_packs/screens/offline_packs_screen.dart';
 import '../../quiz/screens/quiz_screen.dart';
+import '../../sticker_studio/presentation/sticker_studio_screen.dart';
 
 class ContentHubScreen extends StatelessWidget {
   const ContentHubScreen({super.key});
@@ -49,6 +50,13 @@ class ContentHubScreen extends StatelessWidget {
         icon: Icons.auto_awesome_rounded,
         gradientIcon: Icons.play_circle_rounded,
         onTap: () => _open(context, const NoEnaScreen()),
+      ),
+      _HubItem(
+        title: 'Studio Sticker',
+        subtitle: 'Créer une image ou un sticker en Beriya',
+        icon: Icons.draw_rounded,
+        gradientIcon: Icons.auto_awesome_rounded,
+        onTap: () => _open(context, const StickerStudioScreen()),
       ),
       _HubItem(
         title: loc.offlinePacks,

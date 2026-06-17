@@ -472,4 +472,77 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get feedbackContentSuggestion => 'اقتراح محتوى';
+
+  @override
+  String get studioSticker => 'استوديو الملصقات';
+
+  @override
+  String get studioStickerTitle => 'أنشئ صوراً وملصقات';
+
+  @override
+  String get studioStickerSubtitle =>
+      'اكتب بلغة بيريَا إرفي، اختر النمط، ثم شارك رسالتك.';
+
+  @override
+  String get studioWriteText => 'اكتب النص';
+
+  @override
+  String get studioTextHint => 'اكتب رسالتك هنا...';
+
+  @override
+  String get studioBeriyaKeyboard => 'لوحة مفاتيح بيريَا';
+
+  @override
+  String get studioStyle => 'النمط';
+
+  @override
+  String get studioClassic => 'كلاسيكي';
+
+  @override
+  String get studioPremium => 'مميز';
+
+  @override
+  String get studioCulture => 'ثقافة';
+
+  @override
+  String get studioChild => 'للأطفال';
+
+  @override
+  String get studioCalligraphy => 'خط جميل';
+
+  @override
+  String get studioColor => 'اللون';
+
+  @override
+  String get studioOutputMode => 'نوع الإخراج';
+
+  @override
+  String get studioPhoto => 'صورة';
+
+  @override
+  String get studioStickerMode => 'ملصق';
+
+  @override
+  String get studioPreview => 'معاينة مباشرة';
+
+  @override
+  String get studioEmptyText => 'اكتب النص';
+
+  @override
+  String get studioDownloadShare => 'تحميل / مشاركة';
+
+  @override
+  String get studioCreatedWith => 'أُنشئ بواسطة Beřiyar Kedebideři';
+
+  @override
+  String get studioHubSubtitle => 'إنشاء صورة أو ملصق بلغة بيريَا';
+
+  @override
+  String get keyboardSpace => 'مسافة';
+
+  @override
+  String get keyboardBackspace => 'حذف';
+
+  @override
+  String get keyboardClear => 'مسح';
 }
