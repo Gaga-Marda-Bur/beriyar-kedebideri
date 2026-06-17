@@ -1,0 +1,119 @@
+.beriya-keyboard {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9999;
+    font-family: inherit;
+}
+
+.beriya-keyboard-toggle {
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    border-radius: 999px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.95), rgba(255, 232, 153, 0.92));
+    color: #10291f;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+}
+
+.beriya-keyboard-panel {
+    position: absolute;
+    right: 0;
+    bottom: 58px;
+    width: min(420px, calc(100vw - 32px));
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    border-radius: 26px;
+    background: rgba(8, 38, 29, 0.94);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+    padding: 16px;
+}
+
+.beriya-keyboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.beriya-keyboard-close {
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.beriya-keyboard-keys {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 9px;
+}
+
+.beriya-key {
+    min-height: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.09);
+    color: #fff;
+    font-family: "Kedebideri", inherit;
+    font-size: 28px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.beriya-key:hover {
+    transform: translateY(-2px);
+    background: rgba(212, 175, 55, 0.22);
+}
+
+.beriya-keyboard-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 9px;
+    margin-top: 12px;
+}
+
+.beriya-keyboard-actions button {
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    border-radius: 16px;
+    padding: 11px 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.beriya-keyboard-actions button:hover {
+    background: rgba(212, 175, 55, 0.18);
+}
+
+@media (max-width: 560px) {
+    .beriya-keyboard {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+    }
+
+    .beriya-keyboard-toggle {
+        width: 100%;
+    }
+
+    .beriya-keyboard-panel {
+        left: 0;
+        right: 0;
+        width: 100%;
+    }
+
+    .beriya-key {
+        min-height: 46px;
+        font-size: 25px;
+    }
+}

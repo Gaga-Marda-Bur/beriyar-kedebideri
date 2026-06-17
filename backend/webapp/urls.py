@@ -11,6 +11,7 @@ from .views import (
     feedback_page,
     quiz_page,
     android_apk_download,
+    sticker_studio_page,
 )
 
 urlpatterns = [
@@ -24,4 +25,5 @@ urlpatterns = [
     path("feedback/", feedback_page, name="web-feedback"),
     path("quiz/", quiz_page, name="web-quiz"),
     path("download/android/", android_apk_download, name="web-download-android"),
+    path("sticker-studio/", sticker_studio_page, name="web-sticker-studio"),
 ]

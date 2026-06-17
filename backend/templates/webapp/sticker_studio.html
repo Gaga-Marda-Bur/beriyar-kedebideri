@@ -1,0 +1,90 @@
+{% extends "webapp/base.html" %}
+{% load static %}
+
+{% block title %}Studio Sticker — Beřiyar Kedebideři{% endblock %}
+
+{% block content %}
+<main class="sticker-studio-page">
+    <section class="page-header">
+        <div class="container">
+            <div class="badge">Outils créatifs</div>
+            <h1>Studio Sticker</h1>
+            <p>Écris un texte en Beriya, français, arabe ou anglais, puis télécharge-le comme image ou sticker.</p>
+        </div>
+    </section>
+
+    <section class="section sticker-studio-section">
+        <div class="container sticker-studio-layout">
+
+            <aside class="glass sticker-controls">
+                <h2>Créer ton visuel</h2>
+
+                <label class="sticker-label">1. Écris ton texte</label>
+                <textarea
+                    id="stickerText"
+                    class="sticker-textarea"
+                    maxlength="160"
+                    data-beriya-keyboard="true"
+                    placeholder="Écris ton message ici..."
+                >La connaissance éclaire le chemin.</textarea>
+
+                <button type="button" class="btn btn-secondary" id="openBeriyaKeyboard">
+                    𖺠 Clavier Beriya
+                </button>
+
+                <label class="sticker-label">2. Style</label>
+                <div class="sticker-options">
+                    <button type="button" class="sticker-style active" data-style="classic">Classique</button>
+                    <button type="button" class="sticker-style" data-style="premium">Premium</button>
+                    <button type="button" class="sticker-style" data-style="culture">Culture</button>
+                    <button type="button" class="sticker-style" data-style="child">Enfant</button>
+                    <button type="button" class="sticker-style" data-style="calligraphy">Calligraphie</button>
+                </div>
+
+                <label class="sticker-label">3. Couleur principale</label>
+                <div class="sticker-colors">
+                    <button type="button" data-color="#D4AF37" class="color-dot active" style="background:#D4AF37"></button>
+                    <button type="button" data-color="#1B4D3E" class="color-dot" style="background:#1B4D3E"></button>
+                    <button type="button" data-color="#2DD4BF" class="color-dot" style="background:#2DD4BF"></button>
+                    <button type="button" data-color="#3B82F6" class="color-dot" style="background:#3B82F6"></button>
+                    <button type="button" data-color="#A855F7" class="color-dot" style="background:#A855F7"></button>
+                    <button type="button" data-color="#EF4444" class="color-dot" style="background:#EF4444"></button>
+                </div>
+
+                <label class="sticker-label">4. Mode de sortie</label>
+                <div class="sticker-options">
+                    <button type="button" class="output-mode active" data-mode="photo">Photo</button>
+                    <button type="button" class="output-mode" data-mode="sticker">Sticker transparent</button>
+                </div>
+
+                <div class="beriya-mini-keyboard" id="beriyaMiniKeyboard" hidden></div>
+            </aside>
+
+            <section class="glass sticker-preview-panel">
+                <div class="sticker-preview-header">
+                    <div>
+                        <h2>Aperçu en direct</h2>
+                        <p>Ton image est générée dans ton navigateur.</p>
+                    </div>
+                </div>
+
+                <div class="sticker-canvas-wrap">
+                    <canvas id="stickerCanvas" width="1080" height="1080"></canvas>
+                </div>
+
+                <div class="sticker-actions">
+                    <button type="button" class="btn btn-primary" id="downloadPng">
+                        Télécharger PNG
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="downloadSticker">
+                        Télécharger Sticker
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </section>
+</main>
+
+<script src="{% static 'webapp/js/sticker_studio.js' %}"></script>
+{% endblock %}
