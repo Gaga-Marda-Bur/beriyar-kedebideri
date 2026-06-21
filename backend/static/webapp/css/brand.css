@@ -1564,3 +1564,126 @@ html[dir="rtl"] .quiz-option-button {
     border-top: 1px solid rgba(212, 175, 55, 0.18);
     padding-top: 14px;
 }
+
+/* ==============================
+   STICKER STUDIO MOBILE FIX
+   Prevent right overflow
+   ============================== */
+
+.sticker-studio-page,
+.sticker-studio-section {
+    overflow-x: hidden;
+}
+
+.sticker-studio-section .container {
+    width: min(100% - 24px, 1180px);
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sticker-studio-layout {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.sticker-controls,
+.sticker-preview-panel {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.sticker-textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.sticker-options,
+.sticker-colors,
+.sticker-actions {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.sticker-canvas-wrap {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+#stickerCanvas {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .sticker-studio-section {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .sticker-studio-section .container {
+        width: calc(100% - 20px);
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .sticker-studio-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .sticker-controls,
+    .sticker-preview-panel {
+        width: 100%;
+        padding: 18px;
+        border-radius: 24px;
+    }
+
+    .sticker-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .sticker-options button {
+        max-width: 100%;
+        white-space: normal;
+    }
+
+    .sticker-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .sticker-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 420px) {
+    .sticker-studio-section .container {
+        width: calc(100% - 14px);
+    }
+
+    .sticker-controls,
+    .sticker-preview-panel {
+        padding: 14px;
+        border-radius: 20px;
+    }
+
+    .sticker-textarea {
+        min-height: 120px;
+    }
+}

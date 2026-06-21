@@ -13,7 +13,7 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = config(
     "ALLOWED_HOSTS",
-    default="beriyarkedebideri.com,www.beriyarkedebideri.com",
+    default="beriyarkedebideri.com,www.beriyarkedebideri.com,127.0.0.1,localhost",
     cast=Csv(),
 )
 
