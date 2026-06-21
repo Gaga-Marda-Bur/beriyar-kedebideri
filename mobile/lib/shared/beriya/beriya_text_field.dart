@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/generated/app_localizations.dart';
 import 'beriya_keyboard.dart';
+import 'beriya_keyboard_preferences.dart';
+import 'beriya_keyboard_preferences_service.dart';
 
 enum BeriyaInputMode {
   system,
@@ -20,9 +22,11 @@ class BeriyaTextField extends StatefulWidget {
     this.textInputAction,
     this.keyboardType,
     this.showKeyboardInitially = false,
-    this.initialMode = BeriyaInputMode.beriya,
+    this.initialMode,
     this.showModeSelector = true,
     this.prefixIcon,
+    this.keyboardLayout,
+    this.handPreference,
   });
 
   final TextEditingController controller;
@@ -34,9 +38,11 @@ class BeriyaTextField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final TextInputType? keyboardType;
   final bool showKeyboardInitially;
-  final BeriyaInputMode initialMode;
+  final BeriyaInputMode? initialMode;
   final bool showModeSelector;
   final Widget? prefixIcon;
+  final BeriyaKeyboardLayout? keyboardLayout;
+  final BeriyaHandPreference? handPreference;
 
   @override
   State<BeriyaTextField> createState() => _BeriyaTextFieldState();
@@ -46,13 +52,45 @@ class _BeriyaTextFieldState extends State<BeriyaTextField> {
   late bool _keyboardVisible;
   late BeriyaInputMode _mode;
 
+  BeriyaKeyboardLayout _keyboardLayout = BeriyaKeyboardLayout.fast;
+  BeriyaHandPreference _handPreference = BeriyaHandPreference.right;
+  bool _preferencesLoaded = false;
+
   bool get _isBeriyaMode => _mode == BeriyaInputMode.beriya;
 
   @override
   void initState() {
     super.initState();
+
     _keyboardVisible = widget.showKeyboardInitially;
-    _mode = widget.initialMode;
+    _mode = widget.initialMode ?? BeriyaInputMode.beriya;
+
+    _loadPreferences();
+  }
+
+  Future<void> _loadPreferences() async {
+    final prefs = await BeriyaKeyboardPreferencesService.load();
+
+    if (!mounted) return;
+
+    setState(() {
+      _keyboardLayout = widget.keyboardLayout ??
+          (prefs.layout == BeriyaKeyboardLayoutPreference.abc
+              ? BeriyaKeyboardLayout.learning
+              : BeriyaKeyboardLayout.fast);
+
+      _handPreference = widget.handPreference ?? prefs.hand;
+
+      if (widget.initialMode == null) {
+        _mode = prefs.inputMode == BeriyaInputModePreference.system
+            ? BeriyaInputMode.system
+            : BeriyaInputMode.beriya;
+
+        _keyboardVisible = _mode == BeriyaInputMode.beriya;
+      }
+
+      _preferencesLoaded = true;
+    });
   }
 
   void _insertText(String value) {
@@ -211,6 +249,8 @@ class _BeriyaTextFieldState extends State<BeriyaTextField> {
         if (_isBeriyaMode && _keyboardVisible) ...[
           const SizedBox(height: 12),
           BeriyaKeyboard(
+            layout: _keyboardLayout,
+            hand: _handPreference,
             onInsert: _insertText,
             onBackspace: _backspace,
             onSpace: () => _insertText(' '),

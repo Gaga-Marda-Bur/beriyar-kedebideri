@@ -13,9 +13,41 @@ import '../../../core/cache/memory_content_cache.dart';
 import '../../../core/cache/content_source.dart';
 import '../../../core/api/api_config.dart';
 import '../../../core/startup/app_preload_service.dart';
+import '../../../shared/beriya/beriya_keyboard_preferences.dart';
+import '../../../shared/beriya/beriya_keyboard_preferences_service.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  BeriyaKeyboardPreferences _keyboardPrefs = BeriyaKeyboardPreferences.defaults;
+  bool _keyboardPrefsLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadKeyboardPrefs();
+  }
+
+  Future<void> _loadKeyboardPrefs() async {
+    final prefs = await BeriyaKeyboardPreferencesService.load();
+
+    if (!mounted) return;
+
+    setState(() {
+      _keyboardPrefs = prefs;
+      _keyboardPrefsLoaded = true;
+    });
+  }
+
+  Future<void> _saveKeyboardPrefs(BeriyaKeyboardPreferences prefs) async {
+    setState(() => _keyboardPrefs = prefs);
+    await BeriyaKeyboardPreferencesService.save(prefs);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +91,16 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
 
+              const SizedBox(height: 18),
+
+              _KeyboardPreferencesCard(
+                prefs: _keyboardPrefs,
+                loaded: _keyboardPrefsLoaded,
+                onChanged: _saveKeyboardPrefs,
+              ),
+
+              const SizedBox(height: 18),
+
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
@@ -69,6 +111,7 @@ class SettingsScreen extends StatelessWidget {
                   label: Text(loc.sendFeedback),
                 ),
               ),
+
               if (AppEnvironment.showDevTools) ...[
                 const SizedBox(height: 18),
                 GlassCard(
@@ -119,7 +162,9 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
               ],
+
               const SizedBox(height: 18),
+
               GlassCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,6 +235,127 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
+class _KeyboardPreferencesCard extends StatelessWidget {
+  const _KeyboardPreferencesCard({
+    required this.prefs,
+    required this.loaded,
+    required this.onChanged,
+  });
+
+  final BeriyaKeyboardPreferences prefs;
+  final bool loaded;
+  final ValueChanged<BeriyaKeyboardPreferences> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return GlassCard(
+      child: AnimatedOpacity(
+        opacity: loaded ? 1 : 0.55,
+        duration: const Duration(milliseconds: 200),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Clavier Beriya',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Choisis comment le clavier Beriya doit apparaître dans l’application.',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 18),
+
+            const _SectionLabel('Disposition'),
+            const SizedBox(height: 8),
+            SegmentedButton<BeriyaKeyboardLayoutPreference>(
+              segments: const [
+                ButtonSegment(
+                  value: BeriyaKeyboardLayoutPreference.fast,
+                  label: Text('Rapide'),
+                  icon: Icon(Icons.bolt_rounded),
+                ),
+                ButtonSegment(
+                  value: BeriyaKeyboardLayoutPreference.abc,
+                  label: Text('ABC'),
+                  icon: Icon(Icons.school_rounded),
+                ),
+              ],
+              selected: {prefs.layout},
+              onSelectionChanged: (selected) {
+                onChanged(prefs.copyWith(layout: selected.first));
+              },
+            ),
+
+            const SizedBox(height: 18),
+
+            const _SectionLabel('Mode de saisie'),
+            const SizedBox(height: 8),
+            SegmentedButton<BeriyaInputModePreference>(
+              segments: const [
+                ButtonSegment(
+                  value: BeriyaInputModePreference.beriya,
+                  label: Text('Beriya'),
+                  icon: Icon(Icons.keyboard_rounded),
+                ),
+                ButtonSegment(
+                  value: BeriyaInputModePreference.system,
+                  label: Text('Système'),
+                  icon: Icon(Icons.smartphone_rounded),
+                ),
+              ],
+              selected: {prefs.inputMode},
+              onSelectionChanged: (selected) {
+                onChanged(prefs.copyWith(inputMode: selected.first));
+              },
+            ),
+
+            const SizedBox(height: 18),
+
+            const _SectionLabel('Main dominante'),
+            const SizedBox(height: 8),
+            SegmentedButton<BeriyaHandPreference>(
+              segments: const [
+                ButtonSegment(
+                  value: BeriyaHandPreference.right,
+                  label: Text('Droitier'),
+                  icon: Icon(Icons.swipe_right_rounded),
+                ),
+                ButtonSegment(
+                  value: BeriyaHandPreference.left,
+                  label: Text('Gaucher'),
+                  icon: Icon(Icons.swipe_left_rounded),
+                ),
+              ],
+              selected: {prefs.hand},
+              onSelectionChanged: (selected) {
+                onChanged(prefs.copyWith(hand: selected.first));
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SectionLabel extends StatelessWidget {
+  const _SectionLabel(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        color: Color(0xFFD4AF37),
+        fontWeight: FontWeight.w900,
+      ),
+    );
+  }
+}
+
 class _LanguageTile extends StatelessWidget {
   final String title;
   final String code;
@@ -224,9 +390,7 @@ class _LanguageTile extends StatelessWidget {
           child: Row(
             children: [
               Icon(
-                selected
-                    ? Icons.check_circle_rounded
-                    : Icons.circle_outlined,
+                selected ? Icons.check_circle_rounded : Icons.circle_outlined,
               ),
               const SizedBox(width: 12),
               Expanded(

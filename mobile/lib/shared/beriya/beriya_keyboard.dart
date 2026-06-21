@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/generated/app_localizations.dart';
 import 'beriya_chars.dart';
+import 'beriya_keyboard_preferences.dart';
 
 enum BeriyaKeyboardLayout {
   learning,
@@ -16,6 +17,7 @@ class BeriyaKeyboard extends StatefulWidget {
     required this.onSpace,
     required this.onClear,
     this.layout = BeriyaKeyboardLayout.fast,
+    this.hand = BeriyaHandPreference.right,
   });
 
   final ValueChanged<String> onInsert;
@@ -23,6 +25,7 @@ class BeriyaKeyboard extends StatefulWidget {
   final VoidCallback onSpace;
   final VoidCallback onClear;
   final BeriyaKeyboardLayout layout;
+  final BeriyaHandPreference hand;
 
   @override
   State<BeriyaKeyboard> createState() => _BeriyaKeyboardState();
@@ -142,6 +145,9 @@ class _BeriyaKeyboardState extends State<BeriyaKeyboard> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       child: Row(
+        textDirection: widget.hand == BeriyaHandPreference.left
+            ? TextDirection.rtl
+            : TextDirection.ltr,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           for (final char in chars) ...[
@@ -163,6 +169,9 @@ class _BeriyaKeyboardState extends State<BeriyaKeyboard> {
 
   Widget _actionRow(AppLocalizations loc) {
     return Row(
+      textDirection: widget.hand == BeriyaHandPreference.left
+          ? TextDirection.rtl
+          : TextDirection.ltr,
       children: [
         Expanded(
           child: _KeyButton(

@@ -8,6 +8,8 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../shared/beriya/beriya_keyboard.dart';
 import '../../../l10n/generated/app_localizations.dart';
+import '../../../shared/beriya/beriya_keyboard_preferences.dart';
+import '../../../shared/beriya/beriya_keyboard_preferences_service.dart';
 
 enum StickerStyleType {
   classic,
@@ -41,10 +43,27 @@ class _StickerStudioScreenState extends State<StickerStudioScreen> {
   Color _mainColor = const Color(0xFFD4AF37);
   bool _keyboardVisible = false;
 
+  BeriyaKeyboardLayout _keyboardLayout = BeriyaKeyboardLayout.fast;
+  BeriyaHandPreference _handPreference = BeriyaHandPreference.right;
+
   @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    _loadKeyboardPreferences();
+  }
+
+  Future<void> _loadKeyboardPreferences() async {
+    final prefs = await BeriyaKeyboardPreferencesService.load();
+
+    if (!mounted) return;
+
+    setState(() {
+      _keyboardLayout = prefs.layout == BeriyaKeyboardLayoutPreference.abc
+          ? BeriyaKeyboardLayout.learning
+          : BeriyaKeyboardLayout.fast;
+
+      _handPreference = prefs.hand;
+    });
   }
 
   void _insertText(String value) {
@@ -237,6 +256,8 @@ class _StickerStudioScreenState extends State<StickerStudioScreen> {
           if (_keyboardVisible) ...[
             const SizedBox(height: 12),
             BeriyaKeyboard(
+              layout: _keyboardLayout,
+              hand: _handPreference,
               onInsert: _insertText,
               onBackspace: _backspace,
               onSpace: () => _insertText(' '),
