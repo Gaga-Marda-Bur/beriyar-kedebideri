@@ -77,6 +77,12 @@
                     class="sticker-textarea beriya-font"
                     maxlength="160"
                     data-beriya-keyboard="true"
+                    inputmode="none"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    readonly
                     placeholder="{% if current_lang == 'ar' %}اكتب رسالتك هنا...{% elif current_lang == 'en' %}Write your message here...{% else %}Écris ton message ici...{% endif %}"
                 >{% if current_lang == "ar" %}المعرفة تنير الطريق.{% elif current_lang == "en" %}Knowledge lights the path.{% else %}La connaissance éclaire le chemin.{% endif %}</textarea>
 
@@ -227,5 +233,48 @@
     };
 </script>
 <script src="{% static 'webapp/js/beriya_keyboard_data.js' %}"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const stickerText = document.getElementById("stickerText");
+        const keyboardButton = document.getElementById("openBeriyaKeyboard");
+        const miniKeyboard = document.getElementById("beriyaMiniKeyboard");
+
+        if (!stickerText) return;
+
+        stickerText.addEventListener("focus", function () {
+            stickerText.blur();
+
+            if (miniKeyboard) {
+                miniKeyboard.hidden = false;
+            }
+        });
+
+        stickerText.addEventListener("pointerdown", function (event) {
+            event.preventDefault();
+
+            if (miniKeyboard) {
+                miniKeyboard.hidden = false;
+            }
+        });
+
+        stickerText.addEventListener("touchstart", function (event) {
+            event.preventDefault();
+
+            if (miniKeyboard) {
+                miniKeyboard.hidden = false;
+            }
+        }, { passive: false });
+
+        if (keyboardButton) {
+            keyboardButton.addEventListener("click", function () {
+                if (miniKeyboard) {
+                    miniKeyboard.hidden = false;
+                }
+            });
+        }
+    });
+</script>
+
 <script src="{% static 'webapp/js/sticker_studio.js' %}"></script>
 {% endblock %}
