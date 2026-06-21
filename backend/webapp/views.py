@@ -329,14 +329,21 @@ def no_ena_detail_page(request, slug):
 
 def feedback_page(request):
     lang = get_web_lang(request)
+
     if request.method == "POST":
         feedback_type = request.POST.get("feedback_type", FeedbackReport.OTHER)
         title = request.POST.get("title", "").strip()
         message = request.POST.get("message", "").strip()
-        language_code = request.POST.get("language_code", "fr")
+        language_code = request.POST.get("language_code", lang)
 
         if not title and not message:
-            messages.error(request, "Merci d’écrire un message avant d’envoyer.")
+            if lang == "ar":
+                messages.error(request, "يرجى كتابة رسالة قبل الإرسال.")
+            elif lang == "en":
+                messages.error(request, "Please write a message before sending.")
+            else:
+                messages.error(request, "Merci d’écrire un message avant d’envoyer.")
+
             return redirect("web-feedback")
 
         FeedbackReport.objects.create(
@@ -347,7 +354,13 @@ def feedback_page(request):
             language_code=language_code,
         )
 
-        messages.success(request, "Feedback envoyé. Merci !")
+        if lang == "ar":
+            messages.success(request, "تم إرسال الملاحظة. شكرًا لك!")
+        elif lang == "en":
+            messages.success(request, "Feedback sent. Thank you!")
+        else:
+            messages.success(request, "Feedback envoyé. Merci !")
+
         return redirect("web-feedback")
 
     feedback_types = FeedbackReport.FEEDBACK_TYPE_CHOICES

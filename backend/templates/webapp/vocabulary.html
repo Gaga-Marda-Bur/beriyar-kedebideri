@@ -1,5 +1,5 @@
 {% extends "webapp/base.html" %}
-
+{% load web_i18n %}
 {% block title %}
     {% if current_lang == "ar" %}
         قاموس بيريَا — Beřiyar Kedebideři
@@ -80,13 +80,7 @@
 
                         {% for category in categories %}
                             <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>
-                                {% if current_lang == "ar" %}
-                                    {{ category.name_ar|default:category.name_fr }}
-                                {% elif current_lang == "en" %}
-                                    {{ category.name_en|default:category.name_fr }}
-                                {% else %}
-                                    {{ category.name_fr }}
-                                {% endif %}
+                                {{ category|i18n_category_name:current_lang }}
                             </option>
                         {% endfor %}
                     </select>
@@ -115,43 +109,11 @@
                         </div>
 
                         <div class="word-translation">
-                            {% if current_lang == "ar" %}
-                                {{ word.arabic_translation|default:word.french_translation }}
-                            {% elif current_lang == "en" %}
-                                {{ word.english_translation|default:word.french_translation }}
-                            {% else %}
-                                {{ word.french_translation }}
-                            {% endif %}
+                            {{ word|i18n_word_translation:current_lang }}
                         </div>
 
                         <div class="word-meta">
-                            {% if current_lang == "ar" %}
-                                {% if word.arabic_transcription %}
-                                    {{ word.arabic_transcription }}<br>
-                                {% elif word.latin_transcription %}
-                                    {{ word.latin_transcription }}<br>
-                                {% endif %}
-
-                                {% if word.category %}
-                                    {{ word.category.name_ar|default:word.category.name_fr }}
-                                {% endif %}
-                            {% elif current_lang == "en" %}
-                                {% if word.latin_transcription %}
-                                    {{ word.latin_transcription }}<br>
-                                {% endif %}
-
-                                {% if word.category %}
-                                    {{ word.category.name_en|default:word.category.name_fr }}
-                                {% endif %}
-                            {% else %}
-                                {% if word.latin_transcription %}
-                                    {{ word.latin_transcription }}<br>
-                                {% endif %}
-
-                                {% if word.category %}
-                                    {{ word.category.name_fr }}
-                                {% endif %}
-                            {% endif %}
+                            {{ word|i18n_transcription:current_lang }}
                         </div>
 
                         {% with link=word.audio_links.first %}
@@ -161,13 +123,7 @@
                                     class="audio-button"
                                     data-audio="{{ link.audio_asset.file.url }}"
                                 >
-                                    {% if current_lang == "ar" %}
-                                        استمع
-                                    {% elif current_lang == "en" %}
-                                        Listen
-                                    {% else %}
-                                        Écouter
-                                    {% endif %}
+                                    {% ui_text "listen" current_lang %}
                                 </button>
                             {% else %}
                                 <div class="word-audio-missing">

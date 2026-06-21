@@ -1,5 +1,5 @@
 {% extends "webapp/base.html" %}
-
+{% load web_i18n %}
 {% block title %}
   {% if current_lang == "ar" %}
     اختبارات بيريَا إرفي — Beřiyar Kedebideři
@@ -52,55 +52,11 @@
         {% for quiz in quizzes %}
           <article class="quiz-web-card glass">
             <div class="quiz-web-type">
-              {% if current_lang == "ar" %}
-                {% if quiz.question_type == "AUDIO_TO_CHARACTER" %}
-                  من الصوت إلى الحرف
-                {% elif quiz.question_type == "CHARACTER_TO_AUDIO" %}
-                  من الحرف إلى الصوت
-                {% elif quiz.question_type == "AUDIO_TO_IMAGE" %}
-                  من الصوت إلى الصورة
-                {% elif quiz.question_type == "IMAGE_TO_AUDIO" %}
-                  من الصورة إلى الصوت
-                {% elif quiz.question_type == "TEXT_TO_CHARACTER" %}
-                  من النص إلى الحرف
-                {% elif quiz.question_type == "GUIDED_KEYBOARD" %}
-                  كتابة موجّهة
-                {% elif quiz.question_type == "LISTEN_AND_REPEAT" %}
-                  استمع وكرّر
-                {% else %}
-                  اختبار
-                {% endif %}
-              {% elif current_lang == "en" %}
-                {% if quiz.question_type == "AUDIO_TO_CHARACTER" %}
-                  Audio to character
-                {% elif quiz.question_type == "CHARACTER_TO_AUDIO" %}
-                  Character to audio
-                {% elif quiz.question_type == "AUDIO_TO_IMAGE" %}
-                  Audio to image
-                {% elif quiz.question_type == "IMAGE_TO_AUDIO" %}
-                  Image to audio
-                {% elif quiz.question_type == "TEXT_TO_CHARACTER" %}
-                  Text to character
-                {% elif quiz.question_type == "GUIDED_KEYBOARD" %}
-                  Guided keyboard
-                {% elif quiz.question_type == "LISTEN_AND_REPEAT" %}
-                  Listen and repeat
-                {% else %}
-                  Quiz
-                {% endif %}
-              {% else %}
-                {{ quiz.get_question_type_display|default:"Quiz" }}
-              {% endif %}
+              {{ quiz.question_type|i18n_quiz_type:current_lang }}
             </div>
 
             <h2>
-              {% if current_lang == "ar" %}
-                {{ quiz.prompt_ar|default:quiz.prompt_fr|default:"اختبار" }}
-              {% elif current_lang == "en" %}
-                {{ quiz.prompt_en|default:quiz.prompt_fr|default:"Quiz" }}
-              {% else %}
-                {{ quiz.prompt_fr|default:"Quiz" }}
-              {% endif %}
+              {{ quiz|i18n_prompt:current_lang }}
             </h2>
 
             {% for audio_link in quiz.audio_links.all %}
@@ -138,13 +94,7 @@
                       {{ option.word.beriya_text }}
                     </span>
                   {% else %}
-                    {% if current_lang == "ar" %}
-                      {{ option.text_ar|default:option.text_fr|default:"خيار" }}
-                    {% elif current_lang == "en" %}
-                      {{ option.text_en|default:option.text_fr|default:"Option" }}
-                    {% else %}
-                      {{ option.text_fr|default:"Option" }}
-                    {% endif %}
+                    {{ option|i18n_option_text:current_lang }}
                   {% endif %}
                 </button>
               {% empty %}

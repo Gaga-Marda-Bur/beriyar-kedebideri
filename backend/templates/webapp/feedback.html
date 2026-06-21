@@ -1,4 +1,5 @@
 {% extends "webapp/base.html" %}
+{% load web_i18n %}
 
 {% block title %}Feedback — Beřiyar Kedebideři{% endblock %}
 
@@ -55,7 +56,9 @@
         </label>
           <select id="feedback_type" name="feedback_type">
             {% for value, label in feedback_types %}
-              <option value="{{ value }}">{{ label }}</option>
+                <option value="{{ value }}">
+                    {{ value|i18n_feedback_type:current_lang }}
+                </option>
             {% endfor %}
           </select>
 

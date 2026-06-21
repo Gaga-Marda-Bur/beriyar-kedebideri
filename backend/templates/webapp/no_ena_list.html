@@ -1,5 +1,5 @@
 {% extends "webapp/base.html" %}
-
+{% load web_i18n %}
 {% block title %}
     {% if current_lang == "ar" %}
         No Ena — Beřiyar Kedebideři
@@ -104,12 +104,12 @@
                                 {% if item.thumbnail %}
                                     <img
                                         src="{{ item.thumbnail.url }}"
-                                        alt="{% if current_lang == 'ar' %}{{ item.title_ar|default:item.title_fr }}{% elif current_lang == 'en' %}{{ item.title_en|default:item.title_fr }}{% else %}{{ item.title_fr }}{% endif %}"
+                                        alt="{{ item|i18n_title:current_lang }}"
                                     >
                                 {% elif item.image_file %}
                                     <img
                                         src="{{ item.image_file.url }}"
-                                        alt="{% if current_lang == 'ar' %}{{ item.title_ar|default:item.title_fr }}{% elif current_lang == 'en' %}{{ item.title_en|default:item.title_fr }}{% else %}{{ item.title_fr }}{% endif %}"
+                                       alt="{{ item|i18n_title:current_lang }}"
                                     >
                                 {% elif item.video_file %}
                                     <video muted>
@@ -122,57 +122,15 @@
 
                             <div class="no-ena-content">
                                 <div class="no-ena-type">
-                                    {% if current_lang == "ar" %}
-                                        {% if item.publication_type == "IMAGE" or item.publication_type == "image" %}
-                                            صورة
-                                        {% elif item.publication_type == "VIDEO" or item.publication_type == "video" %}
-                                            فيديو
-                                        {% elif item.publication_type == "STORY" or item.publication_type == "story" %}
-                                            حكاية
-                                        {% elif item.publication_type == "PROVERB" or item.publication_type == "proverb" %}
-                                            مثل
-                                        {% elif item.publication_type == "DEMO" or item.publication_type == "demo" %}
-                                            عرض
-                                        {% else %}
-                                            {{ item.get_publication_type_display }}
-                                        {% endif %}
-                                    {% elif current_lang == "en" %}
-                                        {% if item.publication_type == "IMAGE" or item.publication_type == "image" %}
-                                            Image
-                                        {% elif item.publication_type == "VIDEO" or item.publication_type == "video" %}
-                                            Video
-                                        {% elif item.publication_type == "STORY" or item.publication_type == "story" %}
-                                            Story
-                                        {% elif item.publication_type == "PROVERB" or item.publication_type == "proverb" %}
-                                            Proverb
-                                        {% elif item.publication_type == "DEMO" or item.publication_type == "demo" %}
-                                            Demonstration
-                                        {% else %}
-                                            {{ item.get_publication_type_display }}
-                                        {% endif %}
-                                    {% else %}
-                                        {{ item.get_publication_type_display }}
-                                    {% endif %}
+                                    {{ item.publication_type|i18n_publication_type:current_lang }}
                                 </div>
 
                                 <h3>
-                                    {% if current_lang == "ar" %}
-                                        {{ item.title_ar|default:item.title_fr }}
-                                    {% elif current_lang == "en" %}
-                                        {{ item.title_en|default:item.title_fr }}
-                                    {% else %}
-                                        {{ item.title_fr }}
-                                    {% endif %}
+                                    {{ item|i18n_title:current_lang }}
                                 </h3>
 
                                 <p>
-                                    {% if current_lang == "ar" %}
-                                        {{ item.caption_ar|default:item.caption_fr|truncatewords:20 }}
-                                    {% elif current_lang == "en" %}
-                                        {{ item.caption_en|default:item.caption_fr|truncatewords:20 }}
-                                    {% else %}
-                                        {{ item.caption_fr|truncatewords:20 }}
-                                    {% endif %}
+                                    {{ item|i18n_caption:current_lang|truncatewords:20 }}
                                 </p>
                             </div>
                         </a>

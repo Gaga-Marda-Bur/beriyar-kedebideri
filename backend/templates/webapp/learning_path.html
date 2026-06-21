@@ -1,5 +1,5 @@
 {% extends "webapp/base.html" %}
-
+{% load web_i18n %}
 {% block title %}
     {% if current_lang == "ar" %}
         مسار التعلّم — Beřiyar Kedebideři
@@ -51,35 +51,15 @@
             {% for theme in themes %}
                 <section class="theme-block glass">
                     <div class="section-kicker">
-                        {% if theme.level == "beginner" or theme.level == "BEGINNER" %}
-                            {% if current_lang == "ar" %}مبتدئ{% elif current_lang == "en" %}Beginner{% else %}Débutant{% endif %}
-                        {% elif theme.level == "intermediate" or theme.level == "INTERMEDIATE" %}
-                            {% if current_lang == "ar" %}متوسط{% elif current_lang == "en" %}Intermediate{% else %}Intermédiaire{% endif %}
-                        {% elif theme.level == "advanced" or theme.level == "ADVANCED" %}
-                            {% if current_lang == "ar" %}متقدم{% elif current_lang == "en" %}Advanced{% else %}Avancé{% endif %}
-                        {% else %}
-                            {{ theme.level }}
-                        {% endif %}
+                        {{ theme.level|i18n_level:current_lang }}
                     </div>
 
                     <h2 style="margin: 8px 0 8px;">
-                        {% if current_lang == "ar" %}
-                            {{ theme.title_ar|default:theme.title_fr }}
-                        {% elif current_lang == "en" %}
-                            {{ theme.title_en|default:theme.title_fr }}
-                        {% else %}
-                            {{ theme.title_fr }}
-                        {% endif %}
+                        {{ theme|i18n_title:current_lang }}
                     </h2>
 
                     <p class="section-text">
-                        {% if current_lang == "ar" %}
-                            {{ theme.description_ar|default:theme.description_fr|default:"موضوع لتعلّم بيريَا إرفي." }}
-                        {% elif current_lang == "en" %}
-                            {{ theme.description_en|default:theme.description_fr|default:"Beriya Erfe learning theme." }}
-                        {% else %}
-                            {{ theme.description_fr|default:"Thème d’apprentissage Beriya Erfe." }}
-                        {% endif %}
+                        {{ theme|i18n_description:current_lang }}
                     </p>
 
                     <div class="units-grid">
@@ -108,14 +88,7 @@
 
                                     <div class="unit-stats">
                                         <span class="pill">
-                                            {{ unit.characters.count }}
-                                            {% if current_lang == "ar" %}
-                                                حرف
-                                            {% elif current_lang == "en" %}
-                                                character(s)
-                                            {% else %}
-                                                caractère(s)
-                                            {% endif %}
+                                            {{ unit.characters.count }} {% ui_text "characters" current_lang %}
                                         </span>
 
                                         <span class="pill">

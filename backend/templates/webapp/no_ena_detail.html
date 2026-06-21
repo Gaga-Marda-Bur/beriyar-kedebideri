@@ -1,13 +1,8 @@
 {% extends "webapp/base.html" %}
+{% load web_i18n %}
 
 {% block title %}
-    {% if current_lang == "ar" %}
-        {{ publication.title_ar|default:publication.title_fr }} — نو إينا
-    {% elif current_lang == "en" %}
-        {{ publication.title_en|default:publication.title_fr }} — No Ena
-    {% else %}
-        {{ publication.title_fr }} — No Ena
-    {% endif %}
+    {{ publication|i18n_title:current_lang }} — No Ena
 {% endblock %}
 
 {% block content %}
@@ -16,31 +11,15 @@
         <div class="container">
             <div class="badge">
                 {% if current_lang == "ar" %}
-                    نو إينا • {{ publication.get_publication_type_display }}
+                    نو إينا • {{ publication.publication_type|i18n_publication_type:current_lang }}
                 {% else %}
-                    No Ena • {{ publication.get_publication_type_display }}
+                    No Ena • {{ publication.publication_type|i18n_publication_type:current_lang }}
                 {% endif %}
             </div>
 
-            <h1>
-                {% if current_lang == "ar" %}
-                    {{ publication.title_ar|default:publication.title_fr }}
-                {% elif current_lang == "en" %}
-                    {{ publication.title_en|default:publication.title_fr }}
-                {% else %}
-                    {{ publication.title_fr }}
-                {% endif %}
-            </h1>
+            <h1>{{ publication|i18n_title:current_lang }}</h1>
 
-            <p>
-                {% if current_lang == "ar" %}
-                    {{ publication.caption_ar|default:publication.caption_fr }}
-                {% elif current_lang == "en" %}
-                    {{ publication.caption_en|default:publication.caption_fr }}
-                {% else %}
-                    {{ publication.caption_fr }}
-                {% endif %}
-            </p>
+            <p>{{ publication|i18n_caption:current_lang }}</p>
         </div>
     </section>
 
@@ -50,11 +29,24 @@
                 {% if publication.video_file %}
                     <video controls>
                         <source src="{{ publication.video_file.url }}">
+                        {% if current_lang == "ar" %}
+                            متصفحك لا يدعم تشغيل الفيديو.
+                        {% elif current_lang == "en" %}
+                            Your browser does not support video playback.
+                        {% else %}
+                            Votre navigateur ne prend pas en charge la vidéo.
+                        {% endif %}
                     </video>
                 {% elif publication.image_file %}
-                    <img src="{{ publication.image_file.url }}" alt="{{ publication.title_fr }}">
+                    <img
+                        src="{{ publication.image_file.url }}"
+                        alt="{{ publication|i18n_title:current_lang }}"
+                    >
                 {% elif publication.thumbnail %}
-                    <img src="{{ publication.thumbnail.url }}" alt="{{ publication.title_fr }}">
+                    <img
+                        src="{{ publication.thumbnail.url }}"
+                        alt="{{ publication|i18n_title:current_lang }}"
+                    >
                 {% else %}
                     <div style="color:#D4AF37;font-size:42px;">No Ena</div>
                 {% endif %}
@@ -62,24 +54,33 @@
 
             <aside class="detail-panel glass">
                 <h2>
-                    {% if current_lang == "ar" %}التفاصيل
-                    {% elif current_lang == "en" %}Details
-                    {% else %}Détails
+                    {% if current_lang == "ar" %}
+                        التفاصيل
+                    {% elif current_lang == "en" %}
+                        Details
+                    {% else %}
+                        Détails
                     {% endif %}
                 </h2>
 
                 {% if publication.beriya_title %}
-                    <div class="word-text" style="font-size:30px;">
+                    <div class="word-text beriya-font" style="font-size:30px;">
                         {{ publication.beriya_title }}
                     </div>
                 {% endif %}
 
                 {% if publication.primary_audio_asset and publication.primary_audio_asset.file %}
-                    <button class="audio-button"
-                            data-audio="{{ publication.primary_audio_asset.file.url }}">
-                        {% if current_lang == "ar" %}استمع إلى الصوت
-                        {% elif current_lang == "en" %}Listen to audio
-                        {% else %}Écouter l’audio
+                    <button
+                        type="button"
+                        class="audio-button"
+                        data-audio="{{ publication.primary_audio_asset.file.url }}"
+                    >
+                        {% if current_lang == "ar" %}
+                            استمع إلى الصوت
+                        {% elif current_lang == "en" %}
+                            Listen to audio
+                        {% else %}
+                            Écouter l’audio
                         {% endif %}
                     </button>
                 {% endif %}
@@ -87,9 +88,12 @@
                 <div class="detail-meta">
                     {% if publication.contributor_name %}
                         <div>
-                            {% if current_lang == "ar" %}المساهم :
-                            {% elif current_lang == "en" %}Contributor :
-                            {% else %}Contributeur :
+                            {% if current_lang == "ar" %}
+                                المساهم :
+                            {% elif current_lang == "en" %}
+                                Contributor:
+                            {% else %}
+                                Contributeur :
                             {% endif %}
                             {{ publication.contributor_name }}
                         </div>
@@ -97,51 +101,80 @@
 
                     {% if publication.culture_theme %}
                         <div>
-                            {% if current_lang == "ar" %}الموضوع :
-                            {% elif current_lang == "en" %}Theme :
-                            {% else %}Thème :
+                            {% if current_lang == "ar" %}
+                                الموضوع :
+                            {% elif current_lang == "en" %}
+                                Theme:
+                            {% else %}
+                                Thème :
                             {% endif %}
                             {{ publication.culture_theme }}
                         </div>
                     {% endif %}
 
+                    <div>
+                        {% if current_lang == "ar" %}
+                            النوع :
+                        {% elif current_lang == "en" %}
+                            Type:
+                        {% else %}
+                            Type :
+                        {% endif %}
+                        {{ publication.publication_type|i18n_publication_type:current_lang }}
+                    </div>
+
                     {% if publication.related_character %}
-                        <div class="beriya-font">
-                            {% if current_lang == "ar" %}الحرف المرتبط :
-                            {% elif current_lang == "en" %}Related character :
-                            {% else %}Caractère lié :
+                        <div>
+                            {% if current_lang == "ar" %}
+                                الحرف المرتبط :
+                            {% elif current_lang == "en" %}
+                                Related character:
+                            {% else %}
+                                Caractère lié :
                             {% endif %}
-                            {{ publication.related_character.symbol }}
+                            <span class="beriya-font">{{ publication.related_character.symbol }}</span>
                         </div>
                     {% endif %}
 
                     {% if publication.related_word %}
-                        <div class="beriya-font">
-                            {% if current_lang == "ar" %}الكلمة المرتبطة :
-                            {% elif current_lang == "en" %}Related word :
-                            {% else %}Mot lié :
+                        <div>
+                            {% if current_lang == "ar" %}
+                                الكلمة المرتبطة :
+                            {% elif current_lang == "en" %}
+                                Related word:
+                            {% else %}
+                                Mot lié :
                             {% endif %}
-                            {{ publication.related_word.beriya_text }}
+                            <span class="beriya-font">{{ publication.related_word.beriya_text }}</span>
                         </div>
                     {% endif %}
 
                     {% if publication.related_unit %}
                         <div>
-                            {% if current_lang == "ar" %}الوحدة المرتبطة :
-                            {% elif current_lang == "en" %}Related unit :
-                            {% else %}Unité liée :
+                            {% if current_lang == "ar" %}
+                                الوحدة المرتبطة :
+                            {% elif current_lang == "en" %}
+                                Related unit:
+                            {% else %}
+                                Unité liée :
                             {% endif %}
-                            <a style="color:#D4AF37"
-                               href="{% url 'web-unit-detail' publication.related_unit.slug %}">
-                                {{ publication.related_unit.title_fr }}
+
+                            <a
+                                style="color:#D4AF37"
+                                href="{% url 'web-unit-detail' publication.related_unit.slug %}"
+                            >
+                                {{ publication.related_unit|i18n_title:current_lang }}
                             </a>
                         </div>
                     {% endif %}
 
                     <div>
-                        {% if current_lang == "ar" %}عدد المشاهدات :
-                        {% elif current_lang == "en" %}Views :
-                        {% else %}Vues :
+                        {% if current_lang == "ar" %}
+                            عدد المشاهدات :
+                        {% elif current_lang == "en" %}
+                            Views:
+                        {% else %}
+                            Vues :
                         {% endif %}
                         {{ publication.view_count }}
                     </div>
@@ -149,9 +182,12 @@
 
                 <div style="margin-top:22px;">
                     <a href="{% url 'web-no-ena-list' %}" class="btn btn-secondary">
-                        {% if current_lang == "ar" %}العودة إلى نو إينا
-                        {% elif current_lang == "en" %}Back to No Ena
-                        {% else %}Retour à No Ena
+                        {% if current_lang == "ar" %}
+                            العودة إلى نو إينا
+                        {% elif current_lang == "en" %}
+                            Back to No Ena
+                        {% else %}
+                            Retour à No Ena
                         {% endif %}
                     </a>
                 </div>
@@ -163,16 +199,22 @@
         <div class="container">
             <div class="section-header">
                 <div class="section-kicker">
-                    {% if current_lang == "ar" %}محتويات مشابهة
-                    {% elif current_lang == "en" %}You may also like
-                    {% else %}À voir aussi
+                    {% if current_lang == "ar" %}
+                        محتويات مشابهة
+                    {% elif current_lang == "en" %}
+                        You may also like
+                    {% else %}
+                        À voir aussi
                     {% endif %}
                 </div>
 
                 <h2 class="section-title">
-                    {% if current_lang == "ar" %}محتويات أخرى من نو إينا
-                    {% elif current_lang == "en" %}Other No Ena content
-                    {% else %}Autres contenus No Ena
+                    {% if current_lang == "ar" %}
+                        محتويات أخرى من نو إينا
+                    {% elif current_lang == "en" %}
+                        Other No Ena content
+                    {% else %}
+                        Autres contenus No Ena
                     {% endif %}
                 </h2>
             </div>
@@ -183,26 +225,45 @@
                         <a href="{% url 'web-no-ena-detail' item.slug %}">
                             <div class="no-ena-media">
                                 {% if item.thumbnail %}
-                                    <img src="{{ item.thumbnail.url }}">
+                                    <img
+                                        src="{{ item.thumbnail.url }}"
+                                        alt="{{ item|i18n_title:current_lang }}"
+                                    >
                                 {% elif item.image_file %}
-                                    <img src="{{ item.image_file.url }}">
+                                    <img
+                                        src="{{ item.image_file.url }}"
+                                        alt="{{ item|i18n_title:current_lang }}"
+                                    >
+                                {% elif item.video_file %}
+                                    <video muted>
+                                        <source src="{{ item.video_file.url }}">
+                                    </video>
                                 {% else %}
                                     No Ena
                                 {% endif %}
                             </div>
+
                             <div class="no-ena-content">
                                 <div class="no-ena-type">
-                                    {{ item.get_publication_type_display }}
+                                    {{ item.publication_type|i18n_publication_type:current_lang }}
                                 </div>
-                                <h3>{{ item.title_fr }}</h3>
+
+                                <h3>{{ item|i18n_title:current_lang }}</h3>
+
+                                <p>
+                                    {{ item|i18n_caption:current_lang|truncatewords:16 }}
+                                </p>
                             </div>
                         </a>
                     </article>
                 {% empty %}
                     <div class="empty-state glass">
-                        {% if current_lang == "ar" %}لا يوجد محتوى مرتبط حاليًا
-                        {% elif current_lang == "en" %}No related content yet
-                        {% else %}Aucun contenu lié pour le moment
+                        {% if current_lang == "ar" %}
+                            لا يوجد محتوى مرتبط حاليًا.
+                        {% elif current_lang == "en" %}
+                            No related content yet.
+                        {% else %}
+                            Aucun contenu lié pour le moment.
                         {% endif %}
                     </div>
                 {% endfor %}
@@ -212,9 +273,10 @@
 </main>
 
 <script>
-document.querySelectorAll('[data-audio]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        new Audio(btn.dataset.audio).play();
+document.querySelectorAll('[data-audio]').forEach(function(button) {
+    button.addEventListener('click', function() {
+        const audio = new Audio(button.dataset.audio);
+        audio.play();
     });
 });
 </script>
