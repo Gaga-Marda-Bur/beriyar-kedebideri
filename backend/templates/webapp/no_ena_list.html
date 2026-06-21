@@ -57,37 +57,7 @@
 
                 {% for value,label in publication_types %}
                     <a href="?type={{ value }}" class="btn {% if selected_type == value %}btn-primary{% else %}btn-secondary{% endif %}">
-                        {% if current_lang == "ar" %}
-                            {% if value == "IMAGE" or value == "image" %}
-                                صور
-                            {% elif value == "VIDEO" or value == "video" %}
-                                فيديوهات
-                            {% elif value == "STORY" or value == "story" %}
-                                حكايات
-                            {% elif value == "PROVERB" or value == "proverb" %}
-                                أمثال
-                            {% elif value == "DEMO" or value == "demo" %}
-                                عروض
-                            {% else %}
-                                {{ label }}
-                            {% endif %}
-                        {% elif current_lang == "en" %}
-                            {% if value == "IMAGE" or value == "image" %}
-                                Images
-                            {% elif value == "VIDEO" or value == "video" %}
-                                Videos
-                            {% elif value == "STORY" or value == "story" %}
-                                Stories
-                            {% elif value == "PROVERB" or value == "proverb" %}
-                                Proverbs
-                            {% elif value == "DEMO" or value == "demo" %}
-                                Demonstrations
-                            {% else %}
-                                {{ label }}
-                            {% endif %}
-                        {% else %}
-                            {{ label }}
-                        {% endif %}
+                        {{ value|i18n_publication_type:current_lang }}
                     </a>
                 {% endfor %}
             </div>

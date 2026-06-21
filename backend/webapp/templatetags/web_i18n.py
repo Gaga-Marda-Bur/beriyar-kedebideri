@@ -247,10 +247,40 @@ def i18n_publication_type(value, lang):
             "en": "Image",
             "ar": "صورة",
         },
+        "images": {
+            "fr": "Images",
+            "en": "Images",
+            "ar": "صور",
+        },
         "video": {
             "fr": "Vidéo",
             "en": "Video",
             "ar": "فيديو",
+        },
+        "videos": {
+            "fr": "Vidéos",
+            "en": "Videos",
+            "ar": "فيديوهات",
+        },
+        "short_video": {
+            "fr": "Vidéo courte",
+            "en": "Short video",
+            "ar": "فيديو قصير",
+        },
+        "short video": {
+            "fr": "Vidéo courte",
+            "en": "Short video",
+            "ar": "فيديو قصير",
+        },
+        "audio_story": {
+            "fr": "Récit audio",
+            "en": "Audio story",
+            "ar": "حكاية صوتية",
+        },
+        "audio story": {
+            "fr": "Récit audio",
+            "en": "Audio story",
+            "ar": "حكاية صوتية",
         },
         "story": {
             "fr": "Récit",
@@ -262,7 +292,27 @@ def i18n_publication_type(value, lang):
             "en": "Proverb",
             "ar": "مثل",
         },
-        "demo": {
+        "culture_note": {
+            "fr": "Note culturelle",
+            "en": "Culture note",
+            "ar": "ملاحظة ثقافية",
+        },
+        "culture note": {
+            "fr": "Note culturelle",
+            "en": "Culture note",
+            "ar": "ملاحظة ثقافية",
+        },
+        "writing_demonstration": {
+            "fr": "Démonstration d’écriture",
+            "en": "Writing demonstration",
+            "ar": "عرض الكتابة",
+        },
+        "writing demonstration": {
+            "fr": "Démonstration d’écriture",
+            "en": "Writing demonstration",
+            "ar": "عرض الكتابة",
+        },
+        "writing_demo": {
             "fr": "Démonstration",
             "en": "Demonstration",
             "ar": "عرض",
