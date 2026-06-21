@@ -34,8 +34,16 @@
 
     function isWritableElement(element) {
         if (!element) return false;
+
         const tag = element.tagName ? element.tagName.toLowerCase() : "";
-        return tag === "textarea" || tag === "input" || element.isContentEditable;
+        const isTextField =
+            tag === "textarea" ||
+            tag === "input" ||
+            element.isContentEditable;
+
+        if (!isTextField) return false;
+
+        return element.dataset.beriyaKeyboard === "true";
     }
 
     function rememberActiveInput(event) {

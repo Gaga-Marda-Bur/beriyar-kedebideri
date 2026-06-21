@@ -53,12 +53,21 @@
 
           <label for="message">Message</label>
           <textarea
-            id="message"
-            name="message"
-            rows="6"
-            placeholder="Explique le problème ou ta suggestion..."
-            required
+              name="message"
+              class="beriya-input"
+              data-beriya-keyboard="true"
+              rows="6"
+              placeholder="{% if current_lang == 'ar' %}اكتب رسالتك أو ملاحظتك هنا...{% elif current_lang == 'en' %}Write your message or feedback here...{% else %}Écris ton message ou ta remarque ici...{% endif %}"
           ></textarea>
+          <div class="beriya-keyboard-hint beriya-font">
+              {% if current_lang == "ar" %}
+                  يمكنك كتابة رسالة ببيريَا باستعمال لوحة المفاتيح 𖺠.
+              {% elif current_lang == "en" %}
+                  You can write in Beriya using the 𖺠 keyboard.
+              {% else %}
+                  Tu peux écrire en Beriya avec le clavier 𖺠.
+              {% endif %}
+          </div>
 
           <input type="hidden" name="language_code" value="{{ current_lang|default:'fr' }}">
 

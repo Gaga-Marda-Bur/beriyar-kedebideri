@@ -16,13 +16,22 @@
             <form method="get" class="toolbar">
                 <div class="form-inline glass" style="padding: 14px; border-radius: 24px;">
                     <input
-                        class="input"
-                        type="text"
+                        type="search"
                         name="q"
                         value="{{ search }}"
+                        class="input beriya-input"
                         data-beriya-keyboard="true"
-                        placeholder="Rechercher un mot, une transcription ou une traduction..."
+                        placeholder="{% if current_lang == 'ar' %}ابحث بكلمة بيريَا...{% elif current_lang == 'en' %}Search in Beriya...{% else %}Rechercher en Beriya...{% endif %}"
                     >
+                    <div class="beriya-keyboard-hint beriya-font">
+                        {% if current_lang == "ar" %}
+                            استخدم زر 𖺠 Clavier لكتابة حروف بيريَا.
+                        {% elif current_lang == "en" %}
+                            Use the 𖺠 keyboard button to type Beriya characters.
+                        {% else %}
+                            Utilise le bouton 𖺠 Clavier pour écrire les caractères Beriya.
+                        {% endif %}
+                    </div>
 
                     <select class="select" name="category">
                         <option value="">Toutes les catégories</option>
