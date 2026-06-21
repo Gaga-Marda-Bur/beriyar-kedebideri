@@ -21,7 +21,7 @@
     position: absolute;
     right: 0;
     bottom: 58px;
-    width: min(420px, calc(100vw - 32px));
+    width: min(460px, calc(100vw - 32px));
     border: 1px solid rgba(212, 175, 55, 0.22);
     border-radius: 26px;
     background: rgba(8, 38, 29, 0.94);
@@ -51,10 +51,53 @@
     cursor: pointer;
 }
 
-.beriya-keyboard-keys {
+.beriya-keyboard-modes {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 9px;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.beriya-keyboard-modes button {
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    border-radius: 14px;
+    padding: 10px 8px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.beriya-keyboard-modes button.active {
+    border-color: #D4AF37;
+    background: rgba(212, 175, 55, 0.18);
+    color: #D4AF37;
+}
+
+.beriya-keyboard-keys {
+    display: block;
+}
+
+.beriya-keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-bottom: 8px;
+}
+
+.beriya-keyboard-row.row-2 {
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+.beriya-keyboard-row.row-3 {
+    padding-left: 42px;
+    padding-right: 42px;
+}
+
+.beriya-keyboard-row .beriya-key {
+    flex: 1;
+    min-width: 0;
 }
 
 .beriya-key {
@@ -76,7 +119,7 @@
 
 .beriya-keyboard-actions {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr;
     gap: 9px;
     margin-top: 12px;
 }
@@ -93,6 +136,10 @@
 
 .beriya-keyboard-actions button:hover {
     background: rgba(212, 175, 55, 0.18);
+}
+
+.beriya-font {
+    font-family: "Kedebideri", "Noto Sans", Arial, sans-serif;
 }
 
 @media (max-width: 560px) {
@@ -112,8 +159,61 @@
         width: 100%;
     }
 
+    .beriya-keyboard-row {
+        gap: 5px;
+    }
+
+    .beriya-keyboard-row.row-2 {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .beriya-keyboard-row.row-3 {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
     .beriya-key {
         min-height: 46px;
-        font-size: 25px;
+        font-size: 24px;
+        border-radius: 14px;
     }
+
+    .beriya-keyboard-modes button {
+        font-size: 12px;
+        padding: 9px 5px;
+    }
+}
+
+.beriya-keyboard-actions {
+    grid-template-columns: 48px 2fr 56px 70px;
+}
+
+.beriya-longpress-popup {
+    position: fixed;
+    z-index: 10020;
+    display: flex;
+    gap: 6px;
+    padding: 7px;
+    border-radius: 18px;
+    background: rgba(8, 38, 29, 0.98);
+    border: 1px solid #D4AF37;
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.42);
+}
+
+.beriya-longpress-popup button {
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.11);
+    color: white;
+    font-size: 20px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.beriya-longpress-popup button:hover {
+    background: rgba(212, 175, 55, 0.24);
+    color: #D4AF37;
 }

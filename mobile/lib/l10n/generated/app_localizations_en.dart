@@ -550,4 +550,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get keyboardClear => 'Clear';
+
+  @override
+  String get keyboardSystem => 'System keyboard';
 }

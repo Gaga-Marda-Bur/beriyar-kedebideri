@@ -1161,6 +1161,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Vider'**
   String get keyboardClear;
+
+  /// No description provided for @keyboardSystem.
+  ///
+  /// In fr, this message translates to:
+  /// **'Clavier système'**
+  String get keyboardSystem;
 }
 
 class _AppLocalizationsDelegate

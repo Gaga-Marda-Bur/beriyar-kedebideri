@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../widgets/sticker_beriya_keyboard.dart';
+import '../../../shared/beriya/beriya_keyboard.dart';
 import '../../../l10n/generated/app_localizations.dart';
 
 enum StickerStyleType {
@@ -236,7 +236,7 @@ class _StickerStudioScreenState extends State<StickerStudioScreen> {
           ),
           if (_keyboardVisible) ...[
             const SizedBox(height: 12),
-            StickerBeriyaKeyboard(
+            BeriyaKeyboard(
               onInsert: _insertText,
               onBackspace: _backspace,
               onSpace: () => _insertText(' '),
@@ -540,9 +540,21 @@ class _StickerPreview extends StatelessWidget {
                   style: TextStyle(
                     color: transparent ? const Color(0xFF123428) : Colors.white,
                     fontSize: _fontSize(),
-                    height: 1.18,
-                    fontWeight: FontWeight.w900,
+                    height: style == StickerStyleType.calligraphy ? 1.28 : 1.18,
+                    fontWeight: style == StickerStyleType.calligraphy
+                        ? FontWeight.w700
+                        : FontWeight.w900,
                     fontFamily: _fontFamily(),
+                    letterSpacing: style == StickerStyleType.calligraphy ? 1.2 : 0,
+                    shadows: style == StickerStyleType.calligraphy
+                        ? [
+                            Shadow(
+                              color: color.withAlpha(120),
+                              blurRadius: 10,
+                              offset: const Offset(0, 2),
+                            ),
+                          ]
+                        : null,
                   ),
                 ),
               ),
@@ -593,9 +605,6 @@ class _StickerPreview extends StatelessWidget {
   }
 
   String? _fontFamily() {
-    if (style == StickerStyleType.calligraphy) {
-      return 'serif';
-    }
     return 'Kedebideri';
   }
 

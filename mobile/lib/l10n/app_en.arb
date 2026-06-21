@@ -182,5 +182,6 @@
   "studioHubSubtitle": "Create a Beriya image or sticker",
   "keyboardSpace": "Space",
   "keyboardBackspace": "Delete",
-  "keyboardClear": "Clear"
+  "keyboardClear": "Clear",
+  "keyboardSystem": "System keyboard"
 }

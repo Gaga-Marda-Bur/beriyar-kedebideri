@@ -11,6 +11,7 @@ import '../../../core/cache/cached_content_service.dart';
 import '../../../core/cache/cache_keys.dart';
 import '../../../core/cache/content_source.dart';
 import '../../../core/widgets/content_source_badge.dart';
+import '../../../shared/beriya/beriya_text_field.dart';
 
 class VocabularyScreen extends StatefulWidget {
   const VocabularyScreen({super.key});
@@ -95,17 +96,13 @@ class _VocabularyScreenState extends State<VocabularyScreen> {
                 GlassCard(
                   child: Column(
                     children: [
-                      TextField(
+                      BeriyaTextField(
                         controller: _searchController,
+                        hint: loc.searchVocabulary,
                         textInputAction: TextInputAction.search,
-                        onSubmitted: (value) => _reload(search: value),
-                        decoration: InputDecoration(
-                          hintText: loc.searchVocabulary,
-                          prefixIcon: const Icon(Icons.search_rounded),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                        ),
+                        prefixIcon: const Icon(Icons.search_rounded),
+                        initialMode: BeriyaInputMode.system,
+                        onChanged: (value) => _reload(search: value),
                       ),
                       const SizedBox(height: 12),
                       SizedBox(

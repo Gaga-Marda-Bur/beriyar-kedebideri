@@ -551,4 +551,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get keyboardClear => 'Vider';
+
+  @override
+  String get keyboardSystem => 'Clavier système';
 }

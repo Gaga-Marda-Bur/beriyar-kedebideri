@@ -1147,9 +1147,53 @@ html[dir="rtl"] .quiz-option-button {
 
 .beriya-mini-keyboard {
     margin-top: 16px;
+    display: block;
+}
+
+.beriya-mini-modes,
+.beriya-mini-actions {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
+    margin-bottom: 10px;
+}
+
+.beriya-mini-modes button {
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    border-radius: 14px;
+    padding: 10px 8px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.beriya-mini-modes button.active {
+    border-color: var(--brand-gold);
+    background: rgba(212, 175, 55, 0.18);
+    color: var(--brand-gold);
+}
+
+.beriya-mini-row {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-bottom: 8px;
+}
+
+.beriya-mini-row.row-2 {
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+.beriya-mini-row.row-3 {
+    padding-left: 42px;
+    padding-right: 42px;
+}
+
+.beriya-mini-row .beriya-mini-key {
+    flex: 1;
+    min-width: 0;
 }
 
 .beriya-mini-key {
@@ -1158,16 +1202,47 @@ html[dir="rtl"] .quiz-option-button {
     border: 1px solid rgba(212, 175, 55, 0.22);
     background: rgba(255, 255, 255, 0.08);
     color: var(--brand-white);
-    font-family: "Kedebideri", serif;
+    font-family: "Kedebideri", "Noto Sans", Arial, sans-serif;
     font-size: 26px;
     cursor: pointer;
 }
 
 .beriya-mini-key.wide {
-    grid-column: span 2;
     font-family: inherit;
     font-size: 14px;
     font-weight: 900;
+}
+
+.beriya-mini-actions {
+    grid-template-columns: 2fr 1fr;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+@media (max-width: 560px) {
+    .beriya-mini-row {
+        gap: 5px;
+    }
+
+    .beriya-mini-row.row-2 {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .beriya-mini-row.row-3 {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .beriya-mini-key {
+        min-height: 42px;
+        font-size: 23px;
+    }
+
+    .beriya-mini-modes button {
+        font-size: 12px;
+        padding: 9px 5px;
+    }
 }
 
 @media (max-width: 900px) {

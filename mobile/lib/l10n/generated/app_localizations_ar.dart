@@ -545,4 +545,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get keyboardClear => 'مسح';
+
+  @override
+  String get keyboardSystem => 'لوحة مفاتيح النظام';
 }

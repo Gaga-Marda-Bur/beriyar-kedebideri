@@ -10,10 +10,15 @@
     const beriyaKeyboard = document.getElementById("beriyaMiniKeyboard");
     const openKeyboardBtn = document.getElementById("openBeriyaKeyboard");
 
-    const beriyaChars = [];
-    for (let code = 0x16EA0; code <= 0x16EB8; code++) {
-        beriyaChars.push(String.fromCodePoint(code));
-    }
+    const keyboardData = window.BERIYA_KEYBOARD_DATA;
+
+    const keyboardRows = {
+        fast: keyboardData.fastRows,
+        abc: keyboardData.learningRows,
+        symbols: keyboardData.symbolRows
+    };
+
+    let currentKeyboardMode = "fast";
 
     const i18n = window.STICKER_I18N || {
         brand: "Beřiyar Kedebideři",
@@ -33,34 +38,169 @@
         input.focus();
     }
 
+    function hasBeriya(text) {
+        return Array.from(text).some((char) => {
+            const code = char.codePointAt(0);
+            return code >= 0x16EA0 && code <= 0x16EB8;
+        });
+    }
+
+    let stickerLongPressTimer = null;
+    let stickerLongPressTriggered = false;
+    let stickerPopup = null;
+
+    function removeStickerPopup() {
+        if (stickerPopup) {
+            stickerPopup.remove();
+            stickerPopup = null;
+        }
+    }
+
+    function showStickerLongPressMenu(button, options) {
+        removeStickerPopup();
+
+        const rect = button.getBoundingClientRect();
+        const popup = document.createElement("div");
+        popup.className = "beriya-longpress-popup";
+
+        options.forEach((option) => {
+            const opt = document.createElement("button");
+            opt.type = "button";
+            opt.className = hasBeriya(option) ? "beriya-font" : "";
+            opt.textContent = option;
+            opt.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                insertAtCursor(textInput, option);
+                removeStickerPopup();
+            });
+            popup.appendChild(opt);
+        });
+
+        popup.style.left = `${Math.max(8, rect.left)}px`;
+        popup.style.top = `${Math.max(8, rect.top - 58)}px`;
+
+        document.body.appendChild(popup);
+        stickerPopup = popup;
+    }
+
+    function attachStickerKeyEvents(button, value) {
+        const options = keyboardData.longPressOptions[value];
+
+        button.addEventListener("pointerdown", () => {
+            stickerLongPressTriggered = false;
+            if (!options || options.length === 0) return;
+
+            stickerLongPressTimer = window.setTimeout(() => {
+                stickerLongPressTriggered = true;
+                showStickerLongPressMenu(button, options);
+            }, 450);
+        });
+
+        button.addEventListener("pointerup", () => {
+            if (stickerLongPressTimer) {
+                window.clearTimeout(stickerLongPressTimer);
+                stickerLongPressTimer = null;
+            }
+        });
+
+        button.addEventListener("pointerleave", () => {
+            if (stickerLongPressTimer) {
+                window.clearTimeout(stickerLongPressTimer);
+                stickerLongPressTimer = null;
+            }
+        });
+
+        button.addEventListener("click", (event) => {
+            if (stickerLongPressTriggered) {
+                event.preventDefault();
+                event.stopPropagation();
+                stickerLongPressTriggered = false;
+                return;
+            }
+
+            insertAtCursor(textInput, value);
+        });
+    }
+
     function buildKeyboard() {
         beriyaKeyboard.innerHTML = "";
 
-        beriyaChars.forEach((char) => {
+        const modeBar = document.createElement("div");
+        modeBar.className = "beriya-mini-modes";
+
+        const modes = [
+            { key: "fast", label: "Rapide" },
+            { key: "abc", label: "ABC" },
+            { key: "symbols", label: ".?123" },
+        ];
+
+        modes.forEach((mode) => {
             const btn = document.createElement("button");
             btn.type = "button";
-            btn.className = "beriya-mini-key";
-            btn.textContent = char;
-            btn.addEventListener("click", () => insertAtCursor(textInput, char));
-            beriyaKeyboard.appendChild(btn);
+            btn.className = mode.key === currentKeyboardMode ? "active" : "";
+            btn.textContent = mode.label;
+
+            btn.addEventListener("click", () => {
+                currentKeyboardMode = mode.key;
+                buildKeyboard();
+            });
+
+            modeBar.appendChild(btn);
         });
+
+        beriyaKeyboard.appendChild(modeBar);
+
+        const rows = keyboardRows[currentKeyboardMode];
+
+        rows.forEach((row, rowIndex) => {
+            const rowEl = document.createElement("div");
+            rowEl.className = `beriya-mini-row row-${rowIndex + 1}`;
+
+            row.forEach((char) => {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = currentKeyboardMode === "symbols"
+                    ? "beriya-mini-key"
+                    : "beriya-mini-key beriya-font";
+
+                btn.textContent = char;
+                attachStickerKeyEvents(btn, char);
+                rowEl.appendChild(btn);
+            });
+
+            beriyaKeyboard.appendChild(rowEl);
+        });
+
+        const actionRow = document.createElement("div");
+        actionRow.className = "beriya-mini-actions";
+
+        const dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "beriya-mini-key";
+        dot.textContent = ".";
+        attachStickerKeyEvents(dot, ".");
+        actionRow.appendChild(dot);
 
         const space = document.createElement("button");
         space.type = "button";
         space.className = "beriya-mini-key wide";
         space.textContent = i18n.space;
         space.addEventListener("click", () => insertAtCursor(textInput, " "));
-        beriyaKeyboard.appendChild(space);
+        actionRow.appendChild(space);
 
         const clear = document.createElement("button");
         clear.type = "button";
-        clear.className = "beriya-mini-key wide";
+        clear.className = "beriya-mini-key";
         clear.textContent = i18n.clear;
         clear.addEventListener("click", () => {
             textInput.value = "";
+            textInput.dispatchEvent(new Event("input", { bubbles: true }));
             draw();
         });
-        beriyaKeyboard.appendChild(clear);
+        actionRow.appendChild(clear);
+
+        beriyaKeyboard.appendChild(actionRow);
     }
 
     function wrapText(ctx, text, maxWidth) {
@@ -174,9 +314,9 @@
         ctx.save();
 
         if (currentStyle === "calligraphy") {
-            ctx.font = "bold 72px Kedebideri, Georgia, serif";
+            ctx.font = "700 72px Kedebideri, Arial, sans-serif";
         } else {
-            ctx.font = "bold 64px Kedebideri, Arial, sans-serif";
+            ctx.font = "900 64px Kedebideri, Arial, sans-serif";
         }
 
         ctx.textAlign = "center";

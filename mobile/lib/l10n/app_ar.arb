@@ -182,5 +182,6 @@
   "studioHubSubtitle": "إنشاء صورة أو ملصق بلغة بيريَا",
   "keyboardSpace": "مسافة",
   "keyboardBackspace": "حذف",
-  "keyboardClear": "مسح"
+  "keyboardClear": "مسح",
+  "keyboardSystem": "لوحة مفاتيح النظام"
 }
