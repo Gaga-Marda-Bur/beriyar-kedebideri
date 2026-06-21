@@ -183,5 +183,16 @@
   "keyboardSpace": "مسافة",
   "keyboardBackspace": "حذف",
   "keyboardClear": "مسح",
-  "keyboardSystem": "لوحة مفاتيح النظام"
+  "keyboardSystem": "لوحة مفاتيح النظام",
+  "keyboardSettingsTitle": "لوحة مفاتيح بيريَا",
+  "keyboardSettingsSubtitle": "اختر طريقة ظهور لوحة مفاتيح بيريَا داخل التطبيق.",
+  "keyboardLayout": "التخطيط",
+  "keyboardLayoutFast": "سريع",
+  "keyboardLayoutAbc": "ABC",
+  "keyboardInputMode": "طريقة الإدخال",
+  "keyboardInputBeriya": "بيريَا",
+  "keyboardInputSystem": "النظام",
+  "keyboardDominantHand": "اليد المفضلة",
+  "keyboardRightHand": "اليمنى",
+  "keyboardLeftHand": "اليسرى"
 }

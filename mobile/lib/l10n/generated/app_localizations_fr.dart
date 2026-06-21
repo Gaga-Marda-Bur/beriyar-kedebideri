@@ -554,4 +554,38 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get keyboardSystem => 'Clavier système';
+
+  @override
+  String get keyboardSettingsTitle => 'Clavier Beriya';
+
+  @override
+  String get keyboardSettingsSubtitle =>
+      'Choisis comment le clavier Beriya doit apparaître dans l’application.';
+
+  @override
+  String get keyboardLayout => 'Disposition';
+
+  @override
+  String get keyboardLayoutFast => 'Rapide';
+
+  @override
+  String get keyboardLayoutAbc => 'ABC';
+
+  @override
+  String get keyboardInputMode => 'Mode de saisie';
+
+  @override
+  String get keyboardInputBeriya => 'Beriya';
+
+  @override
+  String get keyboardInputSystem => 'Système';
+
+  @override
+  String get keyboardDominantHand => 'Main dominante';
+
+  @override
+  String get keyboardRightHand => 'Droitier';
+
+  @override
+  String get keyboardLeftHand => 'Gaucher';
 }

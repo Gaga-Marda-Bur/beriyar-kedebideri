@@ -183,5 +183,16 @@
   "keyboardSpace": "Space",
   "keyboardBackspace": "Delete",
   "keyboardClear": "Clear",
-  "keyboardSystem": "System keyboard"
+  "keyboardSystem": "System keyboard",
+  "keyboardSettingsTitle": "Beriya Keyboard",
+  "keyboardSettingsSubtitle": "Choose how the Beriya keyboard should appear in the app.",
+  "keyboardLayout": "Layout",
+  "keyboardLayoutFast": "Fast",
+  "keyboardLayoutAbc": "ABC",
+  "keyboardInputMode": "Input mode",
+  "keyboardInputBeriya": "Beriya",
+  "keyboardInputSystem": "System",
+  "keyboardDominantHand": "Dominant hand",
+  "keyboardRightHand": "Right-handed",
+  "keyboardLeftHand": "Left-handed"
 }

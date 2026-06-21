@@ -553,4 +553,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get keyboardSystem => 'System keyboard';
+
+  @override
+  String get keyboardSettingsTitle => 'Beriya Keyboard';
+
+  @override
+  String get keyboardSettingsSubtitle =>
+      'Choose how the Beriya keyboard should appear in the app.';
+
+  @override
+  String get keyboardLayout => 'Layout';
+
+  @override
+  String get keyboardLayoutFast => 'Fast';
+
+  @override
+  String get keyboardLayoutAbc => 'ABC';
+
+  @override
+  String get keyboardInputMode => 'Input mode';
+
+  @override
+  String get keyboardInputBeriya => 'Beriya';
+
+  @override
+  String get keyboardInputSystem => 'System';
+
+  @override
+  String get keyboardDominantHand => 'Dominant hand';
+
+  @override
+  String get keyboardRightHand => 'Right-handed';
+
+  @override
+  String get keyboardLeftHand => 'Left-handed';
 }

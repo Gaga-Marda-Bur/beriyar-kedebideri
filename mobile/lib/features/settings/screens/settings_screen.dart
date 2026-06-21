@@ -248,6 +248,8 @@ class _KeyboardPreferencesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+
     return GlassCard(
       child: AnimatedOpacity(
         opacity: loaded ? 1 : 0.55,
@@ -256,29 +258,29 @@ class _KeyboardPreferencesCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Clavier Beriya',
+              loc.keyboardSettingsTitle,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 6),
             Text(
-              'Choisis comment le clavier Beriya doit apparaître dans l’application.',
+              loc.keyboardSettingsSubtitle,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 18),
 
-            const _SectionLabel('Disposition'),
+            _SectionLabel(loc.keyboardLayout),
             const SizedBox(height: 8),
             SegmentedButton<BeriyaKeyboardLayoutPreference>(
-              segments: const [
+              segments: [
                 ButtonSegment(
                   value: BeriyaKeyboardLayoutPreference.fast,
-                  label: Text('Rapide'),
-                  icon: Icon(Icons.bolt_rounded),
+                  label: Text(loc.keyboardLayoutFast),
+                  icon: const Icon(Icons.bolt_rounded),
                 ),
                 ButtonSegment(
                   value: BeriyaKeyboardLayoutPreference.abc,
-                  label: Text('ABC'),
-                  icon: Icon(Icons.school_rounded),
+                  label: Text(loc.keyboardLayoutAbc),
+                  icon: const Icon(Icons.school_rounded),
                 ),
               ],
               selected: {prefs.layout},
@@ -289,19 +291,19 @@ class _KeyboardPreferencesCard extends StatelessWidget {
 
             const SizedBox(height: 18),
 
-            const _SectionLabel('Mode de saisie'),
+            _SectionLabel(loc.keyboardInputMode),
             const SizedBox(height: 8),
             SegmentedButton<BeriyaInputModePreference>(
-              segments: const [
+              segments: [
                 ButtonSegment(
                   value: BeriyaInputModePreference.beriya,
-                  label: Text('Beriya'),
-                  icon: Icon(Icons.keyboard_rounded),
+                  label: Text(loc.keyboardInputBeriya),
+                  icon: const Icon(Icons.keyboard_rounded),
                 ),
                 ButtonSegment(
                   value: BeriyaInputModePreference.system,
-                  label: Text('Système'),
-                  icon: Icon(Icons.smartphone_rounded),
+                  label: Text(loc.keyboardInputSystem),
+                  icon: const Icon(Icons.smartphone_rounded),
                 ),
               ],
               selected: {prefs.inputMode},
@@ -312,19 +314,19 @@ class _KeyboardPreferencesCard extends StatelessWidget {
 
             const SizedBox(height: 18),
 
-            const _SectionLabel('Main dominante'),
+            _SectionLabel(loc.keyboardDominantHand),
             const SizedBox(height: 8),
             SegmentedButton<BeriyaHandPreference>(
-              segments: const [
+              segments: [
                 ButtonSegment(
                   value: BeriyaHandPreference.right,
-                  label: Text('Droitier'),
-                  icon: Icon(Icons.swipe_right_rounded),
+                  label: Text(loc.keyboardRightHand),
+                  icon: const Icon(Icons.swipe_right_rounded),
                 ),
                 ButtonSegment(
                   value: BeriyaHandPreference.left,
-                  label: Text('Gaucher'),
-                  icon: Icon(Icons.swipe_left_rounded),
+                  label: Text(loc.keyboardLeftHand),
+                  icon: const Icon(Icons.swipe_left_rounded),
                 ),
               ],
               selected: {prefs.hand},

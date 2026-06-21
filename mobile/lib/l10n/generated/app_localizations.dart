@@ -1167,6 +1167,72 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Clavier système'**
   String get keyboardSystem;
+
+  /// No description provided for @keyboardSettingsTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Clavier Beriya'**
+  String get keyboardSettingsTitle;
+
+  /// No description provided for @keyboardSettingsSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis comment le clavier Beriya doit apparaître dans l’application.'**
+  String get keyboardSettingsSubtitle;
+
+  /// No description provided for @keyboardLayout.
+  ///
+  /// In fr, this message translates to:
+  /// **'Disposition'**
+  String get keyboardLayout;
+
+  /// No description provided for @keyboardLayoutFast.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rapide'**
+  String get keyboardLayoutFast;
+
+  /// No description provided for @keyboardLayoutAbc.
+  ///
+  /// In fr, this message translates to:
+  /// **'ABC'**
+  String get keyboardLayoutAbc;
+
+  /// No description provided for @keyboardInputMode.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mode de saisie'**
+  String get keyboardInputMode;
+
+  /// No description provided for @keyboardInputBeriya.
+  ///
+  /// In fr, this message translates to:
+  /// **'Beriya'**
+  String get keyboardInputBeriya;
+
+  /// No description provided for @keyboardInputSystem.
+  ///
+  /// In fr, this message translates to:
+  /// **'Système'**
+  String get keyboardInputSystem;
+
+  /// No description provided for @keyboardDominantHand.
+  ///
+  /// In fr, this message translates to:
+  /// **'Main dominante'**
+  String get keyboardDominantHand;
+
+  /// No description provided for @keyboardRightHand.
+  ///
+  /// In fr, this message translates to:
+  /// **'Droitier'**
+  String get keyboardRightHand;
+
+  /// No description provided for @keyboardLeftHand.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gaucher'**
+  String get keyboardLeftHand;
 }
 
 class _AppLocalizationsDelegate

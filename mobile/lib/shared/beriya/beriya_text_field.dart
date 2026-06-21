@@ -54,7 +54,6 @@ class _BeriyaTextFieldState extends State<BeriyaTextField> {
 
   BeriyaKeyboardLayout _keyboardLayout = BeriyaKeyboardLayout.fast;
   BeriyaHandPreference _handPreference = BeriyaHandPreference.right;
-  bool _preferencesLoaded = false;
 
   bool get _isBeriyaMode => _mode == BeriyaInputMode.beriya;
 
@@ -88,8 +87,6 @@ class _BeriyaTextFieldState extends State<BeriyaTextField> {
 
         _keyboardVisible = _mode == BeriyaInputMode.beriya;
       }
-
-      _preferencesLoaded = true;
     });
   }
 

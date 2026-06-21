@@ -548,4 +548,38 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get keyboardSystem => 'لوحة مفاتيح النظام';
+
+  @override
+  String get keyboardSettingsTitle => 'لوحة مفاتيح بيريَا';
+
+  @override
+  String get keyboardSettingsSubtitle =>
+      'اختر طريقة ظهور لوحة مفاتيح بيريَا داخل التطبيق.';
+
+  @override
+  String get keyboardLayout => 'التخطيط';
+
+  @override
+  String get keyboardLayoutFast => 'سريع';
+
+  @override
+  String get keyboardLayoutAbc => 'ABC';
+
+  @override
+  String get keyboardInputMode => 'طريقة الإدخال';
+
+  @override
+  String get keyboardInputBeriya => 'بيريَا';
+
+  @override
+  String get keyboardInputSystem => 'النظام';
+
+  @override
+  String get keyboardDominantHand => 'اليد المفضلة';
+
+  @override
+  String get keyboardRightHand => 'اليمنى';
+
+  @override
+  String get keyboardLeftHand => 'اليسرى';
 }

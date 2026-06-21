@@ -183,5 +183,16 @@
   "keyboardSpace": "Espace",
   "keyboardBackspace": "Effacer",
   "keyboardClear": "Vider",
-  "keyboardSystem": "Clavier système"
+  "keyboardSystem": "Clavier système",
+  "keyboardSettingsTitle": "Clavier Beriya",
+  "keyboardSettingsSubtitle": "Choisis comment le clavier Beriya doit apparaître dans l’application.",
+  "keyboardLayout": "Disposition",
+  "keyboardLayoutFast": "Rapide",
+  "keyboardLayoutAbc": "ABC",
+  "keyboardInputMode": "Mode de saisie",
+  "keyboardInputBeriya": "Beriya",
+  "keyboardInputSystem": "Système",
+  "keyboardDominantHand": "Main dominante",
+  "keyboardRightHand": "Droitier",
+  "keyboardLeftHand": "Gaucher"
 }
