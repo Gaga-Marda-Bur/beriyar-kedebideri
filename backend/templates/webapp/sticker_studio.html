@@ -82,7 +82,6 @@
                     autocorrect="off"
                     autocapitalize="off"
                     spellcheck="false"
-                    readonly
                     placeholder="{% if current_lang == 'ar' %}اكتب رسالتك هنا...{% elif current_lang == 'en' %}Write your message here...{% else %}Écris ton message ici...{% endif %}"
                 >{% if current_lang == "ar" %}المعرفة تنير الطريق.{% elif current_lang == "en" %}Knowledge lights the path.{% else %}La connaissance éclaire le chemin.{% endif %}</textarea>
 
@@ -242,34 +241,24 @@
 
         if (!stickerText) return;
 
-        stickerText.addEventListener("focus", function () {
-            stickerText.blur();
-
+        function showMiniKeyboard() {
             if (miniKeyboard) {
                 miniKeyboard.hidden = false;
             }
-        });
+        }
 
-        stickerText.addEventListener("pointerdown", function (event) {
-            event.preventDefault();
-
-            if (miniKeyboard) {
-                miniKeyboard.hidden = false;
-            }
-        });
-
-        stickerText.addEventListener("touchstart", function (event) {
-            event.preventDefault();
-
-            if (miniKeyboard) {
-                miniKeyboard.hidden = false;
-            }
-        }, { passive: false });
+        stickerText.addEventListener("focus", showMiniKeyboard);
+        stickerText.addEventListener("click", showMiniKeyboard);
+        stickerText.addEventListener("touchend", showMiniKeyboard);
 
         if (keyboardButton) {
             keyboardButton.addEventListener("click", function () {
-                if (miniKeyboard) {
-                    miniKeyboard.hidden = false;
+                showMiniKeyboard();
+                stickerText.focus({ preventScroll: true });
+
+                if (stickerText.selectionStart === 0 && stickerText.value.length > 0) {
+                    const end = stickerText.value.length;
+                    stickerText.setSelectionRange(end, end);
                 }
             });
         }

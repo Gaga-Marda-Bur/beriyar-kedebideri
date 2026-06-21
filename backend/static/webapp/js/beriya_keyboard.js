@@ -15,6 +15,8 @@
     };
 
     let activeInput = null;
+    let lastSelectionStart = 0;
+    let lastSelectionEnd = 0;
     let currentLayout = "fast";
     let showSymbols = false;
     let wrapper = null;
@@ -22,6 +24,18 @@
     let longPressTimer = null;
     let longPressTriggered = false;
     let activePopup = null;
+
+    function saveSelection(input) {
+        if (!input || input.isContentEditable) return;
+
+        if (
+            typeof input.selectionStart === "number" &&
+            typeof input.selectionEnd === "number"
+        ) {
+            lastSelectionStart = input.selectionStart;
+            lastSelectionEnd = input.selectionEnd;
+        }
+    }
 
     function rowsForMode() {
         if (showSymbols) return data.symbolRows;
@@ -48,7 +62,11 @@
 
     function rememberActiveInput(event) {
         const target = event.target;
-        if (isWritableElement(target)) activeInput = target;
+
+        if (isWritableElement(target)) {
+            activeInput = target;
+            saveSelection(activeInput);
+        }
     }
 
     function insertText(text) {
@@ -65,15 +83,26 @@
             return;
         }
 
-        activeInput.focus();
-
         if (activeInput.isContentEditable) {
+            activeInput.focus({ preventScroll: true });
             document.execCommand("insertText", false, text);
             return;
         }
 
-        const start = activeInput.selectionStart ?? activeInput.value.length;
-        const end = activeInput.selectionEnd ?? activeInput.value.length;
+        activeInput.focus({ preventScroll: true });
+
+        let start = typeof activeInput.selectionStart === "number"
+            ? activeInput.selectionStart
+            : lastSelectionStart;
+
+        let end = typeof activeInput.selectionEnd === "number"
+            ? activeInput.selectionEnd
+            : lastSelectionEnd;
+
+        if (start === 0 && end === 0 && activeInput.value.length > 0) {
+            start = lastSelectionStart || activeInput.value.length;
+            end = lastSelectionEnd || activeInput.value.length;
+        }
 
         activeInput.value =
             activeInput.value.substring(0, start) +
@@ -82,6 +111,8 @@
 
         const newPosition = start + text.length;
         activeInput.setSelectionRange(newPosition, newPosition);
+        lastSelectionStart = newPosition;
+        lastSelectionEnd = newPosition;
 
         activeInput.dispatchEvent(new Event("input", { bubbles: true }));
         activeInput.dispatchEvent(new Event("change", { bubbles: true }));
@@ -166,7 +197,12 @@
     function attachKeyEvents(button, value) {
         const options = data.longPressOptions[value];
 
-        button.addEventListener("pointerdown", () => {
+        button.addEventListener("pointerdown", (event) => {
+            event.preventDefault();
+
+            if (activeInput) {
+                saveSelection(activeInput);
+            }
             longPressTriggered = false;
             if (!options || options.length === 0) return;
 
@@ -197,7 +233,7 @@
                 longPressTriggered = false;
                 return;
             }
-
+            
             insertText(value);
         });
     }
@@ -303,15 +339,30 @@
 
         attachKeyEvents(wrapper.querySelector("[data-action='dot']"), ".");
 
-        wrapper.querySelector("[data-action='space']").addEventListener("click", () => {
+        wrapper.querySelector("[data-action='space']").addEventListener("pointerdown", (event) => {
+            event.preventDefault();
+        });
+
+        wrapper.querySelector("[data-action='space']").addEventListener("click", (event) => {
+            event.preventDefault();
             insertText(" ");
         });
 
-        wrapper.querySelector("[data-action='backspace']").addEventListener("click", () => {
+        wrapper.querySelector("[data-action='backspace']").addEventListener("pointerdown", (event) => {
+            event.preventDefault();
+        });
+
+        wrapper.querySelector("[data-action='backspace']").addEventListener("click", (event) => {
+            event.preventDefault();
             backspace();
         });
 
-        wrapper.querySelector("[data-action='clear']").addEventListener("click", () => {
+        wrapper.querySelector("[data-action='clear']").addEventListener("pointerdown", (event) => {
+            event.preventDefault();
+        });
+
+        wrapper.querySelector("[data-action='clear']").addEventListener("click", (event) => {
+            event.preventDefault();
             clearInput();
         });
 

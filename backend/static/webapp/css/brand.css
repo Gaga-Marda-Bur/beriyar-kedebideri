@@ -1687,3 +1687,9 @@ html[dir="rtl"] .quiz-option-button {
         min-height: 120px;
     }
 }
+
+#stickerText {
+    caret-color: #D4AF37;
+    -webkit-user-select: text;
+    user-select: text;
+}
