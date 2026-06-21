@@ -2,9 +2,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.http import HttpResponseNotFound
+
+def fake_admin_not_found(request):
+    return HttpResponseNotFound("Not found")
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", fake_admin_not_found),
+    path(settings.ADMIN_URL, admin.site.urls),
 
     # Web frontend responsive
     path('', include('webapp.urls')),

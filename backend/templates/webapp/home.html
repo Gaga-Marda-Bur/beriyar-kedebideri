@@ -1,70 +1,120 @@
 {% extends "webapp/base.html" %}
 
-{% block title %}Beřiyar Kedebideři — Plateforme Beriya Erfe{% endblock %}
+{% block title %} Beřiyar Kedebideři — Plateforme Beriya Erfe{% endblock %}
 
 {% block content %}
 <main>
     <section class="hero">
         <div class="container hero-grid">
             <div>
-                <div class="badge">No Ena • Audio-first • Offline-first</div>
+                <div class="badge">
+                    {% if current_lang == "ar" %}
+                        نو إينا • صوتي أولاً • يعمل دون اتصال
+                    {% elif current_lang == "en" %}
+                        No Ena • Audio-first • Offline-first
+                    {% else %}
+                        No Ena • Audio-first • Offline-first
+                    {% endif %}
+                </div>
 
                 {% if current_lang == "ar" %}
                 <h1>
-                    صوت Beriya يلتقي
+                    صوت البِرِيَّة يلتقي
                     <span>بكتابته.</span>
                 </h1>
                 <p class="hero-text">
-                    Beřiyar Kedebideři يساعد المتحدثين بلغة Beriya/Zaghawa على تعلم كتابة Beriya Erfe تدريجيًا من خلال الصوت، التكرار، الحروف، الكلمات والاختبارات.
+                    بريار كدبيدري يساعد المتحدثين بلغة البِرِيَّة (الزغاوة)
+                    على تعلّم كتابة <strong>بريا إرفه</strong> تدريجيًا
+                    من خلال الاستماع، التكرار، الحروف، الكلمات،
+                    الاختبارات والمحتوى الثقافي الموثّق.
                 </p>
+
                 {% elif current_lang == "en" %}
                 <h1>
                     The Beriya voice meets
                     <span>its writing.</span>
                 </h1>
                 <p class="hero-text">
-                    Beřiyar Kedebideři helps Beriya/Zaghawa speakers gradually learn Beriya Erfe writing through listening, repetition, characters, words, quizzes and cultural content.
+                    <strong>Beřiyar Kedebideři</strong> helps Beriya (Zaghawa) speakers
+                    gradually learn <strong>Beriya Erfe</strong> writing through listening,
+                    repetition, characters, words, quizzes, and validated cultural content.
                 </p>
+
                 {% else %}
                 <h1>
-                    La voix Beriya rencontre
+                    La voix beriya rencontre
                     <span>son écriture.</span>
                 </h1>
                 <p class="hero-text">
-                    Beřiyar Kedebideři aide les locuteurs Beriya/Zaghawa à apprendre progressivement l’écriture Beriya Erfe à travers l’écoute, la répétition, les caractères, les mots, les quiz et les contenus culturels validés.
+                    <strong>Beřiyar Kedebideři</strong> aide les locuteurs beriya (zaghawa)
+                    à apprendre progressivement l’écriture <strong>Beriya Erfe</strong>
+                    à travers l’écoute, la répétition, les caractères, les mots,
+                    les quiz et des contenus culturels validés.
                 </p>
                 {% endif %}
 
                 <div class="hero-actions">
                     <a href="{% url 'web-learning-path' %}" class="btn btn-primary">
-                        {% if current_lang == "ar" %}ابدأ التعلم{% elif current_lang == "en" %}Start learning{% else %}Commencer à apprendre{% endif %}
+                        {% if current_lang == "ar" %}ابدأ التعلّم
+                        {% elif current_lang == "en" %}Start learning
+                        {% else %}Commencer à apprendre
+                        {% endif %}
                     </a>
 
                     <a href="{{ ANDROID_APK_URL }}" class="btn btn-secondary">
-                        {% if current_lang == "ar" %}تحميل تطبيق أندرويد{% elif current_lang == "en" %}Download Android app{% else %}Télécharger l’app Android{% endif %}
+                        {% if current_lang == "ar" %}تحميل تطبيق أندرويد
+                        {% elif current_lang == "en" %}Download Android app
+                        {% else %}Télécharger l’application Android
+                        {% endif %}
                     </a>
 
                     <a href="{% url 'web-no-ena-list' %}" class="btn btn-secondary">
-                        {% if current_lang == "ar" %}اكتشف No Ena{% elif current_lang == "en" %}Discover No Ena{% else %}Découvrir No Ena{% endif %}
+                        {% if current_lang == "ar" %}اكتشف نو إينا
+                        {% elif current_lang == "en" %}Discover No Ena
+                        {% else %}Découvrir No Ena
+                        {% endif %}
                     </a>
                 </div>
 
                 <p class="download-note">
-                    Version Android MVP — installation directe APK. Play Store bientôt.
+                    {% if current_lang == "ar" %}
+                        نسخة أندرويد أولية (MVP) — تثبيت مباشر عبر APK. متجر Play قريبًا.
+                    {% elif current_lang == "en" %}
+                        Android MVP version — direct APK installation. Play Store coming soon.
+                    {% else %}
+                        Version Android MVP — installation directe via APK. Play Store bientôt.
+                    {% endif %}
                 </p>
 
                 <div class="hero-stats">
                     <div class="stat-card glass">
                         <div class="stat-number">{{ stats.themes_count }}</div>
-                        <div class="stat-label">Thèmes</div>
+                        <div class="stat-label">
+                            {% if current_lang == "ar" %}مواضيع
+                            {% elif current_lang == "en" %}Themes
+                            {% else %}Thèmes
+                            {% endif %}
+                        </div>
                     </div>
+
                     <div class="stat-card glass">
                         <div class="stat-number">{{ stats.units_count }}</div>
-                        <div class="stat-label">Unités</div>
+                        <div class="stat-label">
+                            {% if current_lang == "ar" %}وحدات
+                            {% elif current_lang == "en" %}Units
+                            {% else %}Unités
+                            {% endif %}
+                        </div>
                     </div>
+
                     <div class="stat-card glass">
                         <div class="stat-number">{{ stats.no_ena_count }}</div>
-                        <div class="stat-label">No Ena</div>
+                        <div class="stat-label">
+                            {% if current_lang == "ar" %}نو إينا
+                            {% elif current_lang == "en" %}No Ena
+                            {% else %}No Ena
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -72,23 +122,41 @@
             <div class="hero-visual">
                 <div class="phone-card glass">
                     <div class="phone-content">
-                        <div class="mobile-preview-title">Écouter. Lire. Écrire. Transmettre.</div>
+                        <div class="mobile-preview-title">
+                            {% if current_lang == "ar" %}استمع. اقرأ. اكتب. انقل.{% elif current_lang == "en" %}Listen. Read. Write. Share.{% else %}Écouter. Lire. Écrire. Transmettre.{% endif %}
+                        </div>
                         <p class="mobile-preview-text">
-                            Une expérience moderne, visuelle et sonore pour découvrir les caractères
-                            Beriya Erfe étape par étape.
+                            {% if current_lang == "ar" %}
+                                تجربة حديثة، مرئية وسمعية لاستكشاف الأحرف
+                                Beriya Erfe خطوة بخطوة.
+                            {% elif current_lang == "en" %}
+                                A modern, visual and auditory experience to discover the characters
+                                Beriya Erfe step by step.
+                            {% else %}
+                                Une expérience moderne, visuelle et sonore pour découvrir les caractères
+                                Beriya Erfe étape par étape.
+                            {% endif %}
                         </p>
 
                         <div class="symbol-showcase">
-                            <div class="symbol-box">𖺠</div>
-                            <div class="symbol-box">𖺡</div>
-                            <div class="symbol-box">𖺢</div>
-                            <div class="symbol-box">𖺣</div>
-                            <div class="symbol-box">𖺤</div>
-                            <div class="symbol-box">𖺥</div>
+                            {% for character in showcase_characters %}
+                                <div class="symbol-box beriya-font">
+                                    {{ character.symbol }}
+                                </div>
+                            {% empty %}
+                                <div class="symbol-box beriya-font">𖺠</div>
+                                <div class="symbol-box beriya-font">𖺡</div>
+                                <div class="symbol-box beriya-font">𖺢</div>
+                                <div class="symbol-box beriya-font">𖺣</div>
+                                <div class="symbol-box beriya-font">𖺤</div>
+                                <div class="symbol-box beriya-font">𖺥</div>
+                            {% endfor %}
                         </div>
 
                         <div style="margin-top: 24px;">
-                            <a href="{% url 'web-alphabet' %}" class="btn btn-primary">Voir l’alphabet</a>
+                            <a href="{% url 'web-alphabet' %}" class="btn btn-primary">
+                                {% if current_lang == "ar" %}عرض الأبجدية{% elif current_lang == "en" %}View the Alphabet{% else %}Voir l’alphabet{% endif %}
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -99,40 +167,85 @@
     <section id="mission" class="section">
         <div class="container">
             <div class="section-header">
-                <div class="section-kicker">Mission</div>
-                <h2 class="section-title">Préserver la langue, transmettre l’écriture.</h2>
+                <div class="section-kicker">{% if current_lang == "ar" %}المهمة{% elif current_lang == "en" %}Mission{% else %}Mission{% endif %}</div>
+                <h2 class="section-title">
+                    {% if current_lang == "ar" %}حفظ اللغة، نقل الكتابة.{% elif current_lang == "en" %}Preserve the language, transmit the writing.{% else %}Préserver la langue, transmettre l’écriture.{% endif %}
+                </h2>
                 <p class="section-text">
-                    Le projet repose sur une idée simple : beaucoup de locuteurs connaissent déjà
-                    la langue oralement. L’application et le web doivent transformer cette connaissance
-                    orale en lecture, écriture et transmission culturelle.
+                    {% if current_lang == "ar" %}
+                        المشروع يعتمد على فكرة بسيطة: يعلم كثير من الناطقين بالفعل اللغة شفهيًا. يجب أن تُحول هذه المعرفة الشفهية إلى قراءة وكتابة ونقل ثقافي.
+                    {% elif current_lang == "en" %}
+                        The project is based on a simple idea: many speakers already know the language orally. This oral knowledge must be transformed into reading, writing, and cultural transmission.
+                    {% else %}
+                        Le projet repose sur une idée simple : beaucoup de locuteurs connaissent déjà
+                        la langue oralement. L’application et le web doivent transformer cette connaissance
+                        orale en lecture, écriture et transmission culturelle.
+                    {% endif %}
                 </p>
             </div>
 
             <div class="cards-grid">
                 <div class="feature-card glass">
-                    <div class="feature-icon">🎧</div>
-                    <h3>Audio-first</h3>
+                    <div class="feature-icon svg-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 3a7 7 0 0 0-7 7v4a3 3 0 0 0 3 3h1v-7H7a5 5 0 0 1 10 0h-2v7h1a3 3 0 0 0 3-3v-4a7 7 0 0 0-7-7Z"/>
+                            <path d="M10 19h4a2 2 0 0 1-4 0Z"/>
+                        </svg>
+                    </div>
+                    <h3>
+                        {% if current_lang == "ar" %}صوت-أول{% elif current_lang == "en" %}Audio-first{% else %}Audio-first{% endif %}
+                    </h3>
                     <p>
-                        L’utilisateur commence par écouter des sons qu’il connaît déjà,
-                        puis les associe progressivement aux caractères Beriya Erfe.
+                        {% if current_lang == "ar" %}
+                            يبدأ المستخدم بالاستماع إلى أصوات يعرفها، ثم يربطها تدريجيًا بحروف بيريَا إرفي.
+                        {% elif current_lang == "en" %}
+                            Learners start by listening to familiar sounds, then gradually connect them to Beriya Erfe characters.
+                        {% else %}
+                            L’utilisateur commence par écouter des sons qu’il connaît déjà, puis les associe progressivement aux caractères Beriya Erfe.
+                        {% endif %}
                     </p>
                 </div>
 
                 <div class="feature-card glass">
-                    <div class="feature-icon">📦</div>
-                    <h3>Offline-first</h3>
+                    <div class="feature-icon svg-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 7.5 12 3l8 4.5-8 4.5L4 7.5Z"/>
+                            <path d="M4 9.8 11 14v7l-7-4.2v-7Z"/>
+                            <path d="M20 9.8 13 14v7l7-4.2v-7Z"/>
+                        </svg>
+                    </div>
+                    <h3>
+                        {% if current_lang == "ar" %}غير متصل primero{% elif current_lang == "en" %}Offline-first{% else %}Hors ligne d'abord{% endif %}
+                    </h3>
                     <p>
-                        Les packs d’apprentissage permettent d’apprendre même sans connexion,
-                        avec audios, mots, leçons, quiz et progression locale.
+                        {% if current_lang == "ar" %}
+                            تسمح حزم التعلم بالدراسة دون اتصال، مع الصوت والكلمات والدروس والاختبارات والتقدم المحلي.
+                        {% elif current_lang == "en" %}
+                            Learning packs make study possible offline, with audio, words, lessons, quizzes and local progress.
+                        {% else %}
+                            Les packs d’apprentissage permettent d’apprendre même sans connexion, avec audios, mots, leçons, quiz et progression locale.
+                        {% endif %}
                     </p>
                 </div>
 
                 <div class="feature-card glass">
-                    <div class="feature-icon">✨</div>
-                    <h3>Visual-first</h3>
+                    <div class="feature-icon svg-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 2 14.2 8.2 21 10.5 14.2 12.8 12 19 9.8 12.8 3 10.5 9.8 8.2 12 2Z"/>
+                            <path d="M19 16 20 18.6 22.5 19.5 20 20.4 19 23 18 20.4 15.5 19.5 18 18.6 19 16Z"/>
+                        </svg>
+                    </div>
+                    <h3>
+                        {% if current_lang == "ar" %}مرئي-أول{% elif current_lang == "en" %}Visual-first{% else %}Visuel d'abord{% endif %}
+                    </h3>
                     <p>
-                        L’interface utilise des cartes claires, des caractères visibles,
-                        des images validées et des signaux simples pour guider l’apprenant.
+                        {% if current_lang == "ar" %}
+                            تعتمد الواجهة على بطاقات واضحة، وحروف كبيرة، وصور موثوقة، وإشارات بسيطة لتوجيه المتعلم.
+                        {% elif current_lang == "en" %}
+                            The interface uses clear cards, visible characters, validated images and simple cues to guide learners.
+                        {% else %}
+                            L’interface utilise des cartes claires, des caractères visibles, des images validées et des signaux simples pour guider l’apprenant.
+                        {% endif %}
                     </p>
                 </div>
             </div>
@@ -142,11 +255,19 @@
     <section id="apprendre" class="section">
         <div class="container learning-grid">
             <div class="learning-panel glass">
-                <div class="section-kicker">Parcours</div>
-                <h2 class="section-title">Apprendre par thèmes et unités.</h2>
+                <div class="section-kicker"> {% if current_lang == "ar" %}مسارات التعلم{% elif current_lang == "en" %}Learning Paths{% else %}Parcours{% endif %}</div>
+                <h2 class="section-title"> {% if current_lang == "ar" %}تعلم بالمواضيع والوحدات{% elif current_lang == "en" %}Learn by themes and units{% else %}Apprendre par thèmes et unités{% endif %}</h2>
                 <p class="section-text">
-                    Chaque unité reste courte : quelques caractères, quelques mots, une leçon orale
-                    et des quiz. L’utilisateur ne voit jamais tout le corpus d’un coup.
+                    {% if current_lang == "ar" %}
+                        كل وحدة تبقى قصيرة: بعض الأحرف, بعض الكلمات, درس صوتي
+                        وفحوصات. المستخدم لا يرى أبداً كل المحتوى في مرة واحدة.
+                    {% elif current_lang == "en" %}
+                        Each unit remains short: a few characters, a few words, an oral lesson
+                        and quizzes. The user never sees the entire corpus at once.
+                    {% else %}
+                        Chaque unité reste courte : quelques caractères, quelques mots, une leçon orale
+                        et des quiz. L’utilisateur ne voit jamais tout le corpus d’un coup.
+                    {% endif %}
                 </p>
 
                 <div style="margin-top: 24px;">
@@ -157,18 +278,40 @@
             <div class="theme-list">
                 {% for theme in learning_themes %}
                     <div class="theme-item glass">
-                        <strong>{{ theme.title_fr }}</strong>
+                        <strong>
+                            {% if current_lang == "ar" %}
+                                {{ theme.title_ar|default:theme.title_fr }}
+                            {% elif current_lang == "en" %}
+                                {{ theme.title_en|default:theme.title_fr }}
+                            {% else %}
+                                {{ theme.title_fr }}
+                            {% endif %}
+                        </strong>
+
                         <span>
-                            {{ theme.description_fr|default:"Thème d’apprentissage Beriya Erfe." }}
+                            {% if current_lang == "ar" %}
+                                {{ theme.description_ar|default:theme.description_fr|default:"موضوع لتعلّم بيريَا إرفي." }}
+                            {% elif current_lang == "en" %}
+                                {{ theme.description_en|default:theme.description_fr|default:"Beriya Erfe learning theme." }}
+                            {% else %}
+                                {{ theme.description_fr|default:"Thème d’apprentissage Beriya Erfe." }}
+                            {% endif %}
                         </span>
                         <div style="margin-top: 12px; color: #D4AF37; font-weight: 800;">
-                            {{ theme.units.count }} unité(s)
+                            {{ theme.units.count }}
+                                {% if current_lang == "ar" %}
+                                    وحدة
+                                {% elif current_lang == "en" %}
+                                    unit(s)
+                                {% else %}
+                                    unité(s)
+                                {% endif %}
                         </div>
                     </div>
                 {% empty %}
                     <div class="theme-item glass">
-                        <strong>Aucun thème publié pour le moment</strong>
-                        <span>Ajoute un LearningTheme publié depuis l’administration.</span>
+                        <strong>{% if current_lang == "ar" %}لا توجد مواضيع نُشرت حتى الآن{% elif current_lang == "en" %}No themes published yet{% else %}Aucun thème publié pour le moment{% endif %}</strong>
+                        <span>{% if current_lang == "ar" %}أضف موضوع تعلم نُشر من خلال الإدارة.{% elif current_lang == "en" %}Add a published LearningTheme from the administration.{% else %}Ajoute un LearningTheme publié depuis l’administration.{% endif %}</span>
                     </div>
                 {% endfor %}
             </div>
@@ -178,12 +321,25 @@
     <section id="no-ena" class="section">
         <div class="container">
             <div class="section-header">
-                <div class="section-kicker">No Ena</div>
-                <h2 class="section-title">Contenu qui mérite d’être regardé.</h2>
+                <div class="section-kicker">{% if current_lang == "ar" %}نُو إنا{% elif current_lang == "en" %}No Ena{% else %}No Ena{% endif %}</div>
+                <h2 class="section-title">{% if current_lang == "ar" %}المحتوى الذي يستحق أن يُنظر إليه.{% elif current_lang == "en" %}Content that deserves to be watched.{% else %}Contenu qui mérite d’être regardé.{% endif %}</h2>
                 <p class="section-text">
-                    No Ena valorise les images, vidéos courtes, récits, proverbes et démonstrations
-                    liés à la langue et à la culture Beriya. Ce n’est pas une galerie de démonstration :
-                    seulement du contenu réel, validé et utile.
+                    {% if current_lang == "ar" %}
+                    يُقدّم نو إينا صورًا، فيديوهات قصيرة، قصصًا، أمثالًا وتوضيحات
+                    مرتبطة بلغة وثقافة البيريا. هذا ليس معرضًا ترويجيًا،
+                    بل محتوى حقيقي، موثّق ومفيد.
+                    
+                    {% elif current_lang == "en" %}
+                    No Ena showcases images, short videos, stories, proverbs, and demonstrations
+                    related to the Beriya language and culture. This is not a promotional gallery,
+                    but real, verified, and useful content.
+                    
+                    {% else %}
+                    No Ena met en valeur des images, des vidéos courtes, des récits, des proverbes
+                    et des démonstrations liés à la langue et à la culture beriya.
+                    Ce n’est pas une galerie promotionnelle,
+                    mais un contenu réel, validé et utile.
+                    {% endif %}
                 </p>
             </div>
 
@@ -192,9 +348,12 @@
                     <article class="no-ena-card glass">
                         <div class="no-ena-media">
                             {% if item.thumbnail %}
-                                <img src="{{ item.thumbnail.url }}" alt="{{ item.title_fr }}">
+                                <img
+                                    src="{{ item.thumbnail.url }}"
+                                    alt="{% if current_lang == 'ar' %}{{ item.title_ar|default:item.title_fr }}{% elif current_lang == 'en' %}{{ item.title_en|default:item.title_fr }}{% else %}{{ item.title_fr }}{% endif %}"
+                                >
                             {% elif item.image_file %}
-                                <img src="{{ item.image_file.url }}" alt="{{ item.title_fr }}">
+                                <img src="{{ item.image_file.url }}" alt="{% if current_lang == 'ar' %}{{ item.title_ar|default:item.title_fr }}{% elif current_lang == 'en' %}{{ item.title_en|default:item.title_fr }}{% else %}{{ item.title_fr }}{% endif %}">
                             {% elif item.video_file %}
                                 <video muted controls>
                                     <source src="{{ item.video_file.url }}">
@@ -206,24 +365,58 @@
 
                         <div class="no-ena-content">
                             <div class="no-ena-type">{{ item.get_publication_type_display }}</div>
-                            <h3>{{ item.title_fr }}</h3>
-                            <p>{{ item.caption_fr|truncatewords:20 }}</p>
+                            <h3>{% if current_lang == 'ar' %}{{ item.title_ar|default:item.title_fr }}{% elif current_lang == 'en' %}{{ item.title_en|default:item.title_fr }}{% else %}{{ item.title_fr }}{% endif %}</h3>
+                            <p>{% if current_lang == 'ar' %}{{ item.caption_ar|default:item.caption_fr }}{% elif current_lang == 'en' %}{{ item.caption_en|default:item.caption_fr }}{% else %}{{ item.caption_fr }}{% endif %}</p>
                         </div>
                     </article>
                 {% empty %}
-                    <article class="no-ena-card glass">
-                        <div class="no-ena-media">No Ena</div>
+                   <article class="no-ena-card glass">
+                        <div class="section-kicker">
+                            {% if current_lang == "ar" %}نُو إنا
+                            {% elif current_lang == "en" %}No Ena
+                            {% else %}No Ena
+                            {% endif %}
+                        </div>
+
                         <div class="no-ena-content">
-                            <div class="no-ena-type">À venir</div>
-                            <h3>Ajoute une publication No Ena</h3>
-                            <p>Publie une image ou vidéo validée depuis l’administration.</p>
+                            <div class="no-ena-type">
+                                {% if current_lang == "ar" %}قيد الإعداد
+                                {% elif current_lang == "en" %}Coming soon
+                                {% else %}À venir
+                                {% endif %}
+                            </div>
+
+                            <h3>
+                                {% if current_lang == "ar" %}
+                                أضِف منشورًا إلى نو إنا
+                                {% elif current_lang == "en" %}
+                                Add a No Ena post
+                                {% else %}
+                                Ajouter une publication No Ena
+                                {% endif %}
+                            </h3>
+
+                            <p>
+                                {% if current_lang == "ar" %}
+                                انشر صورة أو فيديوًا موثّقًا من خلال لوحة الإدارة.
+                                {% elif current_lang == "en" %}
+                                Publish a validated image or video from the administration panel.
+                                {% else %}
+                                Publie une image ou une vidéo validée depuis l’administration.
+                                {% endif %}
+                            </p>
                         </div>
                     </article>
                 {% endfor %}
             </div>
 
             <div style="margin-top: 28px;">
-                <a href="{% url 'web-no-ena-list' %}" class="btn btn-secondary">Voir No Ena</a>
+                <a href="{% url 'web-no-ena-list' %}" class="btn btn-secondary">
+                    {% if current_lang == "ar" %} عرض نو إنا
+                    {% elif current_lang == "en" %} View No Ena
+                    {% else %} Voir No Ena
+                    {% endif %}
+                </a>
             </div>
         </div>
     </section>
@@ -232,26 +425,60 @@
         <div class="container">
             <div class="announcement glass">
                 <div>
-                    <div class="section-kicker">Starter Pack</div>
-                    <h2 class="section-title" style="margin-bottom: 8px;">Premier apprentissage hors connexion.</h2>
+                    <div class="section-kicker">
+                        {% if current_lang == "ar" %} حزمة البدء
+                        {% elif current_lang == "en" %} Starter Pack
+                        {% else %} Pack de démarrage
+                        {% endif %}
+                    </div>
+                    <h2 class="section-title" style="margin-bottom: 8px;">
+                        {% if current_lang == "ar" %} أول تعلم خارج الخط
+                        {% elif current_lang == "en" %} First offline learning
+                        {% else %} Premier apprentissage hors connexion
+                        {% endif %}
+                    </h2>
                     {% if starter_pack %}
                         <p class="section-text">
-                            Le pack <strong>{{ starter_pack.title_fr }}</strong> est disponible.
-                            Il contient les premières unités, caractères, mots, leçons, quiz et audios.
+                            {% if current_lang == "ar" %}
+                                الحزمة <strong>{{ starter_pack.title_ar }}</strong> متوفرة.
+                                تحتوي على أولى الوحدات، والأحرف، والكلمات، والدروس، والاختبارات الصوتية.
+                            {% elif current_lang == "en" %}
+                                The <strong>{{ starter_pack.title_en }}</strong> pack is available.
+                                It contains the first units, characters, words, lessons, quizzes and audio files.
+                            {% else %}
+                                Le pack <strong>{{ starter_pack.title_fr }}</strong> est disponible.
+                                Il contient les premières unités, caractères, mots, leçons, quiz et audios.
+                            {% endif %}
                         </p>
                     {% else %}
                         <p class="section-text">
-                            Crée et publie le Starter Pack depuis l’administration pour permettre
-                            le premier apprentissage hors connexion.
+                            {% if current_lang == "ar" %}
+                                اخلق وانشر حزمة البدء من خلال لوحة الإدارة لتمكين أول تعلم خارج الخط.
+                            {% elif current_lang == "en" %}
+                                Create and publish the Starter Pack from the administration panel to enable first offline learning.
+                            {% else %}
+                                Crée et publie le Starter Pack depuis l’administration pour permettre
+                                le premier apprentissage hors connexion.
+                            {% endif %}
                         </p>
                     {% endif %}
                 </div>
 
                 <div>
                     {% if starter_pack and starter_pack.file %}
-                        <a href="{{ starter_pack.file.url }}" class="btn btn-primary">Télécharger le pack</a>
+                        <a href="{{ starter_pack.file.url }}" class="btn btn-primary">
+                            {% if current_lang == "ar" %} تحميل الحزمة
+                            {% elif current_lang == "en" %} Download the pack
+                            {% else %} Télécharger le pack
+                            {% endif %}
+                        </a>
                     {% else %}
-                        <a href="/api/offline-packs/" class="btn btn-primary">Voir les packs API</a>
+                        <a href="/api/offline-packs/" class="btn btn-primary">
+                            {% if current_lang == "ar" %} عرض الحزم API
+                            {% elif current_lang == "en" %} View API Packs
+                            {% else %} Voir les packs API
+                            {% endif %}
+                        </a>
                     {% endif %}
                 </div>
             </div>

@@ -24,43 +24,56 @@ def get_web_lang(request):
 
 def home(request):
     lang = get_web_lang(request)
+
     featured_no_ena = NoEnaPublication.objects.filter(
         is_active=True,
         status=NoEnaPublication.PUBLISHED,
     ).select_related(
-        'primary_audio_asset',
-        'related_character',
-        'related_word',
-        'related_unit',
+        "primary_audio_asset",
+        "related_character",
+        "related_word",
+        "related_unit",
     ).order_by(
-        '-is_featured',
-        'order_index',
-        '-published_at',
+        "-is_featured",
+        "order_index",
+        "-published_at",
     )[:3]
 
     learning_themes = LearningTheme.objects.filter(
         is_active=True,
         status=LearningTheme.PUBLISHED,
     ).prefetch_related(
-        'units',
+        "units",
     ).order_by(
-        'level',
-        'order_index',
+        "level",
+        "order_index",
     )[:3]
+
+    showcase_characters = Character.objects.filter(
+        is_active=True,
+    ).order_by(
+        "order_index",
+        "unicode_code",
+    )[:6]
 
     starter_pack = LessonPack.objects.filter(
         is_active=True,
         status=LessonPack.PUBLISHED,
         is_featured=True,
     ).order_by(
-        'level',
-        'title_fr',
+        "level",
+        "title_fr",
     ).first()
 
     stats = {
-        'themes_count': LearningTheme.objects.filter(is_active=True).count(),
-        'units_count': LearningUnit.objects.filter(is_active=True).count(),
-        'no_ena_count': NoEnaPublication.objects.filter(
+        "themes_count": LearningTheme.objects.filter(
+            is_active=True,
+            status=LearningTheme.PUBLISHED,
+        ).count(),
+        "units_count": LearningUnit.objects.filter(
+            is_active=True,
+        ).count(),
+        "no_ena_count": NoEnaPublication.objects.filter(
             is_active=True,
             status=NoEnaPublication.PUBLISHED,
         ).count(),
@@ -68,17 +81,17 @@ def home(request):
 
     return render(
         request,
-        'webapp/home.html',
+        "webapp/home.html",
         {
-            'featured_no_ena': featured_no_ena,
-            'learning_themes': learning_themes,
-            'starter_pack': starter_pack,
-            'stats': stats,
+            "featured_no_ena": featured_no_ena,
+            "learning_themes": learning_themes,
+            "showcase_characters": showcase_characters,
+            "starter_pack": starter_pack,
+            "stats": stats,
             "current_lang": lang,
             "is_rtl": lang == "ar",
         },
     )
-
 
 def alphabet_page(request):
     lang = get_web_lang(request)
@@ -351,9 +364,7 @@ def feedback_page(request):
 
 
 def quiz_page(request):
-    lang = request.GET.get("lang", "fr")
-    if lang not in ["fr", "en", "ar"]:
-        lang = "fr"
+    lang = get_web_lang(request)
 
     unit_slug = request.GET.get("unit")
 

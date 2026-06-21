@@ -223,3 +223,5 @@ ANDROID_APK_URL = config(
     "ANDROID_APK_URL",
     default="/download/android/",
 )
+
+ADMIN_URL = config("ADMIN_URL", default="admin-bk-secure-2026-panel/")

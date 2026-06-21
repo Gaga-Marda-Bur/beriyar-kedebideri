@@ -4,33 +4,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>{% block title %}Beřiyar Kedebideři{% endblock %}</title>
-    <meta name="description" content="Plateforme d’apprentissage, de transmission et de valorisation de la langue Beriya Erfe.">
+
+    {% if current_lang == "ar" %}
+        <meta name="description" content="منصة لتعلّم ونقل وتثمين لغة بيريَا إرفي.">
+    {% elif current_lang == "en" %}
+        <meta name="description" content="A platform for learning, transmitting and promoting the Beriya Erfe language.">
+    {% else %}
+        <meta name="description" content="Plateforme d’apprentissage, de transmission et de valorisation de la langue Beriya Erfe.">
+    {% endif %}
+
     <link rel="stylesheet" href="{% static 'webapp/css/brand.css' %}">
     <link rel="stylesheet" href="{% static 'webapp/css/beriya_keyboard.css' %}">
 </head>
+
 <body>
     <div class="page-shell">
         <header class="navbar">
             <div class="container nav-inner">
                 <a href="{% url 'web-home' %}" class="brand">
-                    <div class="brand-mark">BK</div>
+                    <div class="brand-mark brand-logo-wrap">
+                        <img
+                            src="{% static 'webapp/img/logo.png' %}"
+                            alt="Beřiyar Kedebideři"
+                            class="brand-logo"
+                            onerror="this.style.display='none'; this.parentElement.classList.add('brand-logo-fallback');"
+                        >
+                        <span class="brand-logo-fallback-text">BK</span>
+                    </div>
                     <div>
                         <div class="brand-title">Beřiyar Kedebideři</div>
-                        <div class="brand-subtitle">Écouter. Lire. Écrire. Transmettre.</div>
+                        <div class="brand-subtitle">
+                            {% if current_lang == "ar" %}
+                                استمع. اقرأ. اكتب. انقل.
+                            {% elif current_lang == "en" %}
+                                Listen. Read. Write. Transmit.
+                            {% else %}
+                                Écouter. Lire. Écrire. Transmettre.
+                            {% endif %}
+                        </div>
                     </div>
                 </a>
 
                 <nav class="nav-links">
-                    <a href="{% url 'web-home' %}#mission">Mission</a>
-                    <a href="{% url 'web-learning-path' %}">Parcours</a>
-                    <a href="{% url 'web-alphabet' %}">Alphabet</a>
-                    <a href="{% url 'web-vocabulary' %}">Vocabulaire</a>
-                    <a href="{% url 'web-no-ena-list' %}">No Ena</a>
-                    <a href="{% url 'web-feedback' %}">Feedback</a>
-                    <a href="{% url 'web-quiz' %}">Quiz</a>
-                    <a href="{% url 'web-sticker-studio' %}">Studio Sticker</a>
-                    <a href="/admin/">Admin</a>
+                    <a href="{% url 'web-home' %}#mission">
+                        {% if current_lang == "ar" %}المهمة{% elif current_lang == "en" %}Mission{% else %}Mission{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-learning-path' %}">
+                        {% if current_lang == "ar" %}المسار{% elif current_lang == "en" %}Path{% else %}Parcours{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-alphabet' %}">
+                        {% if current_lang == "ar" %}الأبجدية{% elif current_lang == "en" %}Alphabet{% else %}Alphabet{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-vocabulary' %}">
+                        {% if current_lang == "ar" %}المفردات{% elif current_lang == "en" %}Vocabulary{% else %}Vocabulaire{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-no-ena-list' %}">
+                        {% if current_lang == "ar" %}
+                            نو إينا
+                        {% elif current_lang == "en" %}
+                            No Ena
+                        {% else %}
+                            No Ena
+                        {% endif %}
+                    </a>
+
+                    <a href="{% url 'web-feedback' %}">
+                        {% if current_lang == "ar" %}ملاحظات{% elif current_lang == "en" %}Feedback{% else %}Feedback{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-quiz' %}">
+                        {% if current_lang == "ar" %}اختبار{% elif current_lang == "en" %}Quiz{% else %}Quiz{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-sticker-studio' %}">
+                        {% if current_lang == "ar" %}استوديو الملصقات{% elif current_lang == "en" %}Sticker Studio{% else %}Studio Sticker{% endif %}
+                    </a>
+
                     <div class="language-switcher">
                         <a href="?lang=fr">FR</a>
                         <a href="?lang=en">EN</a>
@@ -39,26 +94,56 @@
                 </nav>
 
                 <div class="nav-actions">
-                    <a href="{% url 'web-learning-path' %}" class="btn btn-secondary">Explorer</a>
-                    <a href="{{ ANDROID_APK_URL }}" class="btn btn-primary">APK Android</a>
+                    <a href="{% url 'web-learning-path' %}" class="btn btn-secondary">
+                        {% if current_lang == "ar" %}استكشاف{% elif current_lang == "en" %}Explore{% else %}Explorer{% endif %}
+                    </a>
+
+                    <a href="{{ ANDROID_APK_URL }}" class="btn btn-primary">
+                        {% if current_lang == "ar" %}تطبيق أندرويد{% elif current_lang == "en" %}Android APK{% else %}APK Android{% endif %}
+                    </a>
                 </div>
 
                 <button type="button" class="btn btn-secondary mobile-menu-button" id="mobileMenuButton">
-                    Menu
+                    {% if current_lang == "ar" %}القائمة{% elif current_lang == "en" %}Menu{% else %}Menu{% endif %}
                 </button>
             </div>
         </header>
+
         <div class="mobile-menu" id="mobileMenu">
             <div class="container mobile-menu-inner">
-                <a href="{% url 'web-home' %}#mission">Mission</a>
-                <a href="{% url 'web-learning-path' %}">Parcours</a>
-                <a href="{% url 'web-alphabet' %}">Alphabet</a>
-                <a href="{% url 'web-vocabulary' %}">Vocabulaire</a>
-                <a href="{% url 'web-quiz' %}">Quiz</a>
-                <a href="{% url 'web-sticker-studio' %}">Studio Sticker</a>
+                <a href="{% url 'web-home' %}#mission">
+                    {% if current_lang == "ar" %}المهمة{% elif current_lang == "en" %}Mission{% else %}Mission{% endif %}
+                </a>
+
+                <a href="{% url 'web-learning-path' %}">
+                    {% if current_lang == "ar" %}المسار{% elif current_lang == "en" %}Path{% else %}Parcours{% endif %}
+                </a>
+
+                <a href="{% url 'web-alphabet' %}">
+                    {% if current_lang == "ar" %}الأبجدية{% elif current_lang == "en" %}Alphabet{% else %}Alphabet{% endif %}
+                </a>
+
+                <a href="{% url 'web-vocabulary' %}">
+                    {% if current_lang == "ar" %}المفردات{% elif current_lang == "en" %}Vocabulary{% else %}Vocabulaire{% endif %}
+                </a>
+
+                <a href="{% url 'web-quiz' %}">
+                    {% if current_lang == "ar" %}اختبار{% elif current_lang == "en" %}Quiz{% else %}Quiz{% endif %}
+                </a>
+
+                <a href="{% url 'web-sticker-studio' %}">
+                    {% if current_lang == "ar" %}استوديو الملصقات{% elif current_lang == "en" %}Sticker Studio{% else %}Studio Sticker{% endif %}
+                </a>
+
                 <a href="{% url 'web-no-ena-list' %}">No Ena</a>
-                <a href="{% url 'web-feedback' %}">Feedback</a>
-                <a href="{{ ANDROID_APK_URL }}">APK Android</a>
+
+                <a href="{% url 'web-feedback' %}">
+                    {% if current_lang == "ar" %}ملاحظات{% elif current_lang == "en" %}Feedback{% else %}Feedback{% endif %}
+                </a>
+
+                <a href="{{ ANDROID_APK_URL }}">
+                    {% if current_lang == "ar" %}تطبيق أندرويد{% elif current_lang == "en" %}Android APK{% else %}APK Android{% endif %}
+                </a>
 
                 <div class="language-switcher mobile-language-switcher">
                     <a href="?lang=fr">FR</a>
@@ -74,39 +159,94 @@
             <div class="container footer-grid">
                 <div>
                     <div class="brand" style="margin-bottom: 14px;">
-                        <div class="brand-mark">BK</div>
+                        <div class="brand-mark brand-logo-wrap">
+                            <img
+                                src="{% static 'webapp/img/logo.png' %}"
+                                alt="Beřiyar Kedebideři"
+                                class="brand-logo"
+                                onerror="this.style.display='none'; this.parentElement.classList.add('brand-logo-fallback');"
+                            >
+                            <span class="brand-logo-fallback-text">BK</span>
+                        </div>
                         <div>
                             <div class="brand-title">Beřiyar Kedebideři</div>
-                            <div class="brand-subtitle">Plateforme Beriya Erfe</div>
+                            <div class="brand-subtitle">
+                                {% if current_lang == "ar" %}
+                                    منصة بيريَا إرفي
+                                {% elif current_lang == "en" %}
+                                    Beriya Erfe Platform
+                                {% else %}
+                                    Plateforme Beriya Erfe
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
+
                     <p>
-                        Une plateforme audio-first, visual-first et offline-first pour transmettre
-                        l’écriture Beriya Erfe et valoriser la culture Beriya.
+                        {% if current_lang == "ar" %}
+                            منصة تعتمد على الصوت والصورة والعمل دون اتصال من أجل نقل كتابة بيريَا إرفي وتثمين الثقافة البيريَاوية.
+                        {% elif current_lang == "en" %}
+                            An audio-first, visual-first and offline-first platform for transmitting Beriya Erfe writing and promoting Beriya culture.
+                        {% else %}
+                            Une plateforme audio-first, visual-first et offline-first pour transmettre l’écriture Beriya Erfe et valoriser la culture Beriya.
+                        {% endif %}
                     </p>
                 </div>
 
                 <div>
-                    <h4>Apprendre</h4>
-                    <a href="{% url 'web-learning-path' %}">Parcours</a>
-                    <a href="{% url 'web-alphabet' %}">Alphabet</a>
-                    <a href="{% url 'web-vocabulary' %}">Vocabulaire</a>
-                    <a href="{% url 'web-quiz' %}">Quiz</a>
+                    <h4>
+                        {% if current_lang == "ar" %}تعلّم{% elif current_lang == "en" %}Learn{% else %}Apprendre{% endif %}
+                    </h4>
+
+                    <a href="{% url 'web-learning-path' %}">
+                        {% if current_lang == "ar" %}المسار{% elif current_lang == "en" %}Path{% else %}Parcours{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-alphabet' %}">
+                        {% if current_lang == "ar" %}الأبجدية{% elif current_lang == "en" %}Alphabet{% else %}Alphabet{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-vocabulary' %}">
+                        {% if current_lang == "ar" %}المفردات{% elif current_lang == "en" %}Vocabulary{% else %}Vocabulaire{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-quiz' %}">
+                        {% if current_lang == "ar" %}اختبار{% elif current_lang == "en" %}Quiz{% else %}Quiz{% endif %}
+                    </a>
                 </div>
 
                 <div>
-                    <h4>Culture</h4>
+                    <h4>
+                        {% if current_lang == "ar" %}الثقافة{% elif current_lang == "en" %}Culture{% else %}Culture{% endif %}
+                    </h4>
+
                     <a href="{% url 'web-no-ena-list' %}">No Ena</a>
-                    <a href="{% url 'web-feedback' %}">Feedback</a>
+
+                    <a href="{% url 'web-feedback' %}">
+                        {% if current_lang == "ar" %}ملاحظات{% elif current_lang == "en" %}Feedback{% else %}Feedback{% endif %}
+                    </a>
                 </div>
 
                 <div>
-                    <h4>Projet</h4>
-                    <a href="#mission">Mission</a>
-                    <a href="#packs">Packs offline</a>
-                    <a href="/admin/">Administration</a>
-                    <a href="{{ ANDROID_APK_URL }}">Télécharger APK Android</a>
-                    <a href="{% url 'web-feedback' %}">Feedback</a>
+                    <h4>
+                        {% if current_lang == "ar" %}المشروع{% elif current_lang == "en" %}Project{% else %}Projet{% endif %}
+                    </h4>
+
+                    <a href="{% url 'web-home' %}#mission">
+                        {% if current_lang == "ar" %}المهمة{% elif current_lang == "en" %}Mission{% else %}Mission{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-home' %}#packs">
+                        {% if current_lang == "ar" %}حزم دون اتصال{% elif current_lang == "en" %}Offline packs{% else %}Packs offline{% endif %}
+                    </a>
+
+                    <a href="{{ ANDROID_APK_URL }}">
+                        {% if current_lang == "ar" %}تحميل تطبيق أندرويد{% elif current_lang == "en" %}Download Android APK{% else %}Télécharger APK Android{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-feedback' %}">
+                        {% if current_lang == "ar" %}ملاحظات{% elif current_lang == "en" %}Feedback{% else %}Feedback{% endif %}
+                    </a>
                 </div>
             </div>
         </footer>
@@ -128,6 +268,7 @@
             });
         }
     </script>
+
     <script src="{% static 'webapp/js/beriya_keyboard_data.js' %}" defer></script>
     <script src="{% static 'webapp/js/beriya_keyboard.js' %}" defer></script>
 </body>

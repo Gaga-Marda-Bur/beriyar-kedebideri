@@ -1,16 +1,47 @@
 {% extends "webapp/base.html" %}
 
-{% block title %}Alphabet Beriya Erfe — Beřiyar Kedebideři{% endblock %}
+{% block title %}
+    {% if current_lang == "ar" %}
+        أبجدية بيريَا إرفي — Beřiyar Kedebideři
+    {% elif current_lang == "en" %}
+        Beriya Erfe Alphabet — Beřiyar Kedebideři
+    {% else %}
+        Alphabet Beriya Erfe — Beřiyar Kedebideři
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 <main>
     <section class="page-header">
         <div class="container">
-            <div class="badge">Alphabet Beriya Erfe</div>
-            <h1>Écouter et reconnaître les caractères.</h1>
+            <div class="badge">
+                {% if current_lang == "ar" %}
+                    أبجدية بيريَا إرفي
+                {% elif current_lang == "en" %}
+                    Beriya Erfe Alphabet
+                {% else %}
+                    Alphabet Beriya Erfe
+                {% endif %}
+            </div>
+
+            <h1>
+                {% if current_lang == "ar" %}
+                    استمع وتعرّف على الحروف.
+                {% elif current_lang == "en" %}
+                    Listen and recognize the characters.
+                {% else %}
+                    Écouter et reconnaître les caractères.
+                {% endif %}
+            </h1>
+
             <p>
-                Consulte les caractères Beriya Erfe, leurs transcriptions et leurs audios
-                lorsqu’ils sont validés dans le corpus.
+                {% if current_lang == "ar" %}
+                    تصفّح حروف بيريَا إرفي، نسخها الصوتي، والتسجيلات الصوتية عندما تكون متوفرة ومحققة في قاعدة البيانات.
+                {% elif current_lang == "en" %}
+                    Browse Beriya Erfe characters, their transcriptions and their audio when they are validated in the corpus.
+                {% else %}
+                    Consulte les caractères Beriya Erfe, leurs transcriptions et leurs audios lorsqu’ils sont validés dans le corpus.
+                {% endif %}
             </p>
         </div>
     </section>
@@ -20,30 +51,73 @@
             <div class="alphabet-grid">
                 {% for character in characters %}
                     <article class="character-card glass">
-                        <div class="character-symbol">{{ character.symbol }}</div>
-                        <div class="character-code">{{ character.unicode_code }}</div>
+                        <div class="character-symbol beriya-font">
+                            {{ character.symbol }}
+                        </div>
+
+                        <div class="character-code">
+                            {{ character.unicode_code }}
+                        </div>
 
                         {% if character.latin_transcription %}
-                            <div class="character-transcription">{{ character.latin_transcription }}</div>
+                            <div class="character-transcription">
+                                {{ character.latin_transcription }}
+                            </div>
                         {% else %}
-                            <div class="character-transcription">Transcription à compléter</div>
+                            <div class="character-transcription">
+                                {% if current_lang == "ar" %}
+                                    النسخ الصوتي غير مكتمل
+                                {% elif current_lang == "en" %}
+                                    Transcription to complete
+                                {% else %}
+                                    Transcription à compléter
+                                {% endif %}
+                            </div>
                         {% endif %}
 
                         {% if character.arabic_transcription %}
-                            <div class="character-code">{{ character.arabic_transcription }}</div>
+                            <div class="character-code">
+                                {{ character.arabic_transcription }}
+                            </div>
                         {% endif %}
 
                         {% with link=character.audio_links.first %}
                             {% if link and link.audio_asset.file %}
-                                <button class="audio-button" data-audio="{{ link.audio_asset.file.url }}">
-                                    Écouter
+                                <button
+                                    type="button"
+                                    class="audio-button"
+                                    data-audio="{{ link.audio_asset.file.url }}"
+                                >
+                                    {% if current_lang == "ar" %}
+                                        استمع
+                                    {% elif current_lang == "en" %}
+                                        Listen
+                                    {% else %}
+                                        Écouter
+                                    {% endif %}
                                 </button>
+                            {% else %}
+                                <div class="character-audio-missing">
+                                    {% if current_lang == "ar" %}
+                                        لا يوجد صوت بعد
+                                    {% elif current_lang == "en" %}
+                                        No audio yet
+                                    {% else %}
+                                        Aucun audio pour le moment
+                                    {% endif %}
+                                </div>
                             {% endif %}
                         {% endwith %}
                     </article>
                 {% empty %}
                     <div class="empty-state glass">
-                        Aucun caractère actif. Lance la commande seed puis active les caractères.
+                        {% if current_lang == "ar" %}
+                            لا يوجد أي حرف نشط حاليًا. شغّل أمر seed ثم فعّل الحروف من لوحة الإدارة.
+                        {% elif current_lang == "en" %}
+                            No active character yet. Run the seed command, then activate the characters from the admin panel.
+                        {% else %}
+                            Aucun caractère actif. Lance la commande seed puis active les caractères depuis l’administration.
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>

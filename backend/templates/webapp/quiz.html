@@ -1,23 +1,48 @@
 {% extends "webapp/base.html" %}
 
-{% block title %}Quiz — Beřiyar Kedebideři{% endblock %}
+{% block title %}
+  {% if current_lang == "ar" %}
+    اختبارات بيريَا إرفي — Beřiyar Kedebideři
+  {% elif current_lang == "en" %}
+    Beriya Erfe Quizzes — Beřiyar Kedebideři
+  {% else %}
+    Quiz Beriya Erfe — Beřiyar Kedebideři
+  {% endif %}
+{% endblock %}
 
 {% block content %}
 <main>
   <section class="page-header">
     <div class="container">
-      <div class="badge">Quiz</div>
+      <div class="badge">
+        {% if current_lang == "ar" %}
+          اختبارات
+        {% elif current_lang == "en" %}
+          Quizzes
+        {% else %}
+          Quiz
+        {% endif %}
+      </div>
 
-      {% if current_lang == "ar" %}
-        <h1>اختبارات Beriya Erfe</h1>
-        <p>استمع، اختر، وتدرّب على الحروف والكلمات خطوة بخطوة.</p>
-      {% elif current_lang == "en" %}
-        <h1>Beriya Erfe quizzes</h1>
-        <p>Listen, choose, and practice characters and words step by step.</p>
-      {% else %}
-        <h1>Quiz Beriya Erfe</h1>
-        <p>Écoute, choisis et entraîne-toi avec les caractères et les mots.</p>
-      {% endif %}
+      <h1>
+        {% if current_lang == "ar" %}
+          اختبارات بيريَا إرفي
+        {% elif current_lang == "en" %}
+          Beriya Erfe quizzes
+        {% else %}
+          Quiz Beriya Erfe
+        {% endif %}
+      </h1>
+
+      <p>
+        {% if current_lang == "ar" %}
+          استمع، اختر، وتدرّب على الحروف والكلمات خطوة بخطوة.
+        {% elif current_lang == "en" %}
+          Listen, choose, and practice characters and words step by step.
+        {% else %}
+          Écoute, choisis et entraîne-toi avec les caractères et les mots étape par étape.
+        {% endif %}
+      </p>
     </div>
   </section>
 
@@ -27,7 +52,45 @@
         {% for quiz in quizzes %}
           <article class="quiz-web-card glass">
             <div class="quiz-web-type">
-              {{ quiz.get_question_type_display|default:"Quiz" }}
+              {% if current_lang == "ar" %}
+                {% if quiz.question_type == "AUDIO_TO_CHARACTER" %}
+                  من الصوت إلى الحرف
+                {% elif quiz.question_type == "CHARACTER_TO_AUDIO" %}
+                  من الحرف إلى الصوت
+                {% elif quiz.question_type == "AUDIO_TO_IMAGE" %}
+                  من الصوت إلى الصورة
+                {% elif quiz.question_type == "IMAGE_TO_AUDIO" %}
+                  من الصورة إلى الصوت
+                {% elif quiz.question_type == "TEXT_TO_CHARACTER" %}
+                  من النص إلى الحرف
+                {% elif quiz.question_type == "GUIDED_KEYBOARD" %}
+                  كتابة موجّهة
+                {% elif quiz.question_type == "LISTEN_AND_REPEAT" %}
+                  استمع وكرّر
+                {% else %}
+                  اختبار
+                {% endif %}
+              {% elif current_lang == "en" %}
+                {% if quiz.question_type == "AUDIO_TO_CHARACTER" %}
+                  Audio to character
+                {% elif quiz.question_type == "CHARACTER_TO_AUDIO" %}
+                  Character to audio
+                {% elif quiz.question_type == "AUDIO_TO_IMAGE" %}
+                  Audio to image
+                {% elif quiz.question_type == "IMAGE_TO_AUDIO" %}
+                  Image to audio
+                {% elif quiz.question_type == "TEXT_TO_CHARACTER" %}
+                  Text to character
+                {% elif quiz.question_type == "GUIDED_KEYBOARD" %}
+                  Guided keyboard
+                {% elif quiz.question_type == "LISTEN_AND_REPEAT" %}
+                  Listen and repeat
+                {% else %}
+                  Quiz
+                {% endif %}
+              {% else %}
+                {{ quiz.get_question_type_display|default:"Quiz" }}
+              {% endif %}
             </div>
 
             <h2>
@@ -44,21 +107,36 @@
               {% if audio_link.role == "question" and audio_link.is_primary and audio_link.audio_asset.file %}
                 <audio controls preload="none">
                   <source src="{{ audio_link.audio_asset.file.url }}">
+                  {% if current_lang == "ar" %}
+                    متصفحك لا يدعم تشغيل الصوت.
+                  {% elif current_lang == "en" %}
+                    Your browser does not support audio playback.
+                  {% else %}
+                    Votre navigateur ne prend pas en charge l’audio.
+                  {% endif %}
                 </audio>
               {% endif %}
             {% endfor %}
 
             {% if quiz.question_image %}
-              <img class="quiz-web-image" src="{{ quiz.question_image.url }}" alt="Quiz image">
+              <img
+                class="quiz-web-image"
+                src="{{ quiz.question_image.url }}"
+                alt="{% if current_lang == 'ar' %}صورة السؤال{% elif current_lang == 'en' %}Quiz image{% else %}Image du quiz{% endif %}"
+              >
             {% endif %}
 
             <div class="quiz-options">
               {% for option in quiz.options.all %}
                 <button type="button" class="quiz-option-button">
                   {% if option.character %}
-                    <span class="beriya-font">{{ option.character.symbol }}</span>
+                    <span class="beriya-font quiz-option-symbol">
+                      {{ option.character.symbol }}
+                    </span>
                   {% elif option.word %}
-                    <span class="beriya-font">{{ option.word.beriya_text }}</span>
+                    <span class="beriya-font quiz-option-word">
+                      {{ option.word.beriya_text }}
+                    </span>
                   {% else %}
                     {% if current_lang == "ar" %}
                       {{ option.text_ar|default:option.text_fr|default:"خيار" }}
@@ -81,6 +159,28 @@
                 </div>
               {% endfor %}
             </div>
+
+            {% if quiz.question_type == "GUIDED_KEYBOARD" or quiz.question_type == "TEXT_TO_CHARACTER" %}
+              <div class="quiz-written-answer" style="margin-top: 16px;">
+                <input
+                  type="text"
+                  class="input beriya-input"
+                  data-beriya-keyboard="true"
+                  autocomplete="off"
+                  placeholder="{% if current_lang == 'ar' %}اكتب الإجابة ببيريَا...{% elif current_lang == 'en' %}Write the answer in Beriya...{% else %}Écris la réponse en Beriya...{% endif %}"
+                >
+
+                <div class="beriya-keyboard-hint">
+                  {% if current_lang == "ar" %}
+                    استخدم زر 𖺠 Clavier لكتابة حروف بيريَا.
+                  {% elif current_lang == "en" %}
+                    Use the 𖺠 keyboard button to type Beriya characters.
+                  {% else %}
+                    Utilise le bouton 𖺠 Clavier pour écrire les caractères Beriya.
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
           </article>
         {% empty %}
           <div class="empty-state glass">

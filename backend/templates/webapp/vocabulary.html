@@ -1,48 +1,105 @@
 {% extends "webapp/base.html" %}
 
-{% block title %}Vocabulaire Beriya — Beřiyar Kedebideři{% endblock %}
+{% block title %}
+    {% if current_lang == "ar" %}
+        قاموس بيريَا — Beřiyar Kedebideři
+    {% elif current_lang == "en" %}
+        Beriya Vocabulary — Beřiyar Kedebideři
+    {% else %}
+        Vocabulaire Beriya — Beřiyar Kedebideři
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 <main>
     <section class="page-header">
         <div class="container">
-            <div class="badge">Dictionnaire Beriya</div>
-            <h1>Explorer les mots et traductions.</h1>
+            <div class="badge">
+                {% if current_lang == "ar" %}
+                    قاموس بيريَا
+                {% elif current_lang == "en" %}
+                    Beriya Dictionary
+                {% else %}
+                    Dictionnaire Beriya
+                {% endif %}
+            </div>
+
+            <h1>
+                {% if current_lang == "ar" %}
+                    استكشف الكلمات والترجمات.
+                {% elif current_lang == "en" %}
+                    Explore words and translations.
+                {% else %}
+                    Explorer les mots et traductions.
+                {% endif %}
+            </h1>
+
             <p>
-                Recherche les mots Beriya, consulte les transcriptions, les traductions
-                et écoute les audios validés.
+                {% if current_lang == "ar" %}
+                    ابحث عن كلمات بيريَا، واطّلع على النسخ الصوتي، والترجمات، واستمع إلى التسجيلات الصوتية المعتمدة.
+                {% elif current_lang == "en" %}
+                    Search Beriya words, view transcriptions and translations, and listen to validated audio recordings.
+                {% else %}
+                    Recherche les mots Beriya, consulte les transcriptions, les traductions et écoute les audios validés.
+                {% endif %}
             </p>
 
             <form method="get" class="toolbar">
                 <div class="form-inline glass" style="padding: 14px; border-radius: 24px;">
-                    <input
-                        type="search"
-                        name="q"
-                        value="{{ search }}"
-                        class="input beriya-input"
-                        data-beriya-keyboard="true"
-                        placeholder="{% if current_lang == 'ar' %}ابحث بكلمة بيريَا...{% elif current_lang == 'en' %}Search in Beriya...{% else %}Rechercher en Beriya...{% endif %}"
-                    >
-                    <div class="beriya-keyboard-hint beriya-font">
-                        {% if current_lang == "ar" %}
-                            استخدم زر 𖺠 Clavier لكتابة حروف بيريَا.
-                        {% elif current_lang == "en" %}
-                            Use the 𖺠 keyboard button to type Beriya characters.
-                        {% else %}
-                            Utilise le bouton 𖺠 Clavier pour écrire les caractères Beriya.
-                        {% endif %}
+                    <div>
+                        <input
+                            type="search"
+                            name="q"
+                            value="{{ search }}"
+                            class="input beriya-input"
+                            data-beriya-keyboard="true"
+                            placeholder="{% if current_lang == 'ar' %}ابحث بكلمة بيريَا...{% elif current_lang == 'en' %}Search in Beriya...{% else %}Rechercher en Beriya...{% endif %}"
+                        >
+
+                        <div class="beriya-keyboard-hint beriya-font">
+                            {% if current_lang == "ar" %}
+                                استخدم زر 𖺠 Clavier لكتابة حروف بيريَا.
+                            {% elif current_lang == "en" %}
+                                Use the 𖺠 keyboard button to type Beriya characters.
+                            {% else %}
+                                Utilise le bouton 𖺠 Clavier pour écrire les caractères Beriya.
+                            {% endif %}
+                        </div>
                     </div>
 
                     <select class="select" name="category">
-                        <option value="">Toutes les catégories</option>
+                        <option value="">
+                            {% if current_lang == "ar" %}
+                                كل الفئات
+                            {% elif current_lang == "en" %}
+                                All categories
+                            {% else %}
+                                Toutes les catégories
+                            {% endif %}
+                        </option>
+
                         {% for category in categories %}
                             <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>
-                                {{ category.name_fr }}
+                                {% if current_lang == "ar" %}
+                                    {{ category.name_ar|default:category.name_fr }}
+                                {% elif current_lang == "en" %}
+                                    {{ category.name_en|default:category.name_fr }}
+                                {% else %}
+                                    {{ category.name_fr }}
+                                {% endif %}
                             </option>
                         {% endfor %}
                     </select>
 
-                    <button class="btn btn-primary" type="submit">Rechercher</button>
+                    <button class="btn btn-primary" type="submit">
+                        {% if current_lang == "ar" %}
+                            بحث
+                        {% elif current_lang == "en" %}
+                            Search
+                        {% else %}
+                            Rechercher
+                        {% endif %}
+                    </button>
                 </div>
             </form>
         </div>
@@ -53,7 +110,9 @@
             <div class="words-grid">
                 {% for word in words %}
                     <article class="word-card glass">
-                        <div class="word-text">{{ word.beriya_text }}</div>
+                        <div class="word-text beriya-font">
+                            {{ word.beriya_text }}
+                        </div>
 
                         <div class="word-translation">
                             {% if current_lang == "ar" %}
@@ -66,31 +125,72 @@
                         </div>
 
                         <div class="word-meta">
-
-                            
                             {% if current_lang == "ar" %}
-                                {{ word.arabic_transcription }}<br>
-                                {{ word.category.name_ar|default:word.category.name_fr }}
+                                {% if word.arabic_transcription %}
+                                    {{ word.arabic_transcription }}<br>
+                                {% elif word.latin_transcription %}
+                                    {{ word.latin_transcription }}<br>
+                                {% endif %}
+
+                                {% if word.category %}
+                                    {{ word.category.name_ar|default:word.category.name_fr }}
+                                {% endif %}
                             {% elif current_lang == "en" %}
-                                {{ word.latin_transcription }}<br>
-                                {{ word.category.name_en|default:word.category.name_fr }}
+                                {% if word.latin_transcription %}
+                                    {{ word.latin_transcription }}<br>
+                                {% endif %}
+
+                                {% if word.category %}
+                                    {{ word.category.name_en|default:word.category.name_fr }}
+                                {% endif %}
                             {% else %}
-                                {{ word.latin_transcription }}<br>
-                                {{ word.category.name_fr }}
+                                {% if word.latin_transcription %}
+                                    {{ word.latin_transcription }}<br>
+                                {% endif %}
+
+                                {% if word.category %}
+                                    {{ word.category.name_fr }}
+                                {% endif %}
                             {% endif %}
                         </div>
 
                         {% with link=word.audio_links.first %}
                             {% if link and link.audio_asset.file %}
-                                <button class="audio-button" data-audio="{{ link.audio_asset.file.url }}">
-                                    Écouter
+                                <button
+                                    type="button"
+                                    class="audio-button"
+                                    data-audio="{{ link.audio_asset.file.url }}"
+                                >
+                                    {% if current_lang == "ar" %}
+                                        استمع
+                                    {% elif current_lang == "en" %}
+                                        Listen
+                                    {% else %}
+                                        Écouter
+                                    {% endif %}
                                 </button>
+                            {% else %}
+                                <div class="word-audio-missing">
+                                    {% if current_lang == "ar" %}
+                                        لا يوجد صوت بعد
+                                    {% elif current_lang == "en" %}
+                                        No audio yet
+                                    {% else %}
+                                        Aucun audio pour le moment
+                                    {% endif %}
+                                </div>
                             {% endif %}
                         {% endwith %}
                     </article>
                 {% empty %}
                     <div class="empty-state glass">
-                        Aucun mot trouvé.
+                        {% if current_lang == "ar" %}
+                            لم يتم العثور على أي كلمة.
+                        {% elif current_lang == "en" %}
+                            No word found.
+                        {% else %}
+                            Aucun mot trouvé.
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>

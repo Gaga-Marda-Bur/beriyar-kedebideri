@@ -1,16 +1,47 @@
 {% extends "webapp/base.html" %}
 
-{% block title %}Parcours d’apprentissage — Beřiyar Kedebideři{% endblock %}
+{% block title %}
+    {% if current_lang == "ar" %}
+        مسار التعلّم — Beřiyar Kedebideři
+    {% elif current_lang == "en" %}
+        Learning Path — Beřiyar Kedebideři
+    {% else %}
+        Parcours d’apprentissage — Beřiyar Kedebideři
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 <main>
     <section class="page-header">
         <div class="container">
-            <div class="badge">Parcours</div>
-            <h1>Apprendre par thèmes et unités.</h1>
+            <div class="badge">
+                {% if current_lang == "ar" %}
+                    مسار التعلّم
+                {% elif current_lang == "en" %}
+                    Learning Path
+                {% else %}
+                    Parcours
+                {% endif %}
+            </div>
+
+            <h1>
+                {% if current_lang == "ar" %}
+                    تعلّم من خلال المواضيع والوحدات.
+                {% elif current_lang == "en" %}
+                    Learn through themes and units.
+                {% else %}
+                    Apprendre par thèmes et unités.
+                {% endif %}
+            </h1>
+
             <p>
-                Chaque unité contient peu de caractères, quelques mots, une leçon orale
-                et des exercices pour éviter de tout mélanger.
+                {% if current_lang == "ar" %}
+                    تحتوي كل وحدة على عدد محدود من الحروف، بعض الكلمات، درس شفهي وتمارين حتى لا يختلط كل شيء على المتعلّم.
+                {% elif current_lang == "en" %}
+                    Each unit contains a small set of characters, a few words, an oral lesson and exercises to avoid mixing everything at once.
+                {% else %}
+                    Chaque unité contient peu de caractères, quelques mots, une leçon orale et des exercices pour éviter de tout mélanger.
+                {% endif %}
             </p>
         </div>
     </section>
@@ -19,7 +50,18 @@
         <div class="container">
             {% for theme in themes %}
                 <section class="theme-block glass">
-                    <div class="section-kicker">{{ theme.level }}</div>
+                    <div class="section-kicker">
+                        {% if theme.level == "beginner" or theme.level == "BEGINNER" %}
+                            {% if current_lang == "ar" %}مبتدئ{% elif current_lang == "en" %}Beginner{% else %}Débutant{% endif %}
+                        {% elif theme.level == "intermediate" or theme.level == "INTERMEDIATE" %}
+                            {% if current_lang == "ar" %}متوسط{% elif current_lang == "en" %}Intermediate{% else %}Intermédiaire{% endif %}
+                        {% elif theme.level == "advanced" or theme.level == "ADVANCED" %}
+                            {% if current_lang == "ar" %}متقدم{% elif current_lang == "en" %}Advanced{% else %}Avancé{% endif %}
+                        {% else %}
+                            {{ theme.level }}
+                        {% endif %}
+                    </div>
+
                     <h2 style="margin: 8px 0 8px;">
                         {% if current_lang == "ar" %}
                             {{ theme.title_ar|default:theme.title_fr }}
@@ -29,13 +71,14 @@
                             {{ theme.title_fr }}
                         {% endif %}
                     </h2>
+
                     <p class="section-text">
                         {% if current_lang == "ar" %}
-                            {{ theme.description_ar|default:theme.description_fr }}
+                            {{ theme.description_ar|default:theme.description_fr|default:"موضوع لتعلّم بيريَا إرفي." }}
                         {% elif current_lang == "en" %}
-                            {{ theme.description_en|default:theme.description_fr }}
+                            {{ theme.description_en|default:theme.description_fr|default:"Beriya Erfe learning theme." }}
                         {% else %}
-                            {{ theme.description_fr }}
+                            {{ theme.description_fr|default:"Thème d’apprentissage Beriya Erfe." }}
                         {% endif %}
                     </p>
 
@@ -43,28 +86,94 @@
                         {% for unit in theme.units.all %}
                             {% if unit.is_active %}
                                 <article class="unit-card">
-                                    <h3>{{ unit.title_fr }}</h3>
-                                    <p class="word-meta">{{ unit.description_fr|truncatewords:24 }}</p>
+                                    <h3>
+                                        {% if current_lang == "ar" %}
+                                            {{ unit.title_ar|default:unit.title_fr }}
+                                        {% elif current_lang == "en" %}
+                                            {{ unit.title_en|default:unit.title_fr }}
+                                        {% else %}
+                                            {{ unit.title_fr }}
+                                        {% endif %}
+                                    </h3>
+
+                                    <p class="word-meta">
+                                        {% if current_lang == "ar" %}
+                                            {{ unit.description_ar|default:unit.description_fr|truncatewords:24 }}
+                                        {% elif current_lang == "en" %}
+                                            {{ unit.description_en|default:unit.description_fr|truncatewords:24 }}
+                                        {% else %}
+                                            {{ unit.description_fr|truncatewords:24 }}
+                                        {% endif %}
+                                    </p>
 
                                     <div class="unit-stats">
-                                        <span class="pill">{{ unit.characters.count }} caractères</span>
-                                        <span class="pill">{{ unit.words.count }} mots</span>
-                                        <span class="pill">{{ unit.estimated_minutes }} min</span>
+                                        <span class="pill">
+                                            {{ unit.characters.count }}
+                                            {% if current_lang == "ar" %}
+                                                حرف
+                                            {% elif current_lang == "en" %}
+                                                character(s)
+                                            {% else %}
+                                                caractère(s)
+                                            {% endif %}
+                                        </span>
+
+                                        <span class="pill">
+                                            {{ unit.words.count }}
+                                            {% if current_lang == "ar" %}
+                                                كلمة
+                                            {% elif current_lang == "en" %}
+                                                word(s)
+                                            {% else %}
+                                                mot(s)
+                                            {% endif %}
+                                        </span>
+
+                                        <span class="pill">
+                                            {{ unit.estimated_minutes }}
+                                            {% if current_lang == "ar" %}
+                                                دقيقة
+                                            {% elif current_lang == "en" %}
+                                                min
+                                            {% else %}
+                                                min
+                                            {% endif %}
+                                        </span>
                                     </div>
 
                                     <a href="{% url 'web-unit-detail' unit.slug %}" class="btn btn-primary">
-                                        Ouvrir l’unité
+                                        {% if current_lang == "ar" %}
+                                            فتح الوحدة
+                                        {% elif current_lang == "en" %}
+                                            Open unit
+                                        {% else %}
+                                            Ouvrir l’unité
+                                        {% endif %}
                                     </a>
                                 </article>
                             {% endif %}
                         {% empty %}
-                            <div class="empty-state glass">Aucune unité dans ce thème.</div>
+                            <div class="empty-state glass">
+                                {% if current_lang == "ar" %}
+                                    لا توجد وحدة في هذا الموضوع.
+                                {% elif current_lang == "en" %}
+                                    No unit in this theme.
+                                {% else %}
+                                    Aucune unité dans ce thème.
+                                {% endif %}
+                            </div>
                         {% endfor %}
                     </div>
                 </section>
             {% empty %}
                 <div class="empty-state glass">
-                    Aucun thème publié pour le moment.
+                    {% if current_lang == "ar" %}
+                        لا يوجد أي موضوع منشور حاليًا.
+                    {% elif current_lang == "en" %}
+                        No published theme yet.
+                    {% else %}
+                        Aucun thème publié pour le moment.
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>

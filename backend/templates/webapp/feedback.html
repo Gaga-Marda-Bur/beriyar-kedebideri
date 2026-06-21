@@ -6,7 +6,15 @@
 <main>
   <section class="page-header">
     <div class="container">
-      <div class="badge">Feedback</div>
+      <div class="badge">
+        {% if current_lang == "ar" %}
+            ملاحظات
+        {% elif current_lang == "en" %}
+            Feedback
+        {% else %}
+            Retour
+        {% endif %}
+    </div>
       {% if current_lang == "ar" %}
         <h1>إرسال ملاحظة</h1>
         <p>ساعدنا على تحسين Beřiyar Kedebideři. يمكنك الإبلاغ عن خطأ أو مشكلة صوت أو اقتراح تحسين.</p>
@@ -36,22 +44,52 @@
         <form method="post" class="feedback-form">
           {% csrf_token %}
 
-          <label for="feedback_type">Type de feedback</label>
+          <label for="feedback_type">
+            {% if current_lang == "ar" %}
+                نوع الملاحظات
+            {% elif current_lang == "en" %}
+                Feedback type
+            {% else %}
+                Type de feedback
+            {% endif %}
+        </label>
           <select id="feedback_type" name="feedback_type">
             {% for value, label in feedback_types %}
               <option value="{{ value }}">{{ label }}</option>
             {% endfor %}
           </select>
 
-          <label for="title">Titre</label>
+          <label for="title">
+            {% if current_lang == "ar" %}
+                العنوان
+            {% elif current_lang == "en" %}
+                Title
+            {% else %}
+                Titre
+            {% endif %}
+        </label>
           <input
             id="title"
             name="title"
             type="text"
-            placeholder="Exemple : Problème audio dans l’alphabet"
+            placeholder="{% if current_lang == 'ar' %}
+              مثال: مشكلة في الصوت ضمن الأبجدية
+              {% elif current_lang == 'en' %}
+              Example: Audio issue in the alphabet
+              {% else %}
+              Exemple : Problème audio dans l’alphabet
+              {% endif %}"
           >
 
-          <label for="message">Message</label>
+          <label for="message">
+            {% if current_lang == "ar" %}
+                الرسالة
+            {% elif current_lang == "en" %}
+                Message
+            {% else %}
+                Message
+            {% endif %}
+        </label>
           <textarea
               name="message"
               class="beriya-input"

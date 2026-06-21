@@ -1,20 +1,92 @@
 {% extends "webapp/base.html" %}
 
-{% block title %}{{ unit.title_fr }} — Beřiyar Kedebideři{% endblock %}
+{% block title %}
+    {% if current_lang == "ar" %}
+        {{ unit.title_ar|default:unit.title_fr }} — Beřiyar Kedebideři
+    {% elif current_lang == "en" %}
+        {{ unit.title_en|default:unit.title_fr }} — Beřiyar Kedebideři
+    {% else %}
+        {{ unit.title_fr }} — Beřiyar Kedebideři
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 <main>
     <section class="page-header">
         <div class="container">
-            <div class="badge">{{ unit.theme.title_fr }}</div>
-            <h1>{{ unit.title_fr }}</h1>
-            <p>{{ unit.description_fr }}</p>
+            <div class="badge">
+                {% if current_lang == "ar" %}
+                    {{ unit.theme.title_ar|default:unit.theme.title_fr }}
+                {% elif current_lang == "en" %}
+                    {{ unit.theme.title_en|default:unit.theme.title_fr }}
+                {% else %}
+                    {{ unit.theme.title_fr }}
+                {% endif %}
+            </div>
+
+            <h1>
+                {% if current_lang == "ar" %}
+                    {{ unit.title_ar|default:unit.title_fr }}
+                {% elif current_lang == "en" %}
+                    {{ unit.title_en|default:unit.title_fr }}
+                {% else %}
+                    {{ unit.title_fr }}
+                {% endif %}
+            </h1>
+
+            <p>
+                {% if current_lang == "ar" %}
+                    {{ unit.description_ar|default:unit.description_fr }}
+                {% elif current_lang == "en" %}
+                    {{ unit.description_en|default:unit.description_fr }}
+                {% else %}
+                    {{ unit.description_fr }}
+                {% endif %}
+            </p>
 
             <div class="unit-stats">
-                <span class="pill">{{ unit.characters.count }} caractères</span>
-                <span class="pill">{{ unit.words.count }} mots</span>
-                <span class="pill">{{ unit.estimated_minutes }} min</span>
-                <span class="pill">Score minimum {{ unit.min_score_to_pass }}%</span>
+                <span class="pill">
+                    {{ unit.characters.count }}
+                    {% if current_lang == "ar" %}
+                        حرف
+                    {% elif current_lang == "en" %}
+                        character(s)
+                    {% else %}
+                        caractère(s)
+                    {% endif %}
+                </span>
+
+                <span class="pill">
+                    {{ unit.words.count }}
+                    {% if current_lang == "ar" %}
+                        كلمة
+                    {% elif current_lang == "en" %}
+                        word(s)
+                    {% else %}
+                        mot(s)
+                    {% endif %}
+                </span>
+
+                <span class="pill">
+                    {{ unit.estimated_minutes }}
+                    {% if current_lang == "ar" %}
+                        دقيقة
+                    {% elif current_lang == "en" %}
+                        min
+                    {% else %}
+                        min
+                    {% endif %}
+                </span>
+
+                <span class="pill">
+                    {% if current_lang == "ar" %}
+                        الحد الأدنى للنجاح {{ unit.min_score_to_pass }}%
+                    {% elif current_lang == "en" %}
+                        Minimum score {{ unit.min_score_to_pass }}%
+                    {% else %}
+                        Score minimum {{ unit.min_score_to_pass }}%
+                    {% endif %}
+                </span>
             </div>
         </div>
     </section>
@@ -23,14 +95,47 @@
         <div class="container unit-layout">
             <div>
                 <div class="theme-block glass">
-                    <div class="section-kicker">Caractères de l’unité</div>
+                    <div class="section-kicker">
+                        {% if current_lang == "ar" %}
+                            حروف الوحدة
+                        {% elif current_lang == "en" %}
+                            Unit characters
+                        {% else %}
+                            Caractères de l’unité
+                        {% endif %}
+                    </div>
+
                     <div class="alphabet-grid" style="margin-top: 18px;">
                         {% for character in unit.characters.all %}
                             <div class="character-card glass">
-                                <div class="character-symbol">{{ character.symbol }}</div>
-                                <div class="character-code">{{ character.unicode_code }}</div>
+                                <div class="character-symbol beriya-font">
+                                    {{ character.symbol }}
+                                </div>
+
+                                <div class="character-code">
+                                    {{ character.unicode_code }}
+                                </div>
+
                                 {% if character.latin_transcription %}
-                                    <div class="character-transcription">{{ character.latin_transcription }}</div>
+                                    <div class="character-transcription">
+                                        {{ character.latin_transcription }}
+                                    </div>
+                                {% endif %}
+
+                                {% if character.arabic_transcription %}
+                                    <div class="character-code">
+                                        {{ character.arabic_transcription }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% empty %}
+                            <div class="empty-state glass">
+                                {% if current_lang == "ar" %}
+                                    لا توجد حروف مرتبطة بهذه الوحدة.
+                                {% elif current_lang == "en" %}
+                                    No characters linked to this unit.
+                                {% else %}
+                                    Aucun caractère lié à cette unité.
                                 {% endif %}
                             </div>
                         {% endfor %}
@@ -38,34 +143,103 @@
                 </div>
 
                 <div class="theme-block glass">
-                    <div class="section-kicker">Leçons</div>
+                    <div class="section-kicker">
+                        {% if current_lang == "ar" %}
+                            الدروس
+                        {% elif current_lang == "en" %}
+                            Lessons
+                        {% else %}
+                            Leçons
+                        {% endif %}
+                    </div>
+
                     <div class="lesson-list" style="margin-top: 18px;">
                         {% for lesson in lessons %}
                             <article class="lesson-card glass">
-                                <h3>{{ lesson.title_fr }}</h3>
-                                <p class="word-meta">{{ lesson.description_fr }}</p>
+                                <h3>
+                                    {% if current_lang == "ar" %}
+                                        {{ lesson.title_ar|default:lesson.title_fr }}
+                                    {% elif current_lang == "en" %}
+                                        {{ lesson.title_en|default:lesson.title_fr }}
+                                    {% else %}
+                                        {{ lesson.title_fr }}
+                                    {% endif %}
+                                </h3>
+
+                                <p class="word-meta">
+                                    {% if current_lang == "ar" %}
+                                        {{ lesson.description_ar|default:lesson.description_fr }}
+                                    {% elif current_lang == "en" %}
+                                        {{ lesson.description_en|default:lesson.description_fr }}
+                                    {% else %}
+                                        {{ lesson.description_fr }}
+                                    {% endif %}
+                                </p>
 
                                 {% for item in lesson.items.all %}
                                     {% if item.is_active %}
                                         <div class="lesson-item">
-                                            <strong>{{ item.title_fr|default:item.item_type }}</strong>
+                                            <strong>
+                                                {% if current_lang == "ar" %}
+                                                    {{ item.title_ar|default:item.title_fr|default:item.item_type }}
+                                                {% elif current_lang == "en" %}
+                                                    {{ item.title_en|default:item.title_fr|default:item.item_type }}
+                                                {% else %}
+                                                    {{ item.title_fr|default:item.item_type }}
+                                                {% endif %}
+                                            </strong>
+
                                             <div class="word-meta">
-                                                {{ item.oral_prompt_fr }}
+                                                {% if current_lang == "ar" %}
+                                                    {{ item.oral_prompt_ar|default:item.oral_prompt_fr }}
+                                                {% elif current_lang == "en" %}
+                                                    {{ item.oral_prompt_en|default:item.oral_prompt_fr }}
+                                                {% else %}
+                                                    {{ item.oral_prompt_fr }}
+                                                {% endif %}
                                             </div>
 
                                             {% with link=item.audio_links.first %}
                                                 {% if link and link.audio_asset.file %}
-                                                    <button class="audio-button" data-audio="{{ link.audio_asset.file.url }}">
-                                                        Écouter
+                                                    <button
+                                                        type="button"
+                                                        class="audio-button"
+                                                        data-audio="{{ link.audio_asset.file.url }}"
+                                                    >
+                                                        {% if current_lang == "ar" %}
+                                                            استمع
+                                                        {% elif current_lang == "en" %}
+                                                            Listen
+                                                        {% else %}
+                                                            Écouter
+                                                        {% endif %}
                                                     </button>
                                                 {% endif %}
                                             {% endwith %}
                                         </div>
                                     {% endif %}
+                                {% empty %}
+                                    <div class="empty-state glass">
+                                        {% if current_lang == "ar" %}
+                                            لا توجد عناصر في هذا الدرس.
+                                        {% elif current_lang == "en" %}
+                                            No lesson items yet.
+                                        {% else %}
+                                            Aucun élément dans cette leçon.
+                                        {% endif %}
+                                    </div>
                                 {% endfor %}
                             </article>
                         {% empty %}
-                            <div class="empty-state glass">Aucune leçon pour cette unité.</div>
+                            <div class="empty-state glass">
+                                {% if current_lang == "ar" %}
+                                    لا توجد دروس لهذه الوحدة.
+                                {% elif current_lang == "en" %}
+                                    No lesson for this unit.
+                                {% else %}
+                                    Aucune leçon pour cette unité.
+                                {% endif %}
+                            </div>
                         {% endfor %}
                     </div>
                 </div>
@@ -73,31 +247,100 @@
 
             <aside>
                 <div class="detail-panel glass">
-                    <h2>Mots de l’unité</h2>
+                    <h2>
+                        {% if current_lang == "ar" %}
+                            كلمات الوحدة
+                        {% elif current_lang == "en" %}
+                            Unit words
+                        {% else %}
+                            Mots de l’unité
+                        {% endif %}
+                    </h2>
+
                     {% for word in unit.words.all %}
                         <div class="lesson-item">
-                            <div class="word-text" style="font-size: 28px;">{{ word.beriya_text }}</div>
-                            <div>{{ word.french_translation }}</div>
+                            <div class="word-text beriya-font" style="font-size: 28px;">
+                                {{ word.beriya_text }}
+                            </div>
+
+                            <div>
+                                {% if current_lang == "ar" %}
+                                    {{ word.arabic_translation|default:word.french_translation }}
+                                {% elif current_lang == "en" %}
+                                    {{ word.english_translation|default:word.french_translation }}
+                                {% else %}
+                                    {{ word.french_translation }}
+                                {% endif %}
+                            </div>
+
+                            {% if word.latin_transcription %}
+                                <div class="word-meta">
+                                    {{ word.latin_transcription }}
+                                </div>
+                            {% endif %}
                         </div>
                     {% empty %}
-                        <p class="word-meta">Aucun mot lié.</p>
+                        <p class="word-meta">
+                            {% if current_lang == "ar" %}
+                                لا توجد كلمات مرتبطة.
+                            {% elif current_lang == "en" %}
+                                No linked word.
+                            {% else %}
+                                Aucun mot lié.
+                            {% endif %}
+                        </p>
                     {% endfor %}
                 </div>
 
                 <div class="detail-panel glass" style="margin-top: 18px;">
-                    <h2>Quiz</h2>
+                    <h2>
+                        {% if current_lang == "ar" %}
+                            الاختبارات
+                        {% elif current_lang == "en" %}
+                            Quizzes
+                        {% else %}
+                            Quiz
+                        {% endif %}
+                    </h2>
+
                     <div class="quiz-preview">
                         {% for quiz in quizzes %}
                             <div class="quiz-card glass">
-                                <strong>{{ quiz.get_question_type_display }}</strong>
+                                <strong>
+                                    {{ quiz.get_question_type_display }}
+                                </strong>
+
                                 <div class="word-meta">
-                                    
-                                    {{ quiz.prompt_fr }}
+                                    {% if current_lang == "ar" %}
+                                        {{ quiz.prompt_ar|default:quiz.prompt_fr }}
+                                    {% elif current_lang == "en" %}
+                                        {{ quiz.prompt_en|default:quiz.prompt_fr }}
+                                    {% else %}
+                                        {{ quiz.prompt_fr }}
+                                    {% endif %}
                                 </div>
-                                <div class="pill" style="margin-top: 10px;">{{ quiz.options.count }} options</div>
+
+                                <div class="pill" style="margin-top: 10px;">
+                                    {{ quiz.options.count }}
+                                    {% if current_lang == "ar" %}
+                                        خيارات
+                                    {% elif current_lang == "en" %}
+                                        option(s)
+                                    {% else %}
+                                        option(s)
+                                    {% endif %}
+                                </div>
                             </div>
                         {% empty %}
-                            <p class="word-meta">Aucun quiz lié.</p>
+                            <p class="word-meta">
+                                {% if current_lang == "ar" %}
+                                    لا يوجد اختبار مرتبط.
+                                {% elif current_lang == "en" %}
+                                    No linked quiz.
+                                {% else %}
+                                    Aucun quiz lié.
+                                {% endif %}
+                            </p>
                         {% endfor %}
                     </div>
                 </div>

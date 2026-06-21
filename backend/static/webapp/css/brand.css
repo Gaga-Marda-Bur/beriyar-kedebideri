@@ -91,11 +91,12 @@ video {
 }
 
 .brand-mark {
-    width: 46px;
-    height: 46px;
+    width: 58px;
+    height: 58px;
+    min-width: 58px;
+    border-radius: 20px;
     display: grid;
     place-items: center;
-    border-radius: 16px;
     background: linear-gradient(145deg, rgba(212, 175, 55, 0.95), rgba(212, 175, 55, 0.35));
     color: var(--brand-night);
     font-size: 22px;
@@ -1265,4 +1266,301 @@ html[dir="rtl"] .quiz-option-button {
     color: var(--brand-muted);
     font-size: 13px;
     line-height: 1.5;
+}
+
+.brand-logo-wrap {
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.brand-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    padding: 2px;
+}
+
+.brand-logo-fallback-text {
+    display: none;
+    font-weight: 900;
+    color: var(--brand-gold);
+}
+
+.brand-logo-fallback .brand-logo-fallback-text {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.nav-inner {
+    gap: 18px;
+}
+
+.brand {
+    min-width: 260px;
+}
+
+.brand-title {
+    line-height: 1.05;
+}
+
+.brand-subtitle {
+    font-size: 13px;
+    line-height: 1.25;
+}
+
+.nav-links {
+    gap: 18px;
+}
+
+.nav-links a {
+    font-size: 15px;
+    line-height: 1.1;
+    white-space: nowrap;
+}
+
+.nav-actions {
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.language-switcher {
+    flex-shrink: 0;
+}
+
+@media (max-width: 1280px) {
+    .nav-links a[href*="feedback"],
+    .nav-links a[href*="quiz"],
+    .nav-links a[href*="studio-sticker"] {
+        display: none;
+    }
+}
+
+@media (max-width: 1120px) {
+    .nav-links,
+    .nav-actions {
+        display: none;
+    }
+
+    .mobile-menu-button {
+        display: inline-flex;
+    }
+}
+
+.navbar {
+    min-height: 90px;
+}
+
+.nav-inner {
+    min-height: 90px;
+    align-items: center;
+}
+
+/* ==============================
+   HEADER FINAL FIX
+   Logo bigger + calmer nav
+   ============================== */
+
+.navbar {
+    min-height: 82px;
+}
+
+.nav-inner {
+    width: min(1480px, calc(100% - 40px));
+    min-height: 82px;
+    gap: 18px;
+}
+
+.brand {
+    min-width: 250px;
+    gap: 14px;
+    flex-shrink: 0;
+}
+
+.brand-mark {
+    width: 66px;
+    height: 66px;
+    min-width: 66px;
+    border-radius: 22px;
+}
+
+.brand-logo-wrap {
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+}
+
+.brand-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 0;
+    transform: scale(1.35);
+}
+
+.brand-title {
+    font-size: 20px;
+    line-height: 1.02;
+    max-width: 150px;
+}
+
+.brand-subtitle {
+    font-size: 13px;
+    line-height: 1.25;
+    max-width: 170px;
+}
+
+.nav-links {
+    gap: 16px;
+    font-size: 14px;
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-links a {
+    font-size: 14px;
+    line-height: 1.08;
+    white-space: nowrap;
+}
+
+.nav-actions {
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.nav-actions .btn {
+    padding: 12px 20px;
+}
+
+/* APK button slightly smaller so it does not eat the whole navbar */
+.nav-actions .btn-primary {
+    padding: 12px 20px;
+    min-width: 116px;
+}
+
+/* Language switcher compact */
+.language-switcher {
+    flex-shrink: 0;
+    padding: 4px;
+}
+
+.language-switcher a {
+    padding: 6px 10px;
+}
+
+/* Medium desktop: hide secondary links earlier */
+@media (max-width: 1380px) {
+    .nav-links a[href*="feedback"],
+    .nav-links a[href*="quiz"],
+    .nav-links a[href*="studio-sticker"] {
+        display: none;
+    }
+}
+
+/* Smaller desktop: keep only core navigation */
+@media (max-width: 1220px) {
+    .nav-links a[href*="no-ena"] {
+        display: none;
+    }
+
+    .brand {
+        min-width: 230px;
+    }
+
+    .brand-title {
+        font-size: 18px;
+    }
+
+    .brand-mark {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+    }
+}
+
+/* Tablet/mobile: switch to mobile menu */
+@media (max-width: 1080px) {
+    .nav-links,
+    .nav-actions {
+        display: none;
+    }
+
+    .mobile-menu-button {
+        display: inline-flex;
+    }
+
+    .brand {
+        min-width: 0;
+    }
+}
+
+/* Phone */
+@media (max-width: 560px) {
+    .nav-inner {
+        width: min(100% - 22px, 1180px);
+        min-height: 76px;
+    }
+
+    .navbar {
+        min-height: 76px;
+    }
+
+    .brand-mark {
+        width: 54px;
+        height: 54px;
+        min-width: 54px;
+        border-radius: 18px;
+    }
+
+    .brand-logo {
+        transform: scale(1.28);
+    }
+
+    .brand-title {
+        font-size: 16px;
+        max-width: 140px;
+    }
+
+    .brand-subtitle {
+        display: none;
+    }
+}
+
+.svg-icon svg {
+    width: 28px;
+    height: 28px;
+    fill: currentColor;
+    display: block;
+}
+
+.character-audio-missing {
+    margin-top: 14px;
+    color: var(--brand-muted);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.word-audio-missing {
+    margin-top: 14px;
+    color: var(--brand-muted);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.quiz-option-symbol {
+    font-size: 30px;
+    line-height: 1;
+}
+
+.quiz-option-word {
+    font-size: 22px;
+    line-height: 1.2;
+}
+
+.quiz-written-answer {
+    border-top: 1px solid rgba(212, 175, 55, 0.18);
+    padding-top: 14px;
 }
