@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from audio_assets.utils import build_file_url, get_linked_audio_url
-from .models import QuizOption, QuizQuestion
+from .models import QuizOption, QuizQuestion, QuizQuestionAudio
 
 
 class PublicQuizOptionSerializer(serializers.ModelSerializer):
@@ -164,6 +164,42 @@ class QuizQuestionSerializer(serializers.ModelSerializer):
             'updated_at',
         ]
 
+    def build_file_url(file_field, request=None):
+        if not file_field:
+            return None
+
+        try:
+            url = file_field.url
+        except ValueError:
+            return None
+
+        if request is not None and url.startswith("/"):
+            return request.build_absolute_uri(url)
+
+        return url
+
+
+    def get_linked_audio_url(obj, role, request=None):
+        audio_link = (
+            obj.audio_links
+            .filter(
+                role=role,
+                is_primary=True,
+                audio_asset__file__isnull=False,
+            )
+            .select_related("audio_asset")
+            .order_by("order")
+            .first()
+        )
+
+        if not audio_link or not audio_link.audio_asset or not audio_link.audio_asset.file:
+            return None
+
+        return build_file_url(
+            audio_link.audio_asset.file,
+            request=request,
+        )
+
     def get_question_image_url(self, obj):
         return build_file_url(
             obj.question_image,
@@ -173,22 +209,22 @@ class QuizQuestionSerializer(serializers.ModelSerializer):
     def get_question_audio_url(self, obj):
         return get_linked_audio_url(
             obj=obj,
-            role='question',
-            request=self.context.get('request'),
+            role=QuizQuestionAudio.QUESTION,
+            request=self.context.get("request"),
         )
 
     def get_question_slow_audio_url(self, obj):
         return get_linked_audio_url(
             obj=obj,
-            role='slow_question',
-            request=self.context.get('request'),
+            role=QuizQuestionAudio.SLOW_QUESTION,
+            request=self.context.get("request"),
         )
 
     def get_explanation_audio_url(self, obj):
         return get_linked_audio_url(
             obj=obj,
-            role='explanation',
-            request=self.context.get('request'),
+            role=QuizQuestionAudio.EXPLANATION,
+            request=self.context.get("request"),
         )
 
     def get_correct_index(self, obj):

@@ -1,5 +1,6 @@
 {% extends "webapp/base.html" %}
 {% load web_i18n %}
+
 {% block title %}
   {% if current_lang == "ar" %}
     اختبارات بيريَا إرفي — Beřiyar Kedebideři
@@ -36,11 +37,11 @@
 
       <p>
         {% if current_lang == "ar" %}
-          استمع، اختر، وتدرّب على الحروف والكلمات خطوة بخطوة.
+          سؤال واحد في كل مرة: اختر الإجابة، تحقّق، ثم انتقل إلى السؤال التالي.
         {% elif current_lang == "en" %}
-          Listen, choose, and practice characters and words step by step.
+          One question at a time: choose your answer, validate it, then move to the next one.
         {% else %}
-          Écoute, choisis et entraîne-toi avec les caractères et les mots étape par étape.
+          Une question à la fois : choisis ta réponse, valide, puis passe à la suivante.
         {% endif %}
       </p>
     </div>
@@ -48,20 +49,32 @@
 
   <section class="section" style="padding-top: 0;">
     <div class="container">
-      <div class="quiz-web-grid">
+      <div class="quiz-web-single" id="quizWebApp">
         {% for quiz in quizzes %}
-          <article class="quiz-web-card glass">
+          <article
+            class="quiz-web-card glass quiz-question-card"
+            data-question-index="{{ forloop.counter0 }}"
+            {% if not forloop.first %}hidden{% endif %}
+          >
             <div class="quiz-web-type">
               {{ quiz.question_type|i18n_quiz_type:current_lang }}
             </div>
 
-            <h2>
-              {{ quiz|i18n_prompt:current_lang }}
-            </h2>
+            <div class="quiz-progress">
+              {% if current_lang == "ar" %}
+                سؤال {{ forloop.counter }} / {{ quizzes|length }}
+              {% elif current_lang == "en" %}
+                Question {{ forloop.counter }} / {{ quizzes|length }}
+              {% else %}
+                Question {{ forloop.counter }} / {{ quizzes|length }}
+              {% endif %}
+            </div>
+
+            <h2>{{ quiz|i18n_prompt:current_lang }}</h2>
 
             {% for audio_link in quiz.audio_links.all %}
               {% if audio_link.role == "question" and audio_link.is_primary and audio_link.audio_asset.file %}
-                <audio controls preload="none">
+                <audio controls preload="none" class="quiz-audio">
                   <source src="{{ audio_link.audio_asset.file.url }}">
                   {% if current_lang == "ar" %}
                     متصفحك لا يدعم تشغيل الصوت.
@@ -84,7 +97,11 @@
 
             <div class="quiz-options">
               {% for option in quiz.options.all %}
-                <button type="button" class="quiz-option-button">
+                <button
+                  type="button"
+                  class="quiz-option-button"
+                  data-correct="{% if option.is_correct %}true{% else %}false{% endif %}"
+                >
                   {% if option.character %}
                     <span class="beriya-font quiz-option-symbol">
                       {{ option.character.symbol }}
@@ -110,14 +127,15 @@
               {% endfor %}
             </div>
 
-            {% if quiz.question_type == "GUIDED_KEYBOARD" or quiz.question_type == "TEXT_TO_CHARACTER" %}
+            {% if quiz.question_type == "guided_keyboard" or quiz.question_type == "text_to_character" %}
               <div class="quiz-written-answer" style="margin-top: 16px;">
                 <input
                   type="text"
-                  class="input beriya-input"
+                  class="input beriya-input quiz-text-answer"
                   data-beriya-keyboard="true"
                   autocomplete="off"
                   placeholder="{% if current_lang == 'ar' %}اكتب الإجابة ببيريَا...{% elif current_lang == 'en' %}Write the answer in Beriya...{% else %}Écris la réponse en Beriya...{% endif %}"
+                  data-correct-text="{{ quiz.correct_text_answer }}"
                 >
 
                 <div class="beriya-keyboard-hint">
@@ -131,6 +149,30 @@
                 </div>
               </div>
             {% endif %}
+
+            <div class="quiz-feedback" hidden></div>
+
+            <div class="quiz-actions">
+              <button type="button" class="btn btn-primary quiz-validate-button">
+                {% if current_lang == "ar" %}
+                  تحقّق
+                {% elif current_lang == "en" %}
+                  Validate
+                {% else %}
+                  Valider
+                {% endif %}
+              </button>
+
+              <button type="button" class="btn btn-secondary quiz-next-button" hidden>
+                {% if current_lang == "ar" %}
+                  التالي
+                {% elif current_lang == "en" %}
+                  Next
+                {% else %}
+                  Suivant
+                {% endif %}
+              </button>
+            </div>
           </article>
         {% empty %}
           <div class="empty-state glass">
@@ -143,8 +185,204 @@
             {% endif %}
           </div>
         {% endfor %}
+
+        {% if quizzes %}
+          <div class="quiz-finish-card glass" id="quizFinishCard" hidden>
+            <h2>
+              {% if current_lang == "ar" %}
+                انتهى الاختبار
+              {% elif current_lang == "en" %}
+                Quiz completed
+              {% else %}
+                Quiz terminé
+              {% endif %}
+            </h2>
+
+            <p id="quizFinalScore"></p>
+
+            <button type="button" class="btn btn-primary" id="quizRestartButton">
+              {% if current_lang == "ar" %}
+                إعادة البدء
+              {% elif current_lang == "en" %}
+                Restart
+              {% else %}
+                Recommencer
+              {% endif %}
+            </button>
+          </div>
+        {% endif %}
       </div>
     </div>
   </section>
 </main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const cards = Array.from(document.querySelectorAll(".quiz-question-card"));
+  const finishCard = document.getElementById("quizFinishCard");
+  const finalScore = document.getElementById("quizFinalScore");
+  const restartButton = document.getElementById("quizRestartButton");
+
+  let currentIndex = 0;
+  let score = 0;
+
+  const messages = {
+    chooseFirst: {
+      fr: "Choisis une réponse avant de valider.",
+      en: "Choose an answer before validating.",
+      ar: "اختر إجابة قبل التحقق."
+    },
+    correct: {
+      fr: "Bonne réponse !",
+      en: "Correct answer!",
+      ar: "إجابة صحيحة!"
+    },
+    wrong: {
+      fr: "Réponse incorrecte. Essaie encore avec la question suivante.",
+      en: "Incorrect answer. Try again on the next question.",
+      ar: "إجابة غير صحيحة. حاول مرة أخرى في السؤال التالي."
+    },
+    finished: {
+      fr: "Ton score :",
+      en: "Your score:",
+      ar: "نتيجتك:"
+    }
+  };
+
+  const currentLang = "{{ current_lang|default:'fr' }}";
+
+  function t(key) {
+    return messages[key][currentLang] || messages[key].fr;
+  }
+
+  function showCard(index) {
+    cards.forEach((card, i) => {
+      card.hidden = i !== index;
+    });
+
+    currentIndex = index;
+  }
+
+  function stopAudios() {
+    document.querySelectorAll("audio").forEach((audio) => {
+      audio.pause();
+      audio.currentTime = 0;
+    });
+  }
+
+  cards.forEach((card) => {
+    const optionButtons = Array.from(card.querySelectorAll(".quiz-option-button"));
+    const validateButton = card.querySelector(".quiz-validate-button");
+    const nextButton = card.querySelector(".quiz-next-button");
+    const feedback = card.querySelector(".quiz-feedback");
+    const textAnswer = card.querySelector(".quiz-text-answer");
+
+    let selectedOption = null;
+    let alreadyValidated = false;
+
+    optionButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        if (alreadyValidated) return;
+
+        selectedOption = button;
+
+        optionButtons.forEach((btn) => {
+          btn.classList.remove("is-selected");
+        });
+
+        button.classList.add("is-selected");
+      });
+    });
+
+    validateButton.addEventListener("click", function () {
+      if (alreadyValidated) return;
+
+      let isCorrect = false;
+
+      if (textAnswer) {
+        const expected = (textAnswer.dataset.correctText || "").trim();
+        const given = (textAnswer.value || "").trim();
+
+        if (!given) {
+          feedback.hidden = false;
+          feedback.className = "quiz-feedback is-warning";
+          feedback.textContent = t("chooseFirst");
+          return;
+        }
+
+        isCorrect = expected && given === expected;
+      } else {
+        if (!selectedOption) {
+          feedback.hidden = false;
+          feedback.className = "quiz-feedback is-warning";
+          feedback.textContent = t("chooseFirst");
+          return;
+        }
+
+        isCorrect = selectedOption.dataset.correct === "true";
+      }
+
+      alreadyValidated = true;
+
+      if (isCorrect) {
+        score += 1;
+        feedback.className = "quiz-feedback is-correct";
+        feedback.textContent = t("correct");
+      } else {
+        feedback.className = "quiz-feedback is-wrong";
+        feedback.textContent = t("wrong");
+      }
+
+      feedback.hidden = false;
+
+      optionButtons.forEach((btn) => {
+        btn.disabled = true;
+
+        if (btn.dataset.correct === "true") {
+          btn.classList.add("is-correct");
+        }
+
+        if (btn === selectedOption && btn.dataset.correct !== "true") {
+          btn.classList.add("is-wrong");
+        }
+      });
+
+      validateButton.hidden = true;
+      nextButton.hidden = false;
+    });
+
+    nextButton.addEventListener("click", function () {
+      stopAudios();
+
+      const nextIndex = currentIndex + 1;
+
+      if (nextIndex < cards.length) {
+        showCard(nextIndex);
+      } else {
+        cards.forEach((card) => {
+          card.hidden = true;
+        });
+
+        if (finishCard) {
+          finishCard.hidden = false;
+        }
+
+        if (finalScore) {
+          finalScore.textContent = `${t("finished")} ${score} / ${cards.length}`;
+        }
+      }
+    });
+  });
+
+  if (restartButton) {
+    restartButton.addEventListener("click", function () {
+      window.location.reload();
+    });
+  }
+
+  if (cards.length > 0) {
+    showCard(0);
+  }
+});
+</script>
 {% endblock %}

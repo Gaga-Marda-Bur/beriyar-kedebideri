@@ -4,11 +4,10 @@ import os
 
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
-from django.core.management import call_command
 
 
 class Command(BaseCommand):
-    help = "Bootstrap Render database: create superuser and seed initial data."
+    help = "Bootstrap Render database: create superuser only."
 
     def handle(self, *args, **options):
         User = get_user_model()
@@ -18,21 +17,25 @@ class Command(BaseCommand):
         password = os.environ.get("DJANGO_SUPERUSER_PASSWORD", "")
 
         if not password:
-            self.stdout.write(self.style.WARNING("DJANGO_SUPERUSER_PASSWORD is not set. Superuser skipped."))
-        elif User.objects.filter(username=username).exists():
-            self.stdout.write(self.style.SUCCESS(f"Superuser '{username}' already exists."))
-        else:
-            User.objects.create_superuser(
-                username=username,
-                email=email,
-                password=password,
+            self.stdout.write(
+                self.style.WARNING(
+                    "DJANGO_SUPERUSER_PASSWORD is not set. Superuser skipped."
+                )
             )
-            self.stdout.write(self.style.SUCCESS(f"Superuser '{username}' created."))
+            return
 
-        # Seed alphabet si la commande existe
-        try:
-            call_command("seed_initial_content")
-            self.stdout.write(self.style.SUCCESS("Initial content seed completed."))
-        except Exception as exc:
-            self.stdout.write(self.style.WARNING(f"seed_initial_content skipped: {exc}"))
-        # Si tu as d'autres seed commands plus tard, on les ajoutera ici.
+        if User.objects.filter(username=username).exists():
+            self.stdout.write(
+                self.style.SUCCESS(f"Superuser '{username}' already exists.")
+            )
+            return
+
+        User.objects.create_superuser(
+            username=username,
+            email=email,
+            password=password,
+        )
+
+        self.stdout.write(
+            self.style.SUCCESS(f"Superuser '{username}' created.")
+        )
