@@ -438,3 +438,16 @@ def sticker_studio_page(request):
             "is_rtl": lang == "ar",
         },
     )
+
+
+def editor_page(request):
+    lang = get_web_lang(request)
+
+    return render(
+        request,
+        "webapp/editor.html",
+        {
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
+        },
+    )

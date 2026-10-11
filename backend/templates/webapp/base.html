@@ -17,6 +17,7 @@
 
     <link rel="stylesheet" href="{% static 'webapp/css/brand.css' %}">
     <link rel="stylesheet" href="{% static 'webapp/css/beriya_keyboard.css' %}">
+    {% block extra_head %}{% endblock %}
 </head>
 
 <body>
@@ -86,6 +87,10 @@
                         {% if current_lang == "ar" %}استوديو الملصقات{% elif current_lang == "en" %}Sticker Studio{% else %}Studio Sticker{% endif %}
                     </a>
 
+                    <a href="{% url 'web-editor' %}">
+                        {% if current_lang == "ar" %}محرر بيريا{% elif current_lang == "en" %}Beriya Editor{% else %}Éditeur Beriya{% endif %}
+                    </a>
+
                     <div class="language-switcher">
                         <a href="?lang=fr">FR</a>
                         <a href="?lang=en">EN</a>
@@ -133,6 +138,10 @@
 
                 <a href="{% url 'web-sticker-studio' %}">
                     {% if current_lang == "ar" %}استوديو الملصقات{% elif current_lang == "en" %}Sticker Studio{% else %}Studio Sticker{% endif %}
+                </a>
+
+                <a href="{% url 'web-editor' %}">
+                    {% if current_lang == "ar" %}محرر بيريا{% elif current_lang == "en" %}Beriya Editor{% else %}Éditeur Beriya{% endif %}
                 </a>
 
                 <a href="{% url 'web-no-ena-list' %}">No Ena</a>
@@ -269,7 +278,22 @@
         }
     </script>
 
-    <script src="{% static 'webapp/js/beriya_keyboard_data.js' %}" defer></script>
-    <script src="{% static 'webapp/js/beriya_keyboard.js' %}" defer></script>
+    <script>
+        window.BERIYA_KEYBOARD_I18N = {
+            title: "{% if current_lang == 'ar' %}لوحة مفاتيح بيريَا إرفي{% elif current_lang == 'en' %}Beriya Erfe Keyboard{% else %}Clavier Beriya Erfe{% endif %}",
+            toggle: "{% if current_lang == 'ar' %}⌨️ لوحة المفاتيح{% elif current_lang == 'en' %}⌨️ Beriya Keyboard{% else %}⌨️ Clavier Beriya{% endif %}",
+            close: "×",
+            fast: "{% if current_lang == 'ar' %}سريع{% elif current_lang == 'en' %}Fast{% else %}Rapide{% endif %}",
+            abc: "ABC",
+            symbols: ".?123",
+            space: "{% if current_lang == 'ar' %}مسافة{% elif current_lang == 'en' %}Space{% else %}Espace{% endif %}",
+            backspace: "{% if current_lang == 'ar' %}مسح{% elif current_lang == 'en' %}Delete{% else %}Effacer{% endif %}",
+            clear: "{% if current_lang == 'ar' %}تفريغ{% elif current_lang == 'en' %}Clear{% else %}Vider{% endif %}",
+            clickInputFirst: "{% if current_lang == 'ar' %}انقر أولاً في حقل نصي.{% elif current_lang == 'en' %}Click in a text field first.{% else %}Clique d’abord dans un champ de texte.{% endif %}"
+        };
+    </script>
+
+    <script src="{% static 'webapp/js/beriya_keyboard_data.js' %}?v=20260925c" defer></script>
+    <script src="{% static 'webapp/js/beriya_keyboard.js' %}?v=20260925c" defer></script>
 </body>
 </html>

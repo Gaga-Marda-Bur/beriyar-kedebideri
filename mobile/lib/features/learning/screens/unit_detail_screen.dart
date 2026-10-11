@@ -10,6 +10,7 @@ import '../../lessons/models/lesson_model.dart';
 import '../../quiz/models/quiz_question_model.dart';
 import '../models/learning_unit_model.dart';
 import 'unit_practice_screen.dart';
+import 'learning_core_unit_screen.dart';
 import '../../progress/models/unit_progress_local_model.dart';
 import '../../progress/services/unit_progress_local_storage.dart';
 import '../../../core/cache/cached_content_service.dart';
@@ -215,6 +216,35 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                           SizedBox(
                             width: double.infinity,
                             child: FilledButton.icon(
+                              style: FilledButton.styleFrom(
+                                backgroundColor: AppColors.gold,
+                                foregroundColor: const Color(0xFF0F3227),
+                                padding: const EdgeInsets.symmetric(vertical: 14),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => LearningCoreUnitScreen(
+                                      unit: unit,
+                                      unitSlug: unit.slug,
+                                    ),
+                                  ),
+                                );
+                              },
+                              icon: const Icon(Icons.play_circle_filled_rounded, color: Color(0xFF0F3227)),
+                              label: Text(
+                                _localProgress != null && !_localProgress!.completed
+                                    ? loc.continueLearning
+                                    : loc.startUnit,
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          SizedBox(
+                            width: double.infinity,
+                            child: TextButton.icon(
                               onPressed: () {
                                 Navigator.push(
                                   context,
@@ -225,11 +255,10 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                                   ),
                                 );
                               },
-                              icon: const Icon(Icons.play_arrow_rounded),
-                              label: Text(
-                                _localProgress != null && !_localProgress!.completed
-                                    ? 'Reprendre l’unité'
-                                    : loc.startUnit,
+                              icon: const Icon(Icons.history_edu_rounded, size: 18),
+                              label: const Text(
+                                'Mode révision classique (QCM)',
+                                style: TextStyle(fontSize: 13),
                               ),
                             ),
                           ),

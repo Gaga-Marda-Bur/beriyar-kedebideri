@@ -18,6 +18,8 @@ class BeriyaKeyboard extends StatefulWidget {
     required this.onClear,
     this.layout = BeriyaKeyboardLayout.fast,
     this.hand = BeriyaHandPreference.right,
+    this.scaffoldedKeys,
+    this.onKeyAudio,
   });
 
   final ValueChanged<String> onInsert;
@@ -26,6 +28,8 @@ class BeriyaKeyboard extends StatefulWidget {
   final VoidCallback onClear;
   final BeriyaKeyboardLayout layout;
   final BeriyaHandPreference hand;
+  final List<String>? scaffoldedKeys;
+  final ValueChanged<String>? onKeyAudio;
 
   @override
   State<BeriyaKeyboard> createState() => _BeriyaKeyboardState();
@@ -39,6 +43,12 @@ class _BeriyaKeyboardState extends State<BeriyaKeyboard> {
   void initState() {
     super.initState();
     _layout = widget.layout;
+  }
+
+  @override
+  void dispose() {
+    _KeyButton.dismissActiveOverlay();
+    super.dispose();
   }
 
   List<List<String>> get _currentRows {
@@ -56,6 +66,96 @@ class _BeriyaKeyboardState extends State<BeriyaKeyboard> {
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
+
+    if (widget.scaffoldedKeys != null && widget.scaffoldedKeys!.isNotEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF0F3227).withAlpha(240),
+          borderRadius: BorderRadius.circular(26),
+          border: Border.all(
+            color: const Color(0xFFD4AF37).withAlpha(120),
+            width: 1.5,
+          ),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black45,
+              blurRadius: 18,
+              offset: Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (final key in widget.scaffoldedKeys!) ...[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 6),
+                      child: InkWell(
+                        onTap: () {
+                          widget.onKeyAudio?.call(key);
+                          widget.onInsert(key);
+                        },
+                        borderRadius: BorderRadius.circular(20),
+                        child: Container(
+                          height: 80,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF1B4D3E), Color(0xFF143E32)],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: const Color(0xFFD4AF37),
+                              width: 2,
+                            ),
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            key,
+                            style: const TextStyle(
+                              fontFamily: 'Kedebideri',
+                              fontSize: 38,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: widget.onBackspace,
+                    icon: const Icon(Icons.backspace_outlined),
+                    label: const Text('Effacer'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: widget.onClear,
+                    icon: const Icon(Icons.clear_all_rounded),
+                    label: const Text('Vider'),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
 
     return Container(
       padding: const EdgeInsets.all(14),
@@ -292,16 +392,38 @@ class _KeyButton extends StatelessWidget {
     );
   }
 
+  static OverlayEntry? _activeOverlay;
+
+  static void dismissActiveOverlay() {
+    if (_activeOverlay != null) {
+      if (_activeOverlay!.mounted) {
+        _activeOverlay!.remove();
+      }
+      _activeOverlay = null;
+    }
+  }
+
   void _showLongPressMenu(BuildContext context) {
     final options = longPressOptions;
     if (options == null || options.isEmpty) return;
 
-    final overlay = Overlay.of(context);
+    dismissActiveOverlay();
+
+    final overlay = Overlay.maybeOf(context);
     final renderBox = context.findRenderObject() as RenderBox?;
-    if (renderBox == null) return;
+    if (overlay == null || renderBox == null) return;
 
     final position = renderBox.localToGlobal(Offset.zero);
     late OverlayEntry entry;
+
+    void safeRemove() {
+      if (entry.mounted) {
+        entry.remove();
+      }
+      if (_activeOverlay == entry) {
+        _activeOverlay = null;
+      }
+    }
 
     entry = OverlayEntry(
       builder: (_) {
@@ -309,7 +431,8 @@ class _KeyButton extends StatelessWidget {
           children: [
             Positioned.fill(
               child: GestureDetector(
-                onTap: entry.remove,
+                behavior: HitTestBehavior.opaque,
+                onTap: safeRemove,
                 child: Container(color: Colors.transparent),
               ),
             ),
@@ -345,7 +468,7 @@ class _KeyButton extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                           onTap: () {
                             onInsert(option);
-                            entry.remove();
+                            safeRemove();
                           },
                           child: Container(
                             width: 42,
@@ -378,6 +501,7 @@ class _KeyButton extends StatelessWidget {
       },
     );
 
+    _activeOverlay = entry;
     overlay.insert(entry);
   }
 }

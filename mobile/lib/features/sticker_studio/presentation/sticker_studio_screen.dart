@@ -7,6 +7,7 @@ import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../shared/beriya/beriya_keyboard.dart';
+import '../../../shared/beriya/beriya_keyboard_sheet.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../../../shared/beriya/beriya_keyboard_preferences.dart';
 import '../../../shared/beriya/beriya_keyboard_preferences_service.dart';
@@ -41,7 +42,6 @@ class _StickerStudioScreenState extends State<StickerStudioScreen> {
   StickerStyleType _style = StickerStyleType.classic;
   StickerOutputMode _mode = StickerOutputMode.photo;
   Color _mainColor = const Color(0xFFD4AF37);
-  bool _keyboardVisible = false;
 
   BeriyaKeyboardLayout _keyboardLayout = BeriyaKeyboardLayout.fast;
   BeriyaHandPreference _handPreference = BeriyaHandPreference.right;
@@ -64,43 +64,6 @@ class _StickerStudioScreenState extends State<StickerStudioScreen> {
 
       _handPreference = prefs.hand;
     });
-  }
-
-  void _insertText(String value) {
-    final text = _controller.text;
-    final selection = _controller.selection;
-    final start = selection.start < 0 ? text.length : selection.start;
-    final end = selection.end < 0 ? text.length : selection.end;
-
-    final next = text.replaceRange(start, end, value);
-
-    _controller.value = TextEditingValue(
-      text: next,
-      selection: TextSelection.collapsed(offset: start + value.length),
-    );
-
-    setState(() {});
-  }
-
-  void _backspace() {
-    final text = _controller.text;
-    final selection = _controller.selection;
-    final start = selection.start < 0 ? text.length : selection.start;
-    final end = selection.end < 0 ? text.length : selection.end;
-
-    if (start != end) {
-      _controller.value = TextEditingValue(
-        text: text.replaceRange(start, end, ''),
-        selection: TextSelection.collapsed(offset: start),
-      );
-    } else if (start > 0) {
-      _controller.value = TextEditingValue(
-        text: text.replaceRange(start - 1, start, ''),
-        selection: TextSelection.collapsed(offset: start - 1),
-      );
-    }
-
-    setState(() {});
   }
 
   Future<void> _shareImage() async {
@@ -211,7 +174,13 @@ class _StickerStudioScreenState extends State<StickerStudioScreen> {
             readOnly: true,
             showCursor: true,
             onTap: () {
-              setState(() => _keyboardVisible = true);
+              showBeriyaKeyboardSheet(
+                context: context,
+                controller: _controller,
+                onChanged: (_) => setState(() {}),
+                layout: _keyboardLayout,
+                hand: _handPreference,
+              );
             },
             style: const TextStyle(
               color: Colors.white,
@@ -248,25 +217,17 @@ class _StickerStudioScreenState extends State<StickerStudioScreen> {
               ),
             ),
             onPressed: () {
-              setState(() => _keyboardVisible = !_keyboardVisible);
+              showBeriyaKeyboardSheet(
+                context: context,
+                controller: _controller,
+                onChanged: (_) => setState(() {}),
+                layout: _keyboardLayout,
+                hand: _handPreference,
+              );
             },
             icon: const Icon(Icons.keyboard_rounded),
             label: Text(loc.studioBeriyaKeyboard),
           ),
-          if (_keyboardVisible) ...[
-            const SizedBox(height: 12),
-            BeriyaKeyboard(
-              layout: _keyboardLayout,
-              hand: _handPreference,
-              onInsert: _insertText,
-              onBackspace: _backspace,
-              onSpace: () => _insertText(' '),
-              onClear: () {
-                _controller.clear();
-                setState(() {});
-              },
-            ),
-          ],
         ],
       ),
     );

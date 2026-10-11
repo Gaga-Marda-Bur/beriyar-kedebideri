@@ -14,9 +14,10 @@ class CharacterAdmin(admin.ModelAdmin):
     list_display = [
         'symbol',
         'unicode_code',
-        'name',
+        'latin_grapheme',
         'latin_transcription',
-        'arabic_transcription',
+        'phoneme_ipa',
+        'tone_pattern',
         'character_type',
         'order_index',
         'validation_status',

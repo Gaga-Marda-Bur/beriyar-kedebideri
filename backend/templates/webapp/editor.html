@@ -1,0 +1,218 @@
+{% extends "webapp/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if current_lang == "ar" %}
+        محرر نصوص بيريَا — Beřiyar Kedebideři
+    {% elif current_lang == "en" %}
+        Beriya Text Editor — Beřiyar Kedebideři
+    {% else %}
+        Éditeur de texte Beriya — Beřiyar Kedebideři
+    {% endif %}
+{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'webapp/css/beriya_editor.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="beriya-editor-page">
+
+    <!-- Header Section -->
+    <section class="page-header">
+        <div class="container">
+            <div class="badge">
+                {% if current_lang == "ar" %}
+                    أدوات الكتابة
+                {% elif current_lang == "en" %}
+                    Writing Tools
+                {% else %}
+                    Outils de rédaction
+                {% endif %}
+            </div>
+
+            <h1>
+                {% if current_lang == "ar" %}
+                    محرر نصوص بيريَا إرفي
+                {% elif current_lang == "en" %}
+                    Beriya Erfe Text Editor
+                {% else %}
+                    Éditeur Beriya Erfe
+                {% endif %}
+            </h1>
+
+            <p>
+                {% if current_lang == "ar" %}
+                    اكتب نصوصاً ومقالات باللغة بيريَا إرفي مع حفظ تلقائي محلي، وتصدير فوري إلى صور عالية الدقة أو مستندات PDF جاهزة للطباعة.
+                {% elif current_lang == "en" %}
+                    Write texts and documents in Beriya Erfe with automatic local draft saving, high-resolution PNG export, and printable self-contained PDF export.
+                {% else %}
+                    Rédigez vos textes en Beriya Erfe avec sauvegarde automatique locale, export PNG haute résolution et export PDF autonome avec police intégrée.
+                {% endif %}
+            </p>
+        </div>
+    </section>
+
+    <!-- Editor Main Section -->
+    <section class="section">
+        <div class="container editor-layout">
+
+            <!-- Format Toolbar -->
+            <div class="editor-toolbar">
+                <!-- Group 1: Font Size -->
+                <div class="editor-toolbar-group">
+                    <button type="button" class="editor-tool-btn" data-size="18" title="{% if current_lang == 'ar' %}صغير{% elif current_lang == 'en' %}Small{% else %}Petit{% endif %}">A-</button>
+                    <button type="button" class="editor-tool-btn active" data-size="22" title="{% if current_lang == 'ar' %}متوسط{% elif current_lang == 'en' %}Medium{% else %}Moyen{% endif %}">A</button>
+                    <button type="button" class="editor-tool-btn" data-size="26" title="{% if current_lang == 'ar' %}كبير{% elif current_lang == 'en' %}Large{% else %}Grand{% endif %}">A+</button>
+                    <button type="button" class="editor-tool-btn" data-size="32" title="{% if current_lang == 'ar' %}كبير جداً{% elif current_lang == 'en' %}Extra Large{% else %}Très grand{% endif %}">A++</button>
+                </div>
+
+                <div class="editor-tool-divider"></div>
+
+                <!-- Group 2: Alignment -->
+                <div class="editor-toolbar-group">
+                    <button type="button" class="editor-tool-btn active" data-align="left" title="{% if current_lang == 'ar' %}محاذاة لليسار{% elif current_lang == 'en' %}Align left{% else %}Aligner à gauche{% endif %}">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M3 12h12M3 18h18"/></svg>
+                    </button>
+                    <button type="button" class="editor-tool-btn" data-align="center" title="{% if current_lang == 'ar' %}توسيط{% elif current_lang == 'en' %}Center{% else %}Centrer{% endif %}">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M6 12h12M3 18h18"/></svg>
+                    </button>
+                    <button type="button" class="editor-tool-btn" data-align="right" title="{% if current_lang == 'ar' %}محاذاة لليمين{% elif current_lang == 'en' %}Align right{% else %}Aligner à droite{% endif %}">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M9 12h12M3 18h18"/></svg>
+                    </button>
+                </div>
+
+                <div class="editor-tool-divider"></div>
+
+                <!-- Group 3: Themes -->
+                <div class="editor-toolbar-group">
+                    <button type="button" class="theme-dot theme-dot-forest active" data-theme="dark_forest" title="{% if current_lang == 'ar' %}غابة داكنة{% elif current_lang == 'en' %}Dark Forest{% else %}Forêt Sombre{% endif %}"></button>
+                    <button type="button" class="theme-dot theme-dot-cream" data-theme="cream" title="{% if current_lang == 'ar' %}ورق قديم{% elif current_lang == 'en' %}Parchment{% else %}Parchemin{% endif %}"></button>
+                    <button type="button" class="theme-dot theme-dot-golden" data-theme="golden" title="{% if current_lang == 'ar' %}ملكي ذهبي{% elif current_lang == 'en' %}Royal Gold{% else %}Royal Doré{% endif %}"></button>
+                    <button type="button" class="theme-dot theme-dot-paper" data-theme="paper" title="{% if current_lang == 'ar' %}أبيض ناصع{% elif current_lang == 'en' %}Clean Paper{% else %}Papier Épuré{% endif %}"></button>
+                </div>
+
+                <div class="editor-tool-divider"></div>
+
+                <!-- Group 4: Virtual Keyboard & Actions -->
+                <div class="editor-toolbar-group">
+                    <button type="button" class="editor-tool-btn" id="openBeriyaKeyboardBtn" title="{% if current_lang == 'ar' %}لوحة المفاتيح الافتراضية بيريَا{% elif current_lang == 'en' %}Beriya Virtual Keyboard{% else %}Clavier Beriya Erfe{% endif %}">
+                        ⌨️ {% if current_lang == "ar" %}لوحة المفاتيح{% elif current_lang == "en" %}Keyboard{% else %}Clavier{% endif %}
+                    </button>
+                    <button type="button" class="editor-tool-btn" id="copyTextBtn" title="{% if current_lang == 'ar' %}نسخ النص{% elif current_lang == 'en' %}Copy text{% else %}Copier le texte{% endif %}">
+                        📋 {% if current_lang == "ar" %}نسخ{% elif current_lang == "en" %}Copy{% else %}Copier{% endif %}
+                    </button>
+                    <button type="button" class="editor-tool-btn" id="newDocBtn" title="{% if current_lang == 'ar' %}مستند جديد{% elif current_lang == 'en' %}New document{% else %}Nouveau{% endif %}">
+                        📄 {% if current_lang == "ar" %}جديد{% elif current_lang == "en" %}New{% else %}Nouveau{% endif %}
+                    </button>
+                </div>
+
+                <!-- Draft Status Indicator -->
+                <div class="editor-status-badge" id="editorStatusBadge">
+                    <span>●</span>
+                    <span id="editorStatusText">
+                        {% if current_lang == "ar" %}
+                            تم حفظ المسودة
+                        {% elif current_lang == "en" %}
+                            Draft saved
+                        {% else %}
+                            Brouillon enregistré
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Writing Canvas -->
+            <div class="editor-canvas theme-dark_forest align-left" id="editorCanvas">
+                <div class="editor-canvas-header">
+                    <span>Beřiyar Kedebideři</span>
+                    <span class="editor-canvas-star">✦</span>
+                </div>
+
+                <input
+                    type="text"
+                    id="editorTitle"
+                    class="editor-title-input"
+                    placeholder="{% if current_lang == 'ar' %}عنوان المستند...{% elif current_lang == 'en' %}Document title...{% else %}Titre du document...{% endif %}"
+                    autocomplete="off"
+                    data-beriya-keyboard="true"
+                >
+
+                <div class="editor-canvas-divider"></div>
+
+                <textarea
+                    id="editorBody"
+                    class="editor-body-textarea"
+                    placeholder="{% if current_lang == 'ar' %}اكتب نصك هنا بلغة بيريَا إرفي...{% elif current_lang == 'en' %}Write your text here in Beriya Erfe...{% else %}Rédigez votre texte ici en Beriya Erfe...{% endif %}"
+                    data-beriya-keyboard="true"
+                ></textarea>
+
+                <div class="editor-canvas-footer">
+                    <span>Kedebideři Unicode SMP U+16EA0–U+16EB8</span>
+                    <span>beriyarkedebideri.com</span>
+                </div>
+            </div>
+
+            <!-- Export Bar -->
+            <div class="editor-export-bar">
+                <div>
+                    <strong style="color: var(--brand-gold);">
+                        {% if current_lang == "ar" %}
+                            تصدير ومشاركة
+                        {% elif current_lang == "en" %}
+                            Export & Share
+                        {% else %}
+                            Exportation & Partage
+                        {% endif %}
+                    </strong>
+                    <div style="font-size: 12px; opacity: 0.75; margin-top: 2px;">
+                        {% if current_lang == "ar" %}
+                            الخط مدمج ذاتياً في ملف الـ PDF ليعمل دون الحاجة لتثبيته.
+                        {% elif current_lang == "en" %}
+                            The font is embedded into the PDF file so recipients don't need it installed.
+                        {% else %}
+                            Police TrueType incorporée au PDF, lisible sur tous les appareils sans installation.
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button type="button" class="btn-editor-secondary" id="printDocBtn">
+                        🖨️ {% if current_lang == "ar" %}طباعة{% elif current_lang == "en" %}Print{% else %}Imprimer{% endif %}
+                    </button>
+                    <button type="button" class="btn-editor-secondary" id="exportImageBtn">
+                        🖼️ {% if current_lang == "ar" %}تصدير PNG{% elif current_lang == "en" %}Export PNG{% else %}Image PNG (HD){% endif %}
+                    </button>
+                    <button type="button" class="btn-editor-primary" id="exportPdfBtn">
+                        📑 {% if current_lang == "ar" %}تصدير PDF{% elif current_lang == "en" %}Export PDF{% else %}Document PDF (A4){% endif %}
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<!-- Floating Toast -->
+<div id="editorToast" class="editor-toast"></div>
+
+<!-- Localized Strings -->
+<script>
+    window.BERIYA_EDITOR_I18N = {
+        saved: "{% if current_lang == 'ar' %}تم حفظ المسودة{% elif current_lang == 'en' %}Draft saved{% else %}Brouillon enregistré{% endif %}",
+        saving: "{% if current_lang == 'ar' %}جارٍ الحفظ...{% elif current_lang == 'en' %}Saving...{% else %}Sauvegarde...{% endif %}",
+        copied: "{% if current_lang == 'ar' %}تم نسخ النص إلى الحافظة!{% elif current_lang == 'en' %}Text copied to clipboard!{% else %}Texte copié dans le presse-papiers !{% endif %}",
+        confirmNew: "{% if current_lang == 'ar' %}هل تريد مسح هذا النص وبدء مستند جديد؟{% elif current_lang == 'en' %}Do you want to clear this text and start a new document?{% else %}Voulez-vous effacer ce texte et commencer un nouveau document ?{% endif %}",
+        brand: "Beřiyar Kedebideři",
+        website: "beriyarkedebideri.com"
+    };
+</script>
+
+<!-- Offline Vendor Libraries -->
+<script src="{% static 'webapp/js/vendor/fontkit.umd.min.js' %}"></script>
+<script src="{% static 'webapp/js/vendor/pdf-lib.min.js' %}"></script>
+
+<!-- Beriya Editor Controller -->
+<script src="{% static 'webapp/js/beriya_editor.js' %}?v=20260925b"></script>
+{% endblock %}

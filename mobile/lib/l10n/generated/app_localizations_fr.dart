@@ -588,4 +588,74 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get keyboardLeftHand => 'Gaucher';
+
+  @override
+  String get editorTitle => 'Éditeur Beriya';
+
+  @override
+  String get editorSubtitle => 'Rédige et exporte tes textes en PDF et Image';
+
+  @override
+  String get editorDocTitleHint => 'Titre du document...';
+
+  @override
+  String get editorBodyHint => 'Commence à écrire en Beriya...';
+
+  @override
+  String get editorDraftSaved => 'Brouillon enregistré';
+
+  @override
+  String get editorSaving => 'Sauvegarde...';
+
+  @override
+  String get editorExport => 'Exporter';
+
+  @override
+  String get editorExportPdf => 'Exporter en PDF';
+
+  @override
+  String get editorExportImage => 'Exporter en Image (PNG)';
+
+  @override
+  String get editorPrintPreview => 'Aperçu / Imprimer';
+
+  @override
+  String get editorCopyText => 'Copier le texte';
+
+  @override
+  String get editorTextCopied => 'Texte copié dans le presse-papiers !';
+
+  @override
+  String get editorNewDoc => 'Nouveau document';
+
+  @override
+  String get editorNewDocConfirm =>
+      'Voulez-vous effacer ce texte et commencer un nouveau document ?';
+
+  @override
+  String get editorClear => 'Effacer';
+
+  @override
+  String get editorCancel => 'Annuler';
+
+  @override
+  String get editorTheme => 'Thème visuel';
+
+  @override
+  String get editorThemeDarkForest => 'Forêt Sombre';
+
+  @override
+  String get editorThemeCream => 'Parchemin';
+
+  @override
+  String get editorThemeGolden => 'Royal Doré';
+
+  @override
+  String get editorThemePaper => 'Papier Épuré';
+
+  @override
+  String get editorFontSize => 'Taille du texte';
+
+  @override
+  String get editorAlignment => 'Alignement';
 }

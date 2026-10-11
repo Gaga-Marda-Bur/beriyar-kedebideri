@@ -1,0 +1,354 @@
+/* Beriya Editor Styles */
+.beriya-editor-page {
+    padding-bottom: 60px;
+}
+
+.editor-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Toolbar */
+.editor-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: 20px;
+    background: rgba(13, 56, 43, 0.65);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(16px);
+}
+
+.editor-toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.editor-tool-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--brand-white);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.editor-tool-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    border-color: var(--brand-gold);
+}
+
+.editor-tool-btn.active {
+    background: var(--brand-gold);
+    color: var(--brand-dark);
+    border-color: var(--brand-gold);
+}
+
+.editor-tool-divider {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.18);
+    margin: 0 4px;
+}
+
+/* Theme picker dots */
+.theme-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.theme-dot:hover {
+    transform: scale(1.15);
+}
+
+.theme-dot.active {
+    border-color: var(--brand-gold);
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+    transform: scale(1.1);
+}
+
+.theme-dot-forest { background: #0D382B; }
+.theme-dot-cream { background: #FAF6EE; }
+.theme-dot-golden { background: #141913; }
+.theme-dot-paper { background: #FFFFFF; }
+
+/* Status indicator */
+.editor-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #4ade80;
+    font-weight: 600;
+}
+
+.editor-status-badge.saving {
+    color: var(--brand-gold);
+}
+
+/* Document Canvas */
+.editor-canvas {
+    border-radius: 28px;
+    padding: 36px 40px;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    border: 2px solid var(--brand-gold);
+}
+
+/* Themes */
+.editor-canvas.theme-dark_forest {
+    background: #0A221A;
+    color: #FFFFFF;
+    border-color: rgba(212, 175, 55, 0.5);
+}
+
+.editor-canvas.theme-cream {
+    background: #FAF6EE;
+    color: #2B2118;
+    border-color: #CBB689;
+}
+
+.editor-canvas.theme-golden {
+    background: #141913;
+    color: #FFF7DC;
+    border-color: #FFD700;
+}
+
+.editor-canvas.theme-paper {
+    background: #FFFFFF;
+    color: #0F172A;
+    border-color: #CBD5E1;
+}
+
+/* Canvas Header */
+.editor-canvas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 0.8;
+}
+
+.editor-canvas-star {
+    color: var(--brand-gold);
+    font-size: 18px;
+}
+
+/* Inputs */
+.editor-title-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: "Kedebideri", Inter, sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: inherit;
+    padding: 4px 0;
+    margin-bottom: 12px;
+}
+
+.editor-title-input::placeholder {
+    color: inherit;
+    opacity: 0.35;
+}
+
+.editor-canvas-divider {
+    height: 1.5px;
+    background: currentColor;
+    opacity: 0.2;
+    margin: 12px 0 20px 0;
+}
+
+.editor-body-textarea {
+    width: 100%;
+    flex: 1;
+    min-height: 260px;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: vertical;
+    font-family: "Kedebideri", Inter, sans-serif;
+    font-size: 22px;
+    line-height: 1.6;
+    color: inherit;
+    padding: 0;
+}
+
+.editor-body-textarea::placeholder {
+    color: inherit;
+    opacity: 0.35;
+}
+
+/* Alignment modifier */
+.editor-canvas.align-left .editor-title-input,
+.editor-canvas.align-left .editor-body-textarea {
+    text-align: left;
+}
+
+.editor-canvas.align-center .editor-title-input,
+.editor-canvas.align-center .editor-body-textarea {
+    text-align: center;
+}
+
+.editor-canvas.align-right .editor-title-input,
+.editor-canvas.align-right .editor-body-textarea {
+    text-align: right;
+}
+
+/* Canvas Footer */
+.editor-canvas-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(128, 128, 128, 0.2);
+    font-size: 11px;
+    opacity: 0.6;
+}
+
+/* Export Bar */
+.editor-export-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px 24px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.btn-editor-primary {
+    background: var(--brand-gold);
+    color: var(--brand-dark);
+    font-weight: 900;
+    padding: 12px 22px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-editor-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.35);
+}
+
+.btn-editor-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--brand-white);
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.btn-editor-secondary:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: var(--brand-gold);
+}
+
+/* Toast */
+.editor-toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #0F3227;
+    color: #FFFFFF;
+    border: 1.5px solid var(--brand-gold);
+    padding: 12px 24px;
+    border-radius: 99px;
+    font-weight: 700;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 99999;
+}
+
+.editor-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .editor-toolbar,
+    .editor-export-bar,
+    .page-header,
+    .footer,
+    .beriya-keyboard,
+    .mobile-menu {
+        display: none !important;
+    }
+
+    body, .page-shell {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+    }
+
+    .editor-canvas {
+        border: none !important;
+        box-shadow: none !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        padding: 0 !important;
+    }
+
+    .editor-title-input,
+    .editor-body-textarea {
+        color: #000000 !important;
+    }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .editor-canvas {
+        padding: 24px 20px;
+    }
+
+    .editor-title-input {
+        font-size: 22px;
+    }
+
+    .editor-body-textarea {
+        font-size: 18px;
+    }
+}

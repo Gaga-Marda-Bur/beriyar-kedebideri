@@ -79,10 +79,14 @@ class LearningUnitSerializer(serializers.ModelSerializer):
     theme_title_ar = serializers.CharField(source='theme.title_ar', read_only=True)
 
     characters = CharacterSerializer(many=True, read_only=True)
+    distractor_characters = CharacterSerializer(many=True, read_only=True)
     words = WordSerializer(many=True, read_only=True)
+    target_word = WordSerializer(read_only=True)
 
     character_ids = serializers.SerializerMethodField()
+    distractor_character_ids = serializers.SerializerMethodField()
     word_ids = serializers.SerializerMethodField()
+    core_flow = serializers.SerializerMethodField()
 
     class Meta:
         model = LearningUnit
@@ -102,9 +106,18 @@ class LearningUnitSerializer(serializers.ModelSerializer):
             'description_ar',
             'level',
             'characters',
+            'distractor_characters',
             'words',
+            'target_word',
             'character_ids',
+            'distractor_character_ids',
             'word_ids',
+            'weight_recognition',
+            'weight_tracing',
+            'weight_encoding',
+            'enable_tracing',
+            'pedagogy_config',
+            'core_flow',
             'estimated_minutes',
             'min_score_to_pass',
             'order_index',
@@ -118,5 +131,11 @@ class LearningUnitSerializer(serializers.ModelSerializer):
     def get_character_ids(self, obj):
         return list(obj.characters.values_list('id', flat=True))
 
+    def get_distractor_character_ids(self, obj):
+        return list(obj.distractor_characters.values_list('id', flat=True))
+
     def get_word_ids(self, obj):
         return list(obj.words.values_list('id', flat=True))
+
+    def get_core_flow(self, obj):
+        return obj.generate_core_flow(request=self.context.get('request'))

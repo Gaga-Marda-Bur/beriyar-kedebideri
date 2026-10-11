@@ -53,9 +53,13 @@ class LearningUnitListAPIView(generics.ListAPIView):
             is_active=True,
         ).select_related(
             'theme',
+            'target_word',
+            'target_word__category',
         ).prefetch_related(
             'characters',
             'characters__audio_links__audio_asset',
+            'distractor_characters',
+            'distractor_characters__audio_links__audio_asset',
             'words',
             'words__category',
             'words__audio_links__audio_asset',
@@ -89,10 +93,40 @@ class LearningUnitDetailAPIView(generics.RetrieveAPIView):
             is_active=True,
         ).select_related(
             'theme',
+            'target_word',
+            'target_word__category',
         ).prefetch_related(
             'characters',
             'characters__audio_links__audio_asset',
+            'distractor_characters',
+            'distractor_characters__audio_links__audio_asset',
             'words',
             'words__category',
             'words__audio_links__audio_asset',
         )
+
+
+class LearningUnitCoreFlowAPIView(generics.GenericAPIView):
+    def get(self, request, pk, *args, **kwargs):
+        from rest_framework.response import Response
+        unit = generics.get_object_or_404(
+            LearningUnit.objects.filter(is_active=True).prefetch_related(
+                'characters',
+                'distractor_characters',
+                'words',
+            ).select_related('target_word'),
+            pk=pk,
+        )
+        flow = unit.generate_core_flow(request=request)
+        return Response({
+            'unit_id': unit.id,
+            'unit_title': unit.title_fr,
+            'theme_title': unit.theme.title_fr,
+            'total_steps': len(flow),
+            'weights': {
+                'recognition': unit.weight_recognition,
+                'tracing': unit.weight_tracing,
+                'encoding': unit.weight_encoding,
+            },
+            'steps': flow,
+        })

@@ -582,4 +582,73 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get keyboardLeftHand => 'اليسرى';
+
+  @override
+  String get editorTitle => 'محرر بيريا';
+
+  @override
+  String get editorSubtitle => 'اكتب وصدّر نصوصك كـ PDF وصور';
+
+  @override
+  String get editorDocTitleHint => 'عنوان المستند...';
+
+  @override
+  String get editorBodyHint => 'ابدأ الكتابة بأبجدية بيريا...';
+
+  @override
+  String get editorDraftSaved => 'تم حفظ المسودة';
+
+  @override
+  String get editorSaving => 'جارٍ الحفظ...';
+
+  @override
+  String get editorExport => 'تصدير';
+
+  @override
+  String get editorExportPdf => 'تصدير كـ PDF';
+
+  @override
+  String get editorExportImage => 'تصدير كصورة (PNG)';
+
+  @override
+  String get editorPrintPreview => 'معاينة / طباعة';
+
+  @override
+  String get editorCopyText => 'نسخ النص';
+
+  @override
+  String get editorTextCopied => 'تم نسخ النص إلى الحافظة!';
+
+  @override
+  String get editorNewDoc => 'مستند جديد';
+
+  @override
+  String get editorNewDocConfirm => 'هل تريد مسح هذا النص وبدء مستند جديد؟';
+
+  @override
+  String get editorClear => 'مسح';
+
+  @override
+  String get editorCancel => 'إلغاء';
+
+  @override
+  String get editorTheme => 'المظهر';
+
+  @override
+  String get editorThemeDarkForest => 'الغابة الداكنة';
+
+  @override
+  String get editorThemeCream => 'المخطوطة';
+
+  @override
+  String get editorThemeGolden => 'الذهبي الملكي';
+
+  @override
+  String get editorThemePaper => 'ورق نقي';
+
+  @override
+  String get editorFontSize => 'حجم الخط';
+
+  @override
+  String get editorAlignment => 'المحاذاة';
 }

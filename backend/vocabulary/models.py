@@ -59,6 +59,18 @@ class Word(models.Model):
     english_translation = models.CharField(max_length=255, blank=True)
     arabic_translation = models.CharField(max_length=255, blank=True)
 
+    orthographic_pattern = models.CharField(
+        max_length=50,
+        blank=True,
+        default='CV',
+        help_text='Ex: CV, CVC, CVCV',
+    )
+    syllabic_structure = models.CharField(
+        max_length=100,
+        blank=True,
+        default='À_VALIDER',
+    )
+
     category = models.ForeignKey(
         WordCategory,
         on_delete=models.SET_NULL,
@@ -121,12 +133,14 @@ class WordAudio(models.Model):
     NORMAL = 'normal'
     SLOW = 'slow'
     EXAMPLE = 'example'
+    SYLLABLE = 'syllable'
     SYLLABLE_BREAKDOWN = 'syllable_breakdown'
 
     ROLE_CHOICES = [
         (NORMAL, 'Normal pronunciation'),
         (SLOW, 'Slow pronunciation'),
         (EXAMPLE, 'Example sentence'),
+        (SYLLABLE, 'Syllable pronunciation'),
         (SYLLABLE_BREAKDOWN, 'Syllable breakdown'),
     ]
 

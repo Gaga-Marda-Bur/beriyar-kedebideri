@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'utf16_safe.dart';
 import '../../l10n/generated/app_localizations.dart';
 import 'beriya_keyboard.dart';
 import 'beriya_keyboard_preferences.dart';
@@ -61,6 +62,14 @@ class _BeriyaTextFieldState extends State<BeriyaTextField> {
   void initState() {
     super.initState();
 
+    final initialClean = Utf16Safe.sanitize(widget.controller.text);
+    if (initialClean != widget.controller.text) {
+      widget.controller.value = TextEditingValue(
+        text: initialClean,
+        selection: TextSelection.collapsed(offset: initialClean.length),
+      );
+    }
+
     _keyboardVisible = widget.showKeyboardInitially;
     _mode = widget.initialMode ?? BeriyaInputMode.beriya;
 
@@ -91,39 +100,56 @@ class _BeriyaTextFieldState extends State<BeriyaTextField> {
   }
 
   void _insertText(String value) {
-    final text = widget.controller.text;
+    final text = Utf16Safe.sanitize(widget.controller.text);
     final selection = widget.controller.selection;
 
-    final start = selection.start < 0 ? text.length : selection.start;
-    final end = selection.end < 0 ? text.length : selection.end;
+    final rawStart = selection.start < 0 ? text.length : selection.start;
+    final rawEnd = selection.end < 0 ? text.length : selection.end;
 
-    final next = text.replaceRange(start, end, value);
+    final start = rawStart.clamp(0, text.length);
+    final end = rawEnd.clamp(0, text.length);
+
+    final safeStart = start < end ? start : end;
+    final safeEnd = start < end ? end : start;
+
+    final next = text.replaceRange(safeStart, safeEnd, value);
+    final sanitized = Utf16Safe.sanitize(next);
 
     widget.controller.value = TextEditingValue(
-      text: next,
-      selection: TextSelection.collapsed(offset: start + value.length),
+      text: sanitized,
+      selection: TextSelection.collapsed(
+        offset: (safeStart + value.length).clamp(0, sanitized.length),
+      ),
     );
 
-    widget.onChanged?.call(widget.controller.text);
+    widget.onChanged?.call(sanitized);
     setState(() {});
   }
 
   void _backspace() {
-    final text = widget.controller.text;
+    final text = Utf16Safe.sanitize(widget.controller.text);
     final selection = widget.controller.selection;
 
-    final start = selection.start < 0 ? text.length : selection.start;
-    final end = selection.end < 0 ? text.length : selection.end;
+    final rawStart = selection.start < 0 ? text.length : selection.start;
+    final rawEnd = selection.end < 0 ? text.length : selection.end;
+
+    final start = rawStart.clamp(0, text.length);
+    final end = rawEnd.clamp(0, text.length);
 
     if (start != end) {
+      final safeStart = start < end ? start : end;
+      final safeEnd = start < end ? end : start;
+      final next = Utf16Safe.sanitize(text.replaceRange(safeStart, safeEnd, ''));
       widget.controller.value = TextEditingValue(
-        text: text.replaceRange(start, end, ''),
-        selection: TextSelection.collapsed(offset: start),
+        text: next,
+        selection: TextSelection.collapsed(offset: safeStart.clamp(0, next.length)),
       );
     } else if (start > 0) {
+      final (next, newOffset) = Utf16Safe.deleteBefore(text, start);
+      final sanitized = Utf16Safe.sanitize(next);
       widget.controller.value = TextEditingValue(
-        text: text.replaceRange(start - 1, start, ''),
-        selection: TextSelection.collapsed(offset: start - 1),
+        text: sanitized,
+        selection: TextSelection.collapsed(offset: newOffset.clamp(0, sanitized.length)),
       );
     }
 

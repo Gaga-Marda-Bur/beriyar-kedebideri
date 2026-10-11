@@ -40,9 +40,10 @@ class WordAudioInline(admin.TabularInline):
 class WordAdmin(admin.ModelAdmin):
     list_display = [
         'beriya_text',
+        'latin_transcription',
+        'orthographic_pattern',
+        'syllabic_structure',
         'french_translation',
-        'english_translation',
-        'arabic_translation',
         'category',
         'difficulty',
         'validation_status',
@@ -51,6 +52,7 @@ class WordAdmin(admin.ModelAdmin):
     ]
 
     list_filter = [
+        'orthographic_pattern',
         'category',
         'difficulty',
         'validation_status',
@@ -84,6 +86,8 @@ class WordAdmin(admin.ModelAdmin):
                 'beriya_text',
                 'latin_transcription',
                 'arabic_transcription',
+                'orthographic_pattern',
+                'syllabic_structure',
             ),
         }),
         ('Traductions', {

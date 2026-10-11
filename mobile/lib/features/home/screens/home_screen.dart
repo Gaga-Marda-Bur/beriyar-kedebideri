@@ -9,6 +9,7 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../../content_hub/screens/content_hub_screen.dart';
 import '../../progress/models/unit_progress_local_model.dart';
 import '../../progress/services/unit_progress_local_storage.dart';
+import '../../../shared/beriya/utf16_safe.dart';
 import '../../../core/startup/app_preload_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -72,12 +73,43 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ListView(
               padding: const EdgeInsets.all(20),
               children: [
-                _HeroHomeCard(
-                  title: loc.welcomeHome,
-                  subtitle: loc.homeSubtitle,
-                  onStart: _openHub,
+                FutureBuilder<List<UnitProgressLocalModel>>(
+                  future: _progressFuture,
+                  builder: (context, snapshot) {
+                    final items = snapshot.data ?? [];
+                    final hasProgress = items.isNotEmpty;
+
+                    if (hasProgress) {
+                      final progress = items.first;
+                      return Column(
+                        children: [
+                          _RecentProgressCard(
+                            progress: progress,
+                            onContinue: () {
+                              Navigator.pushNamed(
+                                context,
+                                '/unit-practice',
+                                arguments: progress.unitSlug,
+                              ).then((_) => _reload());
+                            },
+                          ),
+                          const SizedBox(height: 18),
+                        ],
+                      );
+                    }
+
+                    return Column(
+                      children: [
+                        _HeroHomeCard(
+                          title: loc.welcomeHome,
+                          subtitle: loc.homeSubtitle,
+                          onStart: () => _openRoute('/learning'),
+                        ),
+                        const SizedBox(height: 18),
+                      ],
+                    );
+                  },
                 ),
-                const SizedBox(height: 18),
                 FutureBuilder<bool>(
                   future: _backendFuture,
                   builder: (context, snapshot) {
@@ -87,29 +119,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       online: online,
                       loading: snapshot.connectionState ==
                           ConnectionState.waiting,
-                    );
-                  },
-                ),
-                const SizedBox(height: 18),
-                FutureBuilder<List<UnitProgressLocalModel>>(
-                  future: _progressFuture,
-                  builder: (context, snapshot) {
-                    final items = snapshot.data ?? [];
-
-                    return _RecentProgressCard(
-                      progress: items.isEmpty ? null : items.first,
-                      onContinue: () {
-                        if (items.isEmpty) {
-                          _openRoute('/content');
-                          return;
-                        }
-
-                        Navigator.pushNamed(
-                          context,
-                          '/unit-practice',
-                          arguments: items.first.unitSlug,
-                        ).then((_) => _reload());
-                      },
                     );
                   },
                 ),
@@ -326,7 +335,7 @@ class _RecentProgressCard extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            progress!.unitSlug,
+            Utf16Safe.sanitize(progress!.unitSlug),
             style: AppTextStyles.beriyaSmall.copyWith(
               color: AppColors.gold,
               fontSize: 22,

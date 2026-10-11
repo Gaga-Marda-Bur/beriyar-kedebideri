@@ -402,7 +402,11 @@
     });
 
     openKeyboardBtn.addEventListener("click", () => {
-        beriyaKeyboard.hidden = !beriyaKeyboard.hidden;
+        if (window.BeriyaKeyboard) {
+            window.BeriyaKeyboard.toggle();
+        } else {
+            beriyaKeyboard.hidden = !beriyaKeyboard.hidden;
+        }
     });
 
     buildKeyboard();

@@ -587,4 +587,74 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get keyboardLeftHand => 'Left-handed';
+
+  @override
+  String get editorTitle => 'Beriya Editor';
+
+  @override
+  String get editorSubtitle => 'Write and export texts as PDF and Image';
+
+  @override
+  String get editorDocTitleHint => 'Document title...';
+
+  @override
+  String get editorBodyHint => 'Start writing in Beriya...';
+
+  @override
+  String get editorDraftSaved => 'Draft saved';
+
+  @override
+  String get editorSaving => 'Saving...';
+
+  @override
+  String get editorExport => 'Export';
+
+  @override
+  String get editorExportPdf => 'Export as PDF';
+
+  @override
+  String get editorExportImage => 'Export as Image (PNG)';
+
+  @override
+  String get editorPrintPreview => 'Preview / Print';
+
+  @override
+  String get editorCopyText => 'Copy text';
+
+  @override
+  String get editorTextCopied => 'Text copied to clipboard!';
+
+  @override
+  String get editorNewDoc => 'New document';
+
+  @override
+  String get editorNewDocConfirm =>
+      'Do you want to clear this text and start a new document?';
+
+  @override
+  String get editorClear => 'Clear';
+
+  @override
+  String get editorCancel => 'Cancel';
+
+  @override
+  String get editorTheme => 'Visual theme';
+
+  @override
+  String get editorThemeDarkForest => 'Dark Forest';
+
+  @override
+  String get editorThemeCream => 'Parchment';
+
+  @override
+  String get editorThemeGolden => 'Royal Gold';
+
+  @override
+  String get editorThemePaper => 'Clean Paper';
+
+  @override
+  String get editorFontSize => 'Font size';
+
+  @override
+  String get editorAlignment => 'Alignment';
 }

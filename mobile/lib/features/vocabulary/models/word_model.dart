@@ -3,6 +3,8 @@ class WordModel {
   final String beriyaText;
   final String latinTranscription;
   final String arabicTranscription;
+  final String orthographicPattern;
+  final String syllabicStructure;
 
   final String frenchTranslation;
   final String englishTranslation;
@@ -26,6 +28,7 @@ class WordModel {
   final String? audioUrl;
   final String? slowAudioUrl;
   final String? exampleAudioUrl;
+  final String? syllableAudioUrl;
 
   final String oralPrompt;
   final String pronunciationNote;
@@ -41,6 +44,8 @@ class WordModel {
     required this.beriyaText,
     required this.latinTranscription,
     required this.arabicTranscription,
+    this.orthographicPattern = 'CV',
+    this.syllabicStructure = 'À_VALIDER',
     required this.frenchTranslation,
     required this.englishTranslation,
     required this.arabicTranslation,
@@ -59,6 +64,7 @@ class WordModel {
     required this.audioUrl,
     required this.slowAudioUrl,
     required this.exampleAudioUrl,
+    this.syllableAudioUrl,
     required this.oralPrompt,
     required this.pronunciationNote,
     required this.dialectNote,
@@ -74,9 +80,11 @@ class WordModel {
       beriyaText: _asString(json['beriya_text']),
       latinTranscription: _asString(json['latin_transcription']),
       arabicTranscription: _asString(json['arabic_transcription']),
+      orthographicPattern: _asString(json['orthographic_pattern'] ?? 'CV'),
+      syllabicStructure: _asString(json['syllabic_structure'] ?? 'À_VALIDER'),
       frenchTranslation: _asString(json['french_translation']),
       englishTranslation: _asString(json['english_translation']),
-      arabicTranslation: _asString(json['arabic_translation']),
+      arabicTranslation: _asString(json['arabic_translation'] ?? json['translation_ar']),
       translationFr: _asString(json['translation_fr'] ?? json['french_translation']),
       translationEn: _asString(json['translation_en'] ?? json['english_translation']),
       translationAr: _asString(json['translation_ar'] ?? json['arabic_translation']),
@@ -92,6 +100,7 @@ class WordModel {
       audioUrl: _asNullableString(json['audio_url']),
       slowAudioUrl: _asNullableString(json['slow_audio_url']),
       exampleAudioUrl: _asNullableString(json['example_audio_url']),
+      syllableAudioUrl: _asNullableString(json['syllable_audio_url']),
       oralPrompt: _asString(json['oral_prompt']),
       pronunciationNote: _asString(json['pronunciation_note']),
       dialectNote: _asString(json['dialect_note']),
@@ -108,6 +117,8 @@ class WordModel {
       'beriya_text': beriyaText,
       'latin_transcription': latinTranscription,
       'arabic_transcription': arabicTranscription,
+      'orthographic_pattern': orthographicPattern,
+      'syllabic_structure': syllabicStructure,
       'french_translation': frenchTranslation,
       'english_translation': englishTranslation,
       'arabic_translation': arabicTranslation,
@@ -126,6 +137,7 @@ class WordModel {
       'audio_url': audioUrl,
       'slow_audio_url': slowAudioUrl,
       'example_audio_url': exampleAudioUrl,
+      'syllable_audio_url': syllableAudioUrl,
       'oral_prompt': oralPrompt,
       'pronunciation_note': pronunciationNote,
       'dialect_note': dialectNote,

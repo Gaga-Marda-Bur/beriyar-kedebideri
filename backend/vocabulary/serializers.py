@@ -34,6 +34,7 @@ class WordSerializer(serializers.ModelSerializer):
     audio_url = serializers.SerializerMethodField()
     slow_audio_url = serializers.SerializerMethodField()
     example_audio_url = serializers.SerializerMethodField()
+    syllable_audio_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Word
@@ -42,6 +43,8 @@ class WordSerializer(serializers.ModelSerializer):
             'beriya_text',
             'latin_transcription',
             'arabic_transcription',
+            'orthographic_pattern',
+            'syllabic_structure',
 
             'french_translation',
             'english_translation',
@@ -64,6 +67,7 @@ class WordSerializer(serializers.ModelSerializer):
             'audio_url',
             'slow_audio_url',
             'example_audio_url',
+            'syllable_audio_url',
 
             'oral_prompt',
             'pronunciation_note',
@@ -101,5 +105,16 @@ class WordSerializer(serializers.ModelSerializer):
         return get_linked_audio_url(
             obj=obj,
             role='example',
+            request=self.context.get('request'),
+        )
+
+    def get_syllable_audio_url(self, obj):
+        return get_linked_audio_url(
+            obj=obj,
+            role='syllable',
+            request=self.context.get('request'),
+        ) or get_linked_audio_url(
+            obj=obj,
+            role='syllable_breakdown',
             request=self.context.get('request'),
         )

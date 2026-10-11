@@ -132,13 +132,23 @@ class OfflinePackGenerator:
                 'description_ar': unit.description_ar,
                 'level': unit.level,
                 'character_ids': list(unit.characters.values_list('id', flat=True)),
+                'distractor_character_ids': list(unit.distractor_characters.values_list('id', flat=True)),
                 'word_ids': list(unit.words.values_list('id', flat=True)),
+                'target_word_id': unit.target_word_id,
+                'weight_recognition': unit.weight_recognition,
+                'weight_tracing': unit.weight_tracing,
+                'weight_encoding': unit.weight_encoding,
+                'enable_tracing': unit.enable_tracing,
+                'pedagogy_config': unit.pedagogy_config or {},
+                'core_flow': unit.core_flow,
                 'estimated_minutes': unit.estimated_minutes,
                 'min_score_to_pass': unit.min_score_to_pass,
                 'order_index': unit.order_index,
                 'status': unit.status,
             }
-            for unit in self.pack.units.filter(is_active=True).select_related('theme').prefetch_related('characters', 'words')
+            for unit in self.pack.units.filter(is_active=True).select_related('theme', 'target_word').prefetch_related(
+                'characters', 'distractor_characters', 'words'
+            )
         ]
 
     def _serialize_characters(self, pack_dir):

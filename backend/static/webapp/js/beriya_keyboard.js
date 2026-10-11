@@ -3,7 +3,7 @@
 
     const i18n = window.BERIYA_KEYBOARD_I18N || {
         title: "Clavier Beriya Erfe",
-        toggle: "𖺠 Clavier",
+        toggle: "⌨️ Clavier Beriya",
         close: "×",
         fast: "Rapide",
         abc: "ABC",
@@ -118,24 +118,71 @@
         activeInput.dispatchEvent(new Event("change", { bubbles: true }));
     }
 
+    function getGraphemeDeleteRange(val, start) {
+        if (!val || start <= 0) return { from: 0, to: 0 };
+
+        if (typeof Intl !== "undefined" && Intl.Segmenter) {
+            try {
+                const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+                const segments = Array.from(segmenter.segment(val));
+                for (let i = segments.length - 1; i >= 0; i--) {
+                    const seg = segments[i];
+                    const segStart = seg.index;
+                    const segEnd = seg.index + seg.segment.length;
+                    if (segEnd <= start) {
+                        return { from: segStart, to: start };
+                    }
+                    if (start > segStart && start < segEnd) {
+                        return { from: segStart, to: segEnd };
+                    }
+                }
+            } catch (_) {}
+        }
+
+        // Fallback for surrogate pairs (SMP Unicode U+10000..U+10FFFF)
+        let from = Math.max(0, start - 1);
+        if (from > 0) {
+            const prev = val.charCodeAt(from);
+            const prevPrev = val.charCodeAt(from - 1);
+            if (prev >= 0xDC00 && prev <= 0xDFFF && prevPrev >= 0xD800 && prevPrev <= 0xDBFF) {
+                from = from - 1;
+            }
+        }
+        return { from, to: start };
+    }
+
     function backspace() {
         if (!activeInput || activeInput.isContentEditable) return;
 
-        activeInput.focus();
+        activeInput.focus({ preventScroll: true });
 
-        const start = activeInput.selectionStart ?? activeInput.value.length;
-        const end = activeInput.selectionEnd ?? activeInput.value.length;
+        let start = typeof activeInput.selectionStart === "number"
+            ? activeInput.selectionStart
+            : lastSelectionStart;
+        let end = typeof activeInput.selectionEnd === "number"
+            ? activeInput.selectionEnd
+            : lastSelectionEnd;
+
+        if (start === 0 && end === 0 && activeInput.value.length > 0 && lastSelectionStart > 0) {
+            start = lastSelectionStart;
+            end = lastSelectionEnd;
+        }
 
         if (start !== end) {
             activeInput.value =
                 activeInput.value.substring(0, start) +
                 activeInput.value.substring(end);
             activeInput.setSelectionRange(start, start);
+            lastSelectionStart = start;
+            lastSelectionEnd = start;
         } else if (start > 0) {
+            const range = getGraphemeDeleteRange(activeInput.value, start);
             activeInput.value =
-                activeInput.value.substring(0, start - 1) +
-                activeInput.value.substring(start);
-            activeInput.setSelectionRange(start - 1, start - 1);
+                activeInput.value.substring(0, range.from) +
+                activeInput.value.substring(range.to);
+            activeInput.setSelectionRange(range.from, range.from);
+            lastSelectionStart = range.from;
+            lastSelectionEnd = range.from;
         }
 
         activeInput.dispatchEvent(new Event("input", { bubbles: true }));
@@ -273,11 +320,19 @@
         renderModeButtons();
     }
 
+    let historyStatePushed = false;
+
+    function hasWritableInputOnPage() {
+        return document.querySelector("[data-beriya-keyboard='true'], textarea, input:not([type='hidden']):not([type='submit']):not([type='checkbox']):not([type='radio'])") !== null;
+    }
+
     function createKeyboard() {
+        if (wrapper) return;
+
         wrapper = document.createElement("div");
         wrapper.className = "beriya-keyboard";
         wrapper.innerHTML = `
-            <button type="button" class="beriya-keyboard-toggle beriya-font" aria-label="${i18n.title}">
+            <button type="button" class="beriya-keyboard-toggle" aria-label="${i18n.title}">
                 ${i18n.toggle}
             </button>
 
@@ -311,6 +366,94 @@
         const close = wrapper.querySelector(".beriya-keyboard-close");
         keysContainer = wrapper.querySelector(".beriya-keyboard-keys");
 
+        let userDismissed = false;
+
+        // Single controller object
+        window.BeriyaKeyboard = {
+            open: function (targetInput) {
+                userDismissed = false;
+                if (targetInput) {
+                    activeInput = targetInput;
+                    saveSelection(activeInput);
+                } else if (!activeInput) {
+                    const fallback = document.querySelector("[data-beriya-keyboard='true']") || document.querySelector("textarea, input[type='text']");
+                    if (fallback) {
+                        activeInput = fallback;
+                        saveSelection(activeInput);
+                    }
+                }
+
+                wrapper.style.display = "block";
+                panel.hidden = false;
+                toggle.style.display = "none";
+                toggle.classList.add("active");
+                renderKeys();
+
+                try {
+                    if (!historyStatePushed) {
+                        history.pushState({ beriyaKeyboardOpen: true }, "");
+                        historyStatePushed = true;
+                    }
+                } catch (_) {}
+            },
+
+            close: function (fromHistory) {
+                panel.hidden = true;
+                removePopup();
+                toggle.classList.remove("active");
+
+                if (document.querySelector(".beriya-editor-page") || document.getElementById("beriyaMiniKeyboard") || !hasWritableInputOnPage()) {
+                    wrapper.style.display = "none";
+                    toggle.style.display = "none";
+                } else {
+                    wrapper.style.display = "block";
+                    toggle.style.display = "inline-flex";
+                }
+
+                if (historyStatePushed && fromHistory !== true) {
+                    historyStatePushed = false;
+                    try {
+                        if (history.state && history.state.beriyaKeyboardOpen) {
+                            history.back();
+                        }
+                    } catch (_) {}
+                }
+            },
+
+            toggle: function () {
+                if (panel.hidden || wrapper.style.display === "none") {
+                    window.BeriyaKeyboard.open();
+                } else {
+                    window.BeriyaKeyboard.close();
+                }
+            },
+
+            showTriggerOnly: function () {
+                // If keyboard panel is already open, NEVER close it!
+                if (panel && !panel.hidden) return;
+
+                if (document.getElementById("beriyaMiniKeyboard")) return;
+                if (document.querySelector(".beriya-editor-page")) return;
+
+                if (hasWritableInputOnPage()) {
+                    wrapper.style.display = "block";
+                    toggle.style.display = "inline-flex";
+                    panel.hidden = true;
+                }
+            }
+        };
+
+        // Initialize visibility on page load
+        if (hasWritableInputOnPage() && !document.querySelector(".beriya-editor-page") && !document.getElementById("beriyaMiniKeyboard")) {
+            wrapper.style.display = "block";
+            toggle.style.display = "inline-flex";
+            panel.hidden = true;
+        } else {
+            wrapper.style.display = "none";
+            toggle.style.display = "none";
+            panel.hidden = true;
+        }
+
         wrapper.querySelector("[data-keyboard-layout='fast']").addEventListener("click", () => {
             currentLayout = "fast";
             showSymbols = false;
@@ -329,12 +472,36 @@
         });
 
         toggle.addEventListener("click", () => {
-            panel.hidden = !panel.hidden;
+            window.BeriyaKeyboard.toggle();
         });
 
         close.addEventListener("click", () => {
-            panel.hidden = true;
-            removePopup();
+            window.BeriyaKeyboard.close();
+        });
+
+        // Android back / history handling
+        window.addEventListener("popstate", (event) => {
+            if (panel && !panel.hidden) {
+                historyStatePushed = false;
+                window.BeriyaKeyboard.close(true);
+            }
+        });
+
+        // Escape key handling
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && panel && !panel.hidden) {
+                window.BeriyaKeyboard.close();
+            }
+
+            // Intercept physical Backspace on Beriya inputs to guarantee atomic deletion of surrogate pairs & combining marks
+            if (event.key === "Backspace" && !event.ctrlKey && !event.altKey && !event.metaKey) {
+                const target = event.target;
+                if (isWritableElement(target) && target.value) {
+                    rememberActiveInput(event);
+                    event.preventDefault();
+                    backspace();
+                }
+            }
         });
 
         attachKeyEvents(wrapper.querySelector("[data-action='dot']"), ".");
@@ -375,14 +542,26 @@
         renderKeys();
     }
 
-    document.addEventListener("focusin", rememberActiveInput);
+    document.addEventListener("focusin", (event) => {
+        rememberActiveInput(event);
+        if (isWritableElement(event.target) && window.BeriyaKeyboard) {
+            window.BeriyaKeyboard.showTriggerOnly();
+        }
+    });
+
     document.addEventListener("click", rememberActiveInput);
 
-    document.addEventListener("DOMContentLoaded", function () {
+    function initKeyboard() {
         if (document.fonts) {
             document.fonts.ready.then(createKeyboard);
         } else {
             createKeyboard();
         }
-    });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initKeyboard);
+    } else {
+        initKeyboard();
+    }
 })();

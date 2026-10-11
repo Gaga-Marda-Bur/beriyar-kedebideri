@@ -1233,6 +1233,144 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Gaucher'**
   String get keyboardLeftHand;
+
+  /// No description provided for @editorTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Éditeur Beriya'**
+  String get editorTitle;
+
+  /// No description provided for @editorSubtitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rédige et exporte tes textes en PDF et Image'**
+  String get editorSubtitle;
+
+  /// No description provided for @editorDocTitleHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Titre du document...'**
+  String get editorDocTitleHint;
+
+  /// No description provided for @editorBodyHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commence à écrire en Beriya...'**
+  String get editorBodyHint;
+
+  /// No description provided for @editorDraftSaved.
+  ///
+  /// In fr, this message translates to:
+  /// **'Brouillon enregistré'**
+  String get editorDraftSaved;
+
+  /// No description provided for @editorSaving.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sauvegarde...'**
+  String get editorSaving;
+
+  /// No description provided for @editorExport.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exporter'**
+  String get editorExport;
+
+  /// No description provided for @editorExportPdf.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exporter en PDF'**
+  String get editorExportPdf;
+
+  /// No description provided for @editorExportImage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exporter en Image (PNG)'**
+  String get editorExportImage;
+
+  /// No description provided for @editorPrintPreview.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aperçu / Imprimer'**
+  String get editorPrintPreview;
+
+  /// No description provided for @editorCopyText.
+  ///
+  /// In fr, this message translates to:
+  /// **'Copier le texte'**
+  String get editorCopyText;
+
+  /// No description provided for @editorTextCopied.
+  ///
+  /// In fr, this message translates to:
+  /// **'Texte copié dans le presse-papiers !'**
+  String get editorTextCopied;
+
+  /// No description provided for @editorNewDoc.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau document'**
+  String get editorNewDoc;
+
+  /// No description provided for @editorNewDocConfirm.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voulez-vous effacer ce texte et commencer un nouveau document ?'**
+  String get editorNewDocConfirm;
+
+  /// No description provided for @editorClear.
+  ///
+  /// In fr, this message translates to:
+  /// **'Effacer'**
+  String get editorClear;
+
+  /// No description provided for @editorCancel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler'**
+  String get editorCancel;
+
+  /// No description provided for @editorTheme.
+  ///
+  /// In fr, this message translates to:
+  /// **'Thème visuel'**
+  String get editorTheme;
+
+  /// No description provided for @editorThemeDarkForest.
+  ///
+  /// In fr, this message translates to:
+  /// **'Forêt Sombre'**
+  String get editorThemeDarkForest;
+
+  /// No description provided for @editorThemeCream.
+  ///
+  /// In fr, this message translates to:
+  /// **'Parchemin'**
+  String get editorThemeCream;
+
+  /// No description provided for @editorThemeGolden.
+  ///
+  /// In fr, this message translates to:
+  /// **'Royal Doré'**
+  String get editorThemeGolden;
+
+  /// No description provided for @editorThemePaper.
+  ///
+  /// In fr, this message translates to:
+  /// **'Papier Épuré'**
+  String get editorThemePaper;
+
+  /// No description provided for @editorFontSize.
+  ///
+  /// In fr, this message translates to:
+  /// **'Taille du texte'**
+  String get editorFontSize;
+
+  /// No description provided for @editorAlignment.
+  ///
+  /// In fr, this message translates to:
+  /// **'Alignement'**
+  String get editorAlignment;
 }
 
 class _AppLocalizationsDelegate

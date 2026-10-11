@@ -219,9 +219,17 @@ class OfflineContentService {
 
     for (final unit in unitsRaw) {
       final characterIds = _asIntList(unit['character_ids']);
+      final distractorCharIds = _asIntList(unit['distractor_character_ids']);
       final wordIds = _asIntList(unit['word_ids']);
+      final distractorWordIds = _asIntList(unit['distractor_word_ids']);
+      final targetWordId = _asInt(unit['target_word_id']);
 
       unit['characters'] = characterIds
+          .where((id) => charactersById.containsKey(id))
+          .map((id) => charactersById[id]!)
+          .toList();
+
+      unit['distractor_characters'] = distractorCharIds
           .where((id) => charactersById.containsKey(id))
           .map((id) => charactersById[id]!)
           .toList();
@@ -230,6 +238,15 @@ class OfflineContentService {
           .where((id) => wordsById.containsKey(id))
           .map((id) => wordsById[id]!)
           .toList();
+
+      unit['distractor_words'] = distractorWordIds
+          .where((id) => wordsById.containsKey(id))
+          .map((id) => wordsById[id]!)
+          .toList();
+
+      if (targetWordId > 0 && wordsById.containsKey(targetWordId)) {
+        unit['target_word'] = wordsById[targetWordId]!;
+      }
 
       unit['theme_title_fr'] = unit['theme_title_fr'] ?? '';
       unit['theme_title_en'] = unit['theme_title_en'] ?? '';

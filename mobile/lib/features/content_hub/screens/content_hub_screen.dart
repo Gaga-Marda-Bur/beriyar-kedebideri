@@ -5,11 +5,13 @@ import '../../../core/widgets/app_background.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../../learning/screens/learning_path_screen.dart';
+import '../../learning/screens/learning_core_unit_screen.dart';
 import '../../no_ena/screens/no_ena_screen.dart';
 import '../../offline_packs/screens/my_packs_screen.dart';
 import '../../offline_packs/screens/offline_packs_screen.dart';
 import '../../quiz/screens/quiz_screen.dart';
 import '../../sticker_studio/presentation/sticker_studio_screen.dart';
+import '../../editor/screens/beriya_editor_screen.dart';
 
 class ContentHubScreen extends StatelessWidget {
   const ContentHubScreen({super.key});
@@ -30,6 +32,13 @@ class ContentHubScreen extends StatelessWidget {
     final isWide = width >= 720;
 
     final items = [
+      _HubItem(
+        title: 'Alphabétisation Active (Unité 1)',
+        subtitle: 'Tracé vectoriel, fusion syllabique et encodage clavier Beriya Erfe',
+        icon: Icons.auto_stories_rounded,
+        gradientIcon: Icons.edit_note_rounded,
+        onTap: () => _open(context, const LearningCoreUnitScreen()),
+      ),
       _HubItem(
         title: loc.learnPath,
         subtitle: loc.learnPathSubtitle,
@@ -57,6 +66,13 @@ class ContentHubScreen extends StatelessWidget {
         icon: Icons.draw_rounded,
         gradientIcon: Icons.auto_awesome_rounded,
         onTap: () => _open(context, const StickerStudioScreen()),
+      ),
+      _HubItem(
+        title: loc.editorTitle,
+        subtitle: loc.editorSubtitle,
+        icon: Icons.article_rounded,
+        gradientIcon: Icons.edit_note_rounded,
+        onTap: () => _open(context, const BeriyaEditorScreen()),
       ),
       _HubItem(
         title: loc.offlinePacks,

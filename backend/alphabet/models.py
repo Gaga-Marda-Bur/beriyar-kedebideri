@@ -49,6 +49,12 @@ class Character(models.Model):
 
     latin_transcription = models.CharField(max_length=120, blank=True)
     arabic_transcription = models.CharField(max_length=120, blank=True)
+    latin_grapheme = models.CharField(max_length=20, blank=True)
+    phoneme_ipa = models.CharField(max_length=50, blank=True, default='À_VALIDER')
+    tone_pattern = models.CharField(max_length=50, blank=True, default='À_VALIDER')
+    vowel_length = models.CharField(max_length=50, blank=True, default='À_VALIDER')
+    stroke_path_data = models.JSONField(default=dict, blank=True)
+    stroke_order_rules = models.JSONField(default=dict, blank=True)
 
     character_type = models.CharField(
         max_length=30,
@@ -82,11 +88,15 @@ class Character(models.Model):
 
 
 class CharacterAudio(models.Model):
+    PHONEME = 'phoneme'
+    LETTER_NAME = 'letter_name'
     NORMAL = 'normal'
     SLOW = 'slow'
     EXAMPLE = 'example'
 
     ROLE_CHOICES = [
+        (PHONEME, 'Phoneme (pure sound)'),
+        (LETTER_NAME, 'Letter name (traditional name)'),
         (NORMAL, 'Normal pronunciation'),
         (SLOW, 'Slow pronunciation'),
         (EXAMPLE, 'Example pronunciation'),

@@ -15,12 +15,22 @@
     font-weight: 900;
     cursor: pointer;
     box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.beriya-keyboard-toggle:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 50px rgba(212, 175, 55, 0.4);
 }
 
 .beriya-keyboard-panel {
     position: absolute;
     right: 0;
-    bottom: 58px;
+    bottom: 0;
     width: min(460px, calc(100vw - 32px));
     border: 1px solid rgba(212, 175, 55, 0.22);
     border-radius: 26px;
