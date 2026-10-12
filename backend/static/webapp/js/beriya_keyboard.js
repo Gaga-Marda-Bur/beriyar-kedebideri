@@ -11,6 +11,7 @@
         space: "Espace",
         backspace: "Effacer",
         clear: "Vider",
+        systemKeyboard: "⌨️ Clavier système",
         clickInputFirst: "Clique d’abord dans un champ de texte."
     };
 
@@ -89,6 +90,9 @@
             return;
         }
 
+        if (wrapper && !wrapper.querySelector(".beriya-keyboard-panel").hidden) {
+            setBeriyaInputMode(activeInput);
+        }
         activeInput.focus({ preventScroll: true });
 
         let start = typeof activeInput.selectionStart === "number"
@@ -154,6 +158,9 @@
     function backspace() {
         if (!activeInput || activeInput.isContentEditable) return;
 
+        if (wrapper && !wrapper.querySelector(".beriya-keyboard-panel").hidden) {
+            setBeriyaInputMode(activeInput);
+        }
         activeInput.focus({ preventScroll: true });
 
         let start = typeof activeInput.selectionStart === "number"
@@ -192,7 +199,10 @@
     function clearInput() {
         if (!activeInput || activeInput.isContentEditable) return;
 
-        activeInput.focus();
+        if (wrapper && !wrapper.querySelector(".beriya-keyboard-panel").hidden) {
+            setBeriyaInputMode(activeInput);
+        }
+        activeInput.focus({ preventScroll: true });
         activeInput.value = "";
         activeInput.dispatchEvent(new Event("input", { bubbles: true }));
         activeInput.dispatchEvent(new Event("change", { bubbles: true }));
@@ -326,6 +336,28 @@
         return document.querySelector("[data-beriya-keyboard='true'], textarea, input:not([type='hidden']):not([type='submit']):not([type='checkbox']):not([type='radio'])") !== null;
     }
 
+    function setBeriyaInputMode(input) {
+        if (!input || input.isContentEditable) return;
+        if (!input.dataset.origInputmode) {
+            input.dataset.origInputmode = input.getAttribute("inputmode") || "";
+        }
+        input.setAttribute("inputmode", "none");
+    }
+
+    function restoreSystemInputMode(input) {
+        if (!input || input.isContentEditable) return;
+        if (input.dataset.origInputmode !== undefined) {
+            if (input.dataset.origInputmode) {
+                input.setAttribute("inputmode", input.dataset.origInputmode);
+            } else {
+                input.removeAttribute("inputmode");
+            }
+            delete input.dataset.origInputmode;
+        } else {
+            input.removeAttribute("inputmode");
+        }
+    }
+
     function createKeyboard() {
         if (wrapper) return;
 
@@ -339,7 +371,12 @@
             <div class="beriya-keyboard-panel" hidden>
                 <div class="beriya-keyboard-header">
                     <strong>${i18n.title}</strong>
-                    <button type="button" class="beriya-keyboard-close" aria-label="${i18n.close}">${i18n.close}</button>
+                    <div class="beriya-keyboard-header-actions">
+                        <button type="button" class="beriya-keyboard-system-btn" title="${i18n.systemKeyboard || 'Clavier système'}">
+                            ${i18n.systemKeyboard || '⌨️ Système'}
+                        </button>
+                        <button type="button" class="beriya-keyboard-close" aria-label="${i18n.close}">${i18n.close}</button>
+                    </div>
                 </div>
 
                 <div class="beriya-keyboard-modes">
@@ -364,6 +401,7 @@
         const toggle = wrapper.querySelector(".beriya-keyboard-toggle");
         const panel = wrapper.querySelector(".beriya-keyboard-panel");
         const close = wrapper.querySelector(".beriya-keyboard-close");
+        const systemBtn = wrapper.querySelector(".beriya-keyboard-system-btn");
         keysContainer = wrapper.querySelector(".beriya-keyboard-keys");
 
         let userDismissed = false;
@@ -381,6 +419,10 @@
                         activeInput = fallback;
                         saveSelection(activeInput);
                     }
+                }
+
+                if (activeInput) {
+                    setBeriyaInputMode(activeInput);
                 }
 
                 wrapper.style.display = "block";
@@ -402,6 +444,10 @@
                 removePopup();
                 toggle.classList.remove("active");
 
+                if (activeInput) {
+                    restoreSystemInputMode(activeInput);
+                }
+
                 if (document.querySelector(".beriya-editor-page") || document.getElementById("beriyaMiniKeyboard") || !hasWritableInputOnPage()) {
                     wrapper.style.display = "none";
                     toggle.style.display = "none";
@@ -417,6 +463,29 @@
                             history.back();
                         }
                     } catch (_) {}
+                }
+            },
+
+            switchToSystemKeyboard: function () {
+                const target = activeInput || document.querySelector("[data-beriya-keyboard='true']");
+                if (target) {
+                    restoreSystemInputMode(target);
+                }
+
+                panel.hidden = true;
+                removePopup();
+                toggle.classList.remove("active");
+
+                if (document.querySelector(".beriya-editor-page") || document.getElementById("beriyaMiniKeyboard") || !hasWritableInputOnPage()) {
+                    wrapper.style.display = "none";
+                    toggle.style.display = "none";
+                } else {
+                    wrapper.style.display = "block";
+                    toggle.style.display = "inline-flex";
+                }
+
+                if (target) {
+                    target.focus();
                 }
             },
 
@@ -478,6 +547,12 @@
         close.addEventListener("click", () => {
             window.BeriyaKeyboard.close();
         });
+
+        if (systemBtn) {
+            systemBtn.addEventListener("click", () => {
+                window.BeriyaKeyboard.switchToSystemKeyboard();
+            });
+        }
 
         // Android back / history handling
         window.addEventListener("popstate", (event) => {
