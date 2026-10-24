@@ -116,12 +116,12 @@
                             {{ word|i18n_transcription:current_lang }}
                         </div>
 
-                        {% with link=word.audio_links.first %}
-                            {% if link and link.audio_asset.file %}
+                        {% with audio_url=word|published_audio:"normal" %}
+                            {% if audio_url %}
                                 <button
                                     type="button"
                                     class="audio-button"
-                                    data-audio="{{ link.audio_asset.file.url }}"
+                                    data-audio="{{ audio_url }}"
                                 >
                                     {% ui_text "listen" current_lang %}
                                 </button>
@@ -154,12 +154,4 @@
     </section>
 </main>
 
-<script>
-document.querySelectorAll('[data-audio]').forEach(function(button) {
-    button.addEventListener('click', function() {
-        const audio = new Audio(button.dataset.audio);
-        audio.play();
-    });
-});
-</script>
 {% endblock %}

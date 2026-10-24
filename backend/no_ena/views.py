@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 
 from .models import NoEnaPublication
 from .serializers import NoEnaPublicationSerializer
+from .services import record_publication_view
 
 
 class NoEnaPublicationListAPIView(generics.ListAPIView):
@@ -64,6 +65,7 @@ class NoEnaPublicationDetailAPIView(generics.RetrieveAPIView):
 
 
 class NoEnaPublicationViewAPIView(APIView):
+    """Enregistre un incrément de vue atomique et dédoublonné pour une publication No Ena."""
     permission_classes = [permissions.AllowAny]
 
     def post(self, request, slug):
@@ -78,10 +80,16 @@ class NoEnaPublicationViewAPIView(APIView):
                 'detail': 'Publication not found.'
             }, status=404)
 
-        publication.view_count += 1
-        publication.save(update_fields=['view_count'])
+        device_id = None
+        if hasattr(request, 'data') and hasattr(request.data, 'get'):
+            device_id = request.data.get('device_id')
+
+        view_count, was_counted = record_publication_view(
+            publication, request=request, device_id=device_id
+        )
 
         return Response({
             'slug': publication.slug,
-            'view_count': publication.view_count,
+            'view_count': view_count,
+            'counted': was_counted,
         })

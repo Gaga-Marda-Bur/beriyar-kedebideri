@@ -45,18 +45,18 @@ class CachedContentService {
     NoEnaApiService? noEnaApiService,
     MemoryContentCache? memoryCache,
     ContentSourceState? sourceState,
-  })  : _backendStatusService = backendStatusService ?? BackendStatusService(),
-        _cacheService = cacheService ?? OnlineContentCacheService(),
-        _offlineContentService = offlineContentService ?? OfflineContentService(),
-        _alphabetApiService = alphabetApiService ?? AlphabetApiService(),
-        _vocabularyApiService = vocabularyApiService ?? VocabularyApiService(),
-        _learningApiService = learningApiService ?? LearningApiService(),
-        _lessonsApiService = lessonsApiService ?? LessonsApiService(),
-        _quizApiService = quizApiService ?? QuizApiService(),
-        _noEnaApiService = noEnaApiService ?? NoEnaApiService(),
-        _memoryCache = memoryCache ?? MemoryContentCache.instance,
-        _sourceState = sourceState ?? ContentSourceState.instance;
-
+  }) : _backendStatusService = backendStatusService ?? BackendStatusService(),
+       _cacheService = cacheService ?? OnlineContentCacheService(),
+       _offlineContentService =
+           offlineContentService ?? OfflineContentService(),
+       _alphabetApiService = alphabetApiService ?? AlphabetApiService(),
+       _vocabularyApiService = vocabularyApiService ?? VocabularyApiService(),
+       _learningApiService = learningApiService ?? LearningApiService(),
+       _lessonsApiService = lessonsApiService ?? LessonsApiService(),
+       _quizApiService = quizApiService ?? QuizApiService(),
+       _noEnaApiService = noEnaApiService ?? NoEnaApiService(),
+       _memoryCache = memoryCache ?? MemoryContentCache.instance,
+       _sourceState = sourceState ?? ContentSourceState.instance;
 
   Future<List<CharacterModel>> loadCharacters({
     bool forceRefresh = false,
@@ -68,41 +68,33 @@ class CachedContentService {
       );
 
       if (memory != null && memory.isNotEmpty) {
-        _sourceState.setSource(
-          CacheKeys.characters,
-          ContentSourceType.memory,
-        );
-
+        _sourceState.setSource(CacheKeys.characters, ContentSourceType.memory);
         AppLogger.debug('MEMORY HIT characters: ${memory.length}');
         return memory;
       }
     }
 
     final online = await _backendStatusService.isBackendReachable();
-
     AppLogger.debug('CACHED LOAD characters: backendOnline=$online');
 
     if (online) {
       try {
         final items = await _alphabetApiService.fetchCharacters();
-
         AppLogger.debug('CACHED LOAD characters: API=${items.length}');
 
-        if (items.isNotEmpty) {
-          await _cacheService.saveList(
-            key: CacheKeys.characters,
-            items: items.map((item) => item.toJson()).toList(),
-          );
+        // A16: Une réponse API valide (même vide si le contenu est retiré) est enregistrée.
+        await _cacheService.saveList(
+          key: CacheKeys.characters,
+          items: items.map((item) => item.toJson()).toList(),
+        );
 
-          _memoryCache.set(CacheKeys.memoryCharacters, items);
+        _memoryCache.set(CacheKeys.memoryCharacters, items);
+        _sourceState.setSource(
+          CacheKeys.characters,
+          items.isEmpty ? ContentSourceType.empty : ContentSourceType.online,
+        );
 
-          _sourceState.setSource(
-            CacheKeys.characters,
-            ContentSourceType.online,
-          );
-
-          return items;
-        }
+        return items;
       } catch (error, stackTrace) {
         AppLogger.error(
           'CACHED LOAD characters API failed',
@@ -113,28 +105,22 @@ class CachedContentService {
     }
 
     final cached = await _cacheService.readList(key: CacheKeys.characters);
-
     AppLogger.debug('CACHED LOAD characters: cache=${cached.length}');
 
     if (cached.isNotEmpty) {
       final items = cached.map(CharacterModel.fromJson).toList();
-
       _memoryCache.set(CacheKeys.memoryCharacters, items);
-
       _sourceState.setSource(
         CacheKeys.characters,
         ContentSourceType.localCache,
       );
-
       return items;
     }
 
     final offline = await _offlineContentService.loadCharacters();
-
     AppLogger.debug('CACHED LOAD characters: pack=${offline.length}');
 
     _memoryCache.set(CacheKeys.memoryCharacters, offline);
-
     _sourceState.setSource(
       CacheKeys.characters,
       offline.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack,
@@ -170,19 +156,28 @@ class CachedContentService {
           search: query.isEmpty ? null : query,
         );
 
-        if (items.isNotEmpty) {
-          if (query.isEmpty) {
-            await _cacheService.saveList(
-              key: CacheKeys.words,
-              items: items.map((item) => item.toJson()).toList(),
-            );
+        // A16: Si la recherche est vide, on met à jour le cache de référence.
+        // Si une recherche retourne 0 résultat du serveur, on retourne [] sans
+        // réinjecter l'ancien cache obsolète.
+        if (query.isEmpty) {
+          await _cacheService.saveList(
+            key: CacheKeys.words,
+            items: items.map((item) => item.toJson()).toList(),
+          );
 
-            _memoryCache.set(CacheKeys.memoryWords, items);
-            _sourceState.setSource(CacheKeys.words, ContentSourceType.online);
-          }
-
-          return items;
+          _memoryCache.set(CacheKeys.memoryWords, items);
+          _sourceState.setSource(
+            CacheKeys.words,
+            items.isEmpty ? ContentSourceType.empty : ContentSourceType.online,
+          );
+        } else {
+          _sourceState.setSource(
+            CacheKeys.words,
+            items.isEmpty ? ContentSourceType.empty : ContentSourceType.online,
+          );
         }
+
+        return items;
       } catch (error, stackTrace) {
         AppLogger.error(
           'CACHED LOAD words API failed',
@@ -202,7 +197,11 @@ class CachedContentService {
       _memoryCache.set(CacheKeys.memoryWords, source);
       _sourceState.setSource(
         CacheKeys.words,
-        source.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack,
+        source.isEmpty
+            ? ContentSourceType.empty
+            : cached.isNotEmpty
+            ? ContentSourceType.localCache
+            : ContentSourceType.offlinePack,
       );
       return source;
     }
@@ -241,16 +240,17 @@ class CachedContentService {
       try {
         final items = await _learningApiService.fetchThemes();
 
-        if (items.isNotEmpty) {
-          await _cacheService.saveList(
-            key: CacheKeys.themes,
-            items: items.map((item) => item.toJson()).toList(),
-          );
+        await _cacheService.saveList(
+          key: CacheKeys.themes,
+          items: items.map((item) => item.toJson()).toList(),
+        );
 
-          _memoryCache.set(CacheKeys.memoryThemes, items);
-          _sourceState.setSource(CacheKeys.themes, ContentSourceType.online);
-          return items;
-        }
+        _memoryCache.set(CacheKeys.memoryThemes, items);
+        _sourceState.setSource(
+          CacheKeys.themes,
+          items.isEmpty ? ContentSourceType.empty : ContentSourceType.online,
+        );
+        return items;
       } catch (error, stackTrace) {
         AppLogger.error(
           'CACHED LOAD themes API failed',
@@ -272,14 +272,15 @@ class CachedContentService {
     final offline = await _offlineContentService.loadThemes();
 
     _memoryCache.set(CacheKeys.memoryThemes, offline);
-    _sourceState.setSource(CacheKeys.themes, offline.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack);
+    _sourceState.setSource(
+      CacheKeys.themes,
+      offline.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack,
+    );
 
     return offline;
   }
 
-  Future<List<LearningUnitModel>> loadUnits({
-    bool forceRefresh = false,
-  }) async {
+  Future<List<LearningUnitModel>> loadUnits({bool forceRefresh = false}) async {
     if (!forceRefresh) {
       final memory = _memoryCache.get<List<LearningUnitModel>>(
         CacheKeys.memoryUnits,
@@ -299,17 +300,18 @@ class CachedContentService {
       try {
         final items = await _learningApiService.fetchUnits();
 
-        if (items.isNotEmpty) {
-          await _cacheService.saveList(
-            key: CacheKeys.units,
-            items: items.map((item) => item.toJson()).toList(),
-          );
+        await _cacheService.saveList(
+          key: CacheKeys.units,
+          items: items.map((item) => item.toJson()).toList(),
+        );
 
-          _memoryCache.set(CacheKeys.memoryUnits, items);
-          _sourceState.setSource(CacheKeys.units, ContentSourceType.online);
+        _memoryCache.set(CacheKeys.memoryUnits, items);
+        _sourceState.setSource(
+          CacheKeys.units,
+          items.isEmpty ? ContentSourceType.empty : ContentSourceType.online,
+        );
 
-          return items;
-        }
+        return items;
       } catch (error, stackTrace) {
         AppLogger.error(
           'CACHED LOAD units API failed',
@@ -331,7 +333,10 @@ class CachedContentService {
     final offline = await _offlineContentService.loadUnits();
 
     _memoryCache.set(CacheKeys.memoryUnits, offline);
-    _sourceState.setSource(CacheKeys.units, offline.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack);
+    _sourceState.setSource(
+      CacheKeys.units,
+      offline.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack,
+    );
 
     return offline;
   }
@@ -360,35 +365,31 @@ class CachedContentService {
 
     if (online) {
       try {
-        final items = await _lessonsApiService.fetchLessons(
-          unit: unitSlug,
+        final items = await _lessonsApiService.fetchLessons(unit: unitSlug);
+
+        final allExisting = await _cacheService.readList(
+          key: CacheKeys.lessons,
         );
 
-        if (items.isNotEmpty) {
-          final allExisting = await _cacheService.readList(
-            key: CacheKeys.lessons,
-          );
+        final existing = allExisting
+            .map(LessonModel.fromJson)
+            .where((lesson) => lesson.unitSlug != unitSlug)
+            .toList();
 
-          final existing = allExisting
-              .map(LessonModel.fromJson)
-              .where((lesson) => lesson.unitSlug != unitSlug)
-              .toList();
+        final merged = [...existing, ...items];
 
-          final merged = [
-            ...existing,
-            ...items,
-          ];
+        await _cacheService.saveList(
+          key: CacheKeys.lessons,
+          items: merged.map((item) => item.toJson()).toList(),
+        );
 
-          await _cacheService.saveList(
-            key: CacheKeys.lessons,
-            items: merged.map((item) => item.toJson()).toList(),
-          );
+        _memoryCache.set(memoryKey, items);
+        _sourceState.setSource(
+          sourceKey,
+          items.isEmpty ? ContentSourceType.empty : ContentSourceType.online,
+        );
 
-          _memoryCache.set(memoryKey, items);
-          _sourceState.setSource(sourceKey, ContentSourceType.online);
-
-          return items;
-        }
+        return items;
       } catch (error, stackTrace) {
         AppLogger.error(
           'CACHED LOAD lessons API failed',
@@ -412,7 +413,9 @@ class CachedContentService {
     _memoryCache.set(memoryKey, filtered);
     _sourceState.setSource(
       sourceKey,
-      filtered.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack,
+      filtered.isEmpty
+          ? ContentSourceType.empty
+          : ContentSourceType.offlinePack,
     );
     return filtered;
   }
@@ -440,34 +443,30 @@ class CachedContentService {
 
     if (online) {
       try {
-        final items = await _quizApiService.fetchQuizzes(
-          unit: unitSlug,
+        final items = await _quizApiService.fetchQuizzes(unit: unitSlug);
+
+        final allExisting = await _cacheService.readList(
+          key: CacheKeys.quizzes,
         );
 
-        if (items.isNotEmpty) {
-          final allExisting = await _cacheService.readList(
-            key: CacheKeys.quizzes,
-          );
+        final existing = allExisting
+            .map(QuizQuestionModel.fromJson)
+            .where((quiz) => quiz.unitSlug != unitSlug)
+            .toList();
 
-          final existing = allExisting
-              .map(QuizQuestionModel.fromJson)
-              .where((quiz) => quiz.unitSlug != unitSlug)
-              .toList();
+        final merged = [...existing, ...items];
 
-          final merged = [
-            ...existing,
-            ...items,
-          ];
+        await _cacheService.saveList(
+          key: CacheKeys.quizzes,
+          items: merged.map((item) => item.toJson()).toList(),
+        );
 
-          await _cacheService.saveList(
-            key: CacheKeys.quizzes,
-            items: merged.map((item) => item.toJson()).toList(),
-          );
-
-          _memoryCache.set(memoryKey, items);
-          _sourceState.setSource(sourceKey, ContentSourceType.online);
-          return items;
-        }
+        _memoryCache.set(memoryKey, items);
+        _sourceState.setSource(
+          sourceKey,
+          items.isEmpty ? ContentSourceType.empty : ContentSourceType.online,
+        );
+        return items;
       } catch (error, stackTrace) {
         AppLogger.error(
           'CACHED LOAD quizzes API failed',
@@ -491,7 +490,9 @@ class CachedContentService {
     _memoryCache.set(memoryKey, filtered);
     _sourceState.setSource(
       sourceKey,
-      filtered.isEmpty ? ContentSourceType.empty : ContentSourceType.offlinePack,
+      filtered.isEmpty
+          ? ContentSourceType.empty
+          : ContentSourceType.offlinePack,
     );
 
     return filtered;
@@ -519,17 +520,18 @@ class CachedContentService {
       try {
         final items = await _noEnaApiService.fetchPublications();
 
-        if (items.isNotEmpty) {
-          await _cacheService.saveList(
-            key: CacheKeys.noEna,
-            items: items.map((item) => item.toJson()).toList(),
-          );
+        await _cacheService.saveList(
+          key: CacheKeys.noEna,
+          items: items.map((item) => item.toJson()).toList(),
+        );
 
-          _memoryCache.set(CacheKeys.memoryNoEna, items);
-          _sourceState.setSource(CacheKeys.noEna, ContentSourceType.online);
+        _memoryCache.set(CacheKeys.memoryNoEna, items);
+        _sourceState.setSource(
+          CacheKeys.noEna,
+          items.isEmpty ? ContentSourceType.empty : ContentSourceType.online,
+        );
 
-          return items;
-        }
+        return items;
       } catch (error, stackTrace) {
         AppLogger.error(
           'CACHED LOAD no_ena API failed',

@@ -1,4 +1,5 @@
 {% extends "webapp/base.html" %}
+{% load web_i18n %}
 
 {% block title %}
     {% if current_lang == "ar" %}
@@ -81,12 +82,12 @@
                             </div>
                         {% endif %}
 
-                        {% with link=character.audio_links.first %}
-                            {% if link and link.audio_asset.file %}
+                        {% with audio_url=character|published_audio:"normal" %}
+                            {% if audio_url %}
                                 <button
                                     type="button"
                                     class="audio-button"
-                                    data-audio="{{ link.audio_asset.file.url }}"
+                                    data-audio="{{ audio_url }}"
                                 >
                                     {% if current_lang == "ar" %}
                                         استمع
@@ -125,12 +126,4 @@
     </section>
 </main>
 
-<script>
-document.querySelectorAll('[data-audio]').forEach(function(button) {
-    button.addEventListener('click', function() {
-        const audio = new Audio(button.dataset.audio);
-        audio.play();
-    });
-});
-</script>
 {% endblock %}

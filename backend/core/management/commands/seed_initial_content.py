@@ -1,7 +1,9 @@
 # backend/core/management/commands/seed_initial_content.py
 
 from django.core.management.base import BaseCommand
+from django.db import transaction
 from django.db.models import Q
+
 
 def existing_fields(model):
     return {field.name for field in model._meta.fields}
@@ -12,7 +14,7 @@ def clean_defaults(model, data):
     return {key: value for key, value in data.items() if key in fields}
 
 
-def set_existing_attrs(obj, data):
+def set_existing_attrs(obj, data, dry_run=False):
     fields = existing_fields(obj.__class__)
     changed = False
 
@@ -21,14 +23,30 @@ def set_existing_attrs(obj, data):
             setattr(obj, key, value)
             changed = True
 
-    if changed:
+    if changed and not dry_run:
         obj.save()
 
-    return obj
+    return obj, changed
 
 
 class Command(BaseCommand):
-    help = "Seed initial Beriyar Kedebideri content for Render."
+    help = "Seed initial Beriyar Kedebideri content for Render (non-destructive by default)."
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--dry-run',
+            action='store_true',
+            dest='dry_run',
+            default=False,
+            help="Simule l'exécution sans modifier la base de données et affiche un rapport détaillé.",
+        )
+        parser.add_argument(
+            '--clean-unofficial-characters',
+            action='store_true',
+            dest='clean_unofficial_characters',
+            default=False,
+            help="Archive (is_active=False) ou nettoie explicitement les caractères U+16EBB..U+16ED3 (désactivé par défaut pour préserver le corpus).",
+        )
 
     def handle(self, *args, **options):
         from alphabet.models import Character
@@ -36,19 +54,62 @@ class Command(BaseCommand):
         from lessons.models import Lesson, LessonItem
         from quizzes.models import QuizQuestion, QuizOption
 
-        self.stdout.write("Seeding initial content...")
+        dry_run = options.get('dry_run', False)
+        clean_unofficial = options.get('clean_unofficial_characters', False)
 
-        # 1. Alphabet Beriya Erfe
-        # Unicode range: U+16EA0..U+16EB8 and U+16EBB..U+16ED3
-        # Nettoyage : retirer les 25 formes non officielles créées par erreur.
-        Character.objects.filter(
+        if dry_run:
+            self.stdout.write(self.style.WARNING("=== MODE SIMULATION (--dry-run) : AUCUNE ÉCRITURE ==="))
+
+        self.stdout.write("Vérification et initialisation du contenu de base...")
+
+        stats = {
+            'characters_created': 0,
+            'characters_updated': 0,
+            'unofficial_found': 0,
+            'unofficial_archived': 0,
+            'themes_created': 0,
+            'themes_updated': 0,
+            'units_created': 0,
+            'units_updated': 0,
+            'lessons_created': 0,
+            'lessons_updated': 0,
+            'lesson_items_created': 0,
+            'lesson_items_updated': 0,
+            'quiz_questions_created': 0,
+            'quiz_questions_updated': 0,
+            'quiz_options_created': 0,
+            'quiz_options_updated': 0,
+        }
+
+        # 1. Préservation du corpus : PAS de suppression automatique (A08)
+        unofficial_qs = Character.objects.filter(
             Q(symbol__gte=chr(0x16EBB), symbol__lte=chr(0x16ED3))
             | Q(unicode_code__gte="U+16EBB", unicode_code__lte="U+16ED3")
-        ).delete()
+        )
+        stats['unofficial_found'] = unofficial_qs.count()
 
-        # Alphabet officiel : 25 caractères seulement.
+        if stats['unofficial_found'] > 0:
+            if clean_unofficial:
+                if not dry_run:
+                    # Règle A08 : désactivation / archivage plutôt que suppression brute
+                    updated_cnt = unofficial_qs.update(is_active=False)
+                    stats['unofficial_archived'] = updated_cnt
+                    self.stdout.write(self.style.WARNING(
+                        f"Archivage de {updated_cnt} caractères non officiels (is_active=False)."
+                    ))
+                else:
+                    stats['unofficial_archived'] = stats['unofficial_found']
+                    self.stdout.write(self.style.NOTICE(
+                        f"[dry-run] {stats['unofficial_found']} caractères non officiels seraient archivés."
+                    ))
+            else:
+                self.stdout.write(self.style.NOTICE(
+                    f"{stats['unofficial_found']} caractères hors plage officielle détectés. "
+                    "Conservés intacts pour protéger l'historique (utiliser --clean-unofficial-characters si souhaité)."
+                ))
+
+        # 2. Caractères officiels (U+16EA0..U+16EB8)
         codepoints = list(range(0x16EA0, 0x16EB9))
-
         characters = []
 
         for index, codepoint in enumerate(codepoints, start=1):
@@ -71,20 +132,25 @@ class Command(BaseCommand):
             })
 
             query = Q(symbol=symbol)
-
             if "unicode_code" in existing_fields(Character):
                 query = query | Q(unicode_code=unicode_code)
 
             character = Character.objects.filter(query).first()
 
             if character:
-                set_existing_attrs(character, data)
+                character, changed = set_existing_attrs(character, data, dry_run=dry_run)
+                if changed:
+                    stats['characters_updated'] += 1
             else:
-                character = Character.objects.create(**data)
+                if not dry_run:
+                    character = Character.objects.create(**data)
+                else:
+                    character = Character(**data)
+                stats['characters_created'] += 1
 
             characters.append(character)
 
-        # 2. Theme
+        # 3. Thème
         theme_defaults = clean_defaults(LearningTheme, {
             "title_fr": "Alphabet Beriya Erfe",
             "title_en": "Beriya Erfe Alphabet",
@@ -99,17 +165,19 @@ class Command(BaseCommand):
             "available_offline": True,
         })
 
-        theme, created = LearningTheme.objects.get_or_create(
-            slug="alphabet-beriya-erfe",
-            defaults=theme_defaults,
-        )
+        theme = LearningTheme.objects.filter(slug="alphabet-beriya-erfe").first()
+        if not theme:
+            if not dry_run:
+                theme = LearningTheme.objects.create(slug="alphabet-beriya-erfe", **theme_defaults)
+            else:
+                theme = LearningTheme(slug="alphabet-beriya-erfe", **theme_defaults)
+            stats['themes_created'] += 1
+        else:
+            theme, changed = set_existing_attrs(theme, theme_defaults, dry_run=dry_run)
+            if changed:
+                stats['themes_updated'] += 1
 
-        if not created:
-            set_existing_attrs(theme, theme_defaults)
-
-        self.stdout.write(self.style.SUCCESS("Theme OK."))
-
-        # 3. Unit
+        # 4. Unité
         unit_defaults = clean_defaults(LearningUnit, {
             "theme": theme,
             "title_fr": "Premiers signes",
@@ -125,21 +193,26 @@ class Command(BaseCommand):
             "available_offline": True,
         })
 
-        unit, created = LearningUnit.objects.get_or_create(
-            slug="premiers-signes",
-            defaults=unit_defaults,
-        )
+        unit = LearningUnit.objects.filter(slug="premiers-signes").first()
+        if not unit:
+            if not dry_run:
+                unit = LearningUnit.objects.create(slug="premiers-signes", **unit_defaults)
+            else:
+                unit = LearningUnit(slug="premiers-signes", **unit_defaults)
+            stats['units_created'] += 1
+        else:
+            unit, changed = set_existing_attrs(unit, unit_defaults, dry_run=dry_run)
+            if changed:
+                stats['units_updated'] += 1
 
-        if not created:
-            set_existing_attrs(unit, unit_defaults)
+        if not dry_run and hasattr(unit, "characters") and unit.pk:
+            # Association des caractères sans casser les liaisons existantes
+            current_ids = set(unit.characters.values_list('id', flat=True))
+            new_ids = {c.id for c in characters[:10] if c.id}
+            if not new_ids.issubset(current_ids):
+                unit.characters.add(*[c for c in characters[:10] if c.id])
 
-        # Add characters to unit if ManyToMany exists
-        if hasattr(unit, "characters"):
-            unit.characters.set(characters[:10])
-
-        self.stdout.write(self.style.SUCCESS("Unit OK."))
-
-        # 4. Lesson
+        # 5. Leçon
         lesson_defaults = clean_defaults(Lesson, {
             "unit": unit,
             "title_fr": "Écouter et reconnaître",
@@ -158,17 +231,19 @@ class Command(BaseCommand):
             "available_offline": True,
         })
 
-        lesson, created = Lesson.objects.get_or_create(
-            slug="ecouter-et-reconnaitre",
-            defaults=lesson_defaults,
-        )
+        lesson = Lesson.objects.filter(slug="ecouter-et-reconnaitre").first()
+        if not lesson:
+            if not dry_run:
+                lesson = Lesson.objects.create(slug="ecouter-et-reconnaitre", **lesson_defaults)
+            else:
+                lesson = Lesson(slug="ecouter-et-reconnaitre", **lesson_defaults)
+            stats['lessons_created'] += 1
+        else:
+            lesson, changed = set_existing_attrs(lesson, lesson_defaults, dry_run=dry_run)
+            if changed:
+                stats['lessons_updated'] += 1
 
-        if not created:
-            set_existing_attrs(lesson, lesson_defaults)
-
-        self.stdout.write(self.style.SUCCESS("Lesson OK."))
-
-        # 5. Lesson items
+        # 6. Éléments de leçon
         for index, character in enumerate(characters[:10], start=1):
             item_defaults = clean_defaults(LessonItem, {
                 "lesson": lesson,
@@ -187,18 +262,20 @@ class Command(BaseCommand):
                 "available_offline": True,
             })
 
-            item, created = LessonItem.objects.get_or_create(
-                lesson=lesson,
-                character=character,
-                defaults=item_defaults,
-            )
+            item = None
+            if lesson.pk and character.pk:
+                item = LessonItem.objects.filter(lesson=lesson, character=character).first()
 
-            if not created:
-                set_existing_attrs(item, item_defaults)
+            if not item:
+                if not dry_run and lesson.pk and character.pk:
+                    LessonItem.objects.create(**item_defaults)
+                stats['lesson_items_created'] += 1
+            else:
+                item, changed = set_existing_attrs(item, item_defaults, dry_run=dry_run)
+                if changed:
+                    stats['lesson_items_updated'] += 1
 
-        self.stdout.write(self.style.SUCCESS("Lesson items OK."))
-
-        # 6. Quiz questions + options
+        # 7. Questions et options de quiz
         for index, character in enumerate(characters[:5], start=1):
             question_defaults = clean_defaults(QuizQuestion, {
                 "unit": unit,
@@ -221,16 +298,25 @@ class Command(BaseCommand):
                 "available_offline": True,
             })
 
-            question, created = QuizQuestion.objects.get_or_create(
-                unit=unit,
-                lesson=lesson,
-                character=character,
-                question_type="audio_to_character",
-                defaults=question_defaults,
-            )
+            question = None
+            if unit.pk and lesson.pk and character.pk:
+                question = QuizQuestion.objects.filter(
+                    unit=unit,
+                    lesson=lesson,
+                    character=character,
+                    question_type="audio_to_character",
+                ).first()
 
-            if not created:
-                set_existing_attrs(question, question_defaults)
+            if not question:
+                if not dry_run and unit.pk and lesson.pk and character.pk:
+                    question = QuizQuestion.objects.create(**question_defaults)
+                else:
+                    question = QuizQuestion(**question_defaults)
+                stats['quiz_questions_created'] += 1
+            else:
+                question, changed = set_existing_attrs(question, question_defaults, dry_run=dry_run)
+                if changed:
+                    stats['quiz_questions_updated'] += 1
 
             option_chars = characters[index - 1:index + 3]
             while len(option_chars) < 4:
@@ -243,19 +329,39 @@ class Command(BaseCommand):
                     "text_fr": option_character.symbol,
                     "text_en": option_character.symbol,
                     "text_ar": option_character.symbol,
-                    "is_correct": option_character.id == character.id,
+                    "is_correct": option_character.id == character.id if (option_character.id and character.id) else False,
                     "order": option_index,
                     "order_index": option_index,
                 })
 
-                option, created = QuizOption.objects.get_or_create(
-                    question=question,
-                    character=option_character,
-                    defaults=option_defaults,
-                )
+                option = None
+                if question.pk and option_character.pk:
+                    option = QuizOption.objects.filter(
+                        question=question,
+                        character=option_character,
+                    ).first()
 
-                if not created:
-                    set_existing_attrs(option, option_defaults)
+                if not option:
+                    if not dry_run and question.pk and option_character.pk:
+                        QuizOption.objects.create(**option_defaults)
+                    stats['quiz_options_created'] += 1
+                else:
+                    option, changed = set_existing_attrs(option, option_defaults, dry_run=dry_run)
+                    if changed:
+                        stats['quiz_options_updated'] += 1
 
-        self.stdout.write(self.style.SUCCESS("Quiz OK."))
-        self.stdout.write(self.style.SUCCESS("Initial content seed completed."))
+        # Rapport d'exécution
+        self.stdout.write("----------------------------------------")
+        self.stdout.write(f"Caractères créés : {stats['characters_created']} | mis à jour : {stats['characters_updated']}")
+        self.stdout.write(f"Thèmes créés : {stats['themes_created']} | mis à jour : {stats['themes_updated']}")
+        self.stdout.write(f"Unités créées : {stats['units_created']} | mis à jour : {stats['units_updated']}")
+        self.stdout.write(f"Leçons créées : {stats['lessons_created']} | mis à jour : {stats['lessons_updated']}")
+        self.stdout.write(f"Éléments créés : {stats['lesson_items_created']} | mis à jour : {stats['lesson_items_updated']}")
+        self.stdout.write(f"Questions quiz créées : {stats['quiz_questions_created']} | mises à jour : {stats['quiz_questions_updated']}")
+        self.stdout.write(f"Options quiz créées : {stats['quiz_options_created']} | mises à jour : {stats['quiz_options_updated']}")
+        self.stdout.write("----------------------------------------")
+
+        if dry_run:
+            self.stdout.write(self.style.SUCCESS("Simulation seed_initial_content terminée avec succès (aucune écriture en base)."))
+        else:
+            self.stdout.write(self.style.SUCCESS("Initialisation du contenu terminée avec succès sans suppression destructive."))

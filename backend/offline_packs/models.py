@@ -114,11 +114,7 @@ class LessonPack(models.Model):
         null=True,
     )
 
-    manifest = models.JSONField(
-        default=dict,
-        blank=True,
-    )
-
+    manifest = models.JSONField(default=dict, blank=True)
     checksum = models.CharField(max_length=128, blank=True)
     size_mb = models.FloatField(default=0)
     items_count = models.PositiveIntegerField(default=0)
@@ -150,22 +146,34 @@ class LessonPack(models.Model):
         return f'{self.slug}_v{self.version}.zip'
 
     def update_file_metadata(self):
-        if not self.file:
+        """
+        Calcule la taille et le SHA-256 en flux via l'API Storage (A04).
+        Fonctionne avec stockage local (FileSystemStorage) et distant (S3 / R2).
+        """
+        if not self.file or not getattr(self.file, 'name', None):
             return
 
-        file_path = self.file.path
-
-        if not os.path.exists(file_path):
-            return
-
-        size_bytes = os.path.getsize(file_path)
-        self.size_mb = round(size_bytes / (1024 * 1024), 2)
-
+        storage = self.file.storage
         sha256 = hashlib.sha256()
+        total_size = 0
 
-        with open(file_path, 'rb') as opened_file:
-            for chunk in iter(lambda: opened_file.read(8192), b''):
-                sha256.update(chunk)
+        try:
+            total_size = storage.size(self.file.name)
+        except Exception:
+            total_size = 0
 
+        try:
+            with storage.open(self.file.name, 'rb') as opened_file:
+                bytes_read = 0
+                for chunk in iter(lambda: opened_file.read(65536), b''):
+                    sha256.update(chunk)
+                    bytes_read += len(chunk)
+
+                if total_size <= 0:
+                    total_size = bytes_read
+        except Exception:
+            return
+
+        self.size_mb = round(total_size / (1024 * 1024), 2)
         self.checksum = sha256.hexdigest()
         self.generated_at = timezone.now()

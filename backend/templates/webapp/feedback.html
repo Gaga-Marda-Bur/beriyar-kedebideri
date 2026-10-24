@@ -44,6 +44,12 @@
 
         <form method="post" class="feedback-form">
           {% csrf_token %}
+          {% if form.errors %}
+            <div role="alert" class="message error">
+              {% for field in form %}{% for error in field.errors %}<p>{{ error }}</p>{% endfor %}{% endfor %}
+              {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+          {% endif %}
 
           <label for="feedback_type">
             {% if current_lang == "ar" %}
@@ -56,7 +62,7 @@
         </label>
           <select id="feedback_type" name="feedback_type">
             {% for value, label in feedback_types %}
-                <option value="{{ value }}">
+                <option value="{{ value }}" {% if form.feedback_type.value == value %}selected{% endif %}>
                     {{ value|i18n_feedback_type:current_lang }}
                 </option>
             {% endfor %}
@@ -75,6 +81,8 @@
             id="title"
             name="title"
             type="text"
+            maxlength="255"
+            value="{{ form.title.value|default_if_none:'' }}"
             placeholder="{% if current_lang == 'ar' %}
               مثال: مشكلة في الصوت ضمن الأبجدية
               {% elif current_lang == 'en' %}
@@ -94,12 +102,14 @@
             {% endif %}
         </label>
           <textarea
+              id="message"
               name="message"
+              maxlength="5000"
               class="beriya-input"
               data-beriya-keyboard="true"
               rows="6"
               placeholder="{% if current_lang == 'ar' %}اكتب رسالتك أو ملاحظتك هنا...{% elif current_lang == 'en' %}Write your message or feedback here...{% else %}Écris ton message ou ta remarque ici...{% endif %}"
-          ></textarea>
+          >{{ form.message.value|default_if_none:'' }}</textarea>
           <div class="beriya-keyboard-hint beriya-font">
               {% if current_lang == "ar" %}
                   يمكنك كتابة رسالة ببيريَا باستعمال لوحة المفاتيح 𖺠.

@@ -9,6 +9,13 @@ class UnitProgressLocalModel {
   final DateTime startedAt;
   final DateTime updatedAt;
   final DateTime? completedAt;
+  final int scoringVersion;
+  final int? lastSessionScore;
+  final int lessonsSeen;
+  final int charactersSeen;
+  final int wordsSeen;
+  final int quizzesAnswered;
+  final int correctAnswers;
 
   const UnitProgressLocalModel({
     required this.unitSlug,
@@ -21,6 +28,13 @@ class UnitProgressLocalModel {
     required this.startedAt,
     required this.updatedAt,
     required this.completedAt,
+    this.scoringVersion = 1,
+    this.lastSessionScore,
+    this.lessonsSeen = 0,
+    this.charactersSeen = 0,
+    this.wordsSeen = 0,
+    this.quizzesAnswered = 0,
+    this.correctAnswers = 0,
   });
 
   factory UnitProgressLocalModel.started({
@@ -55,6 +69,15 @@ class UnitProgressLocalModel {
       startedAt: _asDate(json['started_at']) ?? DateTime.now().toUtc(),
       updatedAt: _asDate(json['updated_at']) ?? DateTime.now().toUtc(),
       completedAt: _asDate(json['completed_at']),
+      scoringVersion: _asInt(json['scoring_version'] ?? 1),
+      lastSessionScore: json['last_session_score'] == null
+          ? null
+          : _asInt(json['last_session_score']),
+      lessonsSeen: _asInt(json['lessons_seen']),
+      charactersSeen: _asInt(json['characters_seen']),
+      wordsSeen: _asInt(json['words_seen']),
+      quizzesAnswered: _asInt(json['quizzes_answered']),
+      correctAnswers: _asInt(json['correct_answers']),
     );
   }
 
@@ -70,6 +93,13 @@ class UnitProgressLocalModel {
       'started_at': startedAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
       'completed_at': completedAt?.toIso8601String(),
+      'scoring_version': scoringVersion,
+      'last_session_score': lastSessionScore,
+      'lessons_seen': lessonsSeen,
+      'characters_seen': charactersSeen,
+      'words_seen': wordsSeen,
+      'quizzes_answered': quizzesAnswered,
+      'correct_answers': correctAnswers,
     };
   }
 
@@ -82,6 +112,13 @@ class UnitProgressLocalModel {
     String? lastStage,
     DateTime? updatedAt,
     DateTime? completedAt,
+    int? scoringVersion,
+    int? lastSessionScore,
+    int? lessonsSeen,
+    int? charactersSeen,
+    int? wordsSeen,
+    int? quizzesAnswered,
+    int? correctAnswers,
   }) {
     return UnitProgressLocalModel(
       unitSlug: unitSlug,
@@ -94,6 +131,13 @@ class UnitProgressLocalModel {
       startedAt: startedAt,
       updatedAt: updatedAt ?? this.updatedAt,
       completedAt: completedAt ?? this.completedAt,
+      scoringVersion: scoringVersion ?? this.scoringVersion,
+      lastSessionScore: lastSessionScore ?? this.lastSessionScore,
+      lessonsSeen: lessonsSeen ?? this.lessonsSeen,
+      charactersSeen: charactersSeen ?? this.charactersSeen,
+      wordsSeen: wordsSeen ?? this.wordsSeen,
+      quizzesAnswered: quizzesAnswered ?? this.quizzesAnswered,
+      correctAnswers: correctAnswers ?? this.correctAnswers,
     );
   }
 

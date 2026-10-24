@@ -3,9 +3,8 @@ import '../../../core/api/api_client.dart';
 class FeedbackApiService {
   final ApiClient _apiClient;
 
-  FeedbackApiService({
-    ApiClient? apiClient,
-  }) : _apiClient = apiClient ?? ApiClient();
+  FeedbackApiService({ApiClient? apiClient})
+    : _apiClient = apiClient ?? ApiClient();
 
   Future<void> sendFeedback({
     required String feedbackType,
@@ -18,6 +17,7 @@ class FeedbackApiService {
   }) async {
     await _apiClient.postMap(
       '/feedback/create/',
+      headers: {'Accept-Language': languageCode},
       body: {
         'feedback_type': feedbackType,
         'title': title,

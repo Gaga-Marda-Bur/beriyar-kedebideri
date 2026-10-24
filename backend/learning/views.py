@@ -1,5 +1,6 @@
 from rest_framework import generics
 
+from core.permissions import is_staff_preview
 from .models import LearningTheme, LearningUnit
 from .serializers import LearningThemeSerializer, LearningUnitSerializer
 
@@ -16,11 +17,14 @@ class LearningThemeListAPIView(generics.ListAPIView):
             'units__words',
         )
 
+        is_staff = is_staff_preview(self.request)
         status_param = self.request.query_params.get('status')
         level = self.request.query_params.get('level')
         offline = self.request.query_params.get('offline')
 
-        if status_param:
+        if not is_staff:
+            queryset = queryset.filter(status='published')
+        elif status_param:
             queryset = queryset.filter(status=status_param)
 
         if level:
@@ -36,13 +40,16 @@ class LearningThemeDetailAPIView(generics.RetrieveAPIView):
     serializer_class = LearningThemeSerializer
 
     def get_queryset(self):
-        return LearningTheme.objects.filter(
+        queryset = LearningTheme.objects.filter(
             is_active=True,
         ).prefetch_related(
             'units',
             'units__characters',
             'units__words',
         )
+        if not is_staff_preview(self.request):
+            queryset = queryset.filter(status='published')
+        return queryset
 
 
 class LearningUnitListAPIView(generics.ListAPIView):
@@ -65,12 +72,15 @@ class LearningUnitListAPIView(generics.ListAPIView):
             'words__audio_links__audio_asset',
         )
 
+        is_staff = is_staff_preview(self.request)
         status_param = self.request.query_params.get('status')
         level = self.request.query_params.get('level')
         theme = self.request.query_params.get('theme')
         offline = self.request.query_params.get('offline')
 
-        if status_param:
+        if not is_staff:
+            queryset = queryset.filter(status='published')
+        elif status_param:
             queryset = queryset.filter(status=status_param)
 
         if level:
@@ -89,7 +99,7 @@ class LearningUnitDetailAPIView(generics.RetrieveAPIView):
     serializer_class = LearningUnitSerializer
 
     def get_queryset(self):
-        return LearningUnit.objects.filter(
+        queryset = LearningUnit.objects.filter(
             is_active=True,
         ).select_related(
             'theme',
@@ -104,24 +114,32 @@ class LearningUnitDetailAPIView(generics.RetrieveAPIView):
             'words__category',
             'words__audio_links__audio_asset',
         )
+        if not is_staff_preview(self.request):
+            queryset = queryset.filter(status='published')
+        return queryset
 
 
 class LearningUnitCoreFlowAPIView(generics.GenericAPIView):
     def get(self, request, pk, *args, **kwargs):
         from rest_framework.response import Response
+        base_qs = LearningUnit.objects.filter(is_active=True).prefetch_related(
+            'characters',
+            'distractor_characters',
+            'words',
+        ).select_related('target_word', 'theme')
+
+        if not is_staff_preview(request):
+            base_qs = base_qs.filter(status='published')
+
         unit = generics.get_object_or_404(
-            LearningUnit.objects.filter(is_active=True).prefetch_related(
-                'characters',
-                'distractor_characters',
-                'words',
-            ).select_related('target_word'),
+            base_qs,
             pk=pk,
         )
         flow = unit.generate_core_flow(request=request)
         return Response({
             'unit_id': unit.id,
             'unit_title': unit.title_fr,
-            'theme_title': unit.theme.title_fr,
+            'theme_title': unit.theme.title_fr if unit.theme else '',
             'total_steps': len(flow),
             'weights': {
                 'recognition': unit.weight_recognition,

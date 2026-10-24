@@ -3,6 +3,13 @@ from django import template
 register = template.Library()
 
 
+@register.filter
+def published_audio(obj, role="normal"):
+    """Use the exact role/publication/priority policy used by the API and packs."""
+    from audio_assets.utils import get_linked_audio_url
+    return get_linked_audio_url(obj, role) if obj is not None else None
+
+
 def _clean(value):
     if value is None:
         return ""

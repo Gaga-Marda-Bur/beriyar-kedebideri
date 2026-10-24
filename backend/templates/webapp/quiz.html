@@ -72,10 +72,10 @@
 
             <h2>{{ quiz|i18n_prompt:current_lang }}</h2>
 
-            {% for audio_link in quiz.audio_links.all %}
-              {% if audio_link.role == "question" and audio_link.is_primary and audio_link.audio_asset.file %}
+            {% with audio_url=quiz|published_audio:"question" %}
+              {% if audio_url %}
                 <audio controls preload="none" class="quiz-audio">
-                  <source src="{{ audio_link.audio_asset.file.url }}">
+                  <source src="{{ audio_url }}">
                   {% if current_lang == "ar" %}
                     متصفحك لا يدعم تشغيل الصوت.
                   {% elif current_lang == "en" %}
@@ -85,7 +85,7 @@
                   {% endif %}
                 </audio>
               {% endif %}
-            {% endfor %}
+            {% endwith %}
 
             {% if quiz.question_image %}
               <img

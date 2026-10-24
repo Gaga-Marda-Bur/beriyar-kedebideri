@@ -1,3 +1,7 @@
 from django.urls import path
 
-urlpatterns = []
+from .views import HttpsProxyDiagnosticAPIView
+
+urlpatterns = [
+    path('diagnostics/https/', HttpsProxyDiagnosticAPIView.as_view(), name='core-https-diagnostic'),
+]

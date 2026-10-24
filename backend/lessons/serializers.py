@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from alphabet.serializers import CharacterSerializer
 from audio_assets.utils import build_file_url, get_linked_audio_url
+from core.permissions import is_staff_preview
 from vocabulary.serializers import WordSerializer
 from .models import Lesson, LessonItem
 
@@ -87,6 +88,18 @@ class LessonItemSerializer(serializers.ModelSerializer):
             role='explanation',
             request=self.context.get('request'),
         )
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        request = self.context.get('request')
+        if request is not None and not is_staff_preview(request):
+            if instance.character and instance.character.validation_status != 'published':
+                data['character'] = None
+                data['character_id'] = None
+            if instance.word and instance.word.validation_status != 'published':
+                data['word'] = None
+                data['word_id'] = None
+        return data
 
 
 class LessonSerializer(serializers.ModelSerializer):

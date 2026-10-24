@@ -37,8 +37,8 @@ class UnitProgressSyncService {
   UnitProgressSyncService({
     ApiClient? apiClient,
     DeviceIdService? deviceIdService,
-  })  : _apiClient = apiClient ?? ApiClient(),
-        _deviceIdService = deviceIdService ?? DeviceIdService();
+  }) : _apiClient = apiClient ?? ApiClient(),
+       _deviceIdService = deviceIdService ?? DeviceIdService();
 
   Future<UnitProgressSyncResult> syncProgressList(
     List<UnitProgressLocalModel> progressList,
@@ -53,20 +53,24 @@ class UnitProgressSyncService {
     }
 
     final deviceId = await _deviceIdService.getOrCreateDeviceId();
+    final deviceToken = await _deviceIdService.getOrCreateDeviceToken();
 
     final payload = {
       'items': progressList.map((progress) {
         return {
           'unit_slug': progress.unitSlug,
           'device_id': deviceId,
+          'device_token': deviceToken,
           'status': progress.status,
           'last_stage': progress.lastStage,
-          'lessons_seen': progress.lastStage == 'lessons' || progress.completed ? 1 : 0,
-          'characters_seen': progress.lastStage == 'characters' || progress.completed ? 1 : 0,
-          'words_seen': progress.lastStage == 'words' || progress.completed ? 1 : 0,
-          'quizzes_answered': progress.lastStage == 'quiz' || progress.completed ? 1 : 0,
-          'correct_answers': progress.completed ? 1 : 0,
+          'lessons_seen': progress.lessonsSeen,
+          'characters_seen': progress.charactersSeen,
+          'words_seen': progress.wordsSeen,
+          'quizzes_answered': progress.quizzesAnswered,
+          'correct_answers': progress.correctAnswers,
           'score_percent': progress.bestScorePercent,
+          'scoring_version': progress.scoringVersion,
+          'last_session_score': progress.lastSessionScore,
           'completed': progress.completed,
           'started_at': progress.startedAt.toIso8601String(),
           'updated_at': progress.updatedAt.toIso8601String(),
@@ -79,14 +83,13 @@ class UnitProgressSyncService {
     final response = await _apiClient.postMap(
       '/progress/unit-progress/sync/',
       body: payload,
+      headers: {'X-Device-Id': deviceId, 'X-Device-Token': deviceToken},
     );
 
     return UnitProgressSyncResult.fromJson(response);
   }
 
-  Future<UnitProgressSyncResult> syncOne(
-    UnitProgressLocalModel progress,
-  ) {
+  Future<UnitProgressSyncResult> syncOne(UnitProgressLocalModel progress) {
     return syncProgressList([progress]);
   }
 }

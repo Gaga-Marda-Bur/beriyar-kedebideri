@@ -4,6 +4,7 @@ __pycache__/
 *.pyo
 *.pyd
 *.sqlite3
+backend/*.sqlite3.bak*
 db.sqlite3
 
 # Virtual environments

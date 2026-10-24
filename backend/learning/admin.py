@@ -25,6 +25,7 @@ class LearningThemeAdmin(admin.ModelAdmin):
         'level',
         'order_index',
         'status',
+        'units_status_summary',
         'is_active',
         'available_offline',
     ]
@@ -54,6 +55,17 @@ class LearningThemeAdmin(admin.ModelAdmin):
 
     inlines = [LearningUnitInline]
 
+    @admin.display(description="Unités (Publiées / Total)")
+    def units_status_summary(self, obj):
+        from django.utils.html import format_html
+        total = obj.units.count()
+        published = obj.units.filter(status='published').count()
+        if total == 0:
+            return "0 unité"
+        if published == total:
+            return format_html('<span style="color: green; font-weight: bold;">{}/{} publiées</span>', published, total)
+        return format_html('<span style="color: #e67e22; font-weight: bold;">{}/{} publiées</span>', published, total)
+
     fieldsets = (
         ('Identité', {
             'fields': (
@@ -77,9 +89,10 @@ class LearningThemeAdmin(admin.ModelAdmin):
                 'cover_image',
             ),
         }),
-        ('Publication', {
+        ('Publication & Dépendances', {
             'fields': (
                 'status',
+                'dependency_status_details',
                 'is_active',
                 'available_offline',
             ),
@@ -99,11 +112,11 @@ class LearningUnitAdmin(admin.ModelAdmin):
         'title_fr',
         'theme',
         'target_word',
-        'slug',
+        'status',
+        'dependency_status_badge',
         'level',
         'estimated_minutes',
         'order_index',
-        'status',
         'is_active',
         'available_offline',
     ]
@@ -140,6 +153,7 @@ class LearningUnitAdmin(admin.ModelAdmin):
     ]
 
     readonly_fields = [
+        'dependency_status_details',
         'created_at',
         'updated_at',
         'core_flow_preview',
@@ -257,3 +271,62 @@ class LearningUnitAdmin(admin.ModelAdmin):
         return format_html(html)
 
     core_flow_preview.short_description = "Aperçu dynamique du flux (Learning Core)"
+    @admin.display(description="Dépendances")
+    def dependency_status_badge(self, obj):
+        from django.utils.html import format_html
+        warnings = self._get_dependency_warnings(obj)
+        if not warnings:
+            return format_html('<span style="color: green; font-weight: bold;">✓ Complètes</span>')
+        if obj.status == 'published':
+            return format_html(
+                '<span style="background: #e74c3c; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold;" title="{}">⚠️ Bloquantes ({})</span>',
+                "; ".join(warnings),
+                len(warnings),
+            )
+        return format_html(
+            '<span style="color: #e67e22; font-weight: bold;" title="{}">⚠️ Non publiées ({})</span>',
+            "; ".join(warnings),
+            len(warnings),
+        )
+
+    def _get_dependency_warnings(self, obj):
+        warnings = []
+        if obj.theme and obj.theme.status != 'published':
+            warnings.append(f"Thème '{obj.theme.title_fr}' non publié ({obj.theme.status})")
+        if obj.target_word and obj.target_word.validation_status != 'published':
+            warnings.append(f"Mot cible '{obj.target_word.beriya_text}' non validé ({obj.target_word.validation_status})")
+
+        unpub_chars = obj.characters.exclude(validation_status='published').count()
+        if unpub_chars > 0:
+            warnings.append(f"{unpub_chars} caractère(s) non validé(s)")
+
+        unpub_distractors = obj.distractor_characters.exclude(validation_status='published').count()
+        if unpub_distractors > 0:
+            warnings.append(f"{unpub_distractors} distracteur(s) non validé(s)")
+
+        unpub_words = obj.words.exclude(validation_status='published').count()
+        if unpub_words > 0:
+            warnings.append(f"{unpub_words} mot(s) d'accompagnement non validé(s)")
+
+        return warnings
+
+    @admin.display(description="Statut des dépendances éditoriales")
+    def dependency_status_details(self, obj):
+        from django.utils.html import format_html
+        if not obj.pk:
+            return "Enregistrez l'unité pour analyser les dépendances."
+        warnings = self._get_dependency_warnings(obj)
+        if not warnings:
+            return format_html('<div style="color: #27ae60; font-weight: bold;">✓ Toutes les dépendances (thème, caractères, mots) sont publiées et validées.</div>')
+        items = "".join(f"<li>{w}</li>" for w in warnings)
+        color = "#c0392b" if obj.status == 'published' else "#d35400"
+        return format_html(
+            '<div style="border-left: 4px solid {}; padding: 8px 12px; background: #fff8f8; color: {}; border-radius: 4px;">'
+            '<strong>Attention : Cette unité contient des dépendances non publiées / en révision :</strong>'
+            '<ul style="margin: 6px 0 6px 20px;">{}</ul>'
+            '<small style="color: #7f8c8d;">Règle A07 : Les dépendances non publiées restent masquées pour les utilisateurs publics tant qu’elles ne sont pas explicitement validées.</small>'
+            '</div>',
+            color,
+            color,
+            format_html(items),
+        )

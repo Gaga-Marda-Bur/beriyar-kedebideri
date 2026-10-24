@@ -1,5 +1,6 @@
 from rest_framework import generics
 
+from core.permissions import is_staff_preview
 from .models import LessonPack
 from .serializers import LessonPackSerializer
 
@@ -12,11 +13,14 @@ class LessonPackListAPIView(generics.ListAPIView):
             is_active=True,
         )
 
+        is_staff = is_staff_preview(self.request)
         status_param = self.request.query_params.get('status')
         level = self.request.query_params.get('level')
         featured = self.request.query_params.get('featured')
 
-        if status_param:
+        if not is_staff:
+            queryset = queryset.filter(status='published')
+        elif status_param:
             queryset = queryset.filter(status=status_param)
 
         if level:
@@ -37,4 +41,7 @@ class LessonPackDetailAPIView(generics.RetrieveAPIView):
     serializer_class = LessonPackSerializer
 
     def get_queryset(self):
-        return LessonPack.objects.filter(is_active=True)
+        queryset = LessonPack.objects.filter(is_active=True)
+        if not is_staff_preview(self.request):
+            queryset = queryset.filter(status='published')
+        return queryset

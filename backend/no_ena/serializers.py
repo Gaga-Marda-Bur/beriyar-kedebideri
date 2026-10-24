@@ -91,7 +91,7 @@ class NoEnaPublicationSerializer(serializers.ModelSerializer):
         )
 
     def get_audio_url(self, obj):
-        if obj.primary_audio_asset:
+        if obj.primary_audio_asset and obj.primary_audio_asset.validation_status == 'published':
             return build_file_url(
                 obj.primary_audio_asset.file,
                 request=self.context.get('request'),

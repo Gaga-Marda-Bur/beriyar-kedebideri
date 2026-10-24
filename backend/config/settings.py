@@ -4,18 +4,16 @@ from pathlib import Path
 import dj_database_url
 from decouple import config, Csv
 
+from .security import build_security_settings, build_feedback_rates
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config("SECRET_KEY", default='django-insecure-7m-!!_i5=!jsz09nusf)cmuosf_upsu%*-jh(!v#*=!kt)be3b')
-
-DEBUG = config("DEBUG", default=True, cast=bool)
-
-ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS",
-    default="beriyarkedebideri.com,www.beriyarkedebideri.com,127.0.0.1,localhost,10.0.2.2,0.0.0.0",
-    cast=Csv(),
-)
+# A14 : SECRET_KEY, DEBUG, ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS, proxy, HTTPS,
+# HSTS et cookies sont décidés en un seul endroit (config/security.py). En
+# production, un secret manquant ou une valeur dangereuse empêche le démarrage.
+_SECURITY = build_security_settings(lambda name: config(name, default=None))
+globals().update(_SECURITY)
 
 
 # Application definition
@@ -187,12 +185,6 @@ else:
 
 
 
-CSRF_TRUSTED_ORIGINS = config(
-    "CSRF_TRUSTED_ORIGINS",
-    default="https://beriyarkedebideri.com,https://www.beriyarkedebideri.com",
-    cast=Csv(),
-)
-
 CORS_ALLOWED_ORIGINS = config(
     "CORS_ALLOWED_ORIGINS",
     default="",
@@ -205,53 +197,32 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 50,
+    # A15 : identification du client derrière le proxy (voir config/security.py).
+    'NUM_PROXIES': NUM_PROXIES,
+    # A15 : limites appliquées uniquement aux vues qui déclarent ces portées.
+    'DEFAULT_THROTTLE_RATES': build_feedback_rates(lambda name: config(name, default=None)),
 }
 
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+# A15 : cache utilisé par les limites de fréquence. Par défaut, mémoire locale
+# (par processus). Une limite applicative ne remplace pas une protection
+# réseau/DDoS en périphérie (Render, Cloudflare).
+CACHES = {
 
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
-
-SECURE_SSL_REDIRECT = config(
-    "SECURE_SSL_REDIRECT",
-    default=False,
-    cast=bool,
-)
-SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", default=0, cast=int)
+    'feedback': {
+        'BACKEND': config('FEEDBACK_CACHE_BACKEND', default='django.core.cache.backends.locmem.LocMemCache'),
+        'LOCATION': config('FEEDBACK_CACHE_LOCATION', default='beriya-feedback'),
+    },
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'beriya-default',
+    }
+}
 
 ANDROID_APK_URL = config(
     "ANDROID_APK_URL",
     default="https://media.beriyarkedebideri.com/apk/beriyar-kedebideri-v1.apk",
 )
 
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
-
-SESSION_COOKIE_HTTPONLY = True
-CSRF_COOKIE_HTTPONLY = False
-
-SESSION_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_SAMESITE = "Lax"
-
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = "DENY"
-SECURE_REFERRER_POLICY = "same-origin"
-
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
-SECURE_SSL_REDIRECT = config(
-    "SECURE_SSL_REDIRECT",
-    default=not DEBUG,
-    cast=bool,
-)
-
-if not DEBUG:
-    SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-else:
-    SECURE_HSTS_SECONDS = 0
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
-    SECURE_HSTS_PRELOAD = False
+# Réglages HTTPS / HSTS / cookies : voir config/security.py (bloc unique A14).
 
 ADMIN_URL = config("ADMIN_URL", default="admin-bk-secure-2026-panel/")

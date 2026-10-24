@@ -69,7 +69,7 @@
                     </div>
                 {% endif %}
 
-                {% if publication.primary_audio_asset and publication.primary_audio_asset.file %}
+                {% if publication.primary_audio_asset and publication.primary_audio_asset.file and publication.primary_audio_asset.validation_status == 'published' %}
                     <button
                         type="button"
                         class="audio-button"
@@ -272,12 +272,4 @@
     </section>
 </main>
 
-<script>
-document.querySelectorAll('[data-audio]').forEach(function(button) {
-    button.addEventListener('click', function() {
-        const audio = new Audio(button.dataset.audio);
-        audio.play();
-    });
-});
-</script>
 {% endblock %}

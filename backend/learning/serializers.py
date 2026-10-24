@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from alphabet.serializers import CharacterSerializer
+from core.permissions import is_staff_preview
 from vocabulary.serializers import WordSerializer
 from .models import LearningTheme, LearningUnit
 
@@ -35,14 +36,22 @@ class LearningUnitCompactSerializer(serializers.ModelSerializer):
         ]
 
     def get_characters_count(self, obj):
-        return obj.characters.count()
+        request = self.context.get('request')
+        qs = obj.characters.filter(is_active=True)
+        if request is not None and not is_staff_preview(request):
+            qs = qs.filter(validation_status='published')
+        return qs.count()
 
     def get_words_count(self, obj):
-        return obj.words.count()
+        request = self.context.get('request')
+        qs = obj.words.filter(is_active=True)
+        if request is not None and not is_staff_preview(request):
+            qs = qs.filter(validation_status='published')
+        return qs.count()
 
 
 class LearningThemeSerializer(serializers.ModelSerializer):
-    units = LearningUnitCompactSerializer(many=True, read_only=True)
+    units = serializers.SerializerMethodField()
     units_count = serializers.SerializerMethodField()
 
     class Meta:
@@ -68,8 +77,23 @@ class LearningThemeSerializer(serializers.ModelSerializer):
             'updated_at',
         ]
 
+    def get_units(self, obj):
+        request = self.context.get('request')
+        qs = obj.units.filter(is_active=True)
+        if request is not None and not is_staff_preview(request):
+            qs = qs.filter(status='published')
+        return LearningUnitCompactSerializer(
+            qs.order_by('order_index', 'title_fr'),
+            many=True,
+            context=self.context,
+        ).data
+
     def get_units_count(self, obj):
-        return obj.units.count()
+        request = self.context.get('request')
+        qs = obj.units.filter(is_active=True)
+        if request is not None and not is_staff_preview(request):
+            qs = qs.filter(status='published')
+        return qs.count()
 
 
 class LearningUnitSerializer(serializers.ModelSerializer):
@@ -129,13 +153,48 @@ class LearningUnitSerializer(serializers.ModelSerializer):
         ]
 
     def get_character_ids(self, obj):
-        return list(obj.characters.values_list('id', flat=True))
+        request = self.context.get('request')
+        qs = obj.characters.filter(is_active=True)
+        if request is not None and not is_staff_preview(request):
+            qs = qs.filter(validation_status='published')
+        return list(qs.values_list('id', flat=True))
 
     def get_distractor_character_ids(self, obj):
-        return list(obj.distractor_characters.values_list('id', flat=True))
+        request = self.context.get('request')
+        qs = obj.distractor_characters.filter(is_active=True)
+        if request is not None and not is_staff_preview(request):
+            qs = qs.filter(validation_status='published')
+        return list(qs.values_list('id', flat=True))
 
     def get_word_ids(self, obj):
-        return list(obj.words.values_list('id', flat=True))
+        request = self.context.get('request')
+        qs = obj.words.filter(is_active=True)
+        if request is not None and not is_staff_preview(request):
+            qs = qs.filter(validation_status='published')
+        return list(qs.values_list('id', flat=True))
 
     def get_core_flow(self, obj):
         return obj.generate_core_flow(request=self.context.get('request'))
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        request = self.context.get('request')
+
+        # Filtrage strict pour les requêtes HTTP publiques : exclure tout élément non publié
+        if request is not None and not is_staff_preview(request):
+            if data.get('characters'):
+                data['characters'] = [
+                    c for c in data['characters'] if c.get('validation_status') == 'published'
+                ]
+            if data.get('distractor_characters'):
+                data['distractor_characters'] = [
+                    c for c in data['distractor_characters'] if c.get('validation_status') == 'published'
+                ]
+            if data.get('words'):
+                data['words'] = [
+                    w for w in data['words'] if w.get('validation_status') == 'published'
+                ]
+            if instance.target_word and instance.target_word.validation_status != 'published':
+                data['target_word'] = None
+
+        return data

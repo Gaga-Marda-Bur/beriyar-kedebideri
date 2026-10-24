@@ -19,6 +19,7 @@ class OfflinePackGenerator:
         self.pack = pack
         self.media_files = []
         self.items_count = 0
+        self.media_map = {}  # {source_identifier: relative_pack_path}
 
     def generate(self):
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -29,12 +30,14 @@ class OfflinePackGenerator:
             (pack_dir / 'audio').mkdir(exist_ok=True)
             (pack_dir / 'images').mkdir(exist_ok=True)
 
+            # Sérialisation des entités et copie des médias associés
             themes = self._serialize_themes()
-            units = self._serialize_units()
             characters = self._serialize_characters(pack_dir)
             words = self._serialize_words(pack_dir)
             lessons = self._serialize_lessons(pack_dir)
             quizzes = self._serialize_quizzes(pack_dir)
+            # Les unités sont sérialisées après afin de pouvoir réécrire les URLs de core_flow
+            units = self._serialize_units(pack_dir)
 
             self.items_count = (
                 len(themes)
@@ -100,6 +103,9 @@ class OfflinePackGenerator:
             return self.pack
 
     def _serialize_themes(self):
+        qs = self.pack.themes.filter(is_active=True)
+        if self.pack.status == 'published':
+            qs = qs.filter(status='published')
         return [
             {
                 'id': theme.id,
@@ -114,12 +120,37 @@ class OfflinePackGenerator:
                 'order_index': theme.order_index,
                 'status': theme.status,
             }
-            for theme in self.pack.themes.filter(is_active=True)
+            for theme in qs
         ]
 
-    def _serialize_units(self):
-        return [
-            {
+    def _serialize_units(self, pack_dir):
+        units_data = []
+        is_published = (self.pack.status == 'published')
+
+        units_qs = self.pack.units.filter(is_active=True).select_related('theme', 'target_word').prefetch_related(
+            'characters', 'distractor_characters', 'words'
+        )
+        if is_published:
+            units_qs = units_qs.filter(status='published')
+
+        for unit in units_qs:
+            # Embarquer et réécrire le core_flow (A06 & A07)
+            raw_flow = unit.generate_core_flow(only_published=is_published) or []
+            rewritten_flow = self._rewrite_and_embed_core_flow(pack_dir, unit, raw_flow)
+
+            chars = unit.characters.filter(is_active=True)
+            distractors = unit.distractor_characters.filter(is_active=True)
+            words = unit.words.filter(is_active=True)
+            target_word_id = unit.target_word_id
+
+            if is_published:
+                chars = chars.filter(validation_status='published')
+                distractors = distractors.filter(validation_status='published')
+                words = words.filter(validation_status='published')
+                if unit.target_word and unit.target_word.validation_status != 'published':
+                    target_word_id = None
+
+            units_data.append({
                 'id': unit.id,
                 'theme': unit.theme_id,
                 'theme_slug': unit.theme.slug,
@@ -131,30 +162,110 @@ class OfflinePackGenerator:
                 'description_en': unit.description_en,
                 'description_ar': unit.description_ar,
                 'level': unit.level,
-                'character_ids': list(unit.characters.values_list('id', flat=True)),
-                'distractor_character_ids': list(unit.distractor_characters.values_list('id', flat=True)),
-                'word_ids': list(unit.words.values_list('id', flat=True)),
-                'target_word_id': unit.target_word_id,
+                'character_ids': list(chars.values_list('id', flat=True)),
+                'distractor_character_ids': list(distractors.values_list('id', flat=True)),
+                'word_ids': list(words.values_list('id', flat=True)),
+                'target_word_id': target_word_id,
                 'weight_recognition': unit.weight_recognition,
                 'weight_tracing': unit.weight_tracing,
                 'weight_encoding': unit.weight_encoding,
                 'enable_tracing': unit.enable_tracing,
                 'pedagogy_config': unit.pedagogy_config or {},
-                'core_flow': unit.core_flow,
+                'core_flow': rewritten_flow,
                 'estimated_minutes': unit.estimated_minutes,
                 'min_score_to_pass': unit.min_score_to_pass,
                 'order_index': unit.order_index,
                 'status': unit.status,
-            }
-            for unit in self.pack.units.filter(is_active=True).select_related('theme', 'target_word').prefetch_related(
-                'characters', 'distractor_characters', 'words'
-            )
-        ]
+            })
+
+        return units_data
+
+    def _rewrite_and_embed_core_flow(self, pack_dir, unit, flow):
+        """
+        Parcourt récursivement chaque étape du core_flow, copie les médias
+        référencés et remplace leurs URL/chemins par les chemins relatifs locaux (A06).
+        """
+        rewritten = []
+
+        for step in flow:
+            step_copy = dict(step)
+
+            # Vérification et réécriture des champs audio potentiels
+            for audio_key in ['audio_url', 'letter_name_audio_url', 'audio']:
+                val = step_copy.get(audio_key)
+                if val:
+                    local_val = self._resolve_or_copy_flow_media(pack_dir, val, 'audio')
+                    if local_val:
+                        step_copy[audio_key] = local_val
+
+            # Vérification et réécriture des champs images
+            for img_key in ['image_url', 'image']:
+                val = step_copy.get(img_key)
+                if val:
+                    local_val = self._resolve_or_copy_flow_media(pack_dir, val, 'images')
+                    if local_val:
+                        step_copy[img_key] = local_val
+
+            rewritten.append(step_copy)
+
+        return rewritten
+
+    def _resolve_or_copy_flow_media(self, pack_dir, source_ref, folder_name):
+        """
+        Trouve le média correspondant dans les fichiers existants ou dans media_map.
+        Si non trouvé, le copie et retourne le chemin relatif dans le pack.
+        """
+        if not source_ref or not isinstance(source_ref, str):
+            return source_ref
+
+        # Nettoyage de la référence source
+        ref = source_ref.strip()
+
+        # Si c'est déjà un chemin relatif local du pack (ex: audio/character_1_normal.mp3)
+        if ref.startswith(f'{folder_name}/') and ref in self.media_files:
+            return ref
+
+        # Correspondance dans notre cache de médias déjà copiés
+        for src_key, rel_path in self.media_map.items():
+            if src_key in ref or ref.endswith(src_key):
+                return rel_path
+
+        # Si le chemin commence par /media/ ou media/
+        clean_name = ref
+        for prefix in ['http://', 'https://']:
+            if clean_name.startswith(prefix):
+                parts = clean_name.split('/media/', 1)
+                if len(parts) > 1:
+                    clean_name = parts[1]
+                break
+
+        if clean_name.startswith('/media/'):
+            clean_name = clean_name[len('/media/'):]
+        elif clean_name.startswith('media/'):
+            clean_name = clean_name[len('media/'):]
+
+        # Chercher dans MEDIA_ROOT si accessible localement
+        from django.conf import settings
+        from django.core.files.storage import default_storage
+
+        if default_storage.exists(clean_name):
+            try:
+                field_file = default_storage.open(clean_name)
+                stem = Path(clean_name).stem
+                prefix = f'flow_{stem}'
+                return self._copy_storage_file(pack_dir, default_storage, clean_name, folder_name, prefix)
+            except Exception:
+                pass
+
+        return source_ref
 
     def _serialize_characters(self, pack_dir):
         results = []
 
-        for character in self.pack.characters.filter(is_active=True).prefetch_related('audio_links__audio_asset'):
+        chars_qs = self.pack.characters.filter(is_active=True).prefetch_related('audio_links__audio_asset')
+        if self.pack.status == 'published':
+            chars_qs = chars_qs.filter(validation_status='published')
+        for character in chars_qs:
             audio_path = self._copy_audio(
                 pack_dir=pack_dir,
                 file_field=get_linked_audio_file(character, role='normal'),
@@ -178,6 +289,8 @@ class OfflinePackGenerator:
                 'latin_transcription': character.latin_transcription,
                 'arabic_transcription': character.arabic_transcription,
                 'character_type': character.character_type,
+                'phoneme_ipa': getattr(character, 'phoneme_ipa', ''),
+                'stroke_path_data': getattr(character, 'stroke_path_data', {}),
                 'order_index': character.order_index,
                 'description': character.description,
                 'audio': audio_path,
@@ -191,7 +304,10 @@ class OfflinePackGenerator:
     def _serialize_words(self, pack_dir):
         results = []
 
-        for word in self.pack.words.filter(is_active=True).select_related('category').prefetch_related('audio_links__audio_asset'):
+        words_qs = self.pack.words.filter(is_active=True).select_related('category').prefetch_related('audio_links__audio_asset')
+        if self.pack.status == 'published':
+            words_qs = words_qs.filter(validation_status='published')
+        for word in words_qs:
             audio_path = self._copy_audio(
                 pack_dir=pack_dir,
                 file_field=get_linked_audio_file(word, role='normal'),
@@ -243,69 +359,53 @@ class OfflinePackGenerator:
     def _serialize_lessons(self, pack_dir):
         results = []
 
-        for lesson in self.pack.lessons.filter(is_active=True).select_related('unit').prefetch_related(
+        lessons_qs = self.pack.lessons.filter(is_active=True)
+        if self.pack.status == 'published':
+            lessons_qs = lessons_qs.filter(status='published')
+        for lesson in lessons_qs.select_related('unit').prefetch_related(
             'items',
             'items__character',
             'items__word',
             'items__audio_links__audio_asset',
         ):
-            items = []
+            intro_audio_path = self._copy_audio(
+                pack_dir=pack_dir,
+                file_field=get_linked_audio_file(lesson, role='normal'),
+                prefix=f'lesson_{lesson.id}_intro',
+            )
 
-            for item in lesson.items.filter(is_active=True).order_by('order_index', 'id'):
-                audio_path = self._copy_audio(
+            cover_image_path = self._copy_image(
+                pack_dir=pack_dir,
+                file_field=lesson.cover_image,
+                prefix=f'lesson_{lesson.id}_cover',
+            )
+
+            items_payload = []
+
+            for item in lesson.items.filter(is_active=True).select_related('character', 'word').prefetch_related('audio_links__audio_asset'):
+                item_audio_path = self._copy_audio(
                     pack_dir=pack_dir,
                     file_field=get_linked_audio_file(item, role='normal'),
-                    prefix=f'lesson_item_{item.id}_normal',
-                )
-
-                slow_audio_path = self._copy_audio(
-                    pack_dir=pack_dir,
-                    file_field=get_linked_audio_file(item, role='slow'),
-                    prefix=f'lesson_item_{item.id}_slow',
-                )
-
-                prompt_audio_path = self._copy_audio(
-                    pack_dir=pack_dir,
-                    file_field=get_linked_audio_file(item, role='prompt'),
-                    prefix=f'lesson_item_{item.id}_prompt',
-                )
-
-                image_path = self._copy_image(
-                    pack_dir=pack_dir,
-                    file_field=item.image,
                     prefix=f'lesson_item_{item.id}',
                 )
 
-                items.append({
+                items_payload.append({
                     'id': item.id,
-                    'lesson': lesson.id,
                     'item_type': item.item_type,
+                    'order_index': item.order_index,
                     'character': item.character_id,
-                    'character_id': item.character_id,
+                    'character_symbol': item.character.symbol if item.character else '',
                     'word': item.word_id,
-                    'word_id': item.word_id,
-                    'title_fr': item.title_fr,
-                    'title_en': item.title_en,
-                    'title_ar': item.title_ar,
+                    'word_beriya_text': item.word.beriya_text if item.word else '',
                     'oral_prompt_fr': item.oral_prompt_fr,
                     'oral_prompt_en': item.oral_prompt_en,
                     'oral_prompt_ar': item.oral_prompt_ar,
                     'explanation_fr': item.explanation_fr,
                     'explanation_en': item.explanation_en,
                     'explanation_ar': item.explanation_ar,
-                    'writing_hint_fr': item.writing_hint_fr,
-                    'writing_hint_en': item.writing_hint_en,
-                    'writing_hint_ar': item.writing_hint_ar,
-                    'repeat_count': item.repeat_count,
-                    'image': image_path,
-                    'image_url': image_path,
-                    'audio': audio_path,
-                    'audio_url': audio_path,
-                    'slow_audio': slow_audio_path,
-                    'slow_audio_url': slow_audio_path,
-                    'prompt_audio': prompt_audio_path,
-                    'prompt_audio_url': prompt_audio_path,
-                    'order_index': item.order_index,
+                    'writing_hint': item.writing_hint,
+                    'audio': item_audio_path,
+                    'audio_url': item_audio_path,
                 })
 
             results.append({
@@ -316,17 +416,20 @@ class OfflinePackGenerator:
                 'title_fr': lesson.title_fr,
                 'title_en': lesson.title_en,
                 'title_ar': lesson.title_ar,
+                'short_description_fr': lesson.short_description_fr,
+                'short_description_en': lesson.short_description_en,
+                'short_description_ar': lesson.short_description_ar,
                 'description_fr': lesson.description_fr,
                 'description_en': lesson.description_en,
                 'description_ar': lesson.description_ar,
-                'oral_intro_fr': lesson.oral_intro_fr,
-                'oral_intro_en': lesson.oral_intro_en,
-                'oral_intro_ar': lesson.oral_intro_ar,
                 'level': lesson.level,
                 'order_index': lesson.order_index,
-                'estimated_minutes': lesson.estimated_minutes,
                 'status': lesson.status,
-                'items': items,
+                'cover_image': cover_image_path,
+                'cover_image_url': cover_image_path,
+                'intro_audio': intro_audio_path,
+                'intro_audio_url': intro_audio_path,
+                'items': items_payload,
             })
 
         return results
@@ -334,81 +437,33 @@ class OfflinePackGenerator:
     def _serialize_quizzes(self, pack_dir):
         results = []
 
-        for question in self.pack.quiz_questions.filter(is_active=True).select_related(
-            'unit',
-            'lesson',
-            'character',
-            'word',
-        ).prefetch_related(
-            'options',
-            'options__character',
-            'options__word',
-            'audio_links__audio_asset',
-        ):
-            question_audio_path = self._copy_audio(
+        quizzes_qs = self.pack.quiz_questions.filter(is_active=True)
+        if self.pack.status == 'published':
+            quizzes_qs = quizzes_qs.filter(status='published')
+        for question in quizzes_qs.select_related('unit', 'character', 'word').prefetch_related('options'):
+            prompt_audio_path = self._copy_audio(
                 pack_dir=pack_dir,
-                file_field=get_linked_audio_file(question, role='question'),
-                prefix=f'quiz_{question.id}_question',
+                file_field=get_linked_audio_file(question, role='normal'),
+                prefix=f'quiz_question_{question.id}',
             )
-
-            slow_audio_path = self._copy_audio(
-                pack_dir=pack_dir,
-                file_field=get_linked_audio_file(question, role='slow_question'),
-                prefix=f'quiz_{question.id}_slow',
-            )
-
-            explanation_audio_path = self._copy_audio(
-                pack_dir=pack_dir,
-                file_field=get_linked_audio_file(question, role='explanation'),
-                prefix=f'quiz_{question.id}_explanation',
-            )
-
-            image_path = self._copy_image(
-                pack_dir=pack_dir,
-                file_field=question.question_image,
-                prefix=f'quiz_{question.id}',
-            )
-
-            options = list(question.options.all())
-            correct_index = 0
 
             option_payload = []
 
-            for index, option in enumerate(options):
-                if option.is_correct:
-                    correct_index = index
-
-                option_image = self._copy_image(
-                    pack_dir=pack_dir,
-                    file_field=option.image,
-                    prefix=f'quiz_option_{option.id}',
-                )
-
-                fallback = ''
-                if option.text_fr:
-                    fallback = option.text_fr
-                elif option.character:
-                    fallback = option.character.symbol
-                elif option.word:
-                    fallback = option.word.beriya_text
-
+            for option in question.options.all().select_related('character', 'word'):
                 option_payload.append({
                     'id': option.id,
-                    'question': question.id,
-                    'text': fallback,
-                    'text_fr': option.text_fr,
-                    'text_en': option.text_en,
-                    'text_ar': option.text_ar,
-                    'text_fr_out': option.text_fr or fallback,
-                    'text_en_out': option.text_en or fallback,
-                    'text_ar_out': option.text_ar or fallback,
                     'character': option.character_id,
                     'character_symbol': option.character.symbol if option.character else '',
                     'word': option.word_id,
-                    'word_text': option.word.beriya_text if option.word else '',
-                    'image': option_image,
-                    'image_url': option_image,
+                    'word_beriya_text': option.word.beriya_text if option.word else '',
+                    'text_fr': option.text_fr,
+                    'text_en': option.text_en,
+                    'text_ar': option.text_ar,
+                    'is_correct': option.is_correct,
                     'order_index': option.order_index,
+                    'text_fr_out': option.text_fr or (option.character.symbol if option.character else '') or (option.word.beriya_text if option.word else ''),
+                    'text_en_out': option.text_en or (option.character.symbol if option.character else '') or (option.word.beriya_text if option.word else ''),
+                    'text_ar_out': option.text_ar or (option.character.symbol if option.character else '') or (option.word.beriya_text if option.word else ''),
                 })
 
             results.append({
@@ -416,51 +471,28 @@ class OfflinePackGenerator:
                 'unit': question.unit_id,
                 'unit_slug': question.unit.slug if question.unit else '',
                 'lesson': question.lesson_id,
-                'lesson_slug': question.lesson.slug if question.lesson else '',
                 'question_type': question.question_type,
                 'difficulty': question.difficulty,
-                'prompt_text': question.prompt_fr or question.prompt_en or question.prompt_ar,
-                'prompt_text_fr': question.prompt_fr,
-                'prompt_text_en': question.prompt_en,
-                'prompt_text_ar': question.prompt_ar,
-                'oral_prompt': question.oral_prompt_fr or question.oral_prompt_en or question.oral_prompt_ar,
+                'points': question.points,
+                'prompt_fr': question.prompt_fr,
+                'prompt_en': question.prompt_en,
+                'prompt_ar': question.prompt_ar,
                 'oral_prompt_fr': question.oral_prompt_fr,
                 'oral_prompt_en': question.oral_prompt_en,
                 'oral_prompt_ar': question.oral_prompt_ar,
+                'audio': prompt_audio_path,
+                'audio_url': prompt_audio_path,
                 'character': question.character_id,
                 'character_symbol': question.character.symbol if question.character else '',
                 'word': question.word_id,
-                'word_text': question.word.beriya_text if question.word else '',
-                'question_image': image_path,
-                'question_image_url': image_path,
-                'question_audio': question_audio_path,
-                'question_audio_url': question_audio_path,
-                'question_slow_audio': slow_audio_path,
-                'question_slow_audio_url': slow_audio_path,
-                'correct_text_answer': question.correct_text_answer,
-                'correct_index': correct_index,
-                'explanation': question.explanation_fr or question.explanation_en or question.explanation_ar,
-                'explanation_fr_out': question.explanation_fr,
-                'explanation_en_out': question.explanation_en,
-                'explanation_ar_out': question.explanation_ar,
-                'explanation_audio': explanation_audio_path,
-                'explanation_audio_url': explanation_audio_path,
+                'word_beriya_text': question.word.beriya_text if question.word else '',
+                'min_options_required': question.min_options_required,
                 'order_index': question.order_index,
-                'points': question.points,
                 'status': question.status,
                 'options': option_payload,
-                'options_text_fr': [
-                    option['text_fr_out']
-                    for option in option_payload
-                ],
-                'options_text_en': [
-                    option['text_en_out']
-                    for option in option_payload
-                ],
-                'options_text_ar': [
-                    option['text_ar_out']
-                    for option in option_payload
-                ],
+                'options_text_fr': [option['text_fr_out'] for option in option_payload],
+                'options_text_en': [option['text_en_out'] for option in option_payload],
+                'options_text_ar': [option['text_ar_out'] for option in option_payload],
             })
 
         return results
@@ -472,27 +504,58 @@ class OfflinePackGenerator:
         return self._copy_media(pack_dir, file_field, 'images', prefix)
 
     def _copy_media(self, pack_dir, file_field, folder_name, prefix):
-        if not file_field:
+        """
+        Copie sécurisée d'un média local ou distant (A04).
+        Utilise file_field.open() par blocs pour fonctionner sous FileSystemStorage et S3/R2.
+        """
+        if not file_field or not getattr(file_field, 'name', None):
             return None
 
-        try:
-            source_path = file_field.path
-        except (ValueError, NotImplementedError):
-            return None
-
-        if not os.path.exists(source_path):
-            return None
-
-        extension = Path(source_path).suffix
+        name = file_field.name
+        extension = Path(name).suffix or ('.mp3' if folder_name == 'audio' else '.jpg')
         filename = f'{prefix}{extension}'
         relative_path = f'{folder_name}/{filename}'
         destination_path = pack_dir / relative_path
 
-        shutil.copy2(source_path, destination_path)
+        try:
+            # Ouverture en flux via le storage du FieldFile
+            with file_field.open('rb') as src_file:
+                with open(destination_path, 'wb') as dst_file:
+                    for chunk in iter(lambda: src_file.read(65536), b''):
+                        dst_file.write(chunk)
+        except Exception:
+            return None
 
         if relative_path not in self.media_files:
             self.media_files.append(relative_path)
 
+        self.media_map[name] = relative_path
+        if hasattr(file_field, 'url'):
+            try:
+                self.media_map[file_field.url] = relative_path
+            except Exception:
+                pass
+
+        return relative_path
+
+    def _copy_storage_file(self, pack_dir, storage, storage_name, folder_name, prefix):
+        extension = Path(storage_name).suffix or ('.mp3' if folder_name == 'audio' else '.jpg')
+        filename = f'{prefix}{extension}'
+        relative_path = f'{folder_name}/{filename}'
+        destination_path = pack_dir / relative_path
+
+        try:
+            with storage.open(storage_name, 'rb') as src_file:
+                with open(destination_path, 'wb') as dst_file:
+                    for chunk in iter(lambda: src_file.read(65536), b''):
+                        dst_file.write(chunk)
+        except Exception:
+            return None
+
+        if relative_path not in self.media_files:
+            self.media_files.append(relative_path)
+
+        self.media_map[storage_name] = relative_path
         return relative_path
 
     def _write_json(self, path, data):

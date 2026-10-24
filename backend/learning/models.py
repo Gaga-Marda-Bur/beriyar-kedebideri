@@ -208,7 +208,7 @@ class LearningUnit(models.Model):
     def core_flow(self):
         return self.generate_core_flow()
 
-    def generate_core_flow(self, request=None):
+    def generate_core_flow(self, request=None, only_published=None):
         """
         Génère dynamiquement la séquence complète des micro-étapes d'alphabétisation
         active (Learning Core) pour cette unité :
@@ -221,12 +221,28 @@ class LearningUnit(models.Model):
         6. Encodage au clavier restreint (saisie autonome)
         7. Bilan & célébration (score calculé selon pondérations configurées)
         """
+        from core.permissions import is_staff_preview
         from audio_assets.utils import build_file_url, get_linked_audio_url
 
+        if only_published is None:
+            if request is not None:
+                only_published = not is_staff_preview(request)
+            else:
+                only_published = False
+
         steps = []
-        chars = list(self.characters.all().order_by('order_index', 'id'))
-        distractors = list(self.distractor_characters.all().order_by('order_index', 'id'))
-        target_w = self.target_word or self.words.first()
+        if only_published:
+            chars = list(self.characters.filter(is_active=True, validation_status='published').order_by('order_index', 'id'))
+            distractors = list(self.distractor_characters.filter(is_active=True, validation_status='published').order_by('order_index', 'id'))
+            target_w = self.target_word
+            if target_w and (not target_w.is_active or target_w.validation_status != 'published'):
+                target_w = None
+            if not target_w:
+                target_w = self.words.filter(is_active=True, validation_status='published').first()
+        else:
+            chars = list(self.characters.filter(is_active=True).order_by('order_index', 'id'))
+            distractors = list(self.distractor_characters.filter(is_active=True).order_by('order_index', 'id'))
+            target_w = self.target_word or self.words.filter(is_active=True).first()
 
         # Phase par caractère introduit
         for idx, char in enumerate(chars):

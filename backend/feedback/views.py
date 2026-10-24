@@ -1,13 +1,38 @@
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
+from rest_framework.exceptions import Throttled, APIException, ParseError
 
 from .models import FeedbackReport
-from .serializers import FeedbackReportSerializer
+from .serializers import FeedbackReportSerializer, FeedbackReportCreateSerializer
+from .throttles import API_THROTTLES
+from .validation import message, humanize_wait
+
+
+class FeedbackRequestTooLarge(APIException):
+    status_code = 413
+    default_detail = 'Feedback request exceeds 3 MB.'
+
 
 
 class FeedbackReportCreateAPIView(generics.CreateAPIView):
-    serializer_class = FeedbackReportSerializer
+    serializer_class = FeedbackReportCreateSerializer
     permission_classes = [permissions.AllowAny]
+    throttle_classes = API_THROTTLES
+
+    def initial(self, request, *args, **kwargs):
+        length = request.META.get('CONTENT_LENGTH')
+        if length:
+            try:
+                if int(length) > 3 * 1024 * 1024:
+                    raise FeedbackRequestTooLarge()
+            except ValueError as error:
+                raise ParseError('Invalid request length.') from error
+        return super().initial(request, *args, **kwargs)
+
+    def throttled(self, request, wait):
+        lang = request.META.get('HTTP_ACCEPT_LANGUAGE', 'en')[:2].lower()
+        raise Throttled(wait=wait, detail=message('throttled', lang,
+            wait=humanize_wait(wait, lang)))
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(

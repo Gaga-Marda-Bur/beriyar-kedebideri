@@ -1,4 +1,5 @@
 {% extends "webapp/base.html" %}
+{% load web_i18n %}
 
 {% block title %}
     {% if current_lang == "ar" %}
@@ -88,6 +89,18 @@
                     {% endif %}
                 </span>
             </div>
+
+            <div style="margin-top: 24px;">
+                <a href="{% url 'web-quiz' %}?unit={{ unit.slug }}" class="btn btn-primary">
+                    {% if current_lang == "ar" %}
+                        بدء التدرّب على هذه الوحدة
+                    {% elif current_lang == "en" %}
+                        Practice this unit
+                    {% else %}
+                        S’entraîner sur cette unité
+                    {% endif %}
+                </a>
+            </div>
         </div>
     </section>
 
@@ -112,9 +125,11 @@
                                     {{ character.symbol }}
                                 </div>
 
-                                <div class="character-code">
-                                    {{ character.unicode_code }}
-                                </div>
+                                {% if character.name %}
+                                    <div class="character-transcription" style="font-weight: 700; color: var(--brand-white);">
+                                        {{ character.name }}
+                                    </div>
+                                {% endif %}
 
                                 {% if character.latin_transcription %}
                                     <div class="character-transcription">
@@ -123,10 +138,28 @@
                                 {% endif %}
 
                                 {% if character.arabic_transcription %}
-                                    <div class="character-code">
+                                    <div class="character-transcription">
                                         {{ character.arabic_transcription }}
                                     </div>
                                 {% endif %}
+
+                                {% with audio_url=character|published_audio:"normal" %}
+                                    {% if audio_url %}
+                                        <button
+                                            type="button"
+                                            class="audio-button"
+                                            data-audio="{{ audio_url }}"
+                                            aria-label="{% if current_lang == 'ar' %}استمع إلى الحرف {{ character.name|default:character.symbol }}{% elif current_lang == 'en' %}Listen to character {{ character.name|default:character.symbol }}{% else %}Écouter le caractère {{ character.name|default:character.symbol }}{% endif %}"
+                                            style="margin-top: 8px; min-height: 40px; padding: 6px 12px;"
+                                        >
+                                            {% if current_lang == "ar" %}استمع{% elif current_lang == "en" %}Listen{% else %}Écouter{% endif %}
+                                        </button>
+                                    {% endif %}
+                                {% endwith %}
+
+                                <div class="character-code" style="margin-top: 8px; font-size: 11px; opacity: 0.65;" title="Code Unicode">
+                                    {{ character.unicode_code }}
+                                </div>
                             </div>
                         {% empty %}
                             <div class="empty-state glass">
@@ -199,12 +232,12 @@
                                                 {% endif %}
                                             </div>
 
-                                            {% with link=item.audio_links.first %}
-                                                {% if link and link.audio_asset.file %}
+                                            {% with audio_url=item|published_audio:"normal" %}
+                                                {% if audio_url %}
                                                     <button
                                                         type="button"
                                                         class="audio-button"
-                                                        data-audio="{{ link.audio_asset.file.url }}"
+                                                        data-audio="{{ audio_url }}"
                                                     >
                                                         {% if current_lang == "ar" %}
                                                             استمع
@@ -349,12 +382,4 @@
     </section>
 </main>
 
-<script>
-document.querySelectorAll('[data-audio]').forEach(function(button) {
-    button.addEventListener('click', function() {
-        const audio = new Audio(button.dataset.audio);
-        audio.play();
-    });
-});
-</script>
 {% endblock %}

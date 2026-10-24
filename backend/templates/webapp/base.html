@@ -108,7 +108,14 @@
                     </a>
                 </div>
 
-                <button type="button" class="btn btn-secondary mobile-menu-button" id="mobileMenuButton">
+                <button
+                    type="button"
+                    class="btn btn-secondary mobile-menu-button"
+                    id="mobileMenuButton"
+                    aria-expanded="false"
+                    aria-controls="mobileMenu"
+                    aria-label="{% if current_lang == 'ar' %}فتح أو إغلاق القائمة{% elif current_lang == 'en' %}Toggle navigation menu{% else %}Ouvrir ou fermer le menu de navigation{% endif %}"
+                >
                     {% if current_lang == "ar" %}القائمة{% elif current_lang == "en" %}Menu{% else %}Menu{% endif %}
                 </button>
             </div>
@@ -266,14 +273,35 @@
         const mobileMenu = document.getElementById("mobileMenu");
 
         if (mobileMenuButton && mobileMenu) {
+            function setMenuState(open) {
+                mobileMenu.classList.toggle("is-open", open);
+                mobileMenuButton.setAttribute("aria-expanded", open ? "true" : "false");
+            }
+
             mobileMenuButton.addEventListener("click", function () {
-                mobileMenu.classList.toggle("is-open");
+                const isOpen = mobileMenu.classList.contains("is-open");
+                setMenuState(!isOpen);
             });
 
             mobileMenu.querySelectorAll("a").forEach(function (link) {
                 link.addEventListener("click", function () {
-                    mobileMenu.classList.remove("is-open");
+                    setMenuState(false);
                 });
+            });
+
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Escape" && mobileMenu.classList.contains("is-open")) {
+                    setMenuState(false);
+                    mobileMenuButton.focus();
+                }
+            });
+
+            document.addEventListener("click", function (e) {
+                if (mobileMenu.classList.contains("is-open") &&
+                    !mobileMenu.contains(e.target) &&
+                    !mobileMenuButton.contains(e.target)) {
+                    setMenuState(false);
+                }
             });
         }
     </script>
@@ -296,5 +324,6 @@
 
     <script src="{% static 'webapp/js/beriya_keyboard_data.js' %}?v=20261012" defer></script>
     <script src="{% static 'webapp/js/beriya_keyboard.js' %}?v=20261012" defer></script>
+    <script src="{% static 'webapp/js/audio_player.js' %}" defer></script>
 </body>
 </html>

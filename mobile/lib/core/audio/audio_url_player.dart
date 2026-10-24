@@ -1,66 +1,106 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../utils/app_logger.dart';
 
+enum AudioPlaybackStatus { idle, loading, playing, paused, failed }
+
 class AudioUrlPlayer {
-  final AudioPlayer _player = AudioPlayer();
+  static AudioUrlPlayer? _active;
+  final AudioPlayer _player;
+  final status = ValueNotifier(AudioPlaybackStatus.idle);
+  late final StreamSubscription<PlayerState> _subscription;
+  int _request = 0;
+  bool _disposed = false;
+
+  AudioUrlPlayer({AudioPlayer? player}) : _player = player ?? AudioPlayer() {
+    _subscription = _player.onPlayerStateChanged.listen(
+      (state) {
+        if (_disposed || status.value == AudioPlaybackStatus.loading) return;
+        status.value = switch (state) {
+          PlayerState.playing => AudioPlaybackStatus.playing,
+          PlayerState.paused => AudioPlaybackStatus.paused,
+          _ => AudioPlaybackStatus.idle,
+        };
+      },
+      onError: (Object error) {
+        if (!_disposed) status.value = AudioPlaybackStatus.failed;
+      },
+    );
+  }
 
   Future<void> playUrl(String? url) async {
-    if (url == null || url.trim().isEmpty) return;
-
+    if (_disposed) return;
+    if (url == null || url.trim().isEmpty) {
+      status.value = AudioPlaybackStatus.failed;
+      return;
+    }
+    final request = ++_request;
     final trimmed = url.trim();
-
+    status.value = AudioPlaybackStatus.loading;
     try {
+      if (_active != null && _active != this) await _active!.stop();
+      _active = this;
       await _player.stop();
-
+      if (_disposed || request != _request) return;
+      Source source;
       if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
-        await _player.play(UrlSource(trimmed));
-        return;
+        source = UrlSource(trimmed);
+      } else if (trimmed.startsWith('assets/')) {
+        source = AssetSource(trimmed.substring(7));
+      } else {
+        final file = File(trimmed);
+        if (!await file.exists()) {
+          throw const FileSystemException('Audio file unavailable');
+        }
+        source = DeviceFileSource(file.path);
       }
-
-      if (trimmed.startsWith('assets/')) {
-        // audioplayers AssetSource expects relative to assets/ directory
-        final assetRel = trimmed.substring(7);
-        await _player.play(AssetSource(assetRel));
-        return;
+      if (_disposed || request != _request) return;
+      await _player.play(source);
+      if (!_disposed && request == _request) {
+        status.value = AudioPlaybackStatus.playing;
       }
-
-      final file = File(trimmed);
-      if (await file.exists()) {
-        await _player.play(DeviceFileSource(file.path));
-        return;
+    } catch (error, stack) {
+      if (!_disposed && request == _request) {
+        status.value = AudioPlaybackStatus.failed;
       }
-
-      // Fallback
-      await _player.play(DeviceFileSource(trimmed));
-    } catch (e, st) {
-      AppLogger.error('AudioUrlPlayer.playUrl failed for: $trimmed', error: e, stackTrace: st);
+      AppLogger.error('Audio playback failed', error: error, stackTrace: stack);
     }
   }
 
-  Future<void> playLocalPath(String? path) async {
-    if (path == null || path.trim().isEmpty) return;
+  Future<void> playLocalPath(String? path) => playUrl(path);
 
+  Future<void> pause() async {
+    ++_request;
+    if (_disposed) return;
     try {
-      final file = File(path.trim());
-      if (!await file.exists()) return;
-
-      await _player.stop();
-      await _player.play(DeviceFileSource(file.path));
-    } catch (e, st) {
-      AppLogger.error('AudioUrlPlayer.playLocalPath failed for: $path', error: e, stackTrace: st);
+      await _player.pause();
+      if (!_disposed) status.value = AudioPlaybackStatus.paused;
+    } catch (_) {
+      if (!_disposed) status.value = AudioPlaybackStatus.failed;
     }
   }
 
   Future<void> stop() async {
+    ++_request;
+    if (_disposed) return;
     try {
       await _player.stop();
     } catch (_) {}
+    if (!_disposed) status.value = AudioPlaybackStatus.idle;
+    if (_active == this) _active = null;
   }
 
   Future<void> dispose() async {
+    if (_disposed) return;
+    _disposed = true;
+    ++_request;
+    if (_active == this) _active = null;
+    await _subscription.cancel();
     try {
       await _player.dispose();
     } catch (_) {}
+    status.dispose();
   }
 }

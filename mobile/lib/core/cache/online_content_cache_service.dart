@@ -19,14 +19,12 @@ class OnlineContentCacheService {
         'items': items,
       }),
     );
-  AppLogger.debug('CACHE SAVE [$key]: ${items.length} items');
+    AppLogger.debug('CACHE SAVE [$key]: ${items.length} items');
   }
 
-  Future<List<Map<String, dynamic>>> readList({
-    required String key,
-  }) async {
+  Future<List<Map<String, dynamic>>> readList({required String key}) async {
     final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(key);
+    final raw = prefs.getString('$_prefix$key');
 
     if (raw == null || raw.isEmpty) {
       AppLogger.debug('CACHE READ [$key]: empty');
@@ -47,18 +45,18 @@ class OnlineContentCacheService {
 
   List<Map<String, dynamic>> _decodeJsonList(String raw) {
     final decoded = jsonDecode(raw);
+    // Preserve both the current envelope and caches stored as a raw list.
+    final items = decoded is Map ? decoded['items'] : decoded;
 
-    if (decoded is! List) return [];
+    if (items is! List) return [];
 
-    return decoded
+    return items
         .whereType<Map>()
         .map((item) => Map<String, dynamic>.from(item))
         .toList();
   }
 
-  Future<DateTime?> cachedAt({
-    required String key,
-  }) async {
+  Future<DateTime?> cachedAt({required String key}) async {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString('$_prefix$key');
 

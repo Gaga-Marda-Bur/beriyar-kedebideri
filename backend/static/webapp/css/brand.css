@@ -7,15 +7,69 @@
 }
 
 :root {
+    /* Couleurs de marque et surfaces (Lot 3) */
     --brand-green: #1B4D3E;
     --brand-night: #0F3227;
     --brand-gold: #D4AF37;
+    --brand-gold-text: #061A14;
     --brand-dark: #061A14;
     --brand-white: #FFFFFF;
     --brand-muted: rgba(255, 255, 255, 0.72);
+    --brand-muted-extra: rgba(255, 255, 255, 0.85);
+
+    /* Rôles sémantiques de statut */
+    --status-success: #2E7D32;
+    --status-warning: #FFA000;
+    --status-error: #E53935;
+    --status-info: #1976D2;
+
+    /* Échelle d'espacements (4, 8, 12, 16, 24, 32, 48) */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 12px;
+    --space-lg: 16px;
+    --space-xl: 24px;
+    --space-2xl: 32px;
+    --space-3xl: 48px;
+
+    /* Rayons de bordure */
+    --radius-control: 12px;
+    --radius-card: 20px;
+    --radius-pill: 9999px;
+
+    /* Cibles tactiles d'accessibilité (WCAG 2.5.5) */
+    --min-touch-target: 48px;
+
+    /* Verre et ombres */
     --glass-bg: rgba(255, 255, 255, 0.10);
     --glass-border: rgba(212, 175, 55, 0.26);
     --shadow-gold: rgba(212, 175, 55, 0.22);
+    --focus-ring: 0 0 0 3px rgba(212, 175, 55, 0.65);
+}
+
+/* Accessibilité Lot 3 : Focus visible pour la navigation clavier */
+:focus-visible {
+    outline: 2px solid var(--brand-gold) !important;
+    outline-offset: 3px !important;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--brand-gold) !important;
+    outline-offset: 2px !important;
+}
+
+/* Respect des préférences de réduction de mouvement */
+@media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 * {

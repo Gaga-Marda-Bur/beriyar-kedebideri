@@ -1,5 +1,6 @@
 from rest_framework import generics
 
+from core.permissions import is_staff_preview
 from .models import Word, WordCategory
 from .serializers import WordCategorySerializer, WordSerializer
 
@@ -28,13 +29,16 @@ class WordListAPIView(generics.ListAPIView):
             'audio_links__audio_asset',
         )
 
+        is_staff = is_staff_preview(self.request)
         status_param = self.request.query_params.get('status')
         category = self.request.query_params.get('category')
         difficulty = self.request.query_params.get('difficulty')
         offline = self.request.query_params.get('offline')
         search = self.request.query_params.get('search')
 
-        if status_param:
+        if not is_staff:
+            queryset = queryset.filter(validation_status='published')
+        elif status_param:
             queryset = queryset.filter(validation_status=status_param)
 
         if category:
@@ -69,10 +73,13 @@ class WordDetailAPIView(generics.RetrieveAPIView):
     serializer_class = WordSerializer
 
     def get_queryset(self):
-        return Word.objects.filter(
+        queryset = Word.objects.filter(
             is_active=True,
         ).select_related(
             'category',
         ).prefetch_related(
             'audio_links__audio_asset',
         )
+        if not is_staff_preview(self.request):
+            queryset = queryset.filter(validation_status='published')
+        return queryset

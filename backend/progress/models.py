@@ -29,6 +29,14 @@ class UnitProgress(models.Model):
         help_text='Identifiant local stable pour utilisateur sans compte.',
     )
 
+    device_token = models.CharField(
+        max_length=128,
+        blank=True,
+        default='',
+        db_index=True,
+        help_text='Jeton d\'installation ou preuve de propriété de la progression locale.',
+    )
+
     unit = models.ForeignKey(
         LearningUnit,
         on_delete=models.CASCADE,
@@ -54,6 +62,8 @@ class UnitProgress(models.Model):
     correct_answers = models.PositiveIntegerField(default=0)
 
     best_score_percent = models.PositiveIntegerField(default=0)
+    scoring_version = models.PositiveSmallIntegerField(default=1)
+    last_session_score = models.PositiveSmallIntegerField(blank=True, null=True)
 
     completed = models.BooleanField(default=False)
 

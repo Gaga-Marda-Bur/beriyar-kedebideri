@@ -16,10 +16,7 @@ import '../../../core/cache/cached_content_service.dart';
 class UnitPracticeScreen extends StatefulWidget {
   final String unitSlug;
 
-  const UnitPracticeScreen({
-    super.key,
-    required this.unitSlug,
-  });
+  const UnitPracticeScreen({super.key, required this.unitSlug});
 
   @override
   State<UnitPracticeScreen> createState() => _UnitPracticeScreenState();
@@ -62,11 +59,7 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
     final quizzes = await _cachedContentService.loadQuizzes(
       unitSlug: widget.unitSlug,
     );
-    final data = _PracticeData(
-      unit: unit,
-      lessons: lessons,
-      quizzes: quizzes,
-    );
+    final data = _PracticeData(unit: unit, lessons: lessons, quizzes: quizzes);
 
     final totalSteps = _buildStepsCount();
     final progress = await _progressStorage.startOrGet(
@@ -154,8 +147,12 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
   }
 
   String _wordTranslation(dynamic word, String lang) {
-    if (lang == 'ar' && word.translationAr.isNotEmpty) return word.translationAr;
-    if (lang == 'en' && word.translationEn.isNotEmpty) return word.translationEn;
+    if (lang == 'ar' && word.translationAr.isNotEmpty) {
+      return word.translationAr;
+    }
+    if (lang == 'en' && word.translationEn.isNotEmpty) {
+      return word.translationEn;
+    }
     return word.translationFr.isNotEmpty
         ? word.translationFr
         : word.frenchTranslation;
@@ -167,9 +164,7 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
     final lang = Localizations.localeOf(context).languageCode;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loc.practice),
-      ),
+      appBar: AppBar(title: Text(loc.practice)),
       body: AppBackground(
         child: SafeArea(
           child: FutureBuilder<_PracticeData>(
@@ -178,9 +173,7 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return ListView(
                   padding: const EdgeInsets.all(20),
-                  children: [
-                    GlassCard(child: Text(loc.loading)),
-                  ],
+                  children: [GlassCard(child: Text(loc.loading))],
                 );
               }
 
@@ -230,7 +223,9 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
                               const SizedBox(height: 8),
                               Text(
                                 current.title,
-                                style: Theme.of(context).textTheme.headlineMedium,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.headlineMedium,
                               ),
                               if (current.subtitle.isNotEmpty) ...[
                                 const SizedBox(height: 8),
@@ -249,18 +244,22 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
                     isLast: _currentStep == totalSteps - 1,
                     previousLabel: loc.previous,
                     nextLabel: loc.next,
-                    finishLabel: loc.finishUnit,
-                   onPrevious: () {
+                    finishLabel: _localized(
+                      lang,
+                      'Terminer la consultation',
+                      'Finish review',
+                      'إنهاء المراجعة',
+                    ),
+                    onPrevious: () {
                       _previous();
                     },
                     onNext: () {
                       _next(totalSteps);
                     },
                     onFinish: () async {
-                      await _progressStorage.completeUnit(
-                        unitSlug: widget.unitSlug,
-                        totalSteps: totalSteps,
-                        scorePercent: 100,
+                      await _progressStorage.finishReview(
+                        widget.unitSlug,
+                        totalSteps,
                       );
                       await _syncManager.syncAll();
 
@@ -304,7 +303,9 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  Chip(label: Text('${unit.characters.length} ${loc.characters}')),
+                  Chip(
+                    label: Text('${unit.characters.length} ${loc.characters}'),
+                  ),
                   Chip(label: Text('${unit.words.length} ${loc.words}')),
                   Chip(label: Text('${data.lessons.length} ${loc.lessons}')),
                   Chip(label: Text('${data.quizzes.length} ${loc.quizzes}')),
@@ -317,10 +318,7 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
       _PracticeStep(
         title: loc.reviewCharacters,
         subtitle: loc.listenRepeat,
-        content: _CharactersPractice(
-          unit: unit,
-          audioPlayer: _audioPlayer,
-        ),
+        content: _CharactersPractice(unit: unit, audioPlayer: _audioPlayer),
       ),
       _PracticeStep(
         title: loc.reviewWords,
@@ -351,14 +349,24 @@ class _UnitPracticeScreenState extends State<UnitPracticeScreen> {
         ),
       ),
       _PracticeStep(
-        title: loc.unitFinished,
+        title: _localized(
+          lang,
+          'Consultation terminée',
+          'Review finished',
+          'انتهت المراجعة',
+        ),
         subtitle: _localized(lang, unit.titleFr, unit.titleEn, unit.titleAr),
         content: GlassCard(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                loc.unitFinished,
+                _localized(
+                  lang,
+                  'Consultation terminée',
+                  'Review finished',
+                  'انتهت المراجعة',
+                ),
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 16),
@@ -384,10 +392,7 @@ class _CharactersPractice extends StatelessWidget {
   final LearningUnitModel unit;
   final AudioUrlPlayer audioPlayer;
 
-  const _CharactersPractice({
-    required this.unit,
-    required this.audioPlayer,
-  });
+  const _CharactersPractice({required this.unit, required this.audioPlayer});
 
   @override
   Widget build(BuildContext context) {
@@ -397,10 +402,7 @@ class _CharactersPractice extends StatelessWidget {
           GlassCard(
             child: Row(
               children: [
-                Text(
-                  character.symbol,
-                  style: AppTextStyles.beriyaLarge,
-                ),
+                Text(character.symbol, style: AppTextStyles.beriyaLarge),
                 const SizedBox(width: 18),
                 Expanded(
                   child: Column(
@@ -451,10 +453,7 @@ class _WordsPractice extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  word.beriyaText,
-                  style: AppTextStyles.beriyaMedium,
-                ),
+                Text(word.beriyaText, style: AppTextStyles.beriyaMedium),
                 const SizedBox(height: 8),
                 Text(
                   translationResolver(word, lang),
@@ -546,8 +545,11 @@ class _LessonsPractice extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          _localized(item.titleFr, item.titleEn, item.titleAr)
-                                  .isNotEmpty
+                          _localized(
+                                item.titleFr,
+                                item.titleEn,
+                                item.titleAr,
+                              ).isNotEmpty
                               ? _localized(
                                   item.titleFr,
                                   item.titleEn,
@@ -699,11 +701,7 @@ class _BottomPracticeBar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 18),
       decoration: BoxDecoration(
         color: AppColors.dark.withValues(alpha: 0.92),
-        border: Border(
-          top: BorderSide(
-            color: AppColors.glassBorder,
-          ),
-        ),
+        border: Border(top: BorderSide(color: AppColors.glassBorder)),
       ),
       child: Row(
         children: [

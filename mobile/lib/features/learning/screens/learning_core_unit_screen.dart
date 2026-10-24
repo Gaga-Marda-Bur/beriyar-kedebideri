@@ -8,6 +8,7 @@ import '../../../shared/beriya/beriya_keyboard.dart';
 import '../../../shared/beriya/utf16_safe.dart';
 import '../../progress/services/unit_progress_local_storage.dart';
 import '../engine/tracing_engine.dart';
+import '../engine/learning_session.dart';
 import '../models/learning_unit_model.dart';
 import '../widgets/interactive_tracing_pad.dart';
 import '../widgets/syllable_fusion_widget.dart';
@@ -15,11 +16,13 @@ import '../widgets/syllable_fusion_widget.dart';
 class LearningCoreUnitScreen extends StatefulWidget {
   final LearningUnitModel? unit;
   final String? unitSlug;
+  final CachedContentService? contentService;
 
   const LearningCoreUnitScreen({
     super.key,
     this.unit,
     this.unitSlug,
+    this.contentService,
   });
 
   @override
@@ -29,7 +32,7 @@ class LearningCoreUnitScreen extends StatefulWidget {
 class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
   final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
   final UnitProgressLocalStorage _progressStorage = UnitProgressLocalStorage();
-  final CachedContentService _contentService = CachedContentService();
+  late final CachedContentService _contentService;
 
   LearningUnitModel? _unit;
   bool _isLoading = true;
@@ -38,10 +41,9 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
   int _currentStep = 0;
   List<Map<String, dynamic>> _steps = [];
 
-  // Progression & scores
-  double _scoreRecognition = 1.0;
-  double _scoreTracing = 1.0;
-  double _scoreEncoding = 1.0;
+  LearningSession? _session;
+  Future<void> _pendingSave = Future.value();
+  bool _saving = false;
 
   int _tracingAttempt = 1;
   String _typedText = '';
@@ -49,6 +51,7 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
   @override
   void initState() {
     super.initState();
+    _contentService = widget.contentService ?? CachedContentService();
     _initUnit();
   }
 
@@ -64,104 +67,191 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
       return;
     }
 
+    if (widget.unitSlug == null || widget.unitSlug!.trim().isEmpty) {
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Aucune unité spécifiée.';
+      });
+      return;
+    }
+
     try {
       final units = await _contentService.loadUnits();
       LearningUnitModel? found;
 
-      if (widget.unitSlug != null && widget.unitSlug!.isNotEmpty) {
-        try {
-          found = units.firstWhere((u) => u.slug == widget.unitSlug);
-        } catch (_) {}
+      try {
+        found = units.firstWhere((u) => u.slug == widget.unitSlug);
+      } catch (_) {}
+
+      if (found != null) {
+        _applyUnit(found);
+      } else {
+        setState(() {
+          _isLoading = false;
+          _errorMessage =
+              'Cette unité n\'est pas disponible sur cet appareil.\n\n'
+              'Identifiant demandé : "${widget.unitSlug}"\n\n'
+              'Veuillez télécharger le pack correspondant ou vérifier votre connexion.';
+        });
       }
-
-      // Fallback sur la première unité disponible
-      found ??= units.isNotEmpty ? units.first : null;
-
-      found ??= _createFallbackUnit1();
-      _applyUnit(found);
     } catch (e) {
-      _applyUnit(_createFallbackUnit1());
+      setState(() {
+        _isLoading = false;
+        _errorMessage =
+            'Impossible de charger l\'unité demandée.\n\n'
+            'Veuillez vérifier vos packs installés ou votre connexion.';
+      });
     }
   }
 
-  static LearningUnitModel _createFallbackUnit1() {
-    return LearningUnitModel.fromJson({
-      'id': 1,
-      'title_fr': 'Unité 1 : La consonne Be (𖺡)',
-      'slug': 'unite-1',
-      'level': 'beginner',
-      'enable_tracing': false,
-      'weight_recognition': 50,
-      'weight_tracing': 0,
-      'weight_encoding': 50,
-      'characters': [
-        {
-          'id': 1,
-          'name_fr': 'Be',
-          'phoneme_ipa': 'b',
-          'symbol': '𖺡',
-          'character': '𖺡',
-          'latin_transcription': 'b',
-          'character_type': 'consonant',
-          'order_index': 1,
-        },
-        {
-          'id': 2,
-          'name_fr': 'E',
-          'phoneme_ipa': 'e',
-          'symbol': '𖺣',
-          'character': '𖺣',
-          'latin_transcription': 'e',
-          'character_type': 'vowel',
-          'order_index': 2,
-        },
-      ],
-      'distractor_characters': [
-        {
-          'id': 3,
-          'name_fr': 'A',
-          'phoneme_ipa': 'a',
-          'symbol': '𖺠',
-          'character': '𖺠',
-          'latin_transcription': 'a',
-          'character_type': 'vowel',
-          'order_index': 3,
-        },
-      ],
-      'words': [
-        {
-          'id': 1,
-          'beriya_text': '𖺡𖺣',
-          'latin_transcription': 'be',
-          'french_translation': 'pays',
-          'english_translation': 'country',
-          'arabic_translation': 'بلد',
-        }
-      ],
-      'target_word': {
-        'id': 1,
-        'beriya_text': '𖺡𖺣',
-        'latin_transcription': 'be',
-        'french_translation': 'pays',
-        'english_translation': 'country',
-        'arabic_translation': 'بلد',
-      },
-      'status': 'published',
-      'is_active': true,
-      'available_offline': true,
-    });
-  }
+  Future<void> _applyUnit(LearningUnitModel unit) async {
+    final steps = unit.effectiveCoreFlow;
+    final actionableSteps = steps
+        .where((s) => s['step_type'] != 'celebration')
+        .toList();
 
-  void _applyUnit(LearningUnitModel unit) {
+    const supported = {
+      'discovery',
+      'discrimination',
+      'tracing',
+      'fusion',
+      'word_decoding',
+      'keyboard_encoding',
+      'celebration',
+    };
+    if (actionableSteps.isEmpty ||
+        steps.any((step) => !supported.contains(step['step_type']))) {
+      setState(() {
+        _unit = unit;
+        _steps = [];
+        _isLoading = false;
+        _errorMessage =
+            'Cette unité est en cours de validation pédagogique.\n\n'
+            'Ses exercices et ressources associées ne sont pas encore disponibles publiquement.';
+      });
+      return;
+    }
+
+    final session = LearningSession(steps, {
+      'recognition': unit.weightRecognition,
+      'tracing': unit.enableTracing ? unit.weightTracing : 0,
+      'encoding': unit.weightEncoding,
+    }, unit.minScoreToPass);
+    await _progressStorage.restoreSession(unit.slug, session);
+    if (!mounted) return;
     setState(() {
       _unit = unit;
-      _steps = unit.effectiveCoreFlow;
+      _steps = steps;
+      _session = session;
       _isLoading = false;
-      _currentStep = 0;
-      _tracingAttempt = 1;
-      _typedText = '';
+      _errorMessage = null;
+      _currentStep = session.currentStep;
+      _tracingAttempt =
+          ((session.answers[session.currentStep]?['successes'] as int? ?? 0) +
+                  1)
+              .clamp(1, 2);
+      _typedText = session.typedText;
     });
     _playCurrentStepAudio();
+  }
+
+  Future<void> _persistSession() {
+    if (_session == null || _unit == null) return Future.value();
+    _session!.currentStep = _currentStep;
+    _session!.typedText = _typedText;
+    final snapshot = LearningSession(
+      _steps,
+      _session!.weights,
+      _session!.threshold,
+    )..restore(_session!.toJson());
+    final slug = _unit!.slug;
+    final write = _pendingSave.then(
+      (_) => _progressStorage.saveSession(slug, snapshot),
+    );
+    _pendingSave = write.catchError((Object error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              _text(
+                'Enregistrement impossible. Réessaie avant de quitter.',
+                'Could not save. Try again before leaving.',
+                'تعذّر الحفظ. حاول مجددًا قبل المغادرة.',
+              ),
+            ),
+          ),
+        );
+      }
+    });
+    return write;
+  }
+
+  String _text(String fr, String en, String ar) =>
+      switch (Localizations.localeOf(context).languageCode) {
+        'en' => en,
+        'ar' => ar,
+        _ => fr,
+      };
+
+  Future<void> _restartSession() async {
+    if (_saving || _session == null || _unit == null) return;
+    setState(() => _saving = true);
+    try {
+      await _pendingSave;
+      await _progressStorage.archiveSession(_unit!.slug, _session!);
+      if (!mounted) return;
+      setState(() {
+        _session = LearningSession(
+          _steps,
+          _session!.weights,
+          _session!.threshold,
+        );
+        _currentStep = 0;
+        _typedText = '';
+      });
+      await _persistSession();
+      if (mounted) _playCurrentStepAudio();
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              _text(
+                'Enregistrement impossible. Réessaie.',
+                'Could not save. Try again.',
+                'تعذّر الحفظ. حاول مجددًا.',
+              ),
+            ),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
+  }
+
+  void _answer(bool correct) {
+    if (!mounted ||
+        _session == null ||
+        _session!.resolved(_currentStep) ||
+        _session!.finished) {
+      return;
+    }
+    setState(() {
+      _session!.answer(correct);
+      _tracingAttempt =
+          ((_session!.answers[_currentStep]?['successes'] as int? ?? 0) + 1)
+              .clamp(1, 2);
+    });
+    if (correct) ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    _persistSession().catchError((Object _) {});
+    if (!correct) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(_text('Réessaie.', 'Try again.', 'حاول مجددًا.')),
+        ),
+      );
+    }
   }
 
   void _playCurrentStepAudio() {
@@ -170,16 +260,29 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     final audioUrl = step['audio_url'] as String?;
     if (audioUrl != null && audioUrl.isNotEmpty) {
       _audioPlayer.playUrl(audioUrl);
+    } else {
+      _audioPlayer.stop();
     }
   }
 
   void _nextStep() {
+    if (!mounted ||
+        _session == null ||
+        _session!.finished ||
+        !_session!.canAdvance) {
+      return;
+    }
+    _session!.viewed.add(_currentStep);
     if (_currentStep < _steps.length - 1) {
       setState(() {
         _currentStep++;
-        _tracingAttempt = 1;
+        _tracingAttempt =
+            ((_session!.answers[_currentStep]?['successes'] as int? ?? 0) + 1)
+                .clamp(1, 2);
         _typedText = '';
       });
+      _session!.currentStep = _currentStep;
+      _persistSession().catchError((Object _) {});
       _playCurrentStepAudio();
     } else {
       _finishUnit();
@@ -187,44 +290,36 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
   }
 
   void _prevStep() {
-    if (_currentStep > 0) {
+    if (_currentStep > 0 && !_saving && _session?.finished != true) {
       setState(() {
         _currentStep--;
+        _tracingAttempt =
+            ((_session!.answers[_currentStep]?['successes'] as int? ?? 0) + 1)
+                .clamp(1, 2);
         _typedText = '';
       });
+      _session!.currentStep = _currentStep;
+      _persistSession().catchError((Object _) {});
       _playCurrentStepAudio();
     }
   }
 
   Future<void> _finishUnit() async {
-    if (_unit == null) return;
-
-    final wRec = _unit!.enableTracing ? (_unit!.weightRecognition / 100.0) : 0.50;
-    final wTra = _unit!.enableTracing ? (_unit!.weightTracing / 100.0) : 0.0;
-    final wEnc = _unit!.enableTracing ? (_unit!.weightEncoding / 100.0) : 0.50;
-
-    final weightedScore = (
-      (wRec * _scoreRecognition) +
-      (wTra * _scoreTracing) +
-      (wEnc * _scoreEncoding)
-    ) * 100;
-
-    await _progressStorage.completeUnit(
-      unitSlug: _unit!.slug,
-      totalSteps: _steps.length,
-      scorePercent: weightedScore.round().clamp(50, 100),
-    );
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            '${_unit!.titleFr} validée avec succès !',
-            style: const TextStyle(fontFamily: 'Kedebideri'),
-          ),
-          backgroundColor: AppColors.green,
-        ),
-      );
+    if (_session == null ||
+        _saving ||
+        _session!.finished ||
+        _currentStep != _steps.length - 1) {
+      return;
+    }
+    _session!.viewed.add(_currentStep);
+    setState(() => _saving = true);
+    _session!.finished = true;
+    try {
+      await _persistSession();
+    } catch (_) {
+      _session!.finished = false;
+    } finally {
+      if (mounted) setState(() => _saving = false);
     }
   }
 
@@ -242,7 +337,9 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
 
     if (_errorMessage != null || _unit == null || _steps.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Alphabétisation Beriya Erfe')),
+        appBar: AppBar(
+          title: Text(_unit?.titleFr ?? 'Alphabétisation Beriya Erfe'),
+        ),
         body: AppBackground(
           child: Center(
             child: Padding(
@@ -251,17 +348,42 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.error_outline_rounded, color: Colors.orangeAccent, size: 54),
+                    const Icon(
+                      Icons.info_outline_rounded,
+                      color: AppColors.gold,
+                      size: 56,
+                    ),
                     const SizedBox(height: 16),
                     Text(
-                      _errorMessage ?? 'Impossible de charger cette unité.',
+                      _unit != null ? _unit!.titleFr : 'Contenu indisponible',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                      style: const TextStyle(
+                        color: AppColors.gold,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Kedebideri',
+                      ),
                     ),
-                    const SizedBox(height: 20),
-                    FilledButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Retour'),
+                    const SizedBox(height: 12),
+                    Text(
+                      _errorMessage ?? 'Cette unité n\'est pas disponible.',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        height: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        OutlinedButton.icon(
+                          onPressed: () => Navigator.of(context).pop(),
+                          icon: const Icon(Icons.arrow_back_rounded),
+                          label: const Text('Retour au parcours'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -296,13 +418,60 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
                 valueColor: const AlwaysStoppedAnimation<Color>(AppColors.gold),
                 minHeight: 6,
               ),
+              ValueListenableBuilder<AudioPlaybackStatus>(
+                valueListenable: _audioPlayer.status,
+                builder: (context, status, _) => Semantics(
+                  liveRegion: true,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (status == AudioPlaybackStatus.loading)
+                        Text(
+                          _text(
+                            'Chargement audio…',
+                            'Loading audio…',
+                            'جارٍ تحميل الصوت…',
+                          ),
+                        ),
+                      if (status == AudioPlaybackStatus.failed)
+                        TextButton(
+                          onPressed: _playCurrentStepAudio,
+                          child: Text(
+                            _text(
+                              'Audio indisponible · Réessayer',
+                              'Audio unavailable · Try again',
+                              'الصوت غير متاح · حاول مجددًا',
+                            ),
+                          ),
+                        ),
+                      if (status == AudioPlaybackStatus.playing)
+                        TextButton(
+                          onPressed: _audioPlayer.pause,
+                          child: Text(_text('Pause', 'Pause', 'إيقاف مؤقت')),
+                        ),
+                      if (status == AudioPlaybackStatus.paused)
+                        TextButton(
+                          onPressed: _playCurrentStepAudio,
+                          child: Text(
+                            _text('Réécouter', 'Listen again', 'استمع مجددًا'),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
 
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(18),
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: _buildCurrentStepWidget(),
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(18),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: KeyedSubtree(
+                        key: ValueKey(_currentStep),
+                        child: _buildCurrentStepWidget(),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -395,7 +564,11 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
                   const CircleAvatar(
                     radius: 14,
                     backgroundColor: AppColors.gold,
-                    child: Icon(Icons.volume_up_rounded, size: 16, color: AppColors.night),
+                    child: Icon(
+                      Icons.volume_up_rounded,
+                      size: 16,
+                      color: AppColors.night,
+                    ),
                   ),
                 ],
               ),
@@ -405,7 +578,11 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
           if (phonemeIpa.isNotEmpty && phonemeIpa != 'À_VALIDER')
             Text(
               'Son : /$phonemeIpa/',
-              style: const TextStyle(color: AppColors.gold, fontSize: 22, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                color: AppColors.gold,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           const SizedBox(height: 24),
           FilledButton.icon(
@@ -419,7 +596,10 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
               }
             },
             icon: const Icon(Icons.volume_up_rounded),
-            label: const Text('Réécouter le son', style: TextStyle(fontWeight: FontWeight.bold)),
+            label: const Text(
+              'Réécouter le son',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),
@@ -429,7 +609,8 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
   Widget _buildDiscriminationCard(Map<String, dynamic> step) {
     final target = step['target_symbol'] as String? ?? '';
     final other = step['other_symbol'] as String? ?? '';
-    final instruction = step['instruction'] as String? ?? 'Touche le bon caractère :';
+    final instruction =
+        step['instruction'] as String? ?? 'Touche le bon caractère :';
     final audioUrl = step['audio_url'] as String?;
 
     return GlassCard(
@@ -438,7 +619,11 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
         children: [
           Text(
             instruction,
-            style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
@@ -452,8 +637,16 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _buildDiscriminationButton(symbol: target, isCorrect: true, audioUrl: audioUrl),
-              _buildDiscriminationButton(symbol: other, isCorrect: false, audioUrl: audioUrl),
+              _buildDiscriminationButton(
+                symbol: target,
+                isCorrect: true,
+                audioUrl: audioUrl,
+              ),
+              _buildDiscriminationButton(
+                symbol: other,
+                isCorrect: false,
+                audioUrl: audioUrl,
+              ),
             ],
           ),
         ],
@@ -467,30 +660,17 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     String? audioUrl,
   }) {
     return InkWell(
+      key: ValueKey('answer-$_currentStep-$symbol'),
       onTap: () {
-        if (isCorrect) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Bravo ! Son reconnu avec succès.'),
-              backgroundColor: AppColors.green,
-              duration: Duration(milliseconds: 700),
-            ),
-          );
-          Future.delayed(const Duration(milliseconds: 600), _nextStep);
-        } else {
-          setState(() {
-            _scoreRecognition = (_scoreRecognition - 0.1).clamp(0.0, 1.0);
-          });
+        if (_session?.resolved(_currentStep) == true ||
+            _session?.finished == true) {
+          return;
+        }
+        _answer(isCorrect);
+        if (!isCorrect) {
           if (audioUrl != null && audioUrl.isNotEmpty) {
             _audioPlayer.playUrl(audioUrl);
           }
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Réessaie ! Écoute bien le son.'),
-              backgroundColor: Colors.amber,
-              duration: Duration(milliseconds: 1000),
-            ),
-          );
         }
       },
       borderRadius: BorderRadius.circular(24),
@@ -500,7 +680,10 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
         decoration: BoxDecoration(
           color: AppColors.night.withValues(alpha: 0.6),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.2), width: 2),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.2),
+            width: 2,
+          ),
         ),
         alignment: Alignment.center,
         child: Text(
@@ -517,7 +700,8 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
 
   Widget _buildTracingCard(Map<String, dynamic> step) {
     final symbol = step['symbol'] as String? ?? '';
-    final instruction = step['instruction'] as String? ?? 'Trace le caractère :';
+    final instruction =
+        step['instruction'] as String? ?? 'Trace le caractère :';
 
     return GlassCard(
       child: SingleChildScrollView(
@@ -529,25 +713,13 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
             ),
             const SizedBox(height: 16),
             InteractiveTracingPad(
+              key: ValueKey('trace-$_currentStep'),
               symbol: symbol,
               targetStrokes: TracingEngine.getStrokesForSymbol(symbol),
               currentAttempt: _tracingAttempt,
               totalAttemptsRequired: 2,
               onTraceCompleted: (result) {
-                if (result.isSuccess) {
-                  if (_tracingAttempt >= 2) {
-                    Future.delayed(const Duration(milliseconds: 700), _nextStep);
-                  } else {
-                    Future.delayed(const Duration(milliseconds: 500), () {
-                      if (mounted) {
-                        setState(() {
-                          _tracingAttempt++;
-                          _scoreTracing = (_scoreTracing + 0.1).clamp(0.0, 1.0);
-                        });
-                      }
-                    });
-                  }
-                }
+                _answer(result.isSuccess);
               },
             ),
           ],
@@ -557,7 +729,11 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
   }
 
   Widget _buildFusionCard(Map<String, dynamic> step) {
-    final components = (step['components'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
+    final components =
+        (step['components'] as List<dynamic>?)
+            ?.map((e) => e.toString())
+            .toList() ??
+        [];
     final syllable = step['result_syllable'] as String? ?? '';
     final c1 = components.isNotEmpty ? components[0] : '';
     final c2 = components.length > 1 ? components[1] : '';
@@ -569,7 +745,7 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
           vowelSymbol: c2,
           resultingSyllable: syllable,
           onFused: () {
-            Future.delayed(const Duration(milliseconds: 1200), _nextStep);
+            _nextStep();
           },
         ),
       ),
@@ -580,7 +756,8 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     final word = step['word'] as String? ?? '';
     final latin = step['latin_transcription'] as String? ?? '';
     final translation = step['french_translation'] as String? ?? '';
-    final oralPrompt = step['oral_prompt'] as String? ?? 'Voici ton mot Beriya !';
+    final oralPrompt =
+        step['oral_prompt'] as String? ?? 'Voici ton mot Beriya !';
     final audioUrl = step['audio_url'] as String?;
 
     return GlassCard(
@@ -589,7 +766,11 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
         children: [
           Text(
             oralPrompt,
-            style: const TextStyle(color: AppColors.gold, fontSize: 18, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: AppColors.gold,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
@@ -602,7 +783,11 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
               border: Border.all(color: AppColors.gold, width: 2),
             ),
             alignment: Alignment.center,
-            child: const Icon(Icons.public_rounded, color: AppColors.gold, size: 70),
+            child: const Icon(
+              Icons.public_rounded,
+              color: AppColors.gold,
+              size: 70,
+            ),
           ),
           const SizedBox(height: 20),
           Text(
@@ -646,9 +831,14 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     final targetWord = step['target_word'] as String? ?? '';
     final latin = step['latin_transcription'] as String? ?? '';
     final translation = step['french_translation'] as String? ?? '';
-    final instruction = step['instruction'] as String? ??
+    final instruction =
+        step['instruction'] as String? ??
         'Écris le mot "${latin.isNotEmpty ? latin : targetWord}" au clavier :';
-    final keys = (step['keyboard_keys'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
+    final keys =
+        (step['keyboard_keys'] as List<dynamic>?)
+            ?.map((e) => e.toString())
+            .toList() ??
+        [];
     final audioUrl = step['audio_url'] as String?;
 
     return GlassCard(
@@ -661,7 +851,11 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
               Flexible(
                 child: Text(
                   instruction,
-                  style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -691,7 +885,9 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
               color: Colors.black38,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: _typedText == targetWord ? AppColors.green : AppColors.gold,
+                color: _typedText == targetWord
+                    ? AppColors.green
+                    : AppColors.gold,
                 width: 2,
               ),
             ),
@@ -701,7 +897,9 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
               style: TextStyle(
                 fontFamily: _typedText.isEmpty ? null : 'Kedebideri',
                 fontSize: 40,
-                color: _typedText == targetWord ? AppColors.green : AppColors.gold,
+                color: _typedText == targetWord
+                    ? AppColors.green
+                    : AppColors.gold,
                 letterSpacing: 8,
               ),
             ),
@@ -710,27 +908,46 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
           BeriyaKeyboard(
             scaffoldedKeys: keys,
             onInsert: (char) {
+              if (_session?.resolved(_currentStep) == true ||
+                  _session?.finished == true) {
+                return;
+              }
               setState(() {
                 _typedText += char;
               });
-              if (_typedText == targetWord) {
-                Future.delayed(const Duration(milliseconds: 600), _nextStep);
-              }
+              _persistSession().catchError((Object _) {});
             },
             onBackspace: () {
+              if (_session?.resolved(_currentStep) == true ||
+                  _session?.finished == true) {
+                return;
+              }
               if (_typedText.isNotEmpty) {
                 setState(() {
                   _typedText = Utf16Safe.dropLast(_typedText);
-                  _scoreEncoding = (_scoreEncoding - 0.05).clamp(0.0, 1.0);
                 });
+                _persistSession().catchError((Object _) {});
               }
             },
             onSpace: () {},
             onClear: () {
+              if (_session?.resolved(_currentStep) == true ||
+                  _session?.finished == true) {
+                return;
+              }
               setState(() {
                 _typedText = '';
               });
+              _persistSession().catchError((Object _) {});
             },
+          ),
+          FilledButton(
+            key: const ValueKey('validate-encoding'),
+            onPressed:
+                _typedText.isEmpty || _session?.resolved(_currentStep) == true
+                ? null
+                : () => _answer(_typedText == targetWord),
+            child: Text(_text('Valider', 'Check', 'تحقّق')),
           ),
         ],
       ),
@@ -738,8 +955,12 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
   }
 
   Widget _buildCelebrationCard(Map<String, dynamic> step) {
-    final title = step['title'] as String? ?? 'Félicitations !';
-    final message = step['message'] as String? ?? 'Tu as terminé la leçon avec succès !';
+    final title = _session?.finished == true
+        ? _text('Session terminée', 'Session finished', 'انتهت الجلسة')
+        : _text('Bilan de la session', 'Session review', 'ملخّص الجلسة');
+    final message =
+        '${_session?.score ?? 0}% · ${_text('Seuil', 'Pass mark', 'حدّ النجاح')} ${_unit!.minScoreToPass}%\n'
+        '${_session?.passed == true ? _text('Unité maîtrisée', 'Unit mastered', 'تم إتقان الوحدة') : _text('À réviser', 'Needs review', 'تحتاج إلى مراجعة')}';
     final targetWord = step['target_word'] as String? ?? '';
     final translation = step['french_translation'] as String? ?? '';
 
@@ -751,7 +972,11 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
           const SizedBox(height: 16),
           Text(
             title,
-            style: const TextStyle(color: AppColors.gold, fontSize: 26, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: AppColors.gold,
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 10),
           Text(
@@ -782,13 +1007,33 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
           ],
           const SizedBox(height: 28),
           FilledButton.icon(
-            onPressed: () {
-              _finishUnit();
-              Navigator.of(context).pop();
-            },
+            onPressed: _saving
+                ? null
+                : _session?.finished == true
+                ? () => Navigator.of(context).pop()
+                : _finishUnit,
             icon: const Icon(Icons.check_circle_rounded),
-            label: const Text('Terminer la session'),
+            label: Text(
+              _session?.finished == true
+                  ? _text('Retour au parcours', 'Back to path', 'العودة للمسار')
+                  : _text(
+                      'Terminer la session',
+                      'Finish session',
+                      'إنهاء الجلسة',
+                    ),
+            ),
           ),
+          if (_session?.finished == true)
+            TextButton(
+              onPressed: _restartSession,
+              child: Text(
+                _text(
+                  'Recommencer la session',
+                  'Practice again',
+                  'إعادة التدريب',
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -801,18 +1046,33 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
         color: AppColors.dark.withValues(alpha: 0.92),
         border: Border(top: BorderSide(color: AppColors.glassBorder)),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: OverflowBar(
+        alignment: MainAxisAlignment.spaceBetween,
+        spacing: 12,
+        overflowSpacing: 8,
         children: [
           OutlinedButton.icon(
-            onPressed: _currentStep > 0 ? _prevStep : null,
+            onPressed:
+                _currentStep > 0 && !_saving && _session?.finished != true
+                ? _prevStep
+                : null,
             icon: const Icon(Icons.arrow_back_rounded),
             label: const Text('Précédent'),
           ),
           FilledButton.icon(
-            onPressed: _currentStep < totalSteps - 1 ? _nextStep : _finishUnit,
+            key: const ValueKey('learning-next'),
+            onPressed:
+                _saving ||
+                    _session?.finished == true ||
+                    _session?.canAdvance != true
+                ? null
+                : _currentStep < totalSteps - 1
+                ? _nextStep
+                : _finishUnit,
             icon: const Icon(Icons.arrow_forward_rounded),
-            label: Text(_currentStep < totalSteps - 1 ? 'Continuer' : 'Terminer'),
+            label: Text(
+              _currentStep < totalSteps - 1 ? 'Continuer' : 'Terminer',
+            ),
           ),
         ],
       ),

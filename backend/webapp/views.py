@@ -3,12 +3,14 @@ from django.shortcuts import get_object_or_404, redirect, render
 from alphabet.models import Character
 from learning.models import LearningTheme, LearningUnit
 from no_ena.models import NoEnaPublication
+from no_ena.services import record_publication_view
 from offline_packs.models import LessonPack
 from vocabulary.models import Word
 from django.contrib import messages
 from feedback.models import FeedbackReport
 from quizzes.models import QuizQuestion
 from pathlib import Path
+from core.permissions import is_staff_preview
 
 from django.conf import settings
 from django.http import FileResponse, Http404
@@ -49,9 +51,10 @@ def home(request):
         "order_index",
     )[:3]
 
-    showcase_characters = Character.objects.filter(
-        is_active=True,
-    ).order_by(
+    chars_qs = Character.objects.filter(is_active=True)
+    if not is_staff_preview(request):
+        chars_qs = chars_qs.filter(validation_status='published')
+    showcase_characters = chars_qs.order_by(
         "order_index",
         "unicode_code",
     )[:6]
@@ -72,6 +75,7 @@ def home(request):
         ).count(),
         "units_count": LearningUnit.objects.filter(
             is_active=True,
+            status=LearningUnit.PUBLISHED,
         ).count(),
         "no_ena_count": NoEnaPublication.objects.filter(
             is_active=True,
@@ -95,9 +99,10 @@ def home(request):
 
 def alphabet_page(request):
     lang = get_web_lang(request)
-    characters = Character.objects.filter(
-        is_active=True,
-    ).prefetch_related(
+    characters_qs = Character.objects.filter(is_active=True)
+    if not is_staff_preview(request):
+        characters_qs = characters_qs.filter(validation_status='published')
+    characters = characters_qs.prefetch_related(
         'audio_links__audio_asset',
     ).order_by(
         'order_index',
@@ -120,9 +125,10 @@ def vocabulary_page(request):
     search = request.GET.get('q', '').strip()
     category = request.GET.get('category', '').strip()
 
-    words = Word.objects.filter(
-        is_active=True,
-    ).select_related(
+    words_qs = Word.objects.filter(is_active=True)
+    if not is_staff_preview(request):
+        words_qs = words_qs.filter(validation_status='published')
+    words = words_qs.select_related(
         'category',
     ).prefetch_related(
         'audio_links__audio_asset',
@@ -175,9 +181,10 @@ def vocabulary_page(request):
 
 def learning_path_page(request):
     lang = get_web_lang(request)
-    themes = LearningTheme.objects.filter(
-        is_active=True,
-    ).prefetch_related(
+    themes_qs = LearningTheme.objects.filter(is_active=True)
+    if not is_staff_preview(request):
+        themes_qs = themes_qs.filter(status=LearningTheme.PUBLISHED)
+    themes = themes_qs.prefetch_related(
         'units',
         'units__characters',
         'units__words',
@@ -199,8 +206,11 @@ def learning_path_page(request):
 
 def unit_detail_page(request, slug):
     lang = get_web_lang(request)
+    units_qs = LearningUnit.objects.select_related('theme')
+    if not is_staff_preview(request):
+        units_qs = units_qs.filter(status=LearningUnit.PUBLISHED)
     unit = get_object_or_404(
-        LearningUnit.objects.select_related(
+        units_qs.select_related(
             'theme',
         ).prefetch_related(
             'characters',
@@ -303,8 +313,7 @@ def no_ena_detail_page(request, slug):
         status=NoEnaPublication.PUBLISHED,
     )
 
-    publication.view_count += 1
-    publication.save(update_fields=['view_count'])
+    record_publication_view(publication, request=request)
 
     related_publications = NoEnaPublication.objects.filter(
         is_active=True,
@@ -328,52 +337,49 @@ def no_ena_detail_page(request, slug):
     )
 
 def feedback_page(request):
+    from feedback.forms import FeedbackForm
+    from feedback.throttles import check_submission_limits
+    from feedback.validation import message as feedback_message, humanize_wait
     lang = get_web_lang(request)
+    form = FeedbackForm(request.POST if request.method == 'POST' else None, lang=lang)
+    response_status = 200
 
     if request.method == "POST":
-        feedback_type = request.POST.get("feedback_type", FeedbackReport.OTHER)
-        title = request.POST.get("title", "").strip()
-        message = request.POST.get("message", "").strip()
-        language_code = request.POST.get("language_code", lang)
-
-        if not title and not message:
-            if lang == "ar":
-                messages.error(request, "يرجى كتابة رسالة قبل الإرسال.")
-            elif lang == "en":
-                messages.error(request, "Please write a message before sending.")
-            else:
-                messages.error(request, "Merci d’écrire un message avant d’envoyer.")
-
-            return redirect("web-feedback")
-
-        FeedbackReport.objects.create(
-            feedback_type=feedback_type,
-            title=title,
-            message=message,
-            platform="web",
-            language_code=language_code,
-        )
-
-        if lang == "ar":
-            messages.success(request, "تم إرسال الملاحظة. شكرًا لك!")
-        elif lang == "en":
-            messages.success(request, "Feedback sent. Thank you!")
+        valid = form.is_valid()
+        wait = check_submission_limits(request)
+        if wait is not None:
+            form.add_error(None, feedback_message('throttled', lang, wait=humanize_wait(wait, lang)))
+            response_status = 429
+        elif valid:
+            FeedbackReport.objects.create(
+                **form.cleaned_data, platform='web',
+                user=request.user if request.user.is_authenticated else None,
+            )
+            messages.success(request, {
+                'ar': 'تم إرسال الملاحظة. شكرًا لك!',
+                'en': 'Feedback sent. Thank you!',
+                'fr': 'Feedback envoyé. Merci !',
+            }[lang])
+            return redirect('web-feedback')
         else:
-            messages.success(request, "Feedback envoyé. Merci !")
-
-        return redirect("web-feedback")
+            response_status = 400
 
     feedback_types = FeedbackReport.FEEDBACK_TYPE_CHOICES
 
-    return render(
+    response = render(
         request,
         "webapp/feedback.html",
         {
             "feedback_types": feedback_types,
             "current_lang": lang,
             "is_rtl": lang == "ar",
+            "form": form,
         },
+        status=response_status,
     )
+    if response_status == 429:
+        response['Retry-After'] = str(max(1, int(wait + 0.999)))
+    return response
 
 
 def quiz_page(request):
@@ -450,4 +456,4 @@ def editor_page(request):
             "current_lang": lang,
             "is_rtl": lang == "ar",
         },
-    )
+    )

@@ -453,12 +453,11 @@
                     {% else %}
                         <p class="section-text">
                             {% if current_lang == "ar" %}
-                                اخلق وانشر حزمة البدء من خلال لوحة الإدارة لتمكين أول تعلم خارج الخط.
+                                ستتوفر حزمة البدء للاستخدام بدون إنترنت قريبًا. في هذه الأثناء، ابدأ التعلّم مباشرةً عبر الإنترنت.
                             {% elif current_lang == "en" %}
-                                Create and publish the Starter Pack from the administration panel to enable first offline learning.
+                                The offline starter pack will be available soon. In the meantime, start learning directly online.
                             {% else %}
-                                Crée et publie le Starter Pack depuis l’administration pour permettre
-                                le premier apprentissage hors connexion.
+                                Le pack de démarrage hors connexion sera bientôt disponible. En attendant, commencez votre apprentissage directement en ligne.
                             {% endif %}
                         </p>
                     {% endif %}
@@ -473,10 +472,10 @@
                             {% endif %}
                         </a>
                     {% else %}
-                        <a href="/api/offline-packs/" class="btn btn-primary">
-                            {% if current_lang == "ar" %} عرض الحزم API
-                            {% elif current_lang == "en" %} View API Packs
-                            {% else %} Voir les packs API
+                        <a href="{% url 'web-learning-path' %}" class="btn btn-primary">
+                            {% if current_lang == "ar" %} بدء المسار
+                            {% elif current_lang == "en" %} Start learning
+                            {% else %} Commencer le parcours
                             {% endif %}
                         </a>
                     {% endif %}

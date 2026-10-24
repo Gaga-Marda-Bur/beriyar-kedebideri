@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from core.permissions import is_staff_preview
 from .models import AudioAsset
 
 
@@ -38,3 +39,13 @@ class AudioAssetSerializer(serializers.ModelSerializer):
             return obj.file.url
 
         return None
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        request = self.context.get('request')
+        # Masquer les métadonnées internes audio pour les requêtes publiques
+        if request is not None and not is_staff_preview(request):
+            data.pop('notes', None)
+            data.pop('speaker_name', None)
+            data.pop('recording_quality', None)
+        return data
