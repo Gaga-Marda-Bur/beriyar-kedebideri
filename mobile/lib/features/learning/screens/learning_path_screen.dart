@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/cache/cache_keys.dart';
 import '../../../core/cache/cached_content_service.dart';
@@ -30,11 +31,13 @@ enum BkLearningTrack {
 }
 
 class LearningPathScreen extends StatefulWidget {
+  static const String trackPreferenceKey = 'bk_learning_track_v1';
+
   final CachedContentService? contentService;
   final UnitProgressLocalStorage? progressStorage;
   final LocalSrsService? srsService;
   final List<LearningThemeModel>? initialThemes;
-  final BkLearningTrack initialTrack;
+  final BkLearningTrack? initialTrack;
 
   const LearningPathScreen({
     super.key,
@@ -42,8 +45,33 @@ class LearningPathScreen extends StatefulWidget {
     this.progressStorage,
     this.srsService,
     this.initialThemes,
-    this.initialTrack = BkLearningTrack.trackA,
+    this.initialTrack,
   });
+
+  /// Charge le parcours pédagogique sauvegardé localement (`trackA` par défaut).
+  static Future<BkLearningTrack> loadSavedTrack() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(trackPreferenceKey);
+      if (raw == 'trackB') {
+        return BkLearningTrack.trackB;
+      }
+      return BkLearningTrack.trackA;
+    } catch (_) {
+      return BkLearningTrack.trackA;
+    }
+  }
+
+  /// Sauvegarde localement le choix de parcours pédagogique (`trackA` ou `trackB`).
+  static Future<void> saveTrack(BkLearningTrack track) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+        trackPreferenceKey,
+        track == BkLearningTrack.trackB ? 'trackB' : 'trackA',
+      );
+    } catch (_) {}
+  }
 
   /// Détermine de façon déterministe l'état `BkLearningNodeStatus` d'une unité
   /// à partir des progressions existantes (`UnitProgressLocalModel`) et des échéances SRS.
@@ -126,9 +154,28 @@ class _LearningPathScreenState extends State<LearningPathScreen> {
     _cachedContentService = widget.contentService ?? CachedContentService();
     _progressStorage = widget.progressStorage ?? UnitProgressLocalStorage();
     _srsService = widget.srsService ?? LocalSrsService();
-    _selectedTrack = widget.initialTrack;
+    _selectedTrack = widget.initialTrack ?? BkLearningTrack.trackA;
     _future = _loadThemes();
     _loadProgressAndSrs();
+    if (widget.initialTrack == null) {
+      _loadSavedTrackPreference();
+    } else {
+      LearningPathScreen.saveTrack(widget.initialTrack!);
+    }
+  }
+
+  Future<void> _loadSavedTrackPreference() async {
+    final saved = await LearningPathScreen.loadSavedTrack();
+    if (mounted && saved != _selectedTrack) {
+      setState(() => _selectedTrack = saved);
+    }
+  }
+
+  void _selectTrack(BkLearningTrack track) {
+    if (_selectedTrack != track) {
+      setState(() => _selectedTrack = track);
+    }
+    LearningPathScreen.saveTrack(track);
   }
 
   Future<void> _loadProgressAndSrs() async {
@@ -152,6 +199,7 @@ class _LearningPathScreenState extends State<LearningPathScreen> {
   }
 
   Future<void> _reload() async {
+    await _loadSavedTrackPreference();
     await _loadProgressAndSrs();
     if (!mounted) return;
     setState(() {
@@ -558,11 +606,7 @@ class _LearningPathScreenState extends State<LearningPathScreen> {
                 ),
                 icon: Icons.headphones_rounded,
                 palette: palette,
-                onTap: () {
-                  if (_selectedTrack != BkLearningTrack.trackA) {
-                    setState(() => _selectedTrack = BkLearningTrack.trackA);
-                  }
-                },
+                onTap: () => _selectTrack(BkLearningTrack.trackA),
               );
               final buttonB = _TrackOptionButton(
                 buttonKey: const ValueKey('track-selector-b'),
@@ -582,11 +626,7 @@ class _LearningPathScreenState extends State<LearningPathScreen> {
                 ),
                 icon: Icons.menu_book_rounded,
                 palette: palette,
-                onTap: () {
-                  if (_selectedTrack != BkLearningTrack.trackB) {
-                    setState(() => _selectedTrack = BkLearningTrack.trackB);
-                  }
-                },
+                onTap: () => _selectTrack(BkLearningTrack.trackB),
               );
 
               if (constraints.maxWidth < 340) {
