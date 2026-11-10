@@ -1,0 +1,8 @@
+{
+  "lesson_export": {
+    "error": "AttributeError",
+    "detail": "'Lesson' object has no attribute 'audio_links'"
+  },
+  "quiz_question_role_resolves": true,
+  "quiz_export_normal_role_resolves": false
+}

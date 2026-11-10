@@ -1,0 +1,279 @@
+{
+  "date": "2026-11-09",
+  "decision": "GO: all 4 Phase 3.1 Android defects resolved and verified on emulator and physical Samsung SM-A336E",
+  "physical_android_executed": true,
+  "physical_detection": "Samsung authorized in ADB after enabling USB debugging; serial deliberately omitted",
+  "emulator": {
+    "model": "sdk_gphone64_x86_64",
+    "api": "36",
+    "android_release": "16",
+    "ram_mb_configured": 2048,
+    "audio_output": "disabled; native decode/completion tested"
+  },
+  "isolation": {
+    "application_id": "com.afrigama.beriyarkedebideri.qa",
+    "source_db_sha256": "0e92a4da3cd7736a6cc9d47f1d770efaf9586774ab3873aadec6eda54c76360b",
+    "source_db_sha256_after": "0e92a4da3cd7736a6cc9d47f1d770efaf9586774ab3873aadec6eda54c76360b",
+    "backup_restore_tables_compared": 37,
+    "migration": "progress.0004_progressdevicecredential applied to QA only",
+    "production_migration": false
+  },
+  "http": {
+    "scope": "real HTTP local Django, synthetic accounts; not Android login UI",
+    "token_expiration": "No expiring account-token implementation exists; invalid bearer tested instead",
+    "scenarios": [
+      {
+        "scenario": "real HTTP published alphabet",
+        "passed": true,
+        "http_status": 200,
+        "elapsed_ms": 297.4
+      },
+      {
+        "scenario": "account A authenticates and reads its record",
+        "passed": true
+      },
+      {
+        "scenario": "account B cannot read A by changing device_id",
+        "passed": true
+      },
+      {
+        "scenario": "A sync after simulated offline accumulation",
+        "passed": true
+      },
+      {
+        "scenario": "B cannot overwrite A even with its old installation token",
+        "passed": true
+      },
+      {
+        "scenario": "request without authentication cannot read private history",
+        "passed": true,
+        "http_status": 403
+      },
+      {
+        "scenario": "B creates its own record despite forged user field",
+        "passed": true
+      },
+      {
+        "scenario": "A and B remain isolated after both synchronizations",
+        "passed": true
+      },
+      {
+        "scenario": "guest registers and synchronizes over real HTTP",
+        "passed": true
+      },
+      {
+        "scenario": "invalid guest token refused",
+        "passed": true
+      },
+      {
+        "scenario": "stale synchronization handled without HTTP error",
+        "passed": true
+      },
+      {
+        "scenario": "conflict preserves counters and best score",
+        "passed": true
+      },
+      {
+        "scenario": "valid retry after rejection succeeds",
+        "passed": true
+      },
+      {
+        "scenario": "legacy history not claimed without proof",
+        "passed": true
+      }
+    ]
+  },
+  "android": {
+    "online": {
+      "stage": "online",
+      "scope": "native Android QA clone",
+      "main_to_first_settled_frame_ms": 2600,
+      "pack_download_extract_ms": 829,
+      "pack_reimported_twice_idempotent": true,
+      "pack_advertised_bytes_approx": 2443182,
+      "documents_bytes_before": 105153961,
+      "documents_bytes_after": 111571402,
+      "native_audio_duration_ms": 4485,
+      "native_audio_completed": true,
+      "my_packs_rendered": true,
+      "quiz_rendered": true,
+      "lesson_open_to_settled_ms": 6691,
+      "saved_step_before_process_stop": 2,
+      "saved_answers_before_process_stop": 1,
+      "passed": true
+    },
+    "offline": {
+      "stage": "offline",
+      "scope": "native Android QA clone",
+      "main_to_first_settled_frame_ms": 2459,
+      "native_audio_duration_ms": 4485,
+      "native_audio_completed": true,
+      "offline_lesson_open_to_settled_ms": 1891,
+      "restored_step": 2,
+      "offline_completed": true,
+      "offline_score": 100,
+      "documents_bytes": 111571899,
+      "offline_sync_rejected_and_local_preserved": true,
+      "passed": true
+    },
+    "resync": {
+      "stage": "resync",
+      "scope": "native Android QA clone",
+      "main_to_first_settled_frame_ms": 2958,
+      "sync_success": true,
+      "invalid_token_rejected": true,
+      "stale_update_preserved_score": true,
+      "local_preserved_after_refusal": true,
+      "authentication_ui": "not implemented",
+      "expiring_token": "not implemented; invalid bearer tested",
+      "passed": true
+    },
+    "cached_audio": {
+      "scenario": "cached unit audio while offline",
+      "cached_reference_is_remote": false,
+      "native_status": "playing",
+      "passed": true
+    },
+    "cached_quizzes": {
+      "scenario": "quiz cache uniqueness after online refresh",
+      "cached_count": 2,
+      "unique_ids": 2,
+      "passed": true
+    },
+    "offline_catalogue": {
+      "scenario": "offline catalogue local access",
+      "installed_packs": 1,
+      "my_downloads_link_present": true,
+      "passed": true
+    },
+    "quiz-check": {
+      "stage": "quiz-check",
+      "scope": "native Android QA clone",
+      "main_to_first_settled_frame_ms": 2639,
+      "answer_scored_correct": true,
+      "correct_feedback_displayed": true,
+      "standalone_quiz_resets_after_reopen": true,
+      "passed": true
+    }
+  },
+  "pack_analysis": {
+    "media_references": 5,
+    "unique_media_contents": 1,
+    "uncompressed_media_bytes": 3955960,
+    "deduplicated_media_bytes": 791192,
+    "media_copies_per_hash": [
+      5
+    ]
+  },
+  "performance": {
+    "scope": "single samples, debug, emulator; no release comparison",
+    "pack_bytes_exact": 2438999,
+    "normal_debug_apk_bytes": 160981936,
+    "shell_observation_provenance": "am start -W and dumpsys meminfo outputs captured in this session; values transcribed below, not recomputed by this collector",
+    "am_start_cold_total_ms": 5136,
+    "pss_snapshot_kb": 335633,
+    "documents_delta_download_extract_bytes": 6417441,
+    "low_storage_test_executed": false,
+    "frame_profile_executed": false
+  },
+  "physical_android": {
+    "configuration": {
+      "model": "SM-A336E",
+      "android_release": "16",
+      "api": 36,
+      "abi": "arm64-v8a",
+      "display": "Physical size: 1080x2400",
+      "density": "Physical density: 450",
+      "mem_total": "MemTotal:        5518136 kB"
+    },
+    "initial_state": {
+      "model": "SM-A336E",
+      "android_release": "16",
+      "api": 36,
+      "abi": "arm64-v8a",
+      "airplane_mode_on": 0,
+      "wifi_on": 1,
+      "mobile_data": 1,
+      "qa_package_preexisting": false,
+      "human_confirmed_audio_audible": true
+    },
+    "restored_state": {
+      "airplane_mode_on": 0,
+      "wifi_on": 1,
+      "mobile_data": 1
+    },
+    "android_results": {
+      "online": {
+        "stage": "online",
+        "scope": "native Android QA clone",
+        "main_to_first_settled_frame_ms": 3914,
+        "pack_download_extract_ms": 962,
+        "pack_reimported_twice_idempotent": true,
+        "pack_advertised_bytes_approx": 2443182,
+        "documents_bytes_before": 105153961,
+        "documents_bytes_after": 111571402,
+        "native_audio_duration_ms": 4485,
+        "native_audio_completed": true,
+        "my_packs_rendered": true,
+        "quiz_rendered": true,
+        "lesson_open_to_settled_ms": 6114,
+        "saved_step_before_process_stop": 2,
+        "saved_answers_before_process_stop": 1,
+        "passed": true
+      },
+      "offline": {
+        "stage": "offline",
+        "scope": "native Android QA clone",
+        "main_to_first_settled_frame_ms": 3246,
+        "native_audio_duration_ms": 4485,
+        "native_audio_completed": true,
+        "offline_lesson_open_to_settled_ms": 1205,
+        "restored_step": 2,
+        "offline_completed": true,
+        "offline_score": 100,
+        "documents_bytes": 111571899,
+        "offline_sync_rejected_and_local_preserved": true,
+        "passed": true
+      },
+      "resync": {
+        "stage": "resync",
+        "scope": "native Android QA clone",
+        "main_to_first_settled_frame_ms": 2764,
+        "sync_success": true,
+        "invalid_token_rejected": true,
+        "stale_update_preserved_score": true,
+        "local_preserved_after_refusal": true,
+        "authentication_ui": "not implemented",
+        "expiring_token": "not implemented; invalid bearer tested",
+        "passed": true
+      },
+      "cached_audio": {
+        "scenario": "cached unit audio while offline",
+        "cached_reference_is_remote": false,
+        "native_status": "playing",
+        "passed": true
+      },
+      "cached_quizzes": {
+        "scenario": "quiz cache uniqueness after online refresh",
+        "cached_count": 2,
+        "unique_ids": 2,
+        "passed": true
+      },
+      "offline_catalogue": {
+        "scenario": "offline catalogue local access",
+        "installed_packs": 1,
+        "my_downloads_link_present": true,
+        "passed": true
+      },
+      "quiz-check": {
+        "stage": "quiz-check",
+        "scope": "native Android QA clone",
+        "main_to_first_settled_frame_ms": 2842,
+        "answer_scored_correct": true,
+        "correct_feedback_displayed": true,
+        "standalone_quiz_resets_after_reopen": true,
+        "passed": true
+      }
+    }
+  }
+}

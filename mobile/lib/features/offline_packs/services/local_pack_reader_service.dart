@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:path/path.dart' as p;
 
+import '../../../core/cache/content_source.dart';
+import '../../../core/cache/memory_content_cache.dart';
 import '../../../core/storage/app_directories.dart';
 import '../models/local_pack_model.dart';
 
@@ -25,15 +28,33 @@ class LocalPackReaderService {
     final dirs = packsDir
         .listSync()
         .whereType<Directory>()
-        .where((dir) => File('${dir.path}/metadata.json').existsSync())
+        .where((dir) {
+          final name = p.basename(dir.path);
+          if (name.contains('_staging_') || name.contains('_bak_')) {
+            return false;
+          }
+          return File('${dir.path}/metadata.json').existsSync();
+        })
         .toList();
 
-    final packs = <LocalPackModel>[];
+    final bySlug = <String, LocalPackModel>{};
 
     for (final dir in dirs) {
-      packs.add(await _readFromDirectory(dir));
+      final localMetadata = await _readJsonMap('${dir.path}/local_metadata.json');
+      if (localMetadata.containsKey('status') &&
+          localMetadata['status'] != 'validated') {
+        continue;
+      }
+
+      final pack = await _readFromDirectory(dir);
+      final key = pack.slug.isNotEmpty ? pack.slug : p.basename(dir.path);
+      final existing = bySlug[key];
+      if (existing == null || pack.version >= existing.version) {
+        bySlug[key] = pack;
+      }
     }
 
+    final packs = bySlug.values.toList();
     packs.sort((a, b) => a.slug.compareTo(b.slug));
 
     return packs;
@@ -169,5 +190,8 @@ class LocalPackReaderService {
     if (await zipFile.exists()) {
       await zipFile.delete();
     }
+
+    MemoryContentCache.instance.clear();
+    ContentSourceState.instance.clear();
   }
 }

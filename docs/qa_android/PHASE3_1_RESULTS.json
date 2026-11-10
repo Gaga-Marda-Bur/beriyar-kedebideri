@@ -1,0 +1,82 @@
+{
+  "date": "2026-11-09",
+  "phase": "3.1",
+  "decision": "GO",
+  "comment": "Les 4 anomalies Android confirmées sont entièrement corrigées et validées.",
+  "physical_android_validated": true,
+  "physical_device": "Samsung SM-A336E (USB debugging authorized)",
+  "defects_summary": {
+    "P3-01": {
+      "name": "Résolution des fichiers audio locaux en cache hors ligne",
+      "status": "FIXED",
+      "root_cause": "CachedContentService ne résolvait pas les URIs distantes du cache unifié contre les packs locaux décompressés. AudioUrlPlayer échouait sur timeout réseau en mode avion.",
+      "fix": "Implémentation de _resolveAudioUri / _resolveMediaUri dans CachedContentService avec priorité aux fichiers locaux validés, préservation du streaming en ligne et rejet immédiat des fichiers corrompus/0 octet dans AudioUrlPlayer.",
+      "tests_passed": [
+        "le cache hors ligne résout les URLs audio distantes vers les fichiers locaux du pack",
+        "streaming distant conservé en ligne quand aucun média local disponible",
+        "rejet des chemins locaux obsolètes et des fichiers corrompus de 0 octet"
+      ]
+    },
+    "P3-02": {
+      "name": "Doublons de quiz lors des réimports/rechargements",
+      "status": "FIXED",
+      "root_cause": "Dans CachedContentService.loadQuizzes, le filtrage existant utilisait quiz.unitSlug != unitSlug. Quand unitSlug était null, la liste complète précédente était conservée et ré-ajoutée, multipliant les doublons.",
+      "fix": "Déduplication stricte par identifiant stable (q.id), remplacement complet de la collection globale quand unitSlug est null, et auto-guérison sur disque dès la lecture du cache.",
+      "tests_passed": [
+        "loadQuizzes répété sans unitSlug est idempotent et ne duplique pas les quiz",
+        "auto-réparation et déduplication par identifiant stable sur le cache existant"
+      ]
+    },
+    "P3-03": {
+      "name": "Accès aux packs hors ligne masqué en absence de réseau",
+      "status": "FIXED",
+      "root_cause": "OfflinePacksScreen fusionnait l'appel API fetchPacks() avec la lecture locale sans isolation d'erreur. Une SocketException faisait basculer l'écran sur un état d'erreur global qui masquait le bouton 'Mes téléchargements'.",
+      "fix": "Séparation du chargement local et distant dans _load(), affichage garanti de la barre d'action 'Mes téléchargements', message informatif mode hors ligne / état vide, et points d'accès directs ajoutés dans LearningPathScreen et HomeScreen.",
+      "tests_passed": [
+        "le catalogue hors ligne affiche les packs installés et le lien Mes téléchargements",
+        "état vide informatif quand aucun pack n’est installé hors ligne"
+      ]
+    },
+    "P3-04": {
+      "name": "Cohérence feedback et score du quiz avec options mélangées",
+      "status": "FIXED",
+      "root_cause": "Dans QuizScreen, les options étaient mélangées dans _optionOrders. Le calcul du score résolvait correctement l'index mélangé, mais l'affichage du feedback et de la carte comparait selectedIndex à correctIndex non mélangé.",
+      "fix": "Centralisation de la vérité unique : correctDisplayIndex = optionOrder.indexOf(correctIndex); isSelectedCorrect = (selectedIndex == correctDisplayIndex). Utilisé simultanément pour le score, le message feedback, l'icône et la bordure.",
+      "tests_passed": [
+        "une bonne réponse avec options mélangées affiche le feedback positif et incrémente le score",
+        "une mauvaise réponse affiche le feedback d’encouragement et ne monte pas le score"
+      ]
+    }
+  },
+  "test_suites_execution": {
+    "flutter_defects_suite": {
+      "command": "flutter test test/phase3_1_defects_test.dart",
+      "tests_total": 9,
+      "passed": 9,
+      "failed": 0
+    },
+    "flutter_full_suite": {
+      "command": "flutter test",
+      "tests_total": 82,
+      "passed": 82,
+      "failed": 0
+    },
+    "flutter_analyze": {
+      "command": "flutter analyze",
+      "issues": 0,
+      "status": "clean"
+    },
+    "backend_django_suite": {
+      "command": "python docs/run_backend_checks.py",
+      "tests_total": 94,
+      "passed": 94,
+      "failed": 0
+    },
+    "webapp_js_suite": {
+      "command": "node --test backend/webapp/tests_audio_player.cjs",
+      "tests_total": 3,
+      "passed": 3,
+      "failed": 0
+    }
+  }
+}

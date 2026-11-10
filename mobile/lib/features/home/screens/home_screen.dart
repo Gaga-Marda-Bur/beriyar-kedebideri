@@ -119,6 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       online: online,
                       loading: snapshot.connectionState ==
                           ConnectionState.waiting,
+                      onTapOffline: () => _openRoute('/offline-packs'),
                     );
                   },
                 ),
@@ -219,10 +220,12 @@ class _HeroHomeCard extends StatelessWidget {
 class _ConnectionStatusCard extends StatelessWidget {
   final bool online;
   final bool loading;
+  final VoidCallback? onTapOffline;
 
   const _ConnectionStatusCard({
     required this.online,
     required this.loading,
+    this.onTapOffline,
   });
 
   @override
@@ -234,54 +237,70 @@ class _ConnectionStatusCard extends StatelessWidget {
         online ? loc.onlineModeSubtitle : loc.offlineModeSubtitle;
 
     return GlassCard(
-      child: Row(
-        children: [
-          Container(
-            width: 54,
-            height: 54,
-            decoration: BoxDecoration(
-              color: AppColors.gold.withValues(alpha: 0.13),
-              borderRadius: BorderRadius.circular(18),
-              border: Border.all(
-                color: AppColors.gold.withValues(alpha: 0.35),
-              ),
-            ),
-            child: loading
-                ? const Padding(
-                    padding: EdgeInsets.all(14),
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : Icon(
-                    online
-                        ? Icons.cloud_done_rounded
-                        : Icons.offline_bolt_rounded,
-                    color: AppColors.gold,
-                    size: 30,
+      padding: EdgeInsets.zero,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(28),
+        onTap: !online && !loading ? onTapOffline : null,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            children: [
+              Container(
+                width: 54,
+                height: 54,
+                decoration: BoxDecoration(
+                  color: AppColors.gold.withValues(alpha: 0.13),
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(
+                    color: AppColors.gold.withValues(alpha: 0.35),
                   ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  loc.connectionStatus,
-                  style: Theme.of(context).textTheme.labelLarge,
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium,
+                child: loading
+                    ? const Padding(
+                        padding: EdgeInsets.all(14),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Icon(
+                        online
+                            ? Icons.cloud_done_rounded
+                            : Icons.offline_bolt_rounded,
+                        color: AppColors.gold,
+                        size: 30,
+                      ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      loc.connectionStatus,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      subtitle,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 3),
-                Text(
-                  subtitle,
-                  style: Theme.of(context).textTheme.bodySmall,
+              ),
+              if (!online && !loading) ...[
+                const SizedBox(width: 8),
+                const Icon(
+                  Icons.arrow_forward_ios_rounded,
+                  size: 16,
+                  color: AppColors.gold,
                 ),
               ],
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

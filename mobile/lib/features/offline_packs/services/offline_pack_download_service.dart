@@ -59,7 +59,9 @@ class OfflinePackDownloadService {
     await zipFile.writeAsBytes(bytes, flush: true);
 
     // 2. Extraction sécurisée dans un répertoire de staging temporaire (A05)
-    final stagingDir = Directory('${zipFile.parent.path}/${pack.slug}_v${pack.version}_staging_${DateTime.now().millisecondsSinceEpoch}');
+    final stagingDir = Directory(
+      '${zipFile.parent.path}/${pack.slug}_v${pack.version}_staging_${DateTime.now().millisecondsSinceEpoch}',
+    );
     if (await stagingDir.exists()) {
       await stagingDir.delete(recursive: true);
     }
@@ -70,7 +72,9 @@ class OfflinePackDownloadService {
       final archive = ZipDecoder().decodeBuffer(inputStream);
 
       if (archive.files.length > maxFileCount) {
-        throw Exception('Archive contains too many files (${archive.files.length} > $maxFileCount).');
+        throw Exception(
+          'Archive contains too many files (${archive.files.length} > $maxFileCount).',
+        );
       }
 
       int totalExtractedBytes = 0;
@@ -86,17 +90,23 @@ class OfflinePackDownloadService {
           throw Exception('Hostile file path detected in ZIP archive: ${file.name}');
         }
 
-        final destinationPath = p.normalize(p.join(stagingDir.path, relativeNormalized));
+        final destinationPath =
+            p.normalize(p.join(stagingDir.path, relativeNormalized));
         final canonicalDest = p.canonicalize(destinationPath);
 
-        if (!p.isWithin(canonicalStagingPath, canonicalDest) && canonicalDest != canonicalStagingPath) {
-          throw Exception('Path traversal attempt outside target folder: ${file.name}');
+        if (!p.isWithin(canonicalStagingPath, canonicalDest) &&
+            canonicalDest != canonicalStagingPath) {
+          throw Exception(
+            'Path traversal attempt outside target folder: ${file.name}',
+          );
         }
 
         if (file.isFile) {
           totalExtractedBytes += file.size;
           if (totalExtractedBytes > maxTotalBytes) {
-            throw Exception('Extracted archive size exceeds safety limit of $maxTotalBytes bytes.');
+            throw Exception(
+              'Extracted archive size exceeds safety limit of $maxTotalBytes bytes.',
+            );
           }
 
           final outputFile = File(destinationPath);
@@ -111,7 +121,6 @@ class OfflinePackDownloadService {
       }
 
       // 3. Validation de structure dans le dossier staging avant bascule atomique
-      // Le manifeste ou metadata.json peut se trouver à la racine du ZIP ou dans un sous-dossier slug/
       File? manifestFile = File('${stagingDir.path}/metadata.json');
       if (!await manifestFile.exists()) {
         manifestFile = File('${stagingDir.path}/${pack.slug}/metadata.json');
@@ -121,15 +130,14 @@ class OfflinePackDownloadService {
         throw Exception('Invalid pack structure: metadata.json missing in archive.');
       }
 
-      // Si le contenu est niché dans slug/, on promeut son contenu à la racine du staging
       final nestedSlugDir = Directory('${stagingDir.path}/${pack.slug}');
-      if (await nestedSlugDir.exists() && File('${nestedSlugDir.path}/metadata.json').existsSync()) {
+      if (await nestedSlugDir.exists() &&
+          File('${nestedSlugDir.path}/metadata.json').existsSync()) {
         for (final entity in nestedSlugDir.listSync()) {
           final targetPath = p.join(stagingDir.path, p.basename(entity.path));
           if (entity is File) {
             await entity.copy(targetPath);
           } else if (entity is Directory) {
-            // Copier récursivement
             await _copyDirectory(entity, Directory(targetPath));
           }
         }
@@ -154,21 +162,35 @@ class OfflinePackDownloadService {
         version: pack.version,
       );
 
-      final backupDir = Directory('${targetDir.parent.path}/${pack.slug}_v${pack.version}_bak_${DateTime.now().millisecondsSinceEpoch}');
+      final backupDir = Directory(
+        '${targetDir.parent.path}/${pack.slug}_v${pack.version}_bak_${DateTime.now().millisecondsSinceEpoch}',
+      );
 
-      // Si une version existait déjà, on la conserve temporairement en backup
       if (await targetDir.exists()) {
         await targetDir.rename(backupDir.path);
       }
 
       try {
         await stagingDir.rename(targetDir.path);
-        // Succès de la bascule : supprimer le backup
         if (await backupDir.exists()) {
           await backupDir.delete(recursive: true);
         }
+
+        // Nettoyer les éventuelles anciennes versions ou backups résiduels du même slug (P3-02)
+        final parentDir = targetDir.parent;
+        if (await parentDir.exists()) {
+          final prefix = '${pack.slug}_v';
+          final targetName = p.basename(targetDir.path);
+          for (final entity in parentDir.listSync().whereType<Directory>()) {
+            final name = p.basename(entity.path);
+            if (name != targetName && name.startsWith(prefix)) {
+              try {
+                await entity.delete(recursive: true);
+              } catch (_) {}
+            }
+          }
+        }
       } catch (renameErr) {
-        // En cas d'erreur lors du renommage, restaurer l'ancienne version
         if (await backupDir.exists()) {
           await backupDir.rename(targetDir.path);
         }
@@ -192,7 +214,10 @@ class OfflinePackDownloadService {
     );
   }
 
-  static Future<void> _copyDirectory(Directory source, Directory destination) async {
+  static Future<void> _copyDirectory(
+    Directory source,
+    Directory destination,
+  ) async {
     await destination.create(recursive: true);
     for (final entity in source.listSync(recursive: false)) {
       final destPath = p.join(destination.path, p.basename(entity.path));
@@ -213,7 +238,6 @@ class OfflinePackDownloadService {
     final metadataFile = File('${dir.path}/metadata.json');
     final localMetadataFile = File('${dir.path}/local_metadata.json');
 
-    // Vérifie à la fois la présence des métadonnées du pack et de la validation locale (A05)
     if (!await metadataFile.exists() || !await localMetadataFile.exists()) {
       return false;
     }

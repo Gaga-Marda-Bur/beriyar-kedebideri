@@ -4,6 +4,16 @@ from django.db import models
 from learning.models import LearningUnit
 
 
+class ProgressDeviceCredential(models.Model):
+    """One immutable installation credential; never serialized to clients."""
+    device_id = models.CharField(max_length=120, primary_key=True)
+    token_digest = models.CharField(max_length=64)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
+                             on_delete=models.SET_NULL, related_name='+')
+    # Remains true after account deletion: an old guest token must not reopen it.
+    account_bound = models.BooleanField(default=False)
+
+
 class UnitProgress(models.Model):
     STARTED = 'started'
     REVIEW = 'review'
@@ -22,6 +32,8 @@ class UnitProgress(models.Model):
         null=True,
         related_name='unit_progress_records',
     )
+
+    account_bound = models.BooleanField(default=False)
 
     device_id = models.CharField(
         max_length=120,
@@ -91,3 +103,11 @@ class UnitProgress(models.Model):
 
     def __str__(self):
         return f'{self.device_id} — {self.unit.slug} — {self.status}'
+
+    def save(self, *args, **kwargs):
+        # SET_NULL on account deletion must never turn private history into guest data.
+        if self.user_id:
+            self.account_bound = True
+            if kwargs.get('update_fields') is not None:
+                kwargs['update_fields'] = set(kwargs['update_fields']) | {'account_bound'}
+        return super().save(*args, **kwargs)

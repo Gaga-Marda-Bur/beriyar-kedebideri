@@ -89,6 +89,62 @@ class CharacterModel {
     );
   }
 
+  CharacterModel copyWith({
+    int? id,
+    String? symbol,
+    String? unicodeCode,
+    String? name,
+    String? nameFr,
+    String? nameEn,
+    String? nameAr,
+    String? latinTranscription,
+    String? arabicTranscription,
+    String? latinGrapheme,
+    String? phonemeIpa,
+    String? tonePattern,
+    String? vowelLength,
+    Map<String, dynamic>? strokePathData,
+    Map<String, dynamic>? strokeOrderRules,
+    String? characterType,
+    int? orderIndex,
+    String? description,
+    String? validationStatus,
+    bool? isActive,
+    bool? availableOffline,
+    String? audioUrl,
+    String? slowAudioUrl,
+    String? phonemeAudioUrl,
+    String? letterNameAudioUrl,
+  }) {
+    return CharacterModel(
+      id: id ?? this.id,
+      symbol: symbol ?? this.symbol,
+      unicodeCode: unicodeCode ?? this.unicodeCode,
+      name: name ?? this.name,
+      nameFr: nameFr ?? this.nameFr,
+      nameEn: nameEn ?? this.nameEn,
+      nameAr: nameAr ?? this.nameAr,
+      latinTranscription: latinTranscription ?? this.latinTranscription,
+      arabicTranscription: arabicTranscription ?? this.arabicTranscription,
+      latinGrapheme: latinGrapheme ?? this.latinGrapheme,
+      phonemeIpa: phonemeIpa ?? this.phonemeIpa,
+      tonePattern: tonePattern ?? this.tonePattern,
+      vowelLength: vowelLength ?? this.vowelLength,
+      strokePathData: strokePathData ?? this.strokePathData,
+      strokeOrderRules: strokeOrderRules ?? this.strokeOrderRules,
+      characterType: characterType ?? this.characterType,
+      orderIndex: orderIndex ?? this.orderIndex,
+      description: description ?? this.description,
+      validationStatus: validationStatus ?? this.validationStatus,
+      isActive: isActive ?? this.isActive,
+      availableOffline: availableOffline ?? this.availableOffline,
+      audioUrl: audioUrl ?? this.audioUrl,
+      slowAudioUrl: slowAudioUrl ?? this.slowAudioUrl,
+      phonemeAudioUrl: phonemeAudioUrl ?? this.phonemeAudioUrl,
+      letterNameAudioUrl: letterNameAudioUrl ?? this.letterNameAudioUrl,
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

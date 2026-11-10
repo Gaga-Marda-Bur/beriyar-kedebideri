@@ -1,0 +1,54 @@
+{
+  "scope": "Synthetic in-memory SQLite; local inventory read-only",
+  "model_migration_consistency": "passed",
+  "global_progress_status": 403,
+  "legacy_read_with_unregistered_token": {
+    "status": 200,
+    "count": 1
+  },
+  "legacy_claim": {
+    "status": 200,
+    "synced": 1,
+    "token_claimed": true
+  },
+  "same_device_new_unit_other_token": {
+    "synced": 1,
+    "errors": 0
+  },
+  "other_unit_token_reads_existing_history": {
+    "status": 200,
+    "count": 2
+  },
+  "malformed_token": {
+    "status": 500
+  },
+  "dictionary_synthetic_baseline": [
+    {
+      "words": 101,
+      "status": 200,
+      "queries": 7,
+      "html_bytes": 93956,
+      "elapsed_ms_single_sample": 31.9
+    },
+    {
+      "words": 1001,
+      "status": 200,
+      "queries": 7,
+      "html_bytes": 823856,
+      "elapsed_ms_single_sample": 69.0
+    }
+  ],
+  "language_switch_drops_search": true,
+  "local_data": {
+    "duplicate_exact_word_groups": 0,
+    "unit_tracing_enabled": 0,
+    "word_statuses": {
+      "draft": 3,
+      "published": 1
+    },
+    "pack_statuses": {
+      "published": 1
+    },
+    "applied_migrations": 36
+  }
+}

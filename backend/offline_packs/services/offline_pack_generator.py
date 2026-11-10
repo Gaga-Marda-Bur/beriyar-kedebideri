@@ -10,6 +10,7 @@ from django.utils import timezone
 
 from audio_assets.utils import get_linked_audio_file
 from offline_packs.models import LessonPack
+from quizzes.serializers import QuizQuestionSerializer
 
 
 class OfflinePackGenerator:
@@ -368,17 +369,10 @@ class OfflinePackGenerator:
             'items__word',
             'items__audio_links__audio_asset',
         ):
-            intro_audio_path = self._copy_audio(
-                pack_dir=pack_dir,
-                file_field=get_linked_audio_file(lesson, role='normal'),
-                prefix=f'lesson_{lesson.id}_intro',
-            )
-
-            cover_image_path = self._copy_image(
-                pack_dir=pack_dir,
-                file_field=lesson.cover_image,
-                prefix=f'lesson_{lesson.id}_cover',
-            )
+            # Lesson has oral-introduction text, but no audio_links or cover image.
+            # Retain the legacy pack keys without inventing a source recording.
+            intro_audio_path = None
+            cover_image_path = None
 
             items_payload = []
 
@@ -388,40 +382,70 @@ class OfflinePackGenerator:
                     file_field=get_linked_audio_file(item, role='normal'),
                     prefix=f'lesson_item_{item.id}',
                 )
+                audio_roles = self._copy_linked_audio_roles(pack_dir, item, {
+                    'slow_audio_url': 'slow',
+                    'prompt_audio_url': 'prompt',
+                    'explanation_audio_url': 'explanation',
+                }, f'lesson_item_{item.id}')
+                image_path = self._copy_image(pack_dir, item.image, f'lesson_item_{item.id}')
 
                 items_payload.append({
                     'id': item.id,
+                    'lesson': lesson.id,
                     'item_type': item.item_type,
                     'order_index': item.order_index,
                     'character': item.character_id,
+                    'character_id': item.character_id,
                     'character_symbol': item.character.symbol if item.character else '',
                     'word': item.word_id,
+                    'word_id': item.word_id,
                     'word_beriya_text': item.word.beriya_text if item.word else '',
+                    'title_fr': item.title_fr,
+                    'title_en': item.title_en,
+                    'title_ar': item.title_ar,
                     'oral_prompt_fr': item.oral_prompt_fr,
                     'oral_prompt_en': item.oral_prompt_en,
                     'oral_prompt_ar': item.oral_prompt_ar,
                     'explanation_fr': item.explanation_fr,
                     'explanation_en': item.explanation_en,
                     'explanation_ar': item.explanation_ar,
-                    'writing_hint': item.writing_hint,
+                    'writing_hint': item.writing_hint_fr,
+                    'writing_hint_fr': item.writing_hint_fr,
+                    'writing_hint_en': item.writing_hint_en,
+                    'writing_hint_ar': item.writing_hint_ar,
+                    'repeat_count': item.repeat_count,
+                    'is_active': item.is_active,
+                    'available_offline': item.available_offline,
+                    'image_url': image_path,
                     'audio': item_audio_path,
                     'audio_url': item_audio_path,
+                    **audio_roles,
                 })
 
             results.append({
                 'id': lesson.id,
                 'unit': lesson.unit_id,
                 'unit_slug': lesson.unit.slug,
+                'unit_title_fr': lesson.unit.title_fr,
+                'unit_title_en': lesson.unit.title_en,
+                'unit_title_ar': lesson.unit.title_ar,
                 'slug': lesson.slug,
                 'title_fr': lesson.title_fr,
                 'title_en': lesson.title_en,
                 'title_ar': lesson.title_ar,
-                'short_description_fr': lesson.short_description_fr,
-                'short_description_en': lesson.short_description_en,
-                'short_description_ar': lesson.short_description_ar,
+                'short_description_fr': '',
+                'short_description_en': '',
+                'short_description_ar': '',
                 'description_fr': lesson.description_fr,
                 'description_en': lesson.description_en,
                 'description_ar': lesson.description_ar,
+                'oral_intro_fr': lesson.oral_intro_fr,
+                'oral_intro_en': lesson.oral_intro_en,
+                'oral_intro_ar': lesson.oral_intro_ar,
+                'estimated_minutes': lesson.estimated_minutes,
+                'items_count': len(items_payload),
+                'is_active': lesson.is_active,
+                'available_offline': lesson.available_offline,
                 'level': lesson.level,
                 'order_index': lesson.order_index,
                 'status': lesson.status,
@@ -440,10 +464,10 @@ class OfflinePackGenerator:
         quizzes_qs = self.pack.quiz_questions.filter(is_active=True)
         if self.pack.status == 'published':
             quizzes_qs = quizzes_qs.filter(status='published')
-        for question in quizzes_qs.select_related('unit', 'character', 'word').prefetch_related('options'):
+        for question in quizzes_qs.select_related('unit', 'lesson', 'character', 'word').prefetch_related('options', 'audio_links__audio_asset'):
             prompt_audio_path = self._copy_audio(
                 pack_dir=pack_dir,
-                file_field=get_linked_audio_file(question, role='normal'),
+                file_field=get_linked_audio_file(question, role='question'),
                 prefix=f'quiz_question_{question.id}',
             )
 
@@ -466,7 +490,12 @@ class OfflinePackGenerator:
                     'text_ar_out': option.text_ar or (option.character.symbol if option.character else '') or (option.word.beriya_text if option.word else ''),
                 })
 
-            results.append({
+            # Reuse the API's names/text/answer contract consumed by Flutter.
+            # Only pack media paths and historical aliases differ from the API.
+            payload = dict(QuizQuestionSerializer(question).data)
+            for option_data, option in zip(payload['options'], question.options.all()):
+                option_data['image_url'] = self._copy_image(pack_dir, option.image, f'quiz_option_{option.id}')
+            payload.update({
                 'id': question.id,
                 'unit': question.unit_id,
                 'unit_slug': question.unit.slug if question.unit else '',
@@ -482,6 +511,13 @@ class OfflinePackGenerator:
                 'oral_prompt_ar': question.oral_prompt_ar,
                 'audio': prompt_audio_path,
                 'audio_url': prompt_audio_path,
+                'question_audio_url': prompt_audio_path,
+                'question_image_url': self._copy_image(pack_dir, question.question_image, f'quiz_question_{question.id}'),
+                **self._copy_linked_audio_roles(pack_dir, question, {
+                    'question_slow_audio_url': 'slow_question',
+                    'explanation_audio_url': 'explanation',
+                    'correction_audio_url': 'correction',
+                }, f'quiz_question_{question.id}'),
                 'character': question.character_id,
                 'character_symbol': question.character.symbol if question.character else '',
                 'word': question.word_id,
@@ -489,13 +525,19 @@ class OfflinePackGenerator:
                 'min_options_required': question.min_options_required,
                 'order_index': question.order_index,
                 'status': question.status,
-                'options': option_payload,
-                'options_text_fr': [option['text_fr_out'] for option in option_payload],
-                'options_text_en': [option['text_en_out'] for option in option_payload],
-                'options_text_ar': [option['text_ar_out'] for option in option_payload],
             })
+            for canonical, legacy in zip(payload['options'], option_payload):
+                # Keep every previously exported option key without losing image paths.
+                canonical.update(legacy)
+            results.append(payload)
 
         return results
+
+    def _copy_linked_audio_roles(self, pack_dir, obj, fields, prefix):
+        return {
+            field: self._copy_audio(pack_dir, get_linked_audio_file(obj, role=role), f'{prefix}_{role}')
+            for field, role in fields.items()
+        }
 
     def _copy_audio(self, pack_dir, file_field, prefix):
         return self._copy_media(pack_dir, file_field, 'audio', prefix)

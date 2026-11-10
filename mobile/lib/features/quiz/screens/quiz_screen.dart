@@ -13,15 +13,24 @@ import '../../../core/cache/content_source.dart';
 import '../../../core/widgets/content_source_badge.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key});
+  final String? unitSlug;
+  final CachedContentService? cachedContentService;
+  final AudioUrlPlayer? audioPlayer;
+
+  const QuizScreen({
+    super.key,
+    this.unitSlug,
+    this.cachedContentService,
+    this.audioPlayer,
+  });
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  final CachedContentService _cachedContentService = CachedContentService();
-  final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
+  late final CachedContentService _cachedContentService;
+  late final AudioUrlPlayer _audioPlayer;
 
   late Future<List<QuizQuestionModel>> _future;
 
@@ -29,12 +38,16 @@ class _QuizScreenState extends State<QuizScreen> {
   List<List<int>> _optionOrders = [];
   int _currentIndex = 0;
   int? _selectedIndex;
+  bool? _lastAnswerCorrect;
   int _correctCount = 0;
   bool _finished = false;
 
   @override
   void initState() {
     super.initState();
+    _cachedContentService =
+        widget.cachedContentService ?? CachedContentService();
+    _audioPlayer = widget.audioPlayer ?? AudioUrlPlayer();
     _future = _loadQuizzes();
   }
 
@@ -45,7 +58,7 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Future<List<QuizQuestionModel>> _loadQuizzes() async {
-    final items = await _cachedContentService.loadQuizzes();
+    final items = await _cachedContentService.loadQuizzes(unitSlug: widget.unitSlug);
 
     items.sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
 
@@ -81,6 +94,7 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(() {
       _currentIndex = 0;
       _selectedIndex = null;
+      _lastAnswerCorrect = null;
       _correctCount = 0;
       _finished = false;
       _future = _loadQuizzes();
@@ -149,14 +163,16 @@ class _QuizScreenState extends State<QuizScreen> {
 
     final question = _questions[_currentIndex];
     final order = _optionOrders[_currentIndex];
-
-    final originalIndex = order[displayIndex];
-    final correctIndex = question.correctIndex;
+    final isCorrect = question.evaluateOptionChoice(
+      displayIndex: displayIndex,
+      optionOrder: order,
+    );
 
     setState(() {
       _selectedIndex = displayIndex;
+      _lastAnswerCorrect = isCorrect;
 
-      if (originalIndex == correctIndex) {
+      if (isCorrect) {
         _correctCount++;
       }
     });
@@ -173,6 +189,7 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(() {
       _currentIndex++;
       _selectedIndex = null;
+      _lastAnswerCorrect = null;
     });
   }
 
@@ -180,6 +197,7 @@ class _QuizScreenState extends State<QuizScreen> {
     setState(() {
       _currentIndex = 0;
       _selectedIndex = null;
+      _lastAnswerCorrect = null;
       _correctCount = 0;
       _finished = false;
     });
@@ -281,6 +299,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   currentIndex: _currentIndex,
                   total: _questions.length,
                   selectedIndex: _selectedIndex,
+                  lastAnswerCorrect: _lastAnswerCorrect,
                   correctCount: _correctCount,
                   optionOrder: _optionOrders[_currentIndex],
                   questionText: _questionText,
@@ -305,6 +324,7 @@ class _QuizQuestionView extends StatelessWidget {
   final int currentIndex;
   final int total;
   final int? selectedIndex;
+  final bool? lastAnswerCorrect;
   final int correctCount;
   final List<int> optionOrder;
   final String Function(QuizQuestionModel, String) questionText;
@@ -320,6 +340,7 @@ class _QuizQuestionView extends StatelessWidget {
     required this.currentIndex,
     required this.total,
     required this.selectedIndex,
+    required this.lastAnswerCorrect,
     required this.correctCount,
     required this.questionText,
     required this.oralPrompt,
@@ -365,8 +386,13 @@ class _QuizQuestionView extends StatelessWidget {
   Widget build(BuildContext context) {
     final lang = Localizations.localeOf(context).languageCode;
     final progress = (currentIndex + 1) / total;
-    final correctIndex = question.correctIndex;
     final hasAnswered = selectedIndex != null;
+    final isSelectedCorrect = lastAnswerCorrect ??
+        (selectedIndex != null &&
+            question.evaluateOptionChoice(
+              displayIndex: selectedIndex!,
+              optionOrder: optionOrder,
+            ));
 
     return ListView(
       padding: const EdgeInsets.all(20),
@@ -453,34 +479,12 @@ class _QuizQuestionView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 18),
-        for (int displayIndex = 0; displayIndex < optionOrder.length; displayIndex++) ...[
-          Builder(
-            builder: (context) {
-              final originalIndex = optionOrder[displayIndex];
-              final option = question.options[originalIndex];
-              final correctDisplayIndex = optionOrder.indexOf(correctIndex);
-
-              return _AnswerCard(
-                option: option,
-                text: optionText(option, lang),
-                isBeriya: isBeriyaOption(option),
-                isSelected: selectedIndex == displayIndex,
-                hasAnswered: hasAnswered,
-                isSelectedCorrect:
-                    selectedIndex == displayIndex && displayIndex == correctDisplayIndex,
-                onTap: () => onSelect(displayIndex),
-              );
-            },
-          ),
-          const SizedBox(height: 12),
-        ],
         if (hasAnswered) ...[
-          const SizedBox(height: 8),
           GlassCard(
             child: Row(
               children: [
                 Icon(
-                  selectedIndex == correctIndex
+                  isSelectedCorrect
                       ? Icons.emoji_events_rounded
                       : Icons.info_rounded,
                   color: AppColors.gold,
@@ -488,7 +492,7 @@ class _QuizQuestionView extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    selectedIndex == correctIndex
+                    isSelectedCorrect
                         ? 'Correct, très bien !'
                         : 'Pas grave, écoute encore et continue.',
                     style: const TextStyle(fontWeight: FontWeight.w800),
@@ -497,7 +501,7 @@ class _QuizQuestionView extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
             child: FilledButton.icon(
@@ -508,6 +512,27 @@ class _QuizQuestionView extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 14),
+        ],
+        for (int displayIndex = 0; displayIndex < optionOrder.length; displayIndex++) ...[
+          Builder(
+            builder: (context) {
+              final originalIndex = optionOrder[displayIndex];
+              final option = question.options[originalIndex];
+
+              return _AnswerCard(
+                option: option,
+                text: optionText(option, lang),
+                isBeriya: isBeriyaOption(option),
+                isSelected: selectedIndex == displayIndex,
+                hasAnswered: hasAnswered,
+                isSelectedCorrect:
+                    selectedIndex == displayIndex && isSelectedCorrect,
+                onTap: () => onSelect(displayIndex),
+              );
+            },
+          ),
+          const SizedBox(height: 12),
         ],
       ],
     );

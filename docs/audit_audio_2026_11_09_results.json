@@ -1,0 +1,237 @@
+{
+  "scope": "Local SQLite read-only; no production access or perceptual audio assessment",
+  "metadata_filled": {
+    "speaker_name": 2,
+    "dialect_region": 1,
+    "mime_type": 2,
+    "duration_ms": 0,
+    "transcript": 1,
+    "recording_quality": 0
+  },
+  "asset_counts": {
+    "audio_type": {
+      "character": 1,
+      "quiz_prompt": 1
+    },
+    "speed": {
+      "normal": 2
+    },
+    "validation_status": {
+      "published": 2
+    },
+    "available_offline": {
+      "1": 2
+    }
+  },
+  "dedicated_rights_fields": [],
+  "assets": [
+    {
+      "id": "1bb9f0cc13b54d01a662fab130e79a3e",
+      "file": "audio_assets/files/arkap.wav",
+      "exists_locally": true,
+      "bytes": 791192,
+      "sha256": "255e7121ad2d8de443aebad7781c3fa695b81a2425f1cce046420ee83f9db459",
+      "header_hex": "5249464690120c0057415645666d7420",
+      "metadata_duration_ms": null,
+      "notes_present": false,
+      "wav_technical": {
+        "channels": 2,
+        "sample_rate_hz": 44100,
+        "sample_width_bytes": 2,
+        "duration_seconds": 4.485
+      }
+    },
+    {
+      "id": "35f83da127f144feb3b70a27c6b40032",
+      "file": "audio_assets/files/I.mp3",
+      "exists_locally": true,
+      "bytes": 9643,
+      "sha256": "1f2b39f0aec90930f2013556fd106d0e50cd34e0b1869e33978d85e2487e947b",
+      "header_hex": "fffb9064000000000000000000000000",
+      "metadata_duration_ms": null,
+      "notes_present": false
+    }
+  ],
+  "links": {
+    "characters": {
+      "total": 1,
+      "roles": {
+        "normal": 1
+      },
+      "published_file_reference": 1
+    },
+    "words": {
+      "total": 1,
+      "roles": {
+        "normal": 1
+      },
+      "published_file_reference": 1
+    },
+    "lesson_items": {
+      "total": 1,
+      "roles": {
+        "normal": 1
+      },
+      "published_file_reference": 1
+    },
+    "quiz_questions": {
+      "total": 3,
+      "roles": {
+        "question": 3
+      },
+      "published_file_reference": 3
+    }
+  },
+  "units": [
+    {
+      "id": 1,
+      "status": "published",
+      "characters_selected": 5,
+      "characters_with_any_published_audio_reference": 1,
+      "words_selected_or_targeted": 1,
+      "words_with_any_published_audio_reference": 1
+    },
+    {
+      "id": 2,
+      "status": "published",
+      "characters_selected": 2,
+      "characters_with_any_published_audio_reference": 0,
+      "words_selected_or_targeted": 1,
+      "words_with_any_published_audio_reference": 0
+    },
+    {
+      "id": 3,
+      "status": "published",
+      "characters_selected": 2,
+      "characters_with_any_published_audio_reference": 1,
+      "words_selected_or_targeted": 1,
+      "words_with_any_published_audio_reference": 0
+    },
+    {
+      "id": 4,
+      "status": "published",
+      "characters_selected": 2,
+      "characters_with_any_published_audio_reference": 0,
+      "words_selected_or_targeted": 1,
+      "words_with_any_published_audio_reference": 0
+    }
+  ],
+  "lessons": [
+    {
+      "id": 1,
+      "status": "published",
+      "items": 1,
+      "items_with_any_direct_or_related_published_audio_reference": 1
+    }
+  ],
+  "no_ena": {
+    "publications": 1,
+    "with_video_reference": 0,
+    "with_audio_reference": 1
+  },
+  "media_files": [
+    {
+      "path": "backend/media/audio_assets/files/arkap.wav",
+      "bytes": 791192,
+      "referenced_by_audioasset": true
+    },
+    {
+      "path": "backend/media/audio_assets/files/I.mp3",
+      "bytes": 9643,
+      "referenced_by_audioasset": true
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_0RPaP0n.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_2e4TAaS.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_6xo5izA.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_Btlhnal.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_EsvhZcE.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_fLfGmYW.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_GQago0T.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_I0QkkJm.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_iWIUqnT.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_ouifv79.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_QVtcfNz.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_R7HnrDS.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_rC3Dt19.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_tKUWmmi.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_tsBK1XF.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_TV0tckw.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    },
+    {
+      "path": "backend/media/audio_assets/files/audio/test_VNNsELU.mp3",
+      "bytes": 16,
+      "referenced_by_audioasset": false
+    }
+  ],
+  "note": "Unreferenced by AudioAsset is not proof of orphan status: ZIP exports, No Ena and external uses may exist.",
+  "db_sha256_before": "0e92a4da3cd7736a6cc9d47f1d770efaf9586774ab3873aadec6eda54c76360b",
+  "db_sha256_after": "0e92a4da3cd7736a6cc9d47f1d770efaf9586774ab3873aadec6eda54c76360b"
+}

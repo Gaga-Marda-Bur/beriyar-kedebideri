@@ -7,6 +7,7 @@ import '../../../core/widgets/glass_card.dart';
 import '../../../shared/beriya/beriya_keyboard.dart';
 import '../../../shared/beriya/utf16_safe.dart';
 import '../../progress/services/unit_progress_local_storage.dart';
+import '../../quiz/models/quiz_question_model.dart';
 import '../engine/tracing_engine.dart';
 import '../engine/learning_session.dart';
 import '../models/learning_unit_model.dart';
@@ -885,7 +886,10 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
               color: Colors.black38,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: _typedText == targetWord
+                color: QuizQuestionModel.evaluateTextAnswer(
+                          submitted: _typedText,
+                          expected: targetWord,
+                        )
                     ? AppColors.green
                     : AppColors.gold,
                 width: 2,
@@ -897,7 +901,10 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
               style: TextStyle(
                 fontFamily: _typedText.isEmpty ? null : 'Kedebideri',
                 fontSize: 40,
-                color: _typedText == targetWord
+                color: QuizQuestionModel.evaluateTextAnswer(
+                          submitted: _typedText,
+                          expected: targetWord,
+                        )
                     ? AppColors.green
                     : AppColors.gold,
                 letterSpacing: 8,
@@ -944,9 +951,14 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
           FilledButton(
             key: const ValueKey('validate-encoding'),
             onPressed:
-                _typedText.isEmpty || _session?.resolved(_currentStep) == true
+                _typedText.trim().isEmpty || _session?.resolved(_currentStep) == true
                 ? null
-                : () => _answer(_typedText == targetWord),
+                : () => _answer(
+                    QuizQuestionModel.evaluateTextAnswer(
+                      submitted: _typedText,
+                      expected: targetWord,
+                    ),
+                  ),
             child: Text(_text('Valider', 'Check', 'تحقّق')),
           ),
         ],

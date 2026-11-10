@@ -52,10 +52,18 @@ class UnitProgressSerializer(serializers.ModelSerializer):
         ]
 
 
+class CredentialStringField(serializers.CharField):
+    def to_internal_value(self, data):
+        if not isinstance(data, str):
+            raise serializers.ValidationError('Une chaîne de caractères est requise.')
+        return super().to_internal_value(data)
+
+
 class UnitProgressSyncItemSerializer(serializers.Serializer):
     unit_id = serializers.IntegerField(required=False, allow_null=True)
     unit_slug = serializers.CharField(required=False, allow_blank=True, max_length=120)
-    device_id = serializers.CharField(required=False, allow_blank=True, max_length=120)
+    device_id = CredentialStringField(required=False, allow_blank=True, max_length=120)
+    device_token = CredentialStringField(required=False, allow_blank=True, max_length=128, write_only=True)
     status = serializers.ChoiceField(
         choices=[UnitProgress.STARTED, UnitProgress.REVIEW, UnitProgress.COMPLETED],
         required=False,

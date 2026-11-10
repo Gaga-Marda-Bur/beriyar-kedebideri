@@ -51,8 +51,8 @@ class AudioUrlPlayer {
         source = AssetSource(trimmed.substring(7));
       } else {
         final file = File(trimmed);
-        if (!await file.exists()) {
-          throw const FileSystemException('Audio file unavailable');
+        if (!await file.exists() || await file.length() == 0) {
+          throw const FileSystemException('Audio file unavailable or corrupted');
         }
         source = DeviceFileSource(file.path);
       }

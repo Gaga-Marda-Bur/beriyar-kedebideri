@@ -87,6 +87,16 @@ class _LearningPathScreenState extends State<LearningPathScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(loc.learningPath),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.download_for_offline_outlined),
+            tooltip: loc.offlinePacks,
+            onPressed: () {
+              Navigator.pushNamed(context, '/offline-packs')
+                  .then((_) => _reload());
+            },
+          ),
+        ],
       ),
       body: AppBackground(
         child: SafeArea(

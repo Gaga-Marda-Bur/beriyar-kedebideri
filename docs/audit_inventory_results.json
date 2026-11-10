@@ -1,0 +1,23 @@
+{
+  "scope": "Copie SQLite locale uniquement, pas la production",
+  "counts": {
+    "alphabet_character": 50,
+    "vocabulary_word": 4,
+    "learning_learningtheme": 2,
+    "learning_learningunit": 4,
+    "lessons_lesson": 1,
+    "quizzes_quizquestion": 2,
+    "offline_packs_lessonpack": 1,
+    "no_ena_noenapublication": 1,
+    "audio_assets_audioasset": 2
+  },
+  "integrity": "ok",
+  "foreign_key_violations": 0,
+  "words_missing_translation": {
+    "fr": 0,
+    "en": 0,
+    "ar": 0
+  },
+  "characters_missing_audio_link": 49,
+  "characters_ipa_to_validate": 45
+}

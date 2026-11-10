@@ -15,65 +15,49 @@ class OfflineContentService {
     LocalPackReaderService? readerService,
   }) : _readerService = readerService ?? LocalPackReaderService();
 
-  /*Future<List<CharacterModel>> loadCharacters() async {
+  Future<List<CharacterModel>> loadCharacters() async {
     final packs = await _readerService.listInstalledPacks();
-    final map = <int, CharacterModel>{};
+
+    AppLogger.debug('OFFLINE PACKS FOUND: ${packs.length}');
+
+    final map = <String, CharacterModel>{};
 
     for (final pack in packs) {
+      AppLogger.debug(
+        'OFFLINE PACK READ: slug=${pack.slug}, path=${pack.localPath}',
+      );
+      AppLogger.debug('OFFLINE RAW CHARACTERS: ${pack.characters.length}');
+
       for (final raw in pack.characters) {
         if (raw is Map<String, dynamic>) {
-          final item = CharacterModel.fromJson(raw);
-          map[item.id] = item;
+          final normalized = OfflineMediaResolver.resolveFields(
+            raw,
+            localPackPath: pack.localPath,
+            fields: [
+              'audio_url',
+              'slow_audio_url',
+              'image_url',
+            ],
+          );
+
+          final item = CharacterModel.fromJson(normalized);
+          final key = item.id > 0 ? 'id:${item.id}' : 'sym:${item.symbol}';
+          map[key] = item;
         }
       }
     }
 
     final items = map.values.toList();
     items.sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
+
+    AppLogger.debug('OFFLINE CHARACTERS FOUND: ${items.length}');
+
     return items;
-  }*/
-
-  Future<List<CharacterModel>> loadCharacters() async {
-  final packs = await _readerService.listInstalledPacks();
-
-  AppLogger.debug('OFFLINE PACKS FOUND: ${packs.length}');
-
-  final map = <int, CharacterModel>{};
-
-  for (final pack in packs) {
-    AppLogger.debug('OFFLINE PACK READ: slug=${pack.slug}, path=${pack.localPath}');
-    AppLogger.debug('OFFLINE RAW CHARACTERS: ${pack.characters.length}');
-    
-
-    for (final raw in pack.characters) {
-      if (raw is Map<String, dynamic>) {
-        final normalized = OfflineMediaResolver.resolveFields(
-          raw,
-          localPackPath: pack.localPath,
-          fields: [
-            'audio_url',
-            'slow_audio_url',
-            'image_url',
-          ],
-        );
-
-        final item = CharacterModel.fromJson(normalized);
-        map[item.id] = item;
-      }
-    }
   }
-
-  final items = map.values.toList();
-  items.sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
-
-  AppLogger.debug('OFFLINE CHARACTERS FOUND: ${items.length}');
-
-  return items;
-}
 
   Future<List<WordModel>> loadWords() async {
     final packs = await _readerService.listInstalledPacks();
-    final map = <int, WordModel>{};
+    final map = <String, WordModel>{};
 
     for (final pack in packs) {
       for (final raw in pack.words) {
@@ -83,12 +67,16 @@ class OfflineContentService {
             localPackPath: pack.localPath,
             fields: [
               'audio_url',
+              'slow_audio_url',
               'image_url',
             ],
           );
 
           final item = WordModel.fromJson(normalized);
-          map[item.id] = item;
+          final key = item.id > 0
+              ? 'id:${item.id}'
+              : 'word:${item.beriyaText}|${item.latinTranscription}';
+          map[key] = item;
         }
       }
     }
@@ -100,42 +88,48 @@ class OfflineContentService {
 
   Future<List<LearningThemeModel>> loadThemes() async {
     final packs = await _readerService.listInstalledPacks();
-    final themesRaw = <Map<String, dynamic>>[];
-    final unitsRaw = <Map<String, dynamic>>[];
+    final themesByKey = <String, Map<String, dynamic>>{};
+    final unitsByKey = <String, Map<String, dynamic>>{};
 
     for (final pack in packs) {
       for (final raw in pack.themes) {
         if (raw is Map<String, dynamic>) {
-          themesRaw.add(
-            OfflineMediaResolver.resolveFields(
-              Map<String, dynamic>.from(raw),
-              localPackPath: pack.localPath,
-              fields: [
-                'cover_image_url',
-                'image_url',
-              ],
-            ),
+          final resolved = OfflineMediaResolver.resolveFields(
+            Map<String, dynamic>.from(raw),
+            localPackPath: pack.localPath,
+            fields: [
+              'cover_image_url',
+              'image_url',
+            ],
           );
+          final id = _asInt(resolved['id']);
+          final slug = resolved['slug']?.toString() ?? '';
+          final key = id > 0 ? 'id:$id' : 'slug:$slug';
+          themesByKey[key] = resolved;
         }
       }
 
       for (final raw in pack.units) {
         if (raw is Map<String, dynamic>) {
-          unitsRaw.add(
-            OfflineMediaResolver.resolveFields(
-              Map<String, dynamic>.from(raw),
-              localPackPath: pack.localPath,
-              fields: [
-                'cover_image_url',
-                'image_url',
-                'thumbnail_url',
-              ],
-            ),
+          final resolved = OfflineMediaResolver.resolveFields(
+            Map<String, dynamic>.from(raw),
+            localPackPath: pack.localPath,
+            fields: [
+              'cover_image_url',
+              'image_url',
+              'thumbnail_url',
+            ],
           );
+          final id = _asInt(resolved['id']);
+          final slug = resolved['slug']?.toString() ?? '';
+          final key = id > 0 ? 'id:$id' : 'slug:$slug';
+          unitsByKey[key] = resolved;
         }
       }
     }
 
+    final themesRaw = themesByKey.values.toList();
+    final unitsRaw = unitsByKey.values.toList();
     final result = <LearningThemeModel>[];
 
     for (final theme in themesRaw) {
@@ -215,7 +209,7 @@ class OfflineContentService {
       }
     }
 
-    final map = <int, LearningUnitModel>{};
+    final map = <String, LearningUnitModel>{};
 
     for (final unit in unitsRaw) {
       final characterIds = _asIntList(unit['character_ids']);
@@ -253,7 +247,8 @@ class OfflineContentService {
       unit['theme_title_ar'] = unit['theme_title_ar'] ?? '';
 
       final item = LearningUnitModel.fromJson(unit);
-      map[item.id] = item;
+      final key = item.id > 0 ? 'id:${item.id}' : 'slug:${item.slug}';
+      map[key] = item;
     }
 
     final items = map.values.toList();
@@ -263,7 +258,7 @@ class OfflineContentService {
 
   Future<List<LessonModel>> loadLessons() async {
     final packs = await _readerService.listInstalledPacks();
-    final map = <int, LessonModel>{};
+    final map = <String, LessonModel>{};
 
     for (final pack in packs) {
       for (final raw in pack.lessons) {
@@ -296,7 +291,10 @@ class OfflineContentService {
           }
 
           final item = LessonModel.fromJson(lessonMap);
-          map[item.id] = item;
+          final key = item.id > 0
+              ? 'id:${item.id}'
+              : 'composite:${item.unitSlug}|${item.slug}|${item.orderIndex}|${item.titleFr}';
+          map[key] = item;
         }
       }
     }
@@ -308,7 +306,7 @@ class OfflineContentService {
 
   Future<List<QuizQuestionModel>> loadQuizzes() async {
     final packs = await _readerService.listInstalledPacks();
-    final map = <int, QuizQuestionModel>{};
+    final map = <String, QuizQuestionModel>{};
 
     for (final pack in packs) {
       for (final raw in pack.quizzes) {
@@ -342,7 +340,7 @@ class OfflineContentService {
           }
 
           final item = QuizQuestionModel.fromJson(quizMap);
-          map[item.id] = item;
+          map[item.stableKey] = item;
         }
       }
     }

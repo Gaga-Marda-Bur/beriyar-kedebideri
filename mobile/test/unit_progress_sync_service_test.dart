@@ -6,6 +6,8 @@ import 'package:mobile/core/api/api_client.dart';
 import 'package:mobile/features/progress/models/unit_progress_local_model.dart';
 import 'package:mobile/features/progress/services/unit_progress_sync_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobile/core/sync/sync_manager.dart';
+import 'package:mobile/features/progress/services/unit_progress_local_storage.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +16,68 @@ void main() {
     setUp(() {
       SharedPreferences.setMockInitialValues({});
     });
+
+    test(
+      'ownership rejection preserves local progress and installation identity for retry',
+      () async {
+        SharedPreferences.setMockInitialValues({
+          'bk_device_id': 'existing-installation',
+          'bk_device_token': 'existing-installation-secret',
+        });
+        final storage = UnitProgressLocalStorage();
+        final progress = UnitProgressLocalModel.started(
+          unitSlug: 'private-unit',
+          totalSteps: 3,
+        );
+        await storage.saveProgress(progress);
+        final prefs = await SharedPreferences.getInstance();
+        final saved = prefs.getString('bk_unit_progress_private-unit');
+        var attempt = 0;
+        final client = MockClient((request) async {
+          expect(request.headers['X-Device-Id'], 'existing-installation');
+          expect(
+            request.headers['X-Device-Token'],
+            'existing-installation-secret',
+          );
+          final item = (jsonDecode(request.body)['items'] as List).single;
+          expect(item['device_id'], 'existing-installation');
+          expect(item['device_token'], 'existing-installation-secret');
+          attempt++;
+          if (attempt == 2) {
+            return http.Response('{"detail":"Access denied"}', 403);
+          }
+          return http.Response(
+            jsonEncode({
+              'synced_count': attempt == 3 ? 1 : 0,
+              'error_count': attempt == 3 ? 0 : 1,
+              'synced': [],
+              'errors': attempt == 3
+                  ? []
+                  : [
+                      {'error': 'Preuve de propriété absente ou invalide.'},
+                    ],
+            }),
+            200,
+          );
+        });
+        final manager = SyncManager(
+          progressStorage: storage,
+          progressSyncService: UnitProgressSyncService(
+            apiClient: ApiClient(client: client),
+          ),
+        );
+        expect((await manager.syncAll()).success, isFalse);
+        expect((await manager.syncAll()).success, isFalse);
+        expect((await manager.syncAll()).success, isTrue);
+        expect(
+          prefs.getString('bk_device_token'),
+          'existing-installation-secret',
+        );
+        expect(prefs.getString('bk_device_id'), 'existing-installation');
+        expect(prefs.getString('bk_unit_progress_private-unit'), saved);
+        client.close();
+      },
+    );
 
     test(
       'syncProgressList includes device_id, device_token and security headers',

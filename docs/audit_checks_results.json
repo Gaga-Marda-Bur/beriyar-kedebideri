@@ -1,0 +1,35 @@
+{
+  "anonymous_progress_listing": {
+    "http_status": 200,
+    "count": 1,
+    "exposes_device_id": true
+  },
+  "anonymous_stale_sync": {
+    "http_status": 200,
+    "lessons_seen_before": 8,
+    "lessons_seen_after": 1,
+    "best_score_after": 999,
+    "client_updated_at_after": "2020-01-01T00:00:00+00:00"
+  },
+  "malformed_sync_item": {
+    "http_status": 500
+  },
+  "anonymous_draft_unit": {
+    "http_status": 200,
+    "draft_returned": true,
+    "stored_status": "draft"
+  },
+  "pagination_51_words": {
+    "count": 51,
+    "first_page": 50,
+    "has_next": true
+  },
+  "anonymous_draft_audio": {
+    "http_status": 200,
+    "draft_returned": true,
+    "internal_notes_returned": true
+  },
+  "offline_core_flow_audio": "/media/audio/audit.mp3",
+  "remote_media_copy": null,
+  "remote_pack_metadata": "NotImplementedError"
+}

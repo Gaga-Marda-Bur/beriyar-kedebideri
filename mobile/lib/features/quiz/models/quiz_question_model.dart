@@ -152,6 +152,43 @@ class QuizQuestionModel {
         questionType == 'listen_and_repeat';
   }
 
+  /// Clé d'identité stable pour la déduplication idempotente (P3-02).
+  String get stableKey {
+    if (id > 0) return 'id:$id';
+    return 'composite:$unitSlug|$lessonSlug|$questionType|$orderIndex|$promptTextFr|$characterSymbol|$wordText';
+  }
+
+  /// Source de vérité unique pour évaluer un choix d'option mélangée (P3-04).
+  bool evaluateOptionChoice({
+    required int displayIndex,
+    required List<int> optionOrder,
+  }) {
+    if (options.isEmpty) return false;
+    if (displayIndex < 0 || displayIndex >= optionOrder.length) return false;
+    final originalIndex = optionOrder[displayIndex];
+    if (originalIndex < 0 || originalIndex >= options.length) return false;
+    if (correctIndex < 0 || correctIndex >= options.length) return false;
+    return originalIndex == correctIndex;
+  }
+
+  /// Source de vérité unique pour évaluer une réponse saisie au clavier (P3-04).
+  /// Rejette systématiquement les réponses vides et préserve strictement les
+  /// caractères Erfe (U+16EA0..U+16EDF) sans accepter de réponse linguistiquement erronée.
+  static bool evaluateTextAnswer({
+    required String? submitted,
+    required String? expected,
+  }) {
+    if (submitted == null || expected == null) return false;
+    final normSubmitted = _normalizeText(submitted);
+    final normExpected = _normalizeText(expected);
+    if (normSubmitted.isEmpty || normExpected.isEmpty) return false;
+    return normSubmitted == normExpected;
+  }
+
+  static String _normalizeText(String input) {
+    return input.trim().replaceAll(RegExp(r'\s+'), ' ');
+  }
+
   static List<Map<String, dynamic>> _asMapList(dynamic value) {
     if (value is List) return value.whereType<Map<String, dynamic>>().toList();
     return [];
@@ -177,6 +214,94 @@ class QuizQuestionModel {
   static bool _asBool(dynamic value) {
     if (value is bool) return value;
     return value?.toString() == 'true' || value?.toString() == '1';
+  }
+
+  QuizQuestionModel copyWith({
+    int? id,
+    int? unit,
+    String? unitSlug,
+    int? lesson,
+    String? lessonSlug,
+    String? questionType,
+    String? difficulty,
+    String? promptText,
+    String? promptTextFr,
+    String? promptTextEn,
+    String? promptTextAr,
+    String? oralPrompt,
+    String? oralPromptFr,
+    String? oralPromptEn,
+    String? oralPromptAr,
+    int? character,
+    String? characterSymbol,
+    String? characterName,
+    int? word,
+    String? wordText,
+    String? wordLatin,
+    String? questionImageUrl,
+    String? questionAudioUrl,
+    String? questionSlowAudioUrl,
+    String? correctTextAnswer,
+    int? correctIndex,
+    String? explanation,
+    String? explanationFr,
+    String? explanationEn,
+    String? explanationAr,
+    String? explanationAudioUrl,
+    int? orderIndex,
+    int? points,
+    int? minOptionsRequired,
+    String? status,
+    bool? isActive,
+    bool? availableOffline,
+    List<QuizOptionModel>? options,
+    List<String>? optionsTextFr,
+    List<String>? optionsTextEn,
+    List<String>? optionsTextAr,
+  }) {
+    return QuizQuestionModel(
+      id: id ?? this.id,
+      unit: unit ?? this.unit,
+      unitSlug: unitSlug ?? this.unitSlug,
+      lesson: lesson ?? this.lesson,
+      lessonSlug: lessonSlug ?? this.lessonSlug,
+      questionType: questionType ?? this.questionType,
+      difficulty: difficulty ?? this.difficulty,
+      promptText: promptText ?? this.promptText,
+      promptTextFr: promptTextFr ?? this.promptTextFr,
+      promptTextEn: promptTextEn ?? this.promptTextEn,
+      promptTextAr: promptTextAr ?? this.promptTextAr,
+      oralPrompt: oralPrompt ?? this.oralPrompt,
+      oralPromptFr: oralPromptFr ?? this.oralPromptFr,
+      oralPromptEn: oralPromptEn ?? this.oralPromptEn,
+      oralPromptAr: oralPromptAr ?? this.oralPromptAr,
+      character: character ?? this.character,
+      characterSymbol: characterSymbol ?? this.characterSymbol,
+      characterName: characterName ?? this.characterName,
+      word: word ?? this.word,
+      wordText: wordText ?? this.wordText,
+      wordLatin: wordLatin ?? this.wordLatin,
+      questionImageUrl: questionImageUrl ?? this.questionImageUrl,
+      questionAudioUrl: questionAudioUrl ?? this.questionAudioUrl,
+      questionSlowAudioUrl: questionSlowAudioUrl ?? this.questionSlowAudioUrl,
+      correctTextAnswer: correctTextAnswer ?? this.correctTextAnswer,
+      correctIndex: correctIndex ?? this.correctIndex,
+      explanation: explanation ?? this.explanation,
+      explanationFr: explanationFr ?? this.explanationFr,
+      explanationEn: explanationEn ?? this.explanationEn,
+      explanationAr: explanationAr ?? this.explanationAr,
+      explanationAudioUrl: explanationAudioUrl ?? this.explanationAudioUrl,
+      orderIndex: orderIndex ?? this.orderIndex,
+      points: points ?? this.points,
+      minOptionsRequired: minOptionsRequired ?? this.minOptionsRequired,
+      status: status ?? this.status,
+      isActive: isActive ?? this.isActive,
+      availableOffline: availableOffline ?? this.availableOffline,
+      options: options ?? this.options,
+      optionsTextFr: optionsTextFr ?? this.optionsTextFr,
+      optionsTextEn: optionsTextEn ?? this.optionsTextEn,
+      optionsTextAr: optionsTextAr ?? this.optionsTextAr,
+    );
   }
 
   Map<String, dynamic> toJson() {

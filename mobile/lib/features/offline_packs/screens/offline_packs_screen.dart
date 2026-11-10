@@ -10,18 +10,29 @@ import '../services/local_pack_reader_service.dart';
 import '../services/offline_pack_api_service.dart';
 import '../services/offline_pack_download_service.dart';
 import 'my_packs_screen.dart';
+import 'pack_detail_screen.dart';
+import '../../../core/utils/app_logger.dart';
 
 class OfflinePacksScreen extends StatefulWidget {
-  const OfflinePacksScreen({super.key});
+  final OfflinePackApiService? apiService;
+  final OfflinePackDownloadService? downloadService;
+  final LocalPackReaderService? readerService;
+
+  const OfflinePacksScreen({
+    super.key,
+    this.apiService,
+    this.downloadService,
+    this.readerService,
+  });
 
   @override
   State<OfflinePacksScreen> createState() => _OfflinePacksScreenState();
 }
 
 class _OfflinePacksScreenState extends State<OfflinePacksScreen> {
-  final OfflinePackApiService _apiService = OfflinePackApiService();
-  final OfflinePackDownloadService _downloadService = OfflinePackDownloadService();
-  final LocalPackReaderService _readerService = LocalPackReaderService();
+  late final OfflinePackApiService _apiService;
+  late final OfflinePackDownloadService _downloadService;
+  late final LocalPackReaderService _readerService;
 
   late Future<_OfflinePacksData> _future;
 
@@ -30,16 +41,38 @@ class _OfflinePacksScreenState extends State<OfflinePacksScreen> {
   @override
   void initState() {
     super.initState();
+    _apiService = widget.apiService ?? OfflinePackApiService();
+    _downloadService =
+        widget.downloadService ?? OfflinePackDownloadService();
+    _readerService = widget.readerService ?? LocalPackReaderService();
     _future = _load();
   }
 
   Future<_OfflinePacksData> _load() async {
-    final onlinePacks = await _apiService.fetchPacks();
-    final installedPacks = await _readerService.listInstalledPacks();
+    List<LocalPackModel> installedPacks = [];
+    try {
+      installedPacks = await _readerService.listInstalledPacks();
+    } catch (error) {
+      AppLogger.warning('Failed to list installed packs: $error');
+    }
+
+    List<LessonPackModel> onlinePacks = [];
+    bool isOffline = false;
+    Object? onlineError;
+
+    try {
+      onlinePacks = await _apiService.fetchPacks();
+    } catch (error) {
+      isOffline = true;
+      onlineError = error;
+      AppLogger.warning('API fetchPacks failed (offline or unreachable): $error');
+    }
 
     return _OfflinePacksData(
       onlinePacks: onlinePacks,
       installedPacks: installedPacks,
+      isOffline: isOffline,
+      onlineError: onlineError,
     );
   }
 
@@ -124,6 +157,39 @@ class _OfflinePacksScreenState extends State<OfflinePacksScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
+                              loc.offlinePacks,
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              loc.offlinePacksSubtitle,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const MyPacksScreen(),
+                              ),
+                            ).then((_) => _reload());
+                          },
+                          icon: const Icon(Icons.folder_copy_rounded),
+                          label: Text(loc.myDownloads),
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      GlassCard(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
                               loc.errorLoading,
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
@@ -189,7 +255,34 @@ class _OfflinePacksScreenState extends State<OfflinePacksScreen> {
 
                     if (data.installedPacks.isEmpty)
                       GlassCard(
-                        child: Text(loc.noPacks),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.download_for_offline_outlined,
+                              color: AppColors.gold,
+                              size: 36,
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    loc.noPacks,
+                                    style: const TextStyle(fontWeight: FontWeight.w700),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    data.isOffline
+                                        ? 'Connectez-vous à Internet pour télécharger des packs et apprendre hors ligne.'
+                                        : 'Téléchargez un pack ci-dessous pour y accéder sans connexion Internet.',
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     else
                       for (final local in data.installedPacks) ...[
@@ -197,9 +290,36 @@ class _OfflinePacksScreenState extends State<OfflinePacksScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                local.titleForLang(lang),
-                                style: Theme.of(context).textTheme.titleLarge,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      local.titleForLang(lang),
+                                      style: Theme.of(context).textTheme.titleLarge,
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 5,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.gold.withValues(alpha: 0.16),
+                                      borderRadius: BorderRadius.circular(99),
+                                      border: Border.all(
+                                        color: AppColors.gold.withValues(alpha: 0.45),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      loc.installedPack,
+                                      style: const TextStyle(
+                                        color: AppColors.gold,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                               const SizedBox(height: 8),
                               Wrap(
@@ -216,9 +336,25 @@ class _OfflinePacksScreenState extends State<OfflinePacksScreen> {
                                       '${loc.packItems}: ${local.itemsCount}',
                                     ),
                                   ),
+                                  ActionChip(
+                                    avatar: const Icon(
+                                      Icons.visibility_rounded,
+                                      size: 16,
+                                    ),
+                                    label: Text(loc.openPack),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) =>
+                                              PackDetailScreen(pack: local),
+                                        ),
+                                      ).then((_) => _reload());
+                                    },
+                                  ),
                                 ],
                               ),
-                              const SizedBox(height: 12),
+                              const SizedBox(height: 8),
                               Text(
                                 'Path: ${local.localPath}',
                                 style: Theme.of(context).textTheme.bodySmall,
@@ -236,7 +372,38 @@ class _OfflinePacksScreenState extends State<OfflinePacksScreen> {
                     ),
                     const SizedBox(height: 10),
 
-                    if (data.onlinePacks.isEmpty)
+                    if (data.isOffline)
+                      GlassCard(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.wifi_off_rounded, color: AppColors.gold),
+                                const SizedBox(width: 10),
+                                const Expanded(
+                                  child: Text(
+                                    'Mode hors ligne — catalogue en ligne indisponible',
+                                    style: TextStyle(fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Les packs déjà installés ci-dessus restent pleinement utilisables sans connexion.',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                            const SizedBox(height: 14),
+                            FilledButton.tonalIcon(
+                              onPressed: _reload,
+                              icon: const Icon(Icons.refresh_rounded),
+                              label: Text(loc.retry),
+                            ),
+                          ],
+                        ),
+                      )
+                    else if (data.onlinePacks.isEmpty)
                       GlassCard(
                         child: Text(loc.noPacks),
                       )
@@ -368,9 +535,13 @@ class _OnlinePackCard extends StatelessWidget {
 class _OfflinePacksData {
   final List<LessonPackModel> onlinePacks;
   final List<LocalPackModel> installedPacks;
+  final bool isOffline;
+  final Object? onlineError;
 
   const _OfflinePacksData({
     required this.onlinePacks,
     required this.installedPacks,
+    this.isOffline = false,
+    this.onlineError,
   });
 }
