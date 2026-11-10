@@ -1,0 +1,37 @@
+[
+  {
+    "path": "C:\\Users\\MONSTER\\Desktop\\BeriyaClean\\beriyar-kedebideri\\docs\\PHASE6_AUDIT_GLOBAL_ERFE_MONETISATION_PRODUCTION.md",
+    "bytes": 84859,
+    "sha256": "4864794f2de644856b5a6e52af541a5ea790617b5e816df3dd56cc6aecec5e0c"
+  },
+  {
+    "path": "C:\\Users\\MONSTER\\Desktop\\BeriyaClean\\beriyar-kedebideri\\docs\\phase6_reprise\\font_glyphs_freetype.png",
+    "bytes": 152866,
+    "sha256": "78530537752b7e44167232db0c9e7f762b7ff447deb824ba131d9fb36be252b2"
+  },
+  {
+    "path": "C:\\Users\\MONSTER\\Desktop\\BeriyaClean\\beriyar-kedebideri\\docs\\phase6_reprise\\phase6_erfe_typography_diagnostic.html",
+    "bytes": 19064,
+    "sha256": "cdc198802c70960cca57a3155fa3755cfa0f15b9eacd6aca6159628d5cf6e797"
+  },
+  {
+    "path": "C:\\Users\\MONSTER\\Desktop\\BeriyaClean\\beriyar-kedebideri\\docs\\phase6_reprise\\PHASE6_RAPPORT_ORIGINAL_2026-11-10.md",
+    "bytes": 58383,
+    "sha256": "6b28712e56186c75302fc7d61da865362a025a64483d0e227b0bf8625bac0f39"
+  },
+  {
+    "path": "C:\\Users\\MONSTER\\Desktop\\BeriyaClean\\beriyar-kedebideri\\docs\\phase6_reprise\\PHASE6_VERIFICATIONS.json",
+    "bytes": 6249,
+    "sha256": "936541c9fdee439c11d96b286476b5f77d360ee4f2c623ae34c71849be1170fd"
+  },
+  {
+    "path": "C:\\Users\\MONSTER\\Desktop\\BeriyaClean\\beriyar-kedebideri\\docs\\phase6_reprise\\VERIFICATIONS_EXECUTEES.md",
+    "bytes": 3728,
+    "sha256": "6837dd1704068d42141437cff9881bfa77c4740fa7eed3473a0cb8fbdecb5b07"
+  },
+  {
+    "path": "C:\\Users\\MONSTER\\Desktop\\BeriyaClean\\beriyar-kedebideri\\docs\\phase6_reprise\\verify_evidence.py",
+    "bytes": 6927,
+    "sha256": "6aa604ffe1723a10bc081ac34f1187871ad3da000e700eeb90f9ffcf7ba1e4bb"
+  }
+]

@@ -1,0 +1,217 @@
+{
+  "date": "2026-11-10",
+  "scope": "limited read-only probes, not production validation",
+  "unicode_reference": "Unicode 17.0; 50 assigned Beria Erfe codepoints",
+  "original_report": {
+    "bytes": 58383,
+    "sha256": "6b28712e56186c75302fc7d61da865362a025a64483d0e227b0bf8625bac0f39"
+  },
+  "recovered_html": {
+    "bytes": 19064,
+    "sha256": "cdc198802c70960cca57a3155fa3755cfa0f15b9eacd6aca6159628d5cf6e797",
+    "utf8_decodable": true,
+    "html_parser_completed": true,
+    "browser_render_verified": false,
+    "uses_absolute_file_font_urls": true
+  },
+  "database_before": "2684f6ce3662fa7f3e771258887c3e48e76b72362a271598f25d1599f92b3543",
+  "database_after": "2684f6ce3662fa7f3e771258887c3e48e76b72362a271598f25d1599f92b3543",
+  "titles": [
+    {
+      "id": 3,
+      "slug": "unite-2-ta",
+      "title_fr": "Unité 2 : La consonne Te (𖺵) et le mot \"ta\"",
+      "status": "published",
+      "erfe_codepoints": [
+        "U+16EB5"
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "unite-3-de",
+      "title_fr": "Unité 3 : La consonne De (𖺢) et le mot \"de\"",
+      "status": "published",
+      "erfe_codepoints": [
+        "U+16EA2"
+      ]
+    }
+  ],
+  "fonts": [
+    {
+      "path": "backend/static/webapp/fonts/Kedebideri-Black.ttf",
+      "bytes": 48268,
+      "sha256": "1dc372337ae92748a22253df1e819d8d783260b5cf42fbb371acc828ac6c6343",
+      "same_as_mobile": true,
+      "cmap_formats": [
+        4,
+        12
+      ],
+      "sfnt_checksum_ok": true,
+      "erfe_nonzero_glyphs": 50,
+      "erfe_distinct_glyphs": 50,
+      "erfe_glyphs_with_outline_data": 50,
+      "combining_and_mixed_coverage": {
+        "U+0300": true,
+        "U+0301": true,
+        "U+0302": false,
+        "U+0303": false,
+        "U+0304": true,
+        "U+0307": true,
+        "U+25CC": true,
+        "U+0159": false,
+        "U+0158": false,
+        "U+0627": false
+      },
+      "arabic_block_glyphs": 0
+    },
+    {
+      "path": "backend/static/webapp/fonts/Kedebideri-Bold.ttf",
+      "bytes": 48244,
+      "sha256": "39f0a2f0b1cce14d561eb4c932495c0841171adcf6e2142f12e6f615cbd43592",
+      "same_as_mobile": true,
+      "cmap_formats": [
+        4,
+        12
+      ],
+      "sfnt_checksum_ok": true,
+      "erfe_nonzero_glyphs": 50,
+      "erfe_distinct_glyphs": 50,
+      "erfe_glyphs_with_outline_data": 50,
+      "combining_and_mixed_coverage": {
+        "U+0300": true,
+        "U+0301": true,
+        "U+0302": false,
+        "U+0303": false,
+        "U+0304": true,
+        "U+0307": true,
+        "U+25CC": true,
+        "U+0159": false,
+        "U+0158": false,
+        "U+0627": false
+      },
+      "arabic_block_glyphs": 0
+    },
+    {
+      "path": "backend/static/webapp/fonts/Kedebideri-ExtraBold.ttf",
+      "bytes": 48288,
+      "sha256": "427b673155dfde19a375687677d729d97ba5f9c4e8b2cef017aacf552714c7bc",
+      "same_as_mobile": true,
+      "cmap_formats": [
+        4,
+        12
+      ],
+      "sfnt_checksum_ok": true,
+      "erfe_nonzero_glyphs": 50,
+      "erfe_distinct_glyphs": 50,
+      "erfe_glyphs_with_outline_data": 50,
+      "combining_and_mixed_coverage": {
+        "U+0300": true,
+        "U+0301": true,
+        "U+0302": false,
+        "U+0303": false,
+        "U+0304": true,
+        "U+0307": true,
+        "U+25CC": true,
+        "U+0159": false,
+        "U+0158": false,
+        "U+0627": false
+      },
+      "arabic_block_glyphs": 0
+    },
+    {
+      "path": "backend/static/webapp/fonts/Kedebideri-Medium.ttf",
+      "bytes": 48440,
+      "sha256": "9f7d4cce968c225513e5f858ac3300650c189ff55559ddbf7c33d9acb796fd4f",
+      "same_as_mobile": true,
+      "cmap_formats": [
+        4,
+        12
+      ],
+      "sfnt_checksum_ok": true,
+      "erfe_nonzero_glyphs": 50,
+      "erfe_distinct_glyphs": 50,
+      "erfe_glyphs_with_outline_data": 50,
+      "combining_and_mixed_coverage": {
+        "U+0300": true,
+        "U+0301": true,
+        "U+0302": false,
+        "U+0303": false,
+        "U+0304": true,
+        "U+0307": true,
+        "U+25CC": true,
+        "U+0159": false,
+        "U+0158": false,
+        "U+0627": false
+      },
+      "arabic_block_glyphs": 0
+    },
+    {
+      "path": "backend/static/webapp/fonts/Kedebideri-Regular.ttf",
+      "bytes": 48484,
+      "sha256": "1671703a29cb2178ea40d5b0de23fba728cf29b320dd9eaf54d72b5318e7e7d5",
+      "same_as_mobile": true,
+      "cmap_formats": [
+        4,
+        12
+      ],
+      "sfnt_checksum_ok": true,
+      "erfe_nonzero_glyphs": 50,
+      "erfe_distinct_glyphs": 50,
+      "erfe_glyphs_with_outline_data": 50,
+      "combining_and_mixed_coverage": {
+        "U+0300": true,
+        "U+0301": true,
+        "U+0302": false,
+        "U+0303": false,
+        "U+0304": true,
+        "U+0307": true,
+        "U+25CC": true,
+        "U+0159": false,
+        "U+0158": false,
+        "U+0627": false
+      },
+      "arabic_block_glyphs": 0
+    },
+    {
+      "path": "backend/static/webapp/fonts/Kedebideri-SemiBold.ttf",
+      "bytes": 48356,
+      "sha256": "63cc63b43704cb6239a8f13460e60b3f6741ba53cd7b543a4f1d13618c303a2c",
+      "same_as_mobile": true,
+      "cmap_formats": [
+        4,
+        12
+      ],
+      "sfnt_checksum_ok": true,
+      "erfe_nonzero_glyphs": 50,
+      "erfe_distinct_glyphs": 50,
+      "erfe_glyphs_with_outline_data": 50,
+      "combining_and_mixed_coverage": {
+        "U+0300": true,
+        "U+0301": true,
+        "U+0302": false,
+        "U+0303": false,
+        "U+0304": true,
+        "U+0307": true,
+        "U+25CC": true,
+        "U+0159": false,
+        "U+0158": false,
+        "U+0627": false
+      },
+      "arabic_block_glyphs": 0
+    }
+  ],
+  "staging_probe": {
+    "rejected": true,
+    "exception": "ImproperlyConfigured",
+    "message": "DJANGO_ENV='staging' inconnu (development, test, production)."
+  },
+  "admin_format_html_probe": {
+    "single_argument_rejected": true,
+    "exception": "TypeError",
+    "message": "args or kwargs must be provided."
+  },
+  "freetype": {
+    "rasterized_glyphs": 300,
+    "browser_or_flutter_test": false
+  }
+}
