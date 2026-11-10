@@ -1,0 +1,124 @@
+{
+  "phase": "6.4A design only",
+  "checked_on": "2026-11-10",
+  "base_commit": "77ff698f335d1bcec58258247fab8021e8e523fc",
+  "branch": "codex/phase6-4-monetisation-design",
+  "markdown_deliverables": 10,
+  "documents": [
+    {
+      "path": "docs/PHASE6_4_ARCHITECTURE_MONETISATION.md",
+      "bytes": 12837,
+      "sha256": "17853ca0e03b4c02be2148bab966919e2a4507f237ae42ce91d9b4363eac15ff",
+      "utf8": "passed",
+      "fences": "balanced",
+      "local_links_checked": [
+        "phase6_4/MODELES_DJANGO_PROPOSES.md",
+        "phase6_4/MATRICE_FREE_PREMIUM.md",
+        "phase6_4/MATRICE_PUBLICITES.md",
+        "phase6_4/DROITS_HORS_LIGNE.md",
+        "phase6_4/WORKFLOW_PAIEMENTS_MANUELS.md",
+        "phase6_4/PERMISSIONS_ADMIN.md",
+        "phase6_4/CONFORMITE_PLATEFORMES_FOURNISSEURS.md",
+        "phase6_4/PLAN_DEVELOPPEMENT.md",
+        "phase6_4/RISQUES_TESTS_ROLLBACK.md"
+      ]
+    },
+    {
+      "path": "docs/phase6_4/CONFORMITE_PLATEFORMES_FOURNISSEURS.md",
+      "bytes": 7463,
+      "sha256": "f8843ff47c2b11291796c7e567ff02d48cc68a65ec5eb55abecec1f33c861ef5",
+      "utf8": "passed",
+      "fences": "balanced",
+      "local_links_checked": []
+    },
+    {
+      "path": "docs/phase6_4/DROITS_HORS_LIGNE.md",
+      "bytes": 8851,
+      "sha256": "665ef6d3955d30601aa5323c035f65067dd0365afba5acf2bd6da7e3e892a073",
+      "utf8": "passed",
+      "fences": "balanced",
+      "local_links_checked": []
+    },
+    {
+      "path": "docs/phase6_4/MATRICE_FREE_PREMIUM.md",
+      "bytes": 4246,
+      "sha256": "b70c182ee3067f969108140fc1f1adb1d942b488485067c7efb5eec1132c0049",
+      "utf8": "passed",
+      "fences": "balanced",
+      "local_links_checked": []
+    },
+    {
+      "path": "docs/phase6_4/MATRICE_PUBLICITES.md",
+      "bytes": 6147,
+      "sha256": "527e3f5e75c178ce8430281355ba93a07de18ea6579a985b3ed51e89dc466bcf",
+      "utf8": "passed",
+      "fences": "balanced",
+      "local_links_checked": []
+    },
+    {
+      "path": "docs/phase6_4/MODELES_DJANGO_PROPOSES.md",
+      "bytes": 8067,
+      "sha256": "34e21cf59fa11a8e946bb8c892f2eaabbb24c061123a158703ad6202c9a2bb25",
+      "utf8": "passed",
+      "fences": "balanced",
+      "local_links_checked": []
+    },
+    {
+      "path": "docs/phase6_4/PERMISSIONS_ADMIN.md",
+      "bytes": 4439,
+      "sha256": "8c1eac36088cbb96b2c3b3bf6a383556f2a87f9f4f8c1408ebcc43561e2eca75",
+      "utf8": "passed",
+      "fences": "balanced",
+      "local_links_checked": []
+    },
+    {
+      "path": "docs/phase6_4/PLAN_DEVELOPPEMENT.md",
+      "bytes": 5951,
+      "sha256": "c7d04d0c985d4e4b6b2b051b9754dd91b36ad03c18c0b12a8438a4ee89da194e",
+      "utf8": "passed",
+      "fences": "balanced",
+      "local_links_checked": []
+    },
+    {
+      "path": "docs/phase6_4/RISQUES_TESTS_ROLLBACK.md",
+      "bytes": 8585,
+      "sha256": "3cfb3f20a3b5da6d7183d05ead6e179e07d66352189ad5da76f449a1f58cd286",
+      "utf8": "passed",
+      "fences": "balanced",
+      "local_links_checked": []
+    },
+    {
+      "path": "docs/phase6_4/WORKFLOW_PAIEMENTS_MANUELS.md",
+      "bytes": 7098,
+      "sha256": "136322d3a084b52972792d34958495294647010b10da5ff1ff368d06c8946435",
+      "utf8": "passed",
+      "fences": "balanced",
+      "local_links_checked": []
+    }
+  ],
+  "tracked_changes_from_base_before_documentary_commit": [],
+  "historical_tests_not_rerun": {
+    "phase": "6.3",
+    "django": 117,
+    "flutter": 130,
+    "javascript": 5,
+    "flutter_analysis": "historically clean"
+  },
+  "functional_tests_this_phase": "not executed; no business implementation",
+  "not_validated": [
+    "Mermaid rendering",
+    "cryptographic interoperability",
+    "offline leases",
+    "payments",
+    "advertisements",
+    "Android runtime",
+    "commercial eligibility"
+  ],
+  "operations_not_performed": [
+    "migration",
+    "deployment",
+    "SDK installation",
+    "payment",
+    "ad activation"
+  ]
+}
