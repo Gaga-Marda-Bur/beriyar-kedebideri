@@ -1,0 +1,49 @@
+{
+  "http": 200,
+  "fonts": [
+    {
+      "familyName": "Kedebideri",
+      "postScriptName": "Kedebideri-Bold",
+      "isCustomFont": true,
+      "glyphCount": 1
+    },
+    {
+      "familyName": "Segoe UI",
+      "postScriptName": "SegoeUI-Bold",
+      "isCustomFont": false,
+      "glyphCount": 41
+    }
+  ],
+  "font_http": [
+    {
+      "font": "Kedebideri-Black.ttf",
+      "http": 200,
+      "sha256_equal": true
+    },
+    {
+      "font": "Kedebideri-Bold.ttf",
+      "http": 200,
+      "sha256_equal": true
+    },
+    {
+      "font": "Kedebideri-ExtraBold.ttf",
+      "http": 200,
+      "sha256_equal": true
+    },
+    {
+      "font": "Kedebideri-Medium.ttf",
+      "http": 200,
+      "sha256_equal": true
+    },
+    {
+      "font": "Kedebideri-Regular.ttf",
+      "http": 200,
+      "sha256_equal": true
+    },
+    {
+      "font": "Kedebideri-SemiBold.ttf",
+      "http": 200,
+      "sha256_equal": true
+    }
+  ]
+}

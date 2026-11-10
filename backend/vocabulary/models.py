@@ -1,4 +1,5 @@
 from django.db import models
+from core.media_validation import ValidatedMediaModel
 
 from audio_assets.models import AudioAsset
 
@@ -22,7 +23,7 @@ class WordCategory(models.Model):
         return self.name_fr
 
 
-class Word(models.Model):
+class Word(ValidatedMediaModel):
     BEGINNER = 'beginner'
     INTERMEDIATE = 'intermediate'
     ADVANCED = 'advanced'

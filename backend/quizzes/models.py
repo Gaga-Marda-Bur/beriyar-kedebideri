@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from core.media_validation import ValidatedMediaModel
 
 from alphabet.models import Character
 from audio_assets.models import AudioAsset
@@ -8,7 +9,7 @@ from lessons.models import Lesson
 from vocabulary.models import Word
 
 
-class QuizQuestion(models.Model):
+class QuizQuestion(ValidatedMediaModel):
     AUDIO_TO_CHARACTER = 'audio_to_character'
     CHARACTER_TO_AUDIO = 'character_to_audio'
     AUDIO_TO_IMAGE = 'audio_to_image'
@@ -180,7 +181,7 @@ class QuizQuestion(models.Model):
                     )
 
 
-class QuizOption(models.Model):
+class QuizOption(ValidatedMediaModel):
     question = models.ForeignKey(
         QuizQuestion,
         on_delete=models.CASCADE,

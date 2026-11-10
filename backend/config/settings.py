@@ -1,8 +1,10 @@
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import dj_database_url
-from decouple import config, Csv
+from decouple import config
+from django.core.exceptions import ImproperlyConfigured
 
 from .security import build_security_settings, build_feedback_rates
 
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'core.media_access.PublicMediaGuard',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -81,10 +84,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+_database_url = config('DATABASE_URL', default=None)
+if IS_DEPLOYED and not _database_url:
+    raise ImproperlyConfigured('DATABASE_URL explicite requis en staging/production.')
+if IS_DEPLOYED and not _database_url.startswith(('postgres://', 'postgresql://')):
+    raise ImproperlyConfigured('Une base PostgreSQL dédiée est requise en staging/production.')
+_database_ssl = config('DATABASE_REQUIRE_SSL', default=IS_DEPLOYED, cast=bool)
+if IS_DEPLOYED and not _database_ssl and config('DATABASE_NETWORK', default='') != 'private':
+    raise ImproperlyConfigured('TLS base obligatoire hors réseau privé explicitement déclaré.')
 DATABASES = {
     "default": dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        default=_database_url or f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
         conn_max_age=600,
+        ssl_require=_database_ssl,
     )
 }
 
@@ -132,6 +144,8 @@ STATICFILES_DIRS = [
 ]
 
 USE_R2 = config("USE_R2", default=False, cast=bool)
+if IS_DEPLOYED and not USE_R2 and not config('MEDIA_STORAGE_PERSISTENT',default=False,cast=bool):
+    raise ImproperlyConfigured('Déclarer un stockage média persistant ou configurer R2 en staging/production.')
 
 if USE_R2:
     AWS_ACCESS_KEY_ID = config("R2_ACCESS_KEY_ID")
@@ -150,6 +164,11 @@ if USE_R2:
     }
 
     R2_PUBLIC_BASE_URL = config("R2_PUBLIC_BASE_URL")
+    for _origin in (R2_PUBLIC_BASE_URL,AWS_S3_ENDPOINT_URL):
+        _parsed = urlsplit(_origin)
+        if (_parsed.scheme != 'https' or not _parsed.hostname or _parsed.username
+                or _parsed.password or _parsed.path not in ('','/') or _parsed.query or _parsed.fragment):
+            raise ImproperlyConfigured('Les origines R2 doivent être HTTPS, sans chemin ni identifiants.')
     R2_PUBLIC_DOMAIN = R2_PUBLIC_BASE_URL.replace("https://", "").replace("http://", "").rstrip("/")
 
     AWS_S3_CUSTOM_DOMAIN = R2_PUBLIC_DOMAIN
@@ -185,11 +204,7 @@ else:
 
 
 
-CORS_ALLOWED_ORIGINS = config(
-    "CORS_ALLOWED_ORIGINS",
-    default="",
-    cast=Csv(),
-)
+# Origines CORS validées dans config/security.py, sans wildcard en recette/prod.
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -217,6 +232,37 @@ CACHES = {
         'LOCATION': 'beriya-default',
     }
 }
+
+if IS_DEPLOYED and CACHES['feedback']['BACKEND'] not in (
+    'django.core.cache.backends.db.DatabaseCache',
+    'django.core.cache.backends.redis.RedisCache',
+):
+    raise ImproperlyConfigured('Configurer un cache feedback partagé en staging/production.')
+
+# Physical separation from public MEDIA_ROOT. No public URL for this storage.
+PRIVATE_MEDIA_ROOT = Path(config('PRIVATE_MEDIA_ROOT', default=str(BASE_DIR / 'private_media')))
+if (PRIVATE_MEDIA_ROOT.resolve().is_relative_to((BASE_DIR / 'media').resolve())
+        or PRIVATE_MEDIA_ROOT.resolve().is_relative_to(STATIC_ROOT.resolve())):
+    raise ImproperlyConfigured('PRIVATE_MEDIA_ROOT doit rester hors des racines publiques.')
+if USE_R2:
+    _private_bucket = config('R2_PRIVATE_BUCKET_NAME', default='')
+    if (_private_bucket and _private_bucket == AWS_STORAGE_BUCKET_NAME) or (IS_DEPLOYED and not _private_bucket):
+        raise ImproperlyConfigured('Un bucket privé distinct est requis pour les pièces jointes feedback.')
+    STORAGES['private'] = {
+        'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
+        'OPTIONS': {'bucket_name': _private_bucket, 'custom_domain': None,
+                    'querystring_auth': True, 'default_acl': None,
+                    'object_parameters': {'CacheControl':'private, no-store'},
+                    'location': 'private'},
+    } if _private_bucket else {
+        'BACKEND':'django.core.files.storage.FileSystemStorage',
+        'OPTIONS':{'location':PRIVATE_MEDIA_ROOT},
+    }
+else:
+    STORAGES['private'] = {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        'OPTIONS': {'location':PRIVATE_MEDIA_ROOT},
+    }
 
 ANDROID_APK_URL = config(
     "ANDROID_APK_URL",

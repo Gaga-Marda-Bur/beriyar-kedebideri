@@ -1,10 +1,11 @@
 from django.db import models
+from core.media_validation import ValidatedMediaModel
 
 from alphabet.models import Character
 from vocabulary.models import Word
 
 
-class LearningTheme(models.Model):
+class LearningTheme(ValidatedMediaModel):
     BEGINNER = 'beginner'
     INTERMEDIATE = 'intermediate'
     ADVANCED = 'advanced'

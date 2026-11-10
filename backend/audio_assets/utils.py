@@ -13,6 +13,7 @@ def get_primary_audio_link(audio_links, role):
         link for link in audio_links
         if link.role == role
         and link.audio_asset.validation_status == 'published'
+        and link.audio_asset.audio_type != 'feedback'
         and link.audio_asset.file
     ]
 

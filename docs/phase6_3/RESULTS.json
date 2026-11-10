@@ -1,0 +1,271 @@
+{
+  "date": "2026-11-10",
+  "branch": "codex/phase6-3-security-staging",
+  "base_commit": "7998177",
+  "baseline": {
+    "django": 99,
+    "flutter": 130,
+    "javascript": 5
+  },
+  "final": {
+    "django": 117,
+    "flutter": 130,
+    "javascript": 5
+  },
+  "django_version_final": "6.0.10",
+  "flutter_analyze": "No issues found",
+  "reproduction": "10 methods, 5 failures and 1 error before fixes",
+  "phase62_evidence_and_six_fonts_unchanged": true,
+  "source_db_sha256_at_restore_and_final": "8c1d4b1cf3a9415b17510fe5ce0b80c080ed056d7ca884730352214eadc65aef",
+  "source_db_differs_from_phase62_archive": true,
+  "source_db_change_origin_since_phase62": "not established; no initial phase63 hash before first restore",
+  "restore_summary": {
+    "date": "2026-11-10",
+    "source_db_sha256_before": "8c1d4b1cf3a9415b17510fe5ce0b80c080ed056d7ca884730352214eadc65aef",
+    "source_db_sha256_after": "8c1d4b1cf3a9415b17510fe5ce0b80c080ed056d7ca884730352214eadc65aef",
+    "destination": "unique ignored runtime/restore-* directory",
+    "source_opened_readonly": true,
+    "tables_compared_before_migrations": 37,
+    "rows_compared_before_migrations": 344,
+    "all_schema_and_rows_equal_before_migrations": true,
+    "all_preexisting_values_preserved_after_migrations": true,
+    "migration_plan_applied_to_restore_only": [
+      "audio_assets.0002_alter_audioasset_file",
+      "feedback.0002_alter_feedbackreport_screenshot",
+      "progress.0004_progressdevicecredential"
+    ],
+    "integrity_check": "ok",
+    "foreign_key_violations": 0,
+    "media": {
+      "public": {
+        "files": 146,
+        "bytes": 70511945,
+        "audio_files": 110,
+        "all_sha256_equal": true
+      },
+      "private": {
+        "files": 1,
+        "bytes": 68,
+        "audio_files": 0,
+        "all_sha256_equal": true
+      }
+    },
+    "file_references": 4,
+    "missing_references_by_field": {},
+    "restored_audio_references_opened": 2,
+    "packs": [
+      {
+        "present": true,
+        "stored_checksum_present": true,
+        "checksum_equal": true,
+        "zip_crc_ok": true
+      }
+    ],
+    "database_cache_independent_workers": [
+      1,
+      2
+    ],
+    "atomic_concurrent_throttling_proven": false,
+    "postgresql_or_cloud_restore_executed": false
+  },
+  "configuration_summary": {
+    "staging": {
+      "environment": "staging",
+      "debug": false,
+      "https_redirect": true,
+      "cookie_secure": true,
+      "database_engine": "django.db.backends.postgresql",
+      "database_tls": "require",
+      "cache_backend": "django.core.cache.backends.db.DatabaseCache",
+      "private_storage_backend": "django.core.files.storage.FileSystemStorage",
+      "private_has_no_custom_domain": true,
+      "r2_buckets_distinct": null,
+      "deploy_checks": [
+        {
+          "id": "security.W005",
+          "level": 30
+        },
+        {
+          "id": "security.W021",
+          "level": 30
+        }
+      ]
+    },
+    "production": {
+      "environment": "production",
+      "debug": false,
+      "https_redirect": true,
+      "cookie_secure": true,
+      "database_engine": "django.db.backends.postgresql",
+      "database_tls": "require",
+      "cache_backend": "django.core.cache.backends.db.DatabaseCache",
+      "private_storage_backend": "django.core.files.storage.FileSystemStorage",
+      "private_has_no_custom_domain": true,
+      "r2_buckets_distinct": null,
+      "deploy_checks": [
+        {
+          "id": "security.W005",
+          "level": 30
+        },
+        {
+          "id": "security.W021",
+          "level": 30
+        }
+      ]
+    },
+    "no_database": {
+      "rejected": true
+    },
+    "sqlite_deployed": {
+      "rejected": true
+    },
+    "local_cache": {
+      "rejected": true
+    },
+    "ephemeral_media": {
+      "rejected": true
+    },
+    "public_private_overlap": {
+      "rejected": true
+    },
+    "insecure_database": {
+      "rejected": true
+    },
+    "r2_distinct_private": {
+      "environment": "staging",
+      "debug": false,
+      "https_redirect": true,
+      "cookie_secure": true,
+      "database_engine": "django.db.backends.postgresql",
+      "database_tls": "require",
+      "cache_backend": "django.core.cache.backends.db.DatabaseCache",
+      "private_storage_backend": "storages.backends.s3boto3.S3Boto3Storage",
+      "private_has_no_custom_domain": true,
+      "r2_buckets_distinct": true,
+      "deploy_checks": [
+        {
+          "id": "security.W005",
+          "level": 30
+        },
+        {
+          "id": "security.W021",
+          "level": 30
+        }
+      ]
+    },
+    "r2_missing_private": {
+      "rejected": true
+    },
+    "r2_same_bucket": {
+      "rejected": true
+    },
+    "r2_public_http": {
+      "rejected": true
+    }
+  },
+  "static_summary": {
+    "collectstatic_executed": true,
+    "location": "new isolated ignored directory",
+    "hashed_manifest": true,
+    "whitenoise_local_requests": [
+      {
+        "file": "Kedebideri-Black.ttf",
+        "http": 200,
+        "mime": "application/octet-stream",
+        "cache_control": "max-age=315360000, public, immutable",
+        "sha256_equal": true
+      },
+      {
+        "file": "Kedebideri-Bold.ttf",
+        "http": 200,
+        "mime": "application/octet-stream",
+        "cache_control": "max-age=315360000, public, immutable",
+        "sha256_equal": true
+      },
+      {
+        "file": "Kedebideri-ExtraBold.ttf",
+        "http": 200,
+        "mime": "application/octet-stream",
+        "cache_control": "max-age=315360000, public, immutable",
+        "sha256_equal": true
+      },
+      {
+        "file": "Kedebideri-Medium.ttf",
+        "http": 200,
+        "mime": "application/octet-stream",
+        "cache_control": "max-age=315360000, public, immutable",
+        "sha256_equal": true
+      },
+      {
+        "file": "Kedebideri-Regular.ttf",
+        "http": 200,
+        "mime": "application/octet-stream",
+        "cache_control": "max-age=315360000, public, immutable",
+        "sha256_equal": true
+      },
+      {
+        "file": "Kedebideri-SemiBold.ttf",
+        "http": 200,
+        "mime": "application/octet-stream",
+        "cache_control": "max-age=315360000, public, immutable",
+        "sha256_equal": true
+      }
+    ],
+    "production_deployment": false
+  },
+  "typography_http": {
+    "http": 200,
+    "fonts": [
+      {
+        "familyName": "Kedebideri",
+        "postScriptName": "Kedebideri-Bold",
+        "isCustomFont": true,
+        "glyphCount": 1
+      },
+      {
+        "familyName": "Segoe UI",
+        "postScriptName": "SegoeUI-Bold",
+        "isCustomFont": false,
+        "glyphCount": 41
+      }
+    ],
+    "font_http": [
+      {
+        "font": "Kedebideri-Black.ttf",
+        "http": 200,
+        "sha256_equal": true
+      },
+      {
+        "font": "Kedebideri-Bold.ttf",
+        "http": 200,
+        "sha256_equal": true
+      },
+      {
+        "font": "Kedebideri-ExtraBold.ttf",
+        "http": 200,
+        "sha256_equal": true
+      },
+      {
+        "font": "Kedebideri-Medium.ttf",
+        "http": 200,
+        "sha256_equal": true
+      },
+      {
+        "font": "Kedebideri-Regular.ttf",
+        "http": 200,
+        "sha256_equal": true
+      },
+      {
+        "font": "Kedebideri-SemiBold.ttf",
+        "http": 200,
+        "sha256_equal": true
+      }
+    ]
+  },
+  "media_migrations_schema_sql": "no-op, state only; applied only in isolated tests/restore",
+  "physical_android_executed": false,
+  "physical_android_reason": "No ADB device detected in this phase",
+  "production_deployment": false,
+  "ads_or_payments_activated": false,
+  "decision": "GO local corrections review; NO-GO production pending external prerequisites"
+}

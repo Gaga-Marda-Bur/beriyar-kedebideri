@@ -3,6 +3,7 @@ import os
 
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from core.media_validation import ValidatedMediaModel
 from django.utils import timezone
 
 from alphabet.models import Character
@@ -12,7 +13,24 @@ from quizzes.models import QuizQuestion
 from vocabulary.models import Word
 
 
-class LessonPack(models.Model):
+class LessonPack(ValidatedMediaModel):
+    def save(self, *args, **kwargs):
+        update_fields = kwargs.get('update_fields')
+        new_file = bool(self.file and not self.file._committed and
+                        (update_fields is None or 'file' in update_fields))
+        if not new_file:
+            return super().save(*args, **kwargs)
+        from django.db import transaction
+        with transaction.atomic():
+            result = super().save(*args, **kwargs)
+            # Metadata for this fresh upload only. Existing archives stay intact.
+            with self.file.open('rb') as stream:
+                self.checksum = hashlib.file_digest(stream, 'sha256').hexdigest()
+            self.size_mb = round(self.file.size / (1024 * 1024), 2)
+            self.generated_at = timezone.now()
+            super().save(update_fields=['checksum', 'size_mb', 'generated_at'])
+        return result
+
     BEGINNER = 'beginner'
     INTERMEDIATE = 'intermediate'
     ADVANCED = 'advanced'

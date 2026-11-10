@@ -21,7 +21,7 @@ from django.test.utils import get_runner, override_settings
 
 assert settings.DATABASES['default']['NAME'] == ':memory:'
 with tempfile.TemporaryDirectory(prefix='beriya-tests-') as media:
-    with override_settings(MEDIA_ROOT=media, STORAGES={
+    with override_settings(MEDIA_ROOT=Path(media) / 'public', PRIVATE_MEDIA_ROOT=Path(media) / 'private', STORAGES={
         'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
         'staticfiles': {'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'},
     }):

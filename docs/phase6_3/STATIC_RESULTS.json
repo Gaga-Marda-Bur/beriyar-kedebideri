@@ -1,0 +1,50 @@
+{
+  "collectstatic_executed": true,
+  "location": "new isolated ignored directory",
+  "hashed_manifest": true,
+  "whitenoise_local_requests": [
+    {
+      "file": "Kedebideri-Black.ttf",
+      "http": 200,
+      "mime": "application/octet-stream",
+      "cache_control": "max-age=315360000, public, immutable",
+      "sha256_equal": true
+    },
+    {
+      "file": "Kedebideri-Bold.ttf",
+      "http": 200,
+      "mime": "application/octet-stream",
+      "cache_control": "max-age=315360000, public, immutable",
+      "sha256_equal": true
+    },
+    {
+      "file": "Kedebideri-ExtraBold.ttf",
+      "http": 200,
+      "mime": "application/octet-stream",
+      "cache_control": "max-age=315360000, public, immutable",
+      "sha256_equal": true
+    },
+    {
+      "file": "Kedebideri-Medium.ttf",
+      "http": 200,
+      "mime": "application/octet-stream",
+      "cache_control": "max-age=315360000, public, immutable",
+      "sha256_equal": true
+    },
+    {
+      "file": "Kedebideri-Regular.ttf",
+      "http": 200,
+      "mime": "application/octet-stream",
+      "cache_control": "max-age=315360000, public, immutable",
+      "sha256_equal": true
+    },
+    {
+      "file": "Kedebideri-SemiBold.ttf",
+      "http": 200,
+      "mime": "application/octet-stream",
+      "cache_control": "max-age=315360000, public, immutable",
+      "sha256_equal": true
+    }
+  ],
+  "production_deployment": false
+}

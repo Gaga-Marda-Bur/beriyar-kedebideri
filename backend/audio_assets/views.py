@@ -18,7 +18,7 @@ class AudioAssetListAPIView(generics.ListAPIView):
 
         is_staff = is_staff_preview(self.request)
         if not is_staff:
-            queryset = queryset.filter(validation_status='published')
+            queryset = queryset.filter(validation_status='published').exclude(audio_type='feedback')
         elif status_param:
             queryset = queryset.filter(validation_status=status_param)
 
@@ -40,5 +40,5 @@ class AudioAssetDetailAPIView(generics.RetrieveAPIView):
     def get_queryset(self):
         queryset = AudioAsset.objects.all()
         if not is_staff_preview(self.request):
-            queryset = queryset.filter(validation_status='published')
+            queryset = queryset.filter(validation_status='published').exclude(audio_type='feedback')
         return queryset

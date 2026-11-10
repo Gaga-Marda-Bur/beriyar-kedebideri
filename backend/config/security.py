@@ -25,9 +25,9 @@ INSECURE_DEV_SECRET_KEY = (
     "django-insecure-7m-!!_i5=!jsz09nusf)cmuosf_upsu%*-jh(!v#*=!kt)be3b"
 )
 
-ENVIRONMENTS = ("development", "test", "production")
+ENVIRONMENTS = ("development", "test", "staging", "production")
 
-PRODUCTION_DEFAULT_HOSTS = ["beriyarkedebideri.com", "www.beriyarkedebideri.com"]
+PRODUCTION_DEFAULT_HOSTS = ["beriyarkedebideri.com", "www.beriyarkedebideri.com", "api.beriyarkedebideri.com"]
 DEVELOPMENT_DEFAULT_HOSTS = PRODUCTION_DEFAULT_HOSTS + [
     "127.0.0.1",
     "localhost",
@@ -125,7 +125,7 @@ def _validate_secret_key(secret: Optional[str]) -> str:
 
 def build_security_settings(get: EnvGetter) -> dict:
     environment = resolve_environment(get)
-    production = environment == "production"
+    production = environment in ("staging", "production")
 
     debug = _bool(get, "DEBUG", default=not production)
     if production and debug:
@@ -138,6 +138,8 @@ def build_security_settings(get: EnvGetter) -> dict:
 
     # --- Hôtes ---------------------------------------------------------------
     hosts = _csv(get, "ALLOWED_HOSTS")
+    if environment == 'staging' and hosts is None:
+        raise ImproperlyConfigured('ALLOWED_HOSTS doit être explicite en staging.')
     if hosts is None:
         hosts = list(PRODUCTION_DEFAULT_HOSTS if production else DEVELOPMENT_DEFAULT_HOSTS)
     render_host = (get("RENDER_EXTERNAL_HOSTNAME") or "").strip()
@@ -148,6 +150,8 @@ def build_security_settings(get: EnvGetter) -> dict:
             raise ImproperlyConfigured("ALLOWED_HOSTS ne peut pas être vide en production.")
         if "*" in hosts:
             raise ImproperlyConfigured("ALLOWED_HOSTS='*' est interdit en production.")
+        if any(not re.fullmatch(r'\.?[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*', host) for host in hosts):
+            raise ImproperlyConfigured('ALLOWED_HOSTS doit contenir des noms hôtes, sans schéma ni chemin.')
         # Les hôtes locaux sont inutiles derrière le proxy et retirés sans erreur.
         hosts = [host for host in hosts if host not in LOCAL_HOSTS]
         if not hosts:
@@ -155,7 +159,7 @@ def build_security_settings(get: EnvGetter) -> dict:
 
     csrf_origins = _csv(get, "CSRF_TRUSTED_ORIGINS")
     if csrf_origins is None:
-        csrf_origins = [f"https://{host}" for host in PRODUCTION_DEFAULT_HOSTS]
+        csrf_origins = [f"https://{host}" for host in (hosts if environment == 'staging' else PRODUCTION_DEFAULT_HOSTS)]
     # Django exige un schéma ; une entrée sans schéma lèverait une erreur de
     # vérification. En production, seules les origines HTTPS sont conservées.
     for origin in csrf_origins:
@@ -168,6 +172,21 @@ def build_security_settings(get: EnvGetter) -> dict:
                 or not parsed.hostname or parsed.username or parsed.password
                 or parsed.path or parsed.query or parsed.fragment):
             raise ImproperlyConfigured("CSRF_TRUSTED_ORIGINS contient une origine invalide.")
+
+    cors_origins = _csv(get, 'CORS_ALLOWED_ORIGINS') or []
+    allow_all_cors = _bool(get, 'CORS_ALLOW_ALL_ORIGINS', False)
+    if production and allow_all_cors:
+        raise ImproperlyConfigured('CORS_ALLOW_ALL_ORIGINS interdit en staging/production.')
+    for origin in cors_origins:
+        try:
+            parsed = urlsplit(origin)
+            parsed.port
+        except ValueError as error:
+            raise ImproperlyConfigured('Origine CORS invalide.') from error
+        if (parsed.scheme not in (('https',) if production else ('https','http'))
+                or not parsed.hostname or '*' in origin or parsed.username or parsed.password
+                or parsed.path or parsed.query or parsed.fragment):
+            raise ImproperlyConfigured('Origine CORS invalide.')
 
     # --- Proxy / HTTPS -------------------------------------------------------
     # Ne faire confiance à X-Forwarded-Proto que derrière un proxy qui écrase
@@ -213,11 +232,16 @@ def build_security_settings(get: EnvGetter) -> dict:
 
     return {
         "DJANGO_ENV": environment,
-        "IS_PRODUCTION": production,
+        "IS_PRODUCTION": environment == 'production',
+        "IS_STAGING": environment == 'staging',
+        "IS_DEPLOYED": production,
         "DEBUG": debug,
         "SECRET_KEY": secret_key,
         "ALLOWED_HOSTS": hosts,
         "CSRF_TRUSTED_ORIGINS": csrf_origins,
+        "CORS_ALLOWED_ORIGINS": cors_origins,
+        "CORS_ALLOW_ALL_ORIGINS": allow_all_cors,
+        "CORS_ALLOW_CREDENTIALS": _bool(get, 'CORS_ALLOW_CREDENTIALS', False),
         "SECURE_PROXY_SSL_HEADER": ("HTTP_X_FORWARDED_PROTO", "https") if trust_proxy else None,
         "SECURE_SSL_REDIRECT": ssl_redirect,
         "SECURE_HSTS_SECONDS": hsts_seconds,

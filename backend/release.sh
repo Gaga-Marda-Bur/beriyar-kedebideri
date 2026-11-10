@@ -6,4 +6,6 @@ set -o errexit
 # En cas d'erreur ici, le déploiement est annulé et l'ancienne version reste en ligne.
 
 python manage.py migrate --noinput
+# Idempotent: creates only configured DatabaseCache tables, not during build.
+python manage.py createcachetable
 python manage.py bootstrap_render

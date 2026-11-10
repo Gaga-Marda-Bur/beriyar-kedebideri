@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from core.media_validation import ValidatedMediaModel
 
 from alphabet.models import Character
 from audio_assets.models import AudioAsset
@@ -7,7 +8,7 @@ from learning.models import LearningUnit
 from vocabulary.models import Word
 
 
-class NoEnaPublication(models.Model):
+class NoEnaPublication(ValidatedMediaModel):
     SHORT_VIDEO = 'short_video'
     IMAGE = 'image'
     AUDIO_STORY = 'audio_story'

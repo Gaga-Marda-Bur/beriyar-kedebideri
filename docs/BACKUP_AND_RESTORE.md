@@ -2,6 +2,14 @@
 
 Ce document décrit les procédures opérationnelles de déploiement, sauvegarde et reprise après incident pour Beřiyar Kedebideři.
 
+**Validation Phase 6.3 (10 novembre 2026)** : voir
+`PHASE6_3_SECURITE_STAGING_PRODUCTION.md` et `phase6_3/RESTORE_RESULTS.json`.
+La restauration réellement exécutée concerne SQLite et les fichiers locaux,
+dans un nouveau répertoire isolé. PostgreSQL/R2 ne sont pas déclarés testés.
+Pour reproduire cette vérification, utiliser `phase6_3/restore_isolated.py` ;
+l’ancien `test_physical_backup_restore.py` réutilise/efface son répertoire scratch
+et n’est pas utilisé par cette phase. Ne jamais restaurer sur la base source.
+
 ---
 
 ## 1. Séparation du cycle de déploiement (A21)
@@ -22,9 +30,13 @@ Auparavant, `build.sh` exécutait `python manage.py migrate` pendant la phase de
 2. **Phase de release (`backend/release.sh`) :**
    ```bash
    python manage.py migrate --noinput
+   python manage.py createcachetable
    python manage.py bootstrap_render
    ```
-   *Rôle :* Exécution des migrations additives de manière atomique avant le basculement du trafic. Sur Render, cette commande est configurée dans le champ **`preDeployCommand`** du service web. En cas d'échec, le déploiement s'interrompt immédiatement et l'ancienne instance continue de tourner.
+   *Rôle :* Migrations avant basculement du trafic. L’atomicité est celle de chaque
+   migration/backend, pas une transaction globale de toute la release. Vérifier
+   la configuration `preDeployCommand` réelle de Render avant tout déploiement.
+   La création de superuser est désactivée sans `BOOTSTRAP_SUPERUSER=true` explicite.
 
 ---
 
@@ -59,7 +71,7 @@ Avant tout déploiement comportant une migration de données ou de schéma :
    import shutil
    from datetime import datetime
 
-   src = sqlite3.connect("backend/db.sqlite3")
+   src = sqlite3.connect("file:backend/db.sqlite3?mode=ro", uri=True)
    dst_path = f"backend/db_pre_deploy_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.sqlite3"
    dst = sqlite3.connect(dst_path)
    src.backup(dst)
@@ -78,11 +90,16 @@ Avant tout déploiement comportant une migration de données ou de schéma :
 1. **Synchronisation du bucket R2 :**
    ```bash
    # Synchroniser le bucket R2 vers un stockage miroir local/sécurisé
-   rclone sync r2:beriyar-media/ /backups/r2_media/ \
+   rclone copy r2:beriyar-media/ /backups/r2_media_SNAPSHOT_UNIQUE/ \
        --checksum \
        --transfers=8 \
        --log-file=/backups/rclone_$(date -u +%Y%m%d).log
    ```
+
+   Utiliser un instantané neuf et conserver les versions précédentes. Sauvegarder
+   également le bucket **privé** distinct avec des accès dédiés. `sync` peut effacer
+   des fichiers du miroir : ce n’est pas une politique de rétention. Geler les
+   écritures ou utiliser versions/manifeste pour rendre DB et médias cohérents.
 
 ---
 
@@ -98,8 +115,10 @@ Pour éviter des écritures partielles ou des corruptions concurrentes pendant l
 
 1. **Restauration PostgreSQL :**
    ```bash
-   # Restauration propre avec nettoyage des objets existants
-   pg_restore --clean --if-exists --no-acl --no-owner -d "$DATABASE_URL" "$BACKUP_FILE"
+   # Cible NEUVE et ISOLÉE ; jamais DATABASE_URL de la source/production.
+   test -n "${RESTORE_DATABASE_URL:?Cible isolée obligatoire}"
+   test "$RESTORE_DATABASE_URL" != "${DATABASE_URL:?Source obligatoire}"
+   pg_restore --exit-on-error --no-acl --no-owner -d "$RESTORE_DATABASE_URL" "$BACKUP_FILE"
    ```
 
 2. **Validation post-restauration :**

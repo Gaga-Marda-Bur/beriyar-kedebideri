@@ -1,4 +1,5 @@
 from django.db import models
+from core.media_validation import ValidatedMediaModel
 
 from alphabet.models import Character
 from audio_assets.models import AudioAsset
@@ -85,7 +86,7 @@ class Lesson(models.Model):
         return f'{self.unit.title_fr} — {self.title_fr}'
 
 
-class LessonItem(models.Model):
+class LessonItem(ValidatedMediaModel):
     CHARACTER = 'character'
     WORD = 'word'
     AUDIO_ONLY = 'audio_only'

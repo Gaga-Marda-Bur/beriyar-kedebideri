@@ -2,11 +2,13 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from core.media_validation import ValidatedMediaModel
+from core.media_storage import FeedbackAttachmentStorage
 
 from audio_assets.models import AudioAsset
 
 
-class FeedbackReport(models.Model):
+class FeedbackReport(ValidatedMediaModel):
     PRONUNCIATION = 'pronunciation'
     TRANSLATION = 'translation'
     AUDIO_QUALITY = 'audio_quality'
@@ -117,6 +119,7 @@ class FeedbackReport(models.Model):
 
     screenshot = models.ImageField(
         upload_to='feedback/screenshots/',
+        storage=FeedbackAttachmentStorage(),
         blank=True,
         null=True,
     )

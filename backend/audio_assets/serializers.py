@@ -31,6 +31,10 @@ class AudioAssetSerializer(serializers.ModelSerializer):
 
     def get_file_url(self, obj):
         request = self.context.get('request')
+        if obj.audio_type == 'feedback':
+            from django.urls import reverse
+            url = reverse('feedback-audio', kwargs={'pk':obj.pk})
+            return request.build_absolute_uri(url) if request else url
 
         if obj.file and request:
             return request.build_absolute_uri(obj.file.url)

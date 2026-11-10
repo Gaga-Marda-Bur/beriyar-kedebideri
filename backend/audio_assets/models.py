@@ -2,9 +2,11 @@ import uuid
 
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from core.media_validation import ValidatedMediaModel
+from core.media_storage import AudioMediaStorage, audio_upload_path
 
 
-class AudioAsset(models.Model):
+class AudioAsset(ValidatedMediaModel):
     CHARACTER = 'character'
     PHONEME = 'phoneme'
     SYLLABLE = 'syllable'
@@ -78,7 +80,8 @@ class AudioAsset(models.Model):
     )
 
     file = models.FileField(
-        upload_to='audio_assets/files/',
+        upload_to=audio_upload_path,
+        storage=AudioMediaStorage(),
         validators=[
             FileExtensionValidator(
                 allowed_extensions=['mp3', 'm4a', 'wav'],

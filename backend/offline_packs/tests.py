@@ -1,6 +1,7 @@
 import io
 import json
 import zipfile
+import wave
 from django.core.files.base import ContentFile
 from django.test import TestCase
 
@@ -14,7 +15,10 @@ from offline_packs.services.offline_pack_generator import OfflinePackGenerator
 class OfflinePackModelTests(TestCase):
     def test_update_file_metadata_streaming(self):
         """A04: update_file_metadata doit calculer taille et SHA-256 sans faire pack.file.path."""
-        content = b"TEST_STREAMING_CONTENT_FOR_A04"
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer,'w') as archive:
+            archive.writestr('manifest.json','{}')
+        content = buffer.getvalue()
         pack = LessonPack.objects.create(
             slug='test-streaming-pack',
             title_fr='Pack Test Streaming',
@@ -45,9 +49,15 @@ class OfflinePackGeneratorTests(TestCase):
             status=LearningUnit.PUBLISHED,
         )
 
+        silence = io.BytesIO()
+        with wave.open(silence,'wb') as wav:
+            wav.setnchannels(1)
+            wav.setsampwidth(2)
+            wav.setframerate(8000)
+            wav.writeframes(b'\0\0'*80)
         self.audio = AudioAsset.objects.create(
             title="Audio Test",
-            file=ContentFile(b"FAKE_MP3_CONTENT", name="audio/test.mp3"),
+            file=ContentFile(silence.getvalue(), name="audio/test.wav"),
             validation_status="published",
         )
 

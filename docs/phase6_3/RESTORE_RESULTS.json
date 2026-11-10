@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-10",
+  "source_db_sha256_before": "8c1d4b1cf3a9415b17510fe5ce0b80c080ed056d7ca884730352214eadc65aef",
+  "source_db_sha256_after": "8c1d4b1cf3a9415b17510fe5ce0b80c080ed056d7ca884730352214eadc65aef",
+  "destination": "unique ignored runtime/restore-* directory",
+  "source_opened_readonly": true,
+  "tables_compared_before_migrations": 37,
+  "rows_compared_before_migrations": 344,
+  "all_schema_and_rows_equal_before_migrations": true,
+  "all_preexisting_values_preserved_after_migrations": true,
+  "migration_plan_applied_to_restore_only": [
+    "audio_assets.0002_alter_audioasset_file",
+    "feedback.0002_alter_feedbackreport_screenshot",
+    "progress.0004_progressdevicecredential"
+  ],
+  "integrity_check": "ok",
+  "foreign_key_violations": 0,
+  "media": {
+    "public": {
+      "files": 146,
+      "bytes": 70511945,
+      "audio_files": 110,
+      "all_sha256_equal": true
+    },
+    "private": {
+      "files": 1,
+      "bytes": 68,
+      "audio_files": 0,
+      "all_sha256_equal": true
+    }
+  },
+  "file_references": 4,
+  "missing_references_by_field": {},
+  "restored_audio_references_opened": 2,
+  "packs": [
+    {
+      "present": true,
+      "stored_checksum_present": true,
+      "checksum_equal": true,
+      "zip_crc_ok": true
+    }
+  ],
+  "database_cache_independent_workers": [
+    1,
+    2
+  ],
+  "atomic_concurrent_throttling_proven": false,
+  "postgresql_or_cloud_restore_executed": false
+}
