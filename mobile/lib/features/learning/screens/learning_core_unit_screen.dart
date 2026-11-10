@@ -17,19 +17,24 @@ import '../../quiz/models/quiz_question_model.dart';
 import '../engine/tracing_engine.dart';
 import '../engine/learning_session.dart';
 import '../models/learning_unit_model.dart';
+import '../srs/local_srs_service.dart';
+import '../srs/srs_item_model.dart';
 import '../widgets/interactive_tracing_pad.dart';
 import '../widgets/syllable_fusion_widget.dart';
+import 'srs_review_session_screen.dart';
 
 class LearningCoreUnitScreen extends StatefulWidget {
   final LearningUnitModel? unit;
   final String? unitSlug;
   final CachedContentService? contentService;
+  final LocalSrsService? srsService;
 
   const LearningCoreUnitScreen({
     super.key,
     this.unit,
     this.unitSlug,
     this.contentService,
+    this.srsService,
   });
 
   @override
@@ -40,6 +45,7 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
   final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
   final UnitProgressLocalStorage _progressStorage = UnitProgressLocalStorage();
   late final CachedContentService _contentService;
+  late final LocalSrsService _srsService;
 
   LearningUnitModel? _unit;
   bool _isLoading = true;
@@ -56,11 +62,13 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
   String _typedText = '';
   bool _autoPlayEnabled = true;
   final Map<int, String> _lastSelectedSymbolByStep = {};
+  Map<String, SrsItemRecord> _srsRecordsByStableId = {};
 
   @override
   void initState() {
     super.initState();
     _contentService = widget.contentService ?? CachedContentService();
+    _srsService = widget.srsService ?? LocalSrsService();
     _initUnit();
   }
 
@@ -151,6 +159,12 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
       'encoding': unit.weightEncoding,
     }, unit.minScoreToPass);
     await _progressStorage.restoreSession(unit.slug, session);
+    try {
+      await _srsService.reconcileWithUnit(unit);
+      _srsRecordsByStableId = await _srsService.loadAllMap();
+    } catch (_) {
+      _srsRecordsByStableId = <String, SrsItemRecord>{};
+    }
     try {
       _autoPlayEnabled = await BkAudioPreferencesService.isAutoPlayEnabled();
     } catch (_) {
@@ -267,6 +281,8 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
         _session!.finished) {
       return;
     }
+    final isFirstAttempt = _session!.answers[_currentStep] == null;
+    final currentStepMap = _steps[_currentStep];
     setState(() {
       if (selectedSymbol != null) {
         _lastSelectedSymbolByStep[_currentStep] = selectedSymbol;
@@ -278,6 +294,48 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     });
     if (correct) ScaffoldMessenger.of(context).hideCurrentSnackBar();
     _persistSession().catchError((Object _) {});
+    if (isFirstAttempt) {
+      _recordStepSrs(currentStepMap, correct);
+    }
+  }
+
+  Future<void> _recordStepSrs(
+    Map<String, dynamic> step,
+    bool firstAttemptCorrect,
+  ) async {
+    final unit = _unit;
+    if (unit == null) return;
+    final erfeTarget = _stepErfeTarget(step);
+    if (erfeTarget.trim().isEmpty) return;
+    final stepType = step['step_type'] as String? ?? '';
+    final itemType = (stepType == 'encoding' || step.containsKey('target_word'))
+        ? 'word'
+        : 'char';
+    final label = (step['french_translation'] ?? step['label'] ?? '')
+        .toString();
+    final audioUrl = step['audio_url'] as String?;
+    final hasAudio = _stepHasAudio(step);
+    try {
+      final updated = await _srsService.recordOutcome(
+        unitSlug: unit.slug,
+        itemType: itemType,
+        erfeText: erfeTarget,
+        correct: firstAttemptCorrect,
+        audioMissing: !hasAudio,
+        label: label,
+        audioUrl: audioUrl,
+      );
+      if (updated != null && mounted) {
+        setState(() {
+          _srsRecordsByStableId = {
+            ..._srsRecordsByStableId,
+            updated.stableId: updated,
+          };
+        });
+      }
+    } catch (_) {
+      // Never block lesson progression if local SRS storage fails.
+    }
   }
 
   bool _stepHasAudio(Map<String, dynamic> step) {
@@ -1621,6 +1679,29 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
           ),
 
           const SizedBox(height: AppTokens.spaceXl),
+          if (_srsItemsForUnit().isNotEmpty) ...[
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                minHeight: AppTokens.minTouchTarget,
+              ),
+              child: OutlinedButton.icon(
+                key: const ValueKey('launch-srs-review-button'),
+                onPressed: _openSrsReviewSession,
+                icon: Icon(
+                  Icons.schedule_rounded,
+                  color: palette.accentGold,
+                ),
+                label: Text(
+                  _text(
+                    'Séance de révision espacée (${_srsItemsForUnit().length})',
+                    'Spaced repetition review (${_srsItemsForUnit().length})',
+                    'مراجعة متباعدة (${_srsItemsForUnit().length})',
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: AppTokens.spaceMd),
+          ],
           ConstrainedBox(
             constraints: const BoxConstraints(
               minHeight: AppTokens.primaryCtaHeight,
@@ -1659,6 +1740,63 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     );
   }
 
+  List<SrsItemRecord> _srsItemsForUnit() {
+    final slug = _unit?.slug;
+    if (slug == null) return const [];
+    final unitRecords = _srsRecordsByStableId.values
+        .where((r) => r.unitSlug == slug)
+        .toList();
+    final dueOrDifficult = unitRecords
+        .where((r) => r.isDifficult || r.isDueAt(DateTime.now()))
+        .toList();
+    return dueOrDifficult.isNotEmpty ? dueOrDifficult : unitRecords;
+  }
+
+  Future<void> _openSrsReviewSession() async {
+    final items = _srsItemsForUnit();
+    if (items.isEmpty || _unit == null) return;
+    final distractors = <String>{
+      for (final ch in _unit!.characters)
+        if (ch.symbol.trim().isNotEmpty) ch.symbol.trim(),
+      for (final w in _unit!.words)
+        if (w.beriyaText.trim().isNotEmpty) w.beriyaText.trim(),
+      for (final r in _srsRecordsByStableId.values)
+        if (r.erfeText.trim().isNotEmpty) r.erfeText.trim(),
+    }.toList();
+    await Navigator.of(context).push<List<SrsItemRecord>>(
+      MaterialPageRoute(
+        builder: (_) => SrsReviewSessionScreen(
+          items: items,
+          srsService: _srsService,
+          distractorPool: distractors,
+        ),
+      ),
+    );
+    if (!mounted) return;
+    try {
+      final refreshed = await _srsService.loadAllMap();
+      if (mounted) {
+        setState(() {
+          _srsRecordsByStableId = refreshed;
+        });
+      }
+    } catch (_) {}
+  }
+
+  SrsItemRecord? _srsRecordForStep(Map<String, dynamic> item) {
+    final erfe = _stepErfeTarget(item);
+    if (erfe.trim().isEmpty) return null;
+    final stepType = item['step_type'] as String? ?? '';
+    final itemType = (stepType == 'encoding' || item.containsKey('target_word'))
+        ? 'word'
+        : 'char';
+    final stableId = SrsItemRecord.buildStableId(
+      itemType: itemType,
+      erfeText: erfe,
+    );
+    return _srsRecordsByStableId[stableId];
+  }
+
   Widget _buildReviewItemChip(
     Map<String, dynamic> item,
     BkThemePalette palette, {
@@ -1667,6 +1805,7 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     final erfe = _stepErfeTarget(item);
     final audioUrl = item['audio_url'] as String?;
     final hasAudio = audioUrl != null && audioUrl.trim().isNotEmpty;
+    final srsRecord = _srsRecordForStep(item);
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -1687,6 +1826,24 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
             erfe,
             style: AppTextStyles.erfeOptionTextOf(context),
           ),
+          if (srsRecord != null && srsRecord.intervalDays > 0) ...[
+            const SizedBox(width: AppTokens.spaceXs),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: palette.surfaceElevated,
+                borderRadius: BorderRadius.circular(AppTokens.radiusPill),
+              ),
+              child: Text(
+                '+${srsRecord.intervalDays} j',
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
+                  color: palette.accentGold,
+                ),
+              ),
+            ),
+          ],
           if (hasAudio) ...[
             const SizedBox(width: AppTokens.spaceXs),
             IconButton(

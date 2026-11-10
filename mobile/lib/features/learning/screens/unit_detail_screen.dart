@@ -9,6 +9,9 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../../lessons/models/lesson_model.dart';
 import '../../quiz/models/quiz_question_model.dart';
 import '../models/learning_unit_model.dart';
+import '../srs/local_srs_service.dart';
+import '../srs/srs_item_model.dart';
+import 'srs_review_session_screen.dart';
 import 'unit_practice_screen.dart';
 import 'learning_core_unit_screen.dart';
 import '../../progress/models/unit_progress_local_model.dart';
@@ -30,7 +33,9 @@ class UnitDetailScreen extends StatefulWidget {
 class _UnitDetailScreenState extends State<UnitDetailScreen> {
   final AudioUrlPlayer _audioPlayer = AudioUrlPlayer();
   final UnitProgressLocalStorage _progressStorage = UnitProgressLocalStorage();
+  final LocalSrsService _srsService = LocalSrsService();
   UnitProgressLocalModel? _localProgress;
+  List<SrsItemRecord> _dueSrsItems = const [];
   final CachedContentService _cachedContentService = CachedContentService();
 
   late Future<_UnitDetailData> _future;
@@ -63,6 +68,25 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
       unitSlug: widget.unitSlug,
     );
     _localProgress = await _progressStorage.getProgress(widget.unitSlug);
+    try {
+      await _srsService.reconcileWithUnit(unit);
+      final allowedStableIds = <String>{
+        for (final ch in unit.characters)
+          SrsItemRecord.buildStableId(itemType: 'char', erfeText: ch.symbol),
+        for (final w in unit.words)
+          SrsItemRecord.buildStableId(
+            itemType: 'word',
+            erfeText: w.beriyaText,
+          ),
+      };
+      _dueSrsItems = await _srsService.getDueItems(
+        unitSlug: widget.unitSlug,
+        includeDifficult: true,
+        allowedStableIds: allowedStableIds,
+      );
+    } catch (_) {
+      _dueSrsItems = const [];
+    }
     return _UnitDetailData(
       unit: unit,
       lessons: lessons,
@@ -262,6 +286,41 @@ class _UnitDetailScreenState extends State<UnitDetailScreen> {
                               ),
                             ),
                           ),
+                          if (_dueSrsItems.isNotEmpty) ...[
+                            const SizedBox(height: 8),
+                            SizedBox(
+                              width: double.infinity,
+                              child: OutlinedButton.icon(
+                                key: const ValueKey('unit-detail-srs-review-button'),
+                                onPressed: () async {
+                                  final distractors = <String>{
+                                    for (final ch in unit.characters)
+                                      if (ch.symbol.trim().isNotEmpty) ch.symbol.trim(),
+                                    for (final w in unit.words)
+                                      if (w.beriyaText.trim().isNotEmpty) w.beriyaText.trim(),
+                                  }.toList();
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => SrsReviewSessionScreen(
+                                        items: _dueSrsItems,
+                                        srsService: _srsService,
+                                        distractorPool: distractors,
+                                      ),
+                                    ),
+                                  );
+                                  if (mounted) _reload();
+                                },
+                                icon: const Icon(
+                                  Icons.schedule_rounded,
+                                  color: AppColors.gold,
+                                ),
+                                label: Text(
+                                  'Révision espacée (${_dueSrsItems.length} à revoir)',
+                                ),
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                     ),
