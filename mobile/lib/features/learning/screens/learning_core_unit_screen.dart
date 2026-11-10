@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../../core/audio/audio_url_player.dart';
+import '../../../core/audio/bk_audio_preferences.dart';
 import '../../../core/cache/cached_content_service.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/theme/app_tokens.dart';
 import '../../../core/widgets/app_background.dart';
+import '../../../core/widgets/bk_audio_hero_button.dart';
+import '../../../core/widgets/bk_feedback_sheet.dart';
+import '../../../core/widgets/bk_option_card.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../shared/beriya/beriya_keyboard.dart';
 import '../../../shared/beriya/utf16_safe.dart';
@@ -48,6 +54,8 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
 
   int _tracingAttempt = 1;
   String _typedText = '';
+  bool _autoPlayEnabled = true;
+  final Map<int, String> _lastSelectedSymbolByStep = {};
 
   @override
   void initState() {
@@ -64,11 +72,12 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
 
   Future<void> _initUnit() async {
     if (widget.unit != null) {
-      _applyUnit(widget.unit!);
+      await _applyUnit(widget.unit!);
       return;
     }
 
     if (widget.unitSlug == null || widget.unitSlug!.trim().isEmpty) {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
         _errorMessage = 'Aucune unité spécifiée.';
@@ -85,8 +94,9 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
       } catch (_) {}
 
       if (found != null) {
-        _applyUnit(found);
+        await _applyUnit(found);
       } else {
+        if (!mounted) return;
         setState(() {
           _isLoading = false;
           _errorMessage =
@@ -96,6 +106,7 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
         });
       }
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
         _errorMessage =
@@ -122,6 +133,7 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     };
     if (actionableSteps.isEmpty ||
         steps.any((step) => !supported.contains(step['step_type']))) {
+      if (!mounted) return;
       setState(() {
         _unit = unit;
         _steps = [];
@@ -139,6 +151,11 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
       'encoding': unit.weightEncoding,
     }, unit.minScoreToPass);
     await _progressStorage.restoreSession(unit.slug, session);
+    try {
+      _autoPlayEnabled = await BkAudioPreferencesService.isAutoPlayEnabled();
+    } catch (_) {
+      _autoPlayEnabled = true;
+    }
     if (!mounted) return;
     setState(() {
       _unit = unit;
@@ -153,7 +170,18 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
               .clamp(1, 2);
       _typedText = session.typedText;
     });
-    _playCurrentStepAudio();
+    _autoPlayCurrentStepIfEnabled();
+  }
+
+  Future<void> _toggleAutoPlay() async {
+    final nextValue = !_autoPlayEnabled;
+    setState(() {
+      _autoPlayEnabled = nextValue;
+    });
+    await BkAudioPreferencesService.setAutoPlayAudio(nextValue);
+    if (!nextValue) {
+      await _audioPlayer.stop();
+    }
   }
 
   Future<void> _persistSession() {
@@ -209,9 +237,10 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
         );
         _currentStep = 0;
         _typedText = '';
+        _lastSelectedSymbolByStep.clear();
       });
       await _persistSession();
-      if (mounted) _playCurrentStepAudio();
+      if (mounted) _autoPlayCurrentStepIfEnabled();
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -231,7 +260,7 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     }
   }
 
-  void _answer(bool correct) {
+  void _answer(bool correct, {String? selectedSymbol}) {
     if (!mounted ||
         _session == null ||
         _session!.resolved(_currentStep) ||
@@ -239,6 +268,9 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
       return;
     }
     setState(() {
+      if (selectedSymbol != null) {
+        _lastSelectedSymbolByStep[_currentStep] = selectedSymbol;
+      }
       _session!.answer(correct);
       _tracingAttempt =
           ((_session!.answers[_currentStep]?['successes'] as int? ?? 0) + 1)
@@ -246,23 +278,35 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     });
     if (correct) ScaffoldMessenger.of(context).hideCurrentSnackBar();
     _persistSession().catchError((Object _) {});
-    if (!correct) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(_text('Réessaie.', 'Try again.', 'حاول مجددًا.')),
-        ),
-      );
+  }
+
+  bool _stepHasAudio(Map<String, dynamic> step) {
+    final audioUrl = step['audio_url'] as String?;
+    return audioUrl != null && audioUrl.trim().isNotEmpty;
+  }
+
+  void _autoPlayCurrentStepIfEnabled() {
+    if (!_autoPlayEnabled) {
+      _audioPlayer.stop();
+      return;
     }
+    _playCurrentStepAudio();
   }
 
   void _playCurrentStepAudio() {
     if (_steps.isEmpty || _currentStep >= _steps.length) return;
     final step = _steps[_currentStep];
     final audioUrl = step['audio_url'] as String?;
-    if (audioUrl != null && audioUrl.isNotEmpty) {
+    if (audioUrl != null && audioUrl.trim().isNotEmpty) {
       _audioPlayer.playUrl(audioUrl);
     } else {
       _audioPlayer.stop();
+    }
+  }
+
+  void _playStepAudioUrl(String? audioUrl) {
+    if (audioUrl != null && audioUrl.trim().isNotEmpty) {
+      _audioPlayer.playUrl(audioUrl);
     }
   }
 
@@ -284,7 +328,7 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
       });
       _session!.currentStep = _currentStep;
       _persistSession().catchError((Object _) {});
-      _playCurrentStepAudio();
+      _autoPlayCurrentStepIfEnabled();
     } else {
       _finishUnit();
     }
@@ -301,7 +345,7 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
       });
       _session!.currentStep = _currentStep;
       _persistSession().catchError((Object _) {});
-      _playCurrentStepAudio();
+      _autoPlayCurrentStepIfEnabled();
     }
   }
 
@@ -324,13 +368,41 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     }
   }
 
+  String _phaseLabelForStep(String stepType) {
+    return switch (stepType) {
+      'discovery' => _text('1. ÉCOUTER', '1. LISTEN', '١. استمع'),
+      'discrimination' => _text('2. RECONNAÎTRE', '2. RECOGNIZE', '٢. تعرّف'),
+      'fusion' || 'word_decoding' => _text('3. LIRE', '3. READ', '٣. اقرأ'),
+      'keyboard_encoding' => _text('4. COMPOSER', '4. COMPOSE', '٤. ركّب'),
+      'tracing' => _text('PRATIQUER', 'PRACTICE', 'تدرّب'),
+      'celebration' => _text('5. RÉVISER', '5. REVIEW', '٥. راجع'),
+      _ => _text('SÉANCE', 'SESSION', 'جلسة'),
+    };
+  }
+
+  IconData _phaseIconForStep(String stepType) {
+    return switch (stepType) {
+      'discovery' => Icons.headphones_rounded,
+      'discrimination' => Icons.touch_app_rounded,
+      'fusion' || 'word_decoding' => Icons.menu_book_rounded,
+      'keyboard_encoding' => Icons.keyboard_alt_rounded,
+      'tracing' => Icons.gesture_rounded,
+      'celebration' => Icons.auto_awesome_rounded,
+      _ => Icons.school_rounded,
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
+    final palette = BkThemePalette.of(context);
+    final disableAnimations = MediaQuery.disableAnimationsOf(context);
+
     if (_isLoading) {
       return Scaffold(
+        backgroundColor: palette.background,
         body: AppBackground(
-          child: const Center(
-            child: CircularProgressIndicator(color: AppColors.gold),
+          child: Center(
+            child: CircularProgressIndicator(color: palette.accentGold),
           ),
         ),
       );
@@ -338,6 +410,7 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
 
     if (_errorMessage != null || _unit == null || _steps.isEmpty) {
       return Scaffold(
+        backgroundColor: palette.background,
         appBar: AppBar(
           title: Text(_unit?.titleFr ?? 'Alphabétisation Beriya Erfe'),
         ),
@@ -349,17 +422,17 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.info_outline_rounded,
-                      color: AppColors.gold,
+                      color: palette.accentGold,
                       size: 56,
                     ),
                     const SizedBox(height: 16),
                     Text(
                       _unit != null ? _unit!.titleFr : 'Contenu indisponible',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: AppColors.gold,
+                      style: TextStyle(
+                        color: palette.accentGold,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Kedebideri',
@@ -369,8 +442,8 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
                     Text(
                       _errorMessage ?? 'Cette unité n\'est pas disponible.',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.white,
+                      style: TextStyle(
+                        color: palette.textPrimary,
                         fontSize: 15,
                         height: 1.4,
                       ),
@@ -396,67 +469,180 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     }
 
     final totalSteps = _steps.length;
+    final currentStepMap = _steps[_currentStep];
+    final currentStepType = currentStepMap['step_type'] as String? ?? '';
 
     return Scaffold(
+      backgroundColor: palette.background,
       appBar: AppBar(
+        backgroundColor: palette.surface,
+        foregroundColor: palette.textPrimary,
         title: Text(
           '${_unit!.titleFr} (${_currentStep + 1}/$totalSteps)',
-          style: const TextStyle(fontSize: 16, fontFamily: 'Kedebideri'),
+          style: TextStyle(
+            fontSize: 16,
+            fontFamily: 'Kedebideri',
+            color: palette.textPrimary,
+          ),
         ),
         leading: IconButton(
           icon: const Icon(Icons.close_rounded),
+          tooltip: _text('Quitter la séance', 'Close session', 'إغلاق الجلسة'),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: [
+          Semantics(
+            button: true,
+            toggled: _autoPlayEnabled,
+            label: _autoPlayEnabled
+                ? _text(
+                    'Lecture audio automatique activée',
+                    'Auto-play audio enabled',
+                    'التشغيل التلقائي للصوت مفعّل',
+                  )
+                : _text(
+                    'Lecture audio automatique désactivée',
+                    'Auto-play audio disabled',
+                    'التشغيل التلقائي للصوت معطّل',
+                  ),
+            child: IconButton(
+              key: const ValueKey('toggle-autoplay-button'),
+              constraints: const BoxConstraints(
+                minWidth: AppTokens.minTouchTarget,
+                minHeight: AppTokens.minTouchTarget,
+              ),
+              tooltip: _autoPlayEnabled
+                  ? _text('Auto-play : activé', 'Auto-play: ON', 'التشغيل التلقائي: مفعّل')
+                  : _text('Auto-play : désactivé', 'Auto-play: OFF', 'التشغيل التلقائي: معطّل'),
+              onPressed: _toggleAutoPlay,
+              icon: Icon(
+                _autoPlayEnabled
+                    ? Icons.volume_up_rounded
+                    : Icons.volume_off_rounded,
+                color: _autoPlayEnabled
+                    ? palette.accentGold
+                    : palette.textSecondary,
+              ),
+            ),
+          ),
+        ],
       ),
       body: AppBackground(
         child: SafeArea(
           child: Column(
             children: [
               // Barre de progression supérieure
-              LinearProgressIndicator(
-                value: (_currentStep + 1) / totalSteps,
-                backgroundColor: Colors.white10,
-                valueColor: const AlwaysStoppedAnimation<Color>(AppColors.gold),
-                minHeight: 6,
+              Semantics(
+                label: _text(
+                  'Étape ${_currentStep + 1} sur $totalSteps',
+                  'Step ${_currentStep + 1} of $totalSteps',
+                  'الخطوة ${_currentStep + 1} من $totalSteps',
+                ),
+                child: LinearProgressIndicator(
+                  value: (_currentStep + 1) / totalSteps,
+                  backgroundColor: palette.border.withValues(alpha: 0.4),
+                  valueColor: AlwaysStoppedAnimation<Color>(palette.accentGold),
+                  minHeight: 6,
+                ),
               ),
-              ValueListenableBuilder<AudioPlaybackStatus>(
-                valueListenable: _audioPlayer.status,
-                builder: (context, status, _) => Semantics(
-                  liveRegion: true,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+
+              // En-tête de phase pédagogique (1. ÉCOUTER / 2. RECONNAÎTRE / 3. LIRE / 4. COMPOSER / 5. RÉVISER)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(18, 12, 18, 0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8,
+                    runSpacing: 6,
                     children: [
-                      if (status == AudioPlaybackStatus.loading)
-                        Text(
-                          _text(
-                            'Chargement audio…',
-                            'Loading audio…',
-                            'جارٍ تحميل الصوت…',
-                          ),
+                      Container(
+                        key: const ValueKey('session-phase-badge'),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
                         ),
-                      if (status == AudioPlaybackStatus.failed)
-                        TextButton(
-                          onPressed: _playCurrentStepAudio,
-                          child: Text(
-                            _text(
-                              'Audio indisponible · Réessayer',
-                              'Audio unavailable · Try again',
-                              'الصوت غير متاح · حاول مجددًا',
+                        decoration: BoxDecoration(
+                          color: palette.surfaceElevated,
+                          borderRadius: BorderRadius.circular(AppTokens.radiusPill),
+                          border: Border.all(color: palette.accentGold, width: 1.2),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              _phaseIconForStep(currentStepType),
+                              size: 16,
+                              color: palette.accentGold,
                             ),
+                            const SizedBox(width: 6),
+                            Text(
+                              _phaseLabelForStep(currentStepType),
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w800,
+                                color: palette.accentGold,
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ValueListenableBuilder<AudioPlaybackStatus>(
+                        valueListenable: _audioPlayer.status,
+                        builder: (context, status, _) => Semantics(
+                          liveRegion: true,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 4,
+                            children: [
+                              if (status == AudioPlaybackStatus.loading)
+                                Text(
+                                  _text(
+                                    'Chargement audio…',
+                                    'Loading audio…',
+                                    'جارٍ تحميل الصوت…',
+                                  ),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: palette.textSecondary,
+                                  ),
+                                ),
+                              if (status == AudioPlaybackStatus.failed &&
+                                  _stepHasAudio(currentStepMap))
+                                TextButton.icon(
+                                  key: const ValueKey('audio-failed-retry-button'),
+                                  onPressed: _playCurrentStepAudio,
+                                  icon: Icon(
+                                    Icons.refresh_rounded,
+                                    size: 16,
+                                    color: palette.statusEncouragement,
+                                  ),
+                                  label: Text(
+                                    _text(
+                                      'Audio indisponible · Réessayer',
+                                      'Audio unavailable · Try again',
+                                      'الصوت غير متاح · حاول مجددًا',
+                                    ),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: palette.statusEncouragement,
+                                    ),
+                                  ),
+                                ),
+                              if (status == AudioPlaybackStatus.playing)
+                                TextButton.icon(
+                                  onPressed: _audioPlayer.pause,
+                                  icon: const Icon(Icons.pause_rounded, size: 16),
+                                  label: Text(
+                                    _text('Pause', 'Pause', 'إيقاف مؤقت'),
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
-                      if (status == AudioPlaybackStatus.playing)
-                        TextButton(
-                          onPressed: _audioPlayer.pause,
-                          child: Text(_text('Pause', 'Pause', 'إيقاف مؤقت')),
-                        ),
-                      if (status == AudioPlaybackStatus.paused)
-                        TextButton(
-                          onPressed: _playCurrentStepAudio,
-                          child: Text(
-                            _text('Réécouter', 'Listen again', 'استمع مجددًا'),
-                          ),
-                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -467,7 +653,9 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(18),
                     child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
+                      duration: disableAnimations
+                          ? Duration.zero
+                          : const Duration(milliseconds: 250),
                       child: KeyedSubtree(
                         key: ValueKey(_currentStep),
                         child: _buildCurrentStepWidget(),
@@ -478,9 +666,60 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
               ),
 
               // Barre de navigation inférieure
-              _buildBottomBar(totalSteps),
+              _buildBottomBar(totalSteps, palette),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMissingAudioBanner(BkThemePalette palette) {
+    return Semantics(
+      container: true,
+      label: _text(
+        'Enregistrement audio non disponible pour cet élément. Vous pouvez continuer avec l\'écriture Erfe.',
+        'Audio recording not available for this item. You can continue with the Erfe script.',
+        'التسجيل الصوتي غير متوفر لهذا العنصر. يمكنك المتابعة.',
+      ),
+      child: Container(
+        key: const ValueKey('audio-missing-banner'),
+        width: double.infinity,
+        margin: const EdgeInsets.only(top: AppTokens.spaceSm),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppTokens.spaceMd,
+          vertical: AppTokens.spaceSm,
+        ),
+        decoration: BoxDecoration(
+          color: palette.surfaceElevated,
+          borderRadius: BorderRadius.circular(AppTokens.radiusControl),
+          border: Border.all(
+            color: AppColors.info.withValues(alpha: 0.6),
+          ),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.volume_off_rounded,
+              color: AppColors.info,
+              size: 20,
+            ),
+            const SizedBox(width: AppTokens.spaceSm),
+            Expanded(
+              child: Text(
+                _text(
+                  'Audio en cours d\'enregistrement — observez la forme Erfe pour continuer.',
+                  'Audio recording pending — observe the Erfe form to continue.',
+                  'التسجيل الصوتي قيد الإعداد — لاحظ شكل الحرف للمتابعة.',
+                ),
+                style: TextStyle(
+                  fontSize: 13,
+                  color: palette.textSecondary,
+                  height: 1.35,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -513,193 +752,250 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     }
   }
 
-  // --- Cartes des Micro-Étapes ---
+  // --- Étape 1 : ÉCOUTER (discovery) ---
 
   Widget _buildDiscoveryCard(Map<String, dynamic> step) {
+    final palette = BkThemePalette.of(context);
     final symbol = step['symbol'] as String? ?? '';
     final phonemeIpa = step['phoneme_ipa'] as String? ?? '';
     final label = step['label'] as String? ?? 'Écoute et découvre le caractère';
     final audioUrl = step['audio_url'] as String?;
+    final slowAudioUrl = step['slow_audio_url'] as String?;
+    final letterNameAudioUrl = step['letter_name_audio_url'] as String?;
+    final hasAudio = _stepHasAudio(step);
 
     return GlassCard(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(color: Colors.white70, fontSize: 16),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 28),
-          GestureDetector(
-            onTap: () {
-              if (audioUrl != null && audioUrl.isNotEmpty) {
-                _audioPlayer.playUrl(audioUrl);
-              }
-            },
-            child: Container(
-              padding: const EdgeInsets.all(32),
-              decoration: BoxDecoration(
-                color: AppColors.green.withValues(alpha: 0.4),
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.gold, width: 2),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.gold.withValues(alpha: 0.25),
-                    blurRadius: 20,
-                  ),
-                ],
+      child: ValueListenableBuilder<AudioPlaybackStatus>(
+        valueListenable: _audioPlayer.status,
+        builder: (context, status, _) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  color: palette.textPrimary,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
+                textAlign: TextAlign.center,
               ),
-              child: Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  Text(
-                    symbol,
-                    style: const TextStyle(
-                      fontFamily: 'Kedebideri',
-                      fontSize: 90,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+              const SizedBox(height: AppTokens.spaceLg),
+              if (symbol.isNotEmpty) ...[
+                Semantics(
+                  label: 'Caractère Erfe $symbol',
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppTokens.spaceXl,
+                      vertical: AppTokens.spaceMd,
+                    ),
+                    decoration: BoxDecoration(
+                      color: palette.surfaceElevated,
+                      borderRadius: BorderRadius.circular(AppTokens.radiusCard),
+                      border: Border.all(
+                        color: palette.accentGold.withValues(alpha: 0.6),
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Text(
+                      symbol,
+                      style: AppTextStyles.erfeDisplayHeroOf(context),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  const CircleAvatar(
-                    radius: 14,
-                    backgroundColor: AppColors.gold,
-                    child: Icon(
-                      Icons.volume_up_rounded,
-                      size: 16,
-                      color: AppColors.night,
+                ),
+                const SizedBox(height: AppTokens.spaceLg),
+              ],
+              BkAudioHeroButton(
+                status: hasAudio ? status : AudioPlaybackStatus.idle,
+                autoPlay: false,
+                label: label,
+                onPlay: hasAudio ? () => _playStepAudioUrl(audioUrl) : null,
+                onPlaySlow:
+                    slowAudioUrl != null && slowAudioUrl.trim().isNotEmpty
+                    ? () => _playStepAudioUrl(slowAudioUrl)
+                    : null,
+              ),
+              if (!hasAudio) _buildMissingAudioBanner(palette),
+              if (phonemeIpa.isNotEmpty && phonemeIpa != 'À_VALIDER') ...[
+                const SizedBox(height: AppTokens.spaceMd),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppTokens.spaceLg,
+                    vertical: AppTokens.spaceXs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: palette.surfaceElevated,
+                    borderRadius: BorderRadius.circular(AppTokens.radiusPill),
+                    border: Border.all(color: palette.border),
+                  ),
+                  child: Text(
+                    'Son : /$phonemeIpa/',
+                    style: TextStyle(
+                      color: palette.accentGold,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          if (phonemeIpa.isNotEmpty && phonemeIpa != 'À_VALIDER')
-            Text(
-              'Son : /$phonemeIpa/',
-              style: const TextStyle(
-                color: AppColors.gold,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          const SizedBox(height: 24),
-          FilledButton.icon(
-            style: FilledButton.styleFrom(
-              backgroundColor: AppColors.gold,
-              foregroundColor: AppColors.night,
-            ),
-            onPressed: () {
-              if (audioUrl != null && audioUrl.isNotEmpty) {
-                _audioPlayer.playUrl(audioUrl);
-              }
-            },
-            icon: const Icon(Icons.volume_up_rounded),
-            label: const Text(
-              'Réécouter le son',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
+                ),
+              ],
+              if (letterNameAudioUrl != null &&
+                  letterNameAudioUrl.trim().isNotEmpty) ...[
+                const SizedBox(height: AppTokens.spaceMd),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    minHeight: AppTokens.minTouchTarget,
+                  ),
+                  child: OutlinedButton.icon(
+                    key: const ValueKey('letter-name-audio-button'),
+                    onPressed: () => _playStepAudioUrl(letterNameAudioUrl),
+                    icon: const Icon(Icons.record_voice_over_rounded, size: 18),
+                    label: Text(
+                      _text(
+                        'Nom de la lettre',
+                        'Letter name',
+                        'اسم الحرف',
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          );
+        },
       ),
     );
   }
 
+  // --- Étape 2 : RECONNAÎTRE (discrimination) ---
+
   Widget _buildDiscriminationCard(Map<String, dynamic> step) {
+    final palette = BkThemePalette.of(context);
     final target = step['target_symbol'] as String? ?? '';
     final other = step['other_symbol'] as String? ?? '';
     final instruction =
         step['instruction'] as String? ?? 'Touche le bon caractère :';
     final audioUrl = step['audio_url'] as String?;
+    final slowAudioUrl = step['slow_audio_url'] as String?;
+    final hasAudio = _stepHasAudio(step);
+
+    final stepAnswer = _session?.answers[_currentStep];
+    final isResolved = _session?.resolved(_currentStep) == true;
+    final hasAttempted = stepAnswer != null;
+    final lastSelected = _lastSelectedSymbolByStep[_currentStep];
+
+    final options = <MapEntry<String, bool>>[
+      MapEntry(target, true),
+      if (other.isNotEmpty) MapEntry(other, false),
+    ];
 
     return GlassCard(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            instruction,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 16),
-          if (audioUrl != null && audioUrl.isNotEmpty)
-            FilledButton.tonalIcon(
-              onPressed: () => _audioPlayer.playUrl(audioUrl),
-              icon: const Icon(Icons.volume_up_rounded, size: 20),
-              label: const Text('Réécouter le son'),
-            ),
-          const SizedBox(height: 28),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: ValueListenableBuilder<AudioPlaybackStatus>(
+        valueListenable: _audioPlayer.status,
+        builder: (context, status, _) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _buildDiscriminationButton(
-                symbol: target,
-                isCorrect: true,
-                audioUrl: audioUrl,
+              Text(
+                instruction,
+                style: TextStyle(
+                  color: palette.textPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              _buildDiscriminationButton(
-                symbol: other,
-                isCorrect: false,
-                audioUrl: audioUrl,
+              const SizedBox(height: AppTokens.spaceMd),
+              BkAudioHeroButton(
+                status: hasAudio ? status : AudioPlaybackStatus.idle,
+                autoPlay: false,
+                label: instruction,
+                onPlay: hasAudio ? () => _playStepAudioUrl(audioUrl) : null,
+                onPlaySlow:
+                    slowAudioUrl != null && slowAudioUrl.trim().isNotEmpty
+                    ? () => _playStepAudioUrl(slowAudioUrl)
+                    : null,
               ),
+              if (!hasAudio) _buildMissingAudioBanner(palette),
+              const SizedBox(height: AppTokens.spaceXl),
+              for (final opt in options) ...[
+                Padding(
+                  padding: const EdgeInsets.only(bottom: AppTokens.spaceMd),
+                  child: BkOptionCard(
+                    key: ValueKey('answer-$_currentStep-${opt.key}'),
+                    label: '',
+                    erfeText: opt.key,
+                    state: isResolved
+                        ? (opt.value
+                              ? BkOptionCardState.correct
+                              : BkOptionCardState.neutral)
+                        : (lastSelected == opt.key && !opt.value
+                              ? BkOptionCardState.incorrect
+                              : BkOptionCardState.neutral),
+                    onTap: () {
+                      if (_session?.resolved(_currentStep) == true ||
+                          _session?.finished == true) {
+                        return;
+                      }
+                      _answer(opt.value, selectedSymbol: opt.key);
+                      if (!opt.value && hasAudio) {
+                        _playStepAudioUrl(audioUrl);
+                      }
+                    },
+                  ),
+                ),
+              ],
+              if (hasAttempted) ...[
+                const SizedBox(height: AppTokens.spaceSm),
+                BkFeedbackSheet(
+                  type: isResolved
+                      ? BkFeedbackType.positive
+                      : BkFeedbackType.encouragement,
+                  title: isResolved
+                      ? _text(
+                          'Excellente écoute !',
+                          'Great listening!',
+                          'استماع ممتاز!',
+                        )
+                      : _text(
+                          'Écoutez encore une fois',
+                          'Listen one more time',
+                          'استمع مرة أخرى',
+                        ),
+                  message: isResolved
+                      ? _text(
+                          'Vous avez reconnu le caractère Erfe correspondant.',
+                          'You recognized the matching Erfe character.',
+                          'لقد تعرفت على حرف الإرفي الصحيح.',
+                        )
+                      : _text(
+                          'Réécoutez le son puis touchez le caractère Erfe correspondant.',
+                          'Replay the sound and tap the matching Erfe character.',
+                          'أعد الاستماع ثم المس الحرف الصحيح.',
+                        ),
+                  erfeText: isResolved ? target : null,
+                  onReplayAudio:
+                      hasAudio ? () => _playStepAudioUrl(audioUrl) : null,
+                  onContinue: isResolved
+                      ? _nextStep
+                      : () {
+                          if (hasAudio) _playStepAudioUrl(audioUrl);
+                        },
+                  continueLabel: isResolved
+                      ? _text('Continuer', 'Continue', 'متابعة')
+                      : _text('Réécouter', 'Listen again', 'أعد الاستماع'),
+                ),
+              ],
             ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDiscriminationButton({
-    required String symbol,
-    required bool isCorrect,
-    String? audioUrl,
-  }) {
-    return InkWell(
-      key: ValueKey('answer-$_currentStep-$symbol'),
-      onTap: () {
-        if (_session?.resolved(_currentStep) == true ||
-            _session?.finished == true) {
-          return;
-        }
-        _answer(isCorrect);
-        if (!isCorrect) {
-          if (audioUrl != null && audioUrl.isNotEmpty) {
-            _audioPlayer.playUrl(audioUrl);
-          }
-        }
-      },
-      borderRadius: BorderRadius.circular(24),
-      child: Container(
-        width: 120,
-        height: 120,
-        decoration: BoxDecoration(
-          color: AppColors.night.withValues(alpha: 0.6),
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: Colors.white.withValues(alpha: 0.2),
-            width: 2,
-          ),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          symbol,
-          style: const TextStyle(
-            fontFamily: 'Kedebideri',
-            fontSize: 56,
-            color: Colors.white,
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildTracingCard(Map<String, dynamic> step) {
+    final palette = BkThemePalette.of(context);
     final symbol = step['symbol'] as String? ?? '';
     final instruction =
         step['instruction'] as String? ?? 'Trace le caractère :';
@@ -710,7 +1006,7 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
           children: [
             Text(
               instruction,
-              style: const TextStyle(color: Colors.white70, fontSize: 16),
+              style: TextStyle(color: palette.textSecondary, fontSize: 16),
             ),
             const SizedBox(height: 16),
             InteractiveTracingPad(
@@ -729,106 +1025,187 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     );
   }
 
+  // --- Étape 3 : LIRE (fusion & word_decoding) ---
+
   Widget _buildFusionCard(Map<String, dynamic> step) {
+    final palette = BkThemePalette.of(context);
     final components =
         (step['components'] as List<dynamic>?)
             ?.map((e) => e.toString())
             .toList() ??
         [];
     final syllable = step['result_syllable'] as String? ?? '';
+    final instruction =
+        step['instruction'] as String? ??
+        'Écoute comment les sons fusionnent pour former une syllabe';
+    final audioUrl = step['audio_url'] as String?;
+    final hasAudio = _stepHasAudio(step);
     final c1 = components.isNotEmpty ? components[0] : '';
     final c2 = components.length > 1 ? components[1] : '';
 
     return GlassCard(
-      child: Center(
-        child: SyllableFusionWidget(
-          consonantSymbol: c1,
-          vowelSymbol: c2,
-          resultingSyllable: syllable,
-          onFused: () {
-            _nextStep();
-          },
-        ),
+      child: ValueListenableBuilder<AudioPlaybackStatus>(
+        valueListenable: _audioPlayer.status,
+        builder: (context, status, _) {
+          return Column(
+            children: [
+              Text(
+                instruction,
+                style: TextStyle(
+                  color: palette.textPrimary,
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppTokens.spaceMd),
+              BkAudioHeroButton(
+                status: hasAudio ? status : AudioPlaybackStatus.idle,
+                autoPlay: false,
+                label: instruction,
+                onPlay: hasAudio ? () => _playStepAudioUrl(audioUrl) : null,
+              ),
+              if (!hasAudio) _buildMissingAudioBanner(palette),
+              const SizedBox(height: AppTokens.spaceLg),
+              Center(
+                child: SyllableFusionWidget(
+                  consonantSymbol: c1,
+                  vowelSymbol: c2,
+                  resultingSyllable: syllable,
+                  onFused: () {
+                    _nextStep();
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
   Widget _buildWordDecodingCard(Map<String, dynamic> step) {
+    final palette = BkThemePalette.of(context);
     final word = step['word'] as String? ?? '';
     final latin = step['latin_transcription'] as String? ?? '';
     final translation = step['french_translation'] as String? ?? '';
     final oralPrompt =
         step['oral_prompt'] as String? ?? 'Voici ton mot Beriya !';
     final audioUrl = step['audio_url'] as String?;
+    final slowAudioUrl = step['slow_audio_url'] as String?;
+    final hasAudio = _stepHasAudio(step);
 
     return GlassCard(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            oralPrompt,
-            style: const TextStyle(
-              color: AppColors.gold,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 24),
-          Container(
-            width: 140,
-            height: 140,
-            decoration: BoxDecoration(
-              color: Colors.black26,
-              borderRadius: BorderRadius.circular(28),
-              border: Border.all(color: AppColors.gold, width: 2),
-            ),
-            alignment: Alignment.center,
-            child: const Icon(
-              Icons.public_rounded,
-              color: AppColors.gold,
-              size: 70,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            word,
-            style: const TextStyle(
-              fontFamily: 'Kedebideri',
-              fontSize: 64,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            latin.isNotEmpty ? '$latin = $translation' : translation,
-            style: const TextStyle(color: Colors.white70, fontSize: 18),
-          ),
-          const SizedBox(height: 24),
-          Row(
+      child: ValueListenableBuilder<AudioPlaybackStatus>(
+        valueListenable: _audioPlayer.status,
+        builder: (context, status, _) {
+          return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (audioUrl != null && audioUrl.isNotEmpty) ...[
-                IconButton.filledTonal(
-                  onPressed: () => _audioPlayer.playUrl(audioUrl),
-                  icon: const Icon(Icons.volume_up_rounded),
+              Text(
+                oralPrompt,
+                style: TextStyle(
+                  color: palette.accentGold,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(width: 12),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppTokens.spaceLg),
+              if (word.isNotEmpty) ...[
+                Semantics(
+                  label: 'Mot Erfe $word',
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppTokens.spaceXl,
+                      vertical: AppTokens.spaceMd,
+                    ),
+                    decoration: BoxDecoration(
+                      color: palette.surfaceElevated,
+                      borderRadius: BorderRadius.circular(AppTokens.radiusCard),
+                      border: Border.all(
+                        color: palette.accentGold.withValues(alpha: 0.6),
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Text(
+                      word,
+                      style: AppTextStyles.erfeDisplayHeroOf(context),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppTokens.spaceLg),
               ],
-              FilledButton.icon(
-                onPressed: _nextStep,
-                icon: const Icon(Icons.arrow_forward_rounded),
-                label: const Text('Écrire le mot au clavier'),
+              BkAudioHeroButton(
+                status: hasAudio ? status : AudioPlaybackStatus.idle,
+                autoPlay: false,
+                label: oralPrompt,
+                onPlay: hasAudio ? () => _playStepAudioUrl(audioUrl) : null,
+                onPlaySlow:
+                    slowAudioUrl != null && slowAudioUrl.trim().isNotEmpty
+                    ? () => _playStepAudioUrl(slowAudioUrl)
+                    : null,
+              ),
+              if (!hasAudio) _buildMissingAudioBanner(palette),
+              const SizedBox(height: AppTokens.spaceLg),
+              if (latin.isNotEmpty || translation.isNotEmpty)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(AppTokens.spaceMd),
+                  decoration: BoxDecoration(
+                    color: palette.surfaceElevated,
+                    borderRadius: BorderRadius.circular(AppTokens.radiusCard),
+                    border: Border.all(color: palette.border),
+                  ),
+                  child: Column(
+                    children: [
+                      if (latin.isNotEmpty)
+                        Text(
+                          latin,
+                          style: TextStyle(
+                            color: palette.accentGold,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      if (translation.isNotEmpty) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          latin.isNotEmpty ? '$latin = $translation' : translation,
+                          style: TextStyle(
+                            color: palette.textSecondary,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              const SizedBox(height: AppTokens.spaceXl),
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: AppTokens.minTouchTarget,
+                ),
+                child: FilledButton.icon(
+                  onPressed: _nextStep,
+                  icon: const Icon(Icons.arrow_forward_rounded),
+                  label: const Text('Écrire le mot au clavier'),
+                ),
               ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }
 
+  // --- Étape 4 : COMPOSER (keyboard_encoding) ---
+
   Widget _buildKeyboardWordCard(Map<String, dynamic> step) {
+    final palette = BkThemePalette.of(context);
     final targetWord = step['target_word'] as String? ?? '';
     final latin = step['latin_transcription'] as String? ?? '';
     final translation = step['french_translation'] as String? ?? '';
@@ -841,132 +1218,206 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
             .toList() ??
         [];
     final audioUrl = step['audio_url'] as String?;
+    final hasAudio = _stepHasAudio(step);
+
+    final stepAnswer = _session?.answers[_currentStep];
+    final isResolved = _session?.resolved(_currentStep) == true;
+    final hasAttempted = stepAnswer != null;
+    final matchesTarget = QuizQuestionModel.evaluateTextAnswer(
+      submitted: _typedText,
+      expected: targetWord,
+    );
 
     return GlassCard(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
+      child: ValueListenableBuilder<AudioPlaybackStatus>(
+        valueListenable: _audioPlayer.status,
+        builder: (context, status, _) {
+          return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Flexible(
-                child: Text(
-                  instruction,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+              Text(
+                instruction,
+                style: TextStyle(
+                  color: palette.textPrimary,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              if (translation.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: AppTokens.spaceXs),
+                  child: Text(
+                    'Sens : $translation',
+                    style: TextStyle(color: palette.textSecondary, fontSize: 15),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
+                ),
+              const SizedBox(height: AppTokens.spaceMd),
+              BkAudioHeroButton(
+                status: hasAudio ? status : AudioPlaybackStatus.idle,
+                autoPlay: false,
+                size: 64,
+                label: instruction,
+                onPlay: hasAudio ? () => _playStepAudioUrl(audioUrl) : null,
+              ),
+              if (!hasAudio) _buildMissingAudioBanner(palette),
+              const SizedBox(height: AppTokens.spaceLg),
+              Semantics(
+                label: _typedText.isEmpty
+                    ? _text('Zone de saisie Erfe vide', 'Empty Erfe input', 'حقل الإدخال فارغ')
+                    : 'Saisie Erfe : $_typedText',
+                child: Container(
+                  key: const ValueKey('encoding-input-display'),
+                  constraints: const BoxConstraints(minHeight: 72),
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppTokens.spaceLg,
+                    vertical: AppTokens.spaceSm,
+                  ),
+                  decoration: BoxDecoration(
+                    color: palette.surfaceElevated,
+                    borderRadius: BorderRadius.circular(AppTokens.radiusCard),
+                    border: Border.all(
+                      color: matchesTarget
+                          ? palette.statusSuccess
+                          : palette.accentGold,
+                      width: 2,
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    _typedText.isEmpty ? '_  _' : _typedText,
+                    style: TextStyle(
+                      fontFamily: _typedText.isEmpty ? null : 'Kedebideri',
+                      fontSize: 38,
+                      height: 1.25,
+                      color: matchesTarget
+                          ? palette.statusSuccess
+                          : palette.textPrimary,
+                      letterSpacing: 6,
+                    ),
+                  ),
                 ),
               ),
-              if (audioUrl != null && audioUrl.isNotEmpty) ...[
-                const SizedBox(width: 8),
-                IconButton.filledTonal(
-                  onPressed: () => _audioPlayer.playUrl(audioUrl),
-                  icon: const Icon(Icons.volume_up_rounded, size: 20),
-                  visualDensity: VisualDensity.compact,
+              const SizedBox(height: AppTokens.spaceLg),
+              BeriyaKeyboard(
+                scaffoldedKeys: keys,
+                onInsert: (char) {
+                  if (_session?.resolved(_currentStep) == true ||
+                      _session?.finished == true) {
+                    return;
+                  }
+                  setState(() {
+                    _typedText += char;
+                  });
+                  _persistSession().catchError((Object _) {});
+                },
+                onBackspace: () {
+                  if (_session?.resolved(_currentStep) == true ||
+                      _session?.finished == true) {
+                    return;
+                  }
+                  if (_typedText.isNotEmpty) {
+                    setState(() {
+                      _typedText = Utf16Safe.dropLast(_typedText);
+                    });
+                    _persistSession().catchError((Object _) {});
+                  }
+                },
+                onSpace: () {},
+                onClear: () {
+                  if (_session?.resolved(_currentStep) == true ||
+                      _session?.finished == true) {
+                    return;
+                  }
+                  setState(() {
+                    _typedText = '';
+                  });
+                  _persistSession().catchError((Object _) {});
+                },
+              ),
+              const SizedBox(height: AppTokens.spaceMd),
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: AppTokens.minTouchTarget,
+                ),
+                child: FilledButton(
+                  key: const ValueKey('validate-encoding'),
+                  onPressed:
+                      _typedText.trim().isEmpty ||
+                          _session?.resolved(_currentStep) == true
+                      ? null
+                      : () => _answer(
+                          QuizQuestionModel.evaluateTextAnswer(
+                            submitted: _typedText,
+                            expected: targetWord,
+                          ),
+                        ),
+                  child: Text(_text('Valider', 'Check', 'تحقّق')),
+                ),
+              ),
+              if (hasAttempted) ...[
+                const SizedBox(height: AppTokens.spaceMd),
+                BkFeedbackSheet(
+                  type: isResolved
+                      ? BkFeedbackType.positive
+                      : BkFeedbackType.encouragement,
+                  title: isResolved
+                      ? _text(
+                          'Mot Erfe validé !',
+                          'Erfe word validated!',
+                          'تم التحقق من الكلمة!',
+                        )
+                      : _text(
+                          'Vérifiez les caractères Erfe',
+                          'Check the Erfe characters',
+                          'تحقق من حروف الإرفي',
+                        ),
+                  message: isResolved
+                      ? _text(
+                          'Votre saisie correspond exactement au mot attendu.',
+                          'Your input matches the expected word.',
+                          'إدخالك يطابق الكلمة المطلوبة.',
+                        )
+                      : _text(
+                          'Réécoutez le mot et corrigez votre saisie avec le clavier Erfe.',
+                          'Replay the word and adjust your input on the Erfe keyboard.',
+                          'أعد الاستماع وعدّل الإدخال.',
+                        ),
+                  erfeText: isResolved ? targetWord : null,
+                  onReplayAudio:
+                      hasAudio ? () => _playStepAudioUrl(audioUrl) : null,
+                  onContinue: isResolved
+                      ? _nextStep
+                      : () {
+                          if (hasAudio) _playStepAudioUrl(audioUrl);
+                        },
+                  continueLabel: isResolved
+                      ? _text('Continuer', 'Continue', 'متابعة')
+                      : _text('Réécouter', 'Listen again', 'أعد الاستماع'),
                 ),
               ],
             ],
-          ),
-          if (translation.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Text(
-                'Sens : $translation',
-                style: const TextStyle(color: Colors.white70, fontSize: 14),
-              ),
-            ),
-          const SizedBox(height: 20),
-          Container(
-            height: 70,
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            decoration: BoxDecoration(
-              color: Colors.black38,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: QuizQuestionModel.evaluateTextAnswer(
-                          submitted: _typedText,
-                          expected: targetWord,
-                        )
-                    ? AppColors.green
-                    : AppColors.gold,
-                width: 2,
-              ),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              _typedText.isEmpty ? '_  _' : _typedText,
-              style: TextStyle(
-                fontFamily: _typedText.isEmpty ? null : 'Kedebideri',
-                fontSize: 40,
-                color: QuizQuestionModel.evaluateTextAnswer(
-                          submitted: _typedText,
-                          expected: targetWord,
-                        )
-                    ? AppColors.green
-                    : AppColors.gold,
-                letterSpacing: 8,
-              ),
-            ),
-          ),
-          const SizedBox(height: 24),
-          BeriyaKeyboard(
-            scaffoldedKeys: keys,
-            onInsert: (char) {
-              if (_session?.resolved(_currentStep) == true ||
-                  _session?.finished == true) {
-                return;
-              }
-              setState(() {
-                _typedText += char;
-              });
-              _persistSession().catchError((Object _) {});
-            },
-            onBackspace: () {
-              if (_session?.resolved(_currentStep) == true ||
-                  _session?.finished == true) {
-                return;
-              }
-              if (_typedText.isNotEmpty) {
-                setState(() {
-                  _typedText = Utf16Safe.dropLast(_typedText);
-                });
-                _persistSession().catchError((Object _) {});
-              }
-            },
-            onSpace: () {},
-            onClear: () {
-              if (_session?.resolved(_currentStep) == true ||
-                  _session?.finished == true) {
-                return;
-              }
-              setState(() {
-                _typedText = '';
-              });
-              _persistSession().catchError((Object _) {});
-            },
-          ),
-          FilledButton(
-            key: const ValueKey('validate-encoding'),
-            onPressed:
-                _typedText.trim().isEmpty || _session?.resolved(_currentStep) == true
-                ? null
-                : () => _answer(
-                    QuizQuestionModel.evaluateTextAnswer(
-                      submitted: _typedText,
-                      expected: targetWord,
-                    ),
-                  ),
-            child: Text(_text('Valider', 'Check', 'تحقّق')),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
 
+  // --- Étape 5 : RÉVISER (celebration / bilan de la séance) ---
+
+  String _stepErfeTarget(Map<String, dynamic> step) {
+    return (step['target_symbol'] ??
+            step['target_word'] ??
+            step['symbol'] ??
+            step['word'] ??
+            '')
+        .toString();
+  }
+
   Widget _buildCelebrationCard(Map<String, dynamic> step) {
+    final palette = BkThemePalette.of(context);
     final title = _session?.finished == true
         ? _text('Session terminée', 'Session finished', 'انتهت الجلسة')
         : _text('Bilan de la session', 'Session review', 'ملخّص الجلسة');
@@ -976,26 +1427,43 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     final targetWord = step['target_word'] as String? ?? '';
     final translation = step['french_translation'] as String? ?? '';
 
+    final masteredItems = <Map<String, dynamic>>[];
+    final difficultItems = <Map<String, dynamic>>[];
+
+    for (var i = 0; i < _steps.length; i++) {
+      final s = _steps[i];
+      if (LearningSession.category(s) == null) continue;
+      final ans = _session?.answers[i];
+      if (ans == null) continue;
+      if (ans['first_correct'] == true) {
+        masteredItems.add(s);
+      } else {
+        difficultItems.add(s);
+      }
+    }
+
     return GlassCard(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Icon(Icons.stars_rounded, color: AppColors.gold, size: 90),
-          const SizedBox(height: 16),
+          Icon(Icons.stars_rounded, color: palette.accentGold, size: 76),
+          const SizedBox(height: 12),
           Text(
             title,
-            style: const TextStyle(
-              color: AppColors.gold,
-              fontSize: 26,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: palette.accentGold,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: palette.textPrimary,
               fontSize: 16,
               fontFamily: 'Kedebideri',
             ),
@@ -1004,35 +1472,175 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
             const SizedBox(height: 14),
             Text(
               targetWord,
-              style: const TextStyle(
-                fontFamily: 'Kedebideri',
-                fontSize: 48,
-                color: AppColors.gold,
-                fontWeight: FontWeight.bold,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.erfeDisplayHeroOf(context).copyWith(
+                color: palette.accentGold,
               ),
             ),
             if (translation.isNotEmpty)
               Text(
                 '($translation)',
-                style: const TextStyle(color: Colors.white70, fontSize: 16),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: palette.textSecondary, fontSize: 16),
               ),
           ],
-          const SizedBox(height: 28),
-          FilledButton.icon(
-            onPressed: _saving
-                ? null
-                : _session?.finished == true
-                ? () => Navigator.of(context).pop()
-                : _finishUnit,
-            icon: const Icon(Icons.check_circle_rounded),
-            label: Text(
-              _session?.finished == true
-                  ? _text('Retour au parcours', 'Back to path', 'العودة للمسار')
-                  : _text(
-                      'Terminer la session',
-                      'Finish session',
-                      'إنهاء الجلسة',
+          const SizedBox(height: AppTokens.spaceLg),
+
+          // Section 1 : Éléments réussis dès le 1er essai
+          Container(
+            key: const ValueKey('review-mastered-section'),
+            padding: const EdgeInsets.all(AppTokens.spaceMd),
+            decoration: BoxDecoration(
+              color: palette.surfaceElevated,
+              borderRadius: BorderRadius.circular(AppTokens.radiusCard),
+              border: Border.all(
+                color: palette.statusSuccess.withValues(alpha: 0.6),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.check_circle_rounded,
+                      color: palette.statusSuccess,
+                      size: 20,
                     ),
+                    const SizedBox(width: AppTokens.spaceSm),
+                    Expanded(
+                      child: Text(
+                        _text(
+                          'Éléments réussis (${masteredItems.length})',
+                          'Mastered items (${masteredItems.length})',
+                          'العناصر المتقنة (${masteredItems.length})',
+                        ),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          color: palette.textPrimary,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppTokens.spaceSm),
+                if (masteredItems.isEmpty)
+                  Text(
+                    _text(
+                      'Continuez à vous entraîner pour consolider ces éléments.',
+                      'Keep practicing to master these items.',
+                      'واصل التدرب لإتقان هذه العناصر.',
+                    ),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: palette.textSecondary,
+                    ),
+                  )
+                else
+                  Wrap(
+                    spacing: AppTokens.spaceSm,
+                    runSpacing: AppTokens.spaceSm,
+                    children: [
+                      for (final item in masteredItems)
+                        _buildReviewItemChip(item, palette, isDifficult: false),
+                    ],
+                  ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: AppTokens.spaceMd),
+
+          // Section 2 : Éléments difficiles / à revoir
+          Container(
+            key: const ValueKey('review-difficult-section'),
+            padding: const EdgeInsets.all(AppTokens.spaceMd),
+            decoration: BoxDecoration(
+              color: palette.surfaceElevated,
+              borderRadius: BorderRadius.circular(AppTokens.radiusCard),
+              border: Border.all(
+                color: difficultItems.isEmpty
+                    ? palette.border
+                    : palette.statusEncouragement.withValues(alpha: 0.7),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.autorenew_rounded,
+                      color: difficultItems.isEmpty
+                          ? palette.textSecondary
+                          : palette.statusEncouragement,
+                      size: 20,
+                    ),
+                    const SizedBox(width: AppTokens.spaceSm),
+                    Expanded(
+                      child: Text(
+                        _text(
+                          'Éléments à consolider (${difficultItems.length})',
+                          'Items to review (${difficultItems.length})',
+                          'عناصر للمراجعة (${difficultItems.length})',
+                        ),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          color: palette.textPrimary,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppTokens.spaceSm),
+                if (difficultItems.isEmpty)
+                  Text(
+                    _text(
+                      'Aucun élément difficile — parcours sans faute !',
+                      'No difficult items — flawless session!',
+                      'لا توجد عناصر صعبة — أداء ممتاز!',
+                    ),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: palette.textSecondary,
+                    ),
+                  )
+                else
+                  Wrap(
+                    spacing: AppTokens.spaceSm,
+                    runSpacing: AppTokens.spaceSm,
+                    children: [
+                      for (final item in difficultItems)
+                        _buildReviewItemChip(item, palette, isDifficult: true),
+                    ],
+                  ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: AppTokens.spaceXl),
+          ConstrainedBox(
+            constraints: const BoxConstraints(
+              minHeight: AppTokens.primaryCtaHeight,
+            ),
+            child: FilledButton.icon(
+              onPressed: _saving
+                  ? null
+                  : _session?.finished == true
+                  ? () => Navigator.of(context).pop()
+                  : _finishUnit,
+              icon: const Icon(Icons.check_circle_rounded),
+              label: Text(
+                _session?.finished == true
+                    ? _text('Retour au parcours', 'Back to path', 'العودة للمسار')
+                    : _text(
+                        'Terminer la session',
+                        'Finish session',
+                        'إنهاء الجلسة',
+                      ),
+              ),
             ),
           ),
           if (_session?.finished == true)
@@ -1051,39 +1659,99 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     );
   }
 
-  Widget _buildBottomBar(int totalSteps) {
+  Widget _buildReviewItemChip(
+    Map<String, dynamic> item,
+    BkThemePalette palette, {
+    required bool isDifficult,
+  }) {
+    final erfe = _stepErfeTarget(item);
+    final audioUrl = item['audio_url'] as String?;
+    final hasAudio = audioUrl != null && audioUrl.trim().isNotEmpty;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTokens.spaceMd,
+        vertical: AppTokens.spaceXs,
+      ),
+      decoration: BoxDecoration(
+        color: palette.surface,
+        borderRadius: BorderRadius.circular(AppTokens.radiusControl),
+        border: Border.all(
+          color: isDifficult ? palette.statusEncouragement : palette.statusSuccess,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            erfe,
+            style: AppTextStyles.erfeOptionTextOf(context),
+          ),
+          if (hasAudio) ...[
+            const SizedBox(width: AppTokens.spaceXs),
+            IconButton(
+              constraints: const BoxConstraints(
+                minWidth: AppTokens.minTouchTarget,
+                minHeight: AppTokens.minTouchTarget,
+              ),
+              padding: EdgeInsets.zero,
+              icon: Icon(
+                Icons.volume_up_rounded,
+                size: 20,
+                color: palette.accentGold,
+              ),
+              tooltip: _text('Réécouter', 'Replay', 'أعد الاستماع'),
+              onPressed: () => _playStepAudioUrl(audioUrl),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomBar(int totalSteps, BkThemePalette palette) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.dark.withValues(alpha: 0.92),
-        border: Border(top: BorderSide(color: AppColors.glassBorder)),
+        color: palette.surface.withValues(alpha: 0.96),
+        border: Border(top: BorderSide(color: palette.border)),
       ),
       child: OverflowBar(
         alignment: MainAxisAlignment.spaceBetween,
         spacing: 12,
         overflowSpacing: 8,
         children: [
-          OutlinedButton.icon(
-            onPressed:
-                _currentStep > 0 && !_saving && _session?.finished != true
-                ? _prevStep
-                : null,
-            icon: const Icon(Icons.arrow_back_rounded),
-            label: const Text('Précédent'),
+          ConstrainedBox(
+            constraints: const BoxConstraints(
+              minHeight: AppTokens.minTouchTarget,
+            ),
+            child: OutlinedButton.icon(
+              onPressed:
+                  _currentStep > 0 && !_saving && _session?.finished != true
+                  ? _prevStep
+                  : null,
+              icon: const Icon(Icons.arrow_back_rounded),
+              label: const Text('Précédent'),
+            ),
           ),
-          FilledButton.icon(
-            key: const ValueKey('learning-next'),
-            onPressed:
-                _saving ||
-                    _session?.finished == true ||
-                    _session?.canAdvance != true
-                ? null
-                : _currentStep < totalSteps - 1
-                ? _nextStep
-                : _finishUnit,
-            icon: const Icon(Icons.arrow_forward_rounded),
-            label: Text(
-              _currentStep < totalSteps - 1 ? 'Continuer' : 'Terminer',
+          ConstrainedBox(
+            constraints: const BoxConstraints(
+              minHeight: AppTokens.minTouchTarget,
+            ),
+            child: FilledButton.icon(
+              key: const ValueKey('learning-next'),
+              onPressed:
+                  _saving ||
+                      _session?.finished == true ||
+                      _session?.canAdvance != true
+                  ? null
+                  : _currentStep < totalSteps - 1
+                  ? _nextStep
+                  : _finishUnit,
+              icon: const Icon(Icons.arrow_forward_rounded),
+              label: Text(
+                _currentStep < totalSteps - 1 ? 'Continuer' : 'Terminer',
+              ),
             ),
           ),
         ],

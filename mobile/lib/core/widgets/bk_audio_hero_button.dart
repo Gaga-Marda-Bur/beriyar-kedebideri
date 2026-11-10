@@ -89,7 +89,9 @@ class _BkAudioHeroButtonState extends State<BkAudioHeroButton> {
         ? palette.statusError.withValues(alpha: 0.28)
         : palette.accentGold.withValues(alpha: isPlaying ? 0.35 : 0.16);
 
+    final disableAnimations = MediaQuery.disableAnimationsOf(context);
     final IconData mainIcon = switch (widget.status) {
+      AudioPlaybackStatus.loading => Icons.hourglass_top_rounded,
       AudioPlaybackStatus.playing => Icons.graphic_eq_rounded,
       AudioPlaybackStatus.paused => Icons.play_arrow_rounded,
       AudioPlaybackStatus.failed => Icons.refresh_rounded,
@@ -105,7 +107,9 @@ class _BkAudioHeroButtonState extends State<BkAudioHeroButton> {
           label: widget.semanticLabel ?? widget.label,
           value: widget.status.name,
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
+            duration: disableAnimations
+                ? Duration.zero
+                : const Duration(milliseconds: 180),
             curve: Curves.easeOut,
             padding: EdgeInsets.all(isPlaying ? 12.0 : 8.0),
             decoration: BoxDecoration(
@@ -130,22 +134,16 @@ class _BkAudioHeroButtonState extends State<BkAudioHeroButton> {
                   width: effectiveSize,
                   height: effectiveSize,
                   child: Center(
-                    child: isLoading
-                        ? SizedBox(
-                            width: 28,
-                            height: 28,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 3,
-                              color: palette.accentGoldForeground,
-                            ),
-                          )
-                        : Icon(
-                            mainIcon,
-                            size: effectiveSize * 0.44,
-                            color: isFailed
-                                ? AppColors.white
-                                : palette.accentGoldForeground,
-                          ),
+                    child: Icon(
+                      mainIcon,
+                      key: isLoading
+                          ? const ValueKey('bk-audio-loading-icon')
+                          : null,
+                      size: effectiveSize * 0.44,
+                      color: isFailed
+                          ? AppColors.white
+                          : palette.accentGoldForeground,
+                    ),
                   ),
                 ),
               ),
