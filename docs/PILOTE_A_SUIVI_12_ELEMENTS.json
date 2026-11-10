@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "pilot_id": "pilote-a-oral-vers-erfe-v1",
   "title": "Pilote A — Je parle Beřiya, j'apprends l'Erfe (12 éléments : 4 caractères, 6 mots, 2 énoncés courts)",
   "updated_at": "2026-11-10",
@@ -8,7 +8,15 @@
     "no_synthetic_voice": true,
     "draft_or_review_never_counted_as_validated": true,
     "no_audio_attribution_without_verified_concordance": true,
+    "distinguish_character_audio_roles": true,
     "human_verification_and_speaker_consent_mandatory": true
+  },
+  "character_audio_roles_specification": {
+    "phoneme": "Son pur représenté par le caractère (ex: /a/, /b/), sans syllabe d'appui superflue.",
+    "letter_name": "Nom traditionnel ou pédagogique de la lettre dans la norme enseignée (s'il existe et est distinct du phonème).",
+    "normal": "Prononciation de référence claire à vitesse naturelle.",
+    "slow": "Prononciation articulée lentement pour l'écoute analytique.",
+    "example": "Prononciation du caractère au sein d'un mot ou exemple authentique."
   },
   "summary": {
     "total_elements": 12,
@@ -35,9 +43,18 @@
       "unicode_code": "U+16EA0",
       "transcription_latine": "a",
       "phoneme_ipa": "a",
-      "signification_validee": "Voyelle A (nom/valeur phonétique exacte par rapport à l'enregistrement arkap.wav à confirmer par le référent linguistique)",
+      "nom_lettre_norme": null,
+      "signification_validee": "Voyelle A (qualifier si arkap.wav est le nom de la lettre, un mot d'exemple ou s'il faut un enregistrement dédié du phonème /a/)",
       "locuteur": "Gaga",
       "dialecte": null,
+      "variantes_dialectales_notes": null,
+      "roles_audio_attendus": {
+        "phoneme": null,
+        "letter_name": null,
+        "normal": "audio_assets/files/arkap.wav",
+        "slow": null,
+        "example": null
+      },
       "chemin_audio": "audio_assets/files/arkap.wav",
       "audio_asset_id": "1bb9f0cc13b54d01a662fab130e79a3e",
       "audio_sha256": "255e7121ad2d8de443aebad7781c3fa695b81a2425f1cce046420ee83f9db459",
@@ -45,13 +62,19 @@
         "fichier_present": true,
         "format_technique": "WAV PCM 16-bit 44100 Hz stéréo (791192 octets, 4.485 s)",
         "recording_quality_db": null,
+        "role_exact_qualifie": false,
         "concordance_son_element_verifiee": false,
-        "observation": "Même fichier WAV lié au caractère ID 1 (𖺠) et au mot ID 1 (arkap). Concordance phonème pur vs nom de lettre vs mot à vérifier humainement."
+        "observation": "Même fichier WAV (4,485 s) lié au caractère ID 1 (𖺠, role='normal') et au mot ID 1 ('arkap'). Il faut vérifier humainement s'il s'agit d'un mot d'exemple (role='example'), du nom de lettre (role='letter_name') et enregistrer séparément le phonème pur (role='phoneme')."
       },
       "consentement": {
         "statut": "non_documente",
         "preuve_ecrite_reference": null,
-        "usage_hors_ligne_autorise": null
+        "usages_couverts": {
+          "lecons_parcours": null,
+          "dictionnaire_alphabet": null,
+          "revisions_srs": null,
+          "packs_hors_ligne": null
+        }
       },
       "statut_validation": "en_attente_verification_humaine_et_consentement"
     },
@@ -68,9 +91,18 @@
       "unicode_code": "U+16EA1",
       "transcription_latine": "b",
       "phoneme_ipa": "b",
+      "nom_lettre_norme": null,
       "signification_validee": "Consonne B",
       "locuteur": null,
       "dialecte": null,
+      "variantes_dialectales_notes": null,
+      "roles_audio_attendus": {
+        "phoneme": null,
+        "letter_name": null,
+        "normal": null,
+        "slow": null,
+        "example": null
+      },
       "chemin_audio": null,
       "audio_asset_id": null,
       "audio_sha256": null,
@@ -78,13 +110,19 @@
         "fichier_present": false,
         "format_technique": null,
         "recording_quality_db": null,
+        "role_exact_qualifie": false,
         "concordance_son_element_verifiee": false,
-        "observation": "Caractère publié en base mais aucun enregistrement CharacterAudio associé."
+        "observation": "Caractère publié en base mais aucun enregistrement CharacterAudio associé. Enregistrer en distinguant phonème (/b/), nom éventuel de la lettre et exemple."
       },
       "consentement": {
         "statut": "manquant",
         "preuve_ecrite_reference": null,
-        "usage_hors_ligne_autorise": null
+        "usages_couverts": {
+          "lecons_parcours": null,
+          "dictionnaire_alphabet": null,
+          "revisions_srs": null,
+          "packs_hors_ligne": null
+        }
       },
       "statut_validation": "incomplet_audio_manquant"
     },
@@ -96,15 +134,24 @@
         "model": "alphabet.Character",
         "id": 4,
         "db_validation_status": "review",
-        "note": "Candidat en statut review (𖺣 / e) — non considéré comme publié ou validé sans décision humaine."
+        "note": "Candidat en statut review (𖺣 / e) — non considéré comme publié ou validé sans décision du locuteur natif."
       },
       "texte_erfe": null,
       "unicode_code": null,
       "transcription_latine": null,
       "phoneme_ipa": null,
+      "nom_lettre_norme": null,
       "signification_validee": null,
       "locuteur": null,
       "dialecte": null,
+      "variantes_dialectales_notes": null,
+      "roles_audio_attendus": {
+        "phoneme": null,
+        "letter_name": null,
+        "normal": null,
+        "slow": null,
+        "example": null
+      },
       "chemin_audio": null,
       "audio_asset_id": null,
       "audio_sha256": null,
@@ -112,13 +159,19 @@
         "fichier_present": false,
         "format_technique": null,
         "recording_quality_db": null,
+        "role_exact_qualifie": false,
         "concordance_son_element_verifiee": false,
-        "observation": "Sélection linguistique définitive et enregistrement vocal authentique requis."
+        "observation": "Sélection linguistique pour contraste phonétique et enregistrements par rôle (phoneme, letter_name, normal, example) requis."
       },
       "consentement": {
         "statut": "manquant",
         "preuve_ecrite_reference": null,
-        "usage_hors_ligne_autorise": null
+        "usages_couverts": {
+          "lecons_parcours": null,
+          "dictionnaire_alphabet": null,
+          "revisions_srs": null,
+          "packs_hors_ligne": null
+        }
       },
       "statut_validation": "non_valide_selection_et_audio_requis"
     },
@@ -130,15 +183,24 @@
         "model": "alphabet.Character",
         "id": 3,
         "db_validation_status": "review",
-        "note": "Candidats en statut review (ID 3 𖺢 / d ou ID 22 𖺵 / t) — non considérés comme publiés ou validés sans décision humaine."
+        "note": "Candidats en statut review (ID 3 𖺢 / d ou ID 22 𖺵 / t) — non considérés comme publiés ou validés sans décision du locuteur natif."
       },
       "texte_erfe": null,
       "unicode_code": null,
       "transcription_latine": null,
       "phoneme_ipa": null,
+      "nom_lettre_norme": null,
       "signification_validee": null,
       "locuteur": null,
       "dialecte": null,
+      "variantes_dialectales_notes": null,
+      "roles_audio_attendus": {
+        "phoneme": null,
+        "letter_name": null,
+        "normal": null,
+        "slow": null,
+        "example": null
+      },
       "chemin_audio": null,
       "audio_asset_id": null,
       "audio_sha256": null,
@@ -146,13 +208,19 @@
         "fichier_present": false,
         "format_technique": null,
         "recording_quality_db": null,
+        "role_exact_qualifie": false,
         "concordance_son_element_verifiee": false,
-        "observation": "Sélection linguistique définitive et enregistrement vocal authentique requis."
+        "observation": "Sélection linguistique pour contraste phonétique et enregistrements par rôle (phoneme, letter_name, normal, example) requis."
       },
       "consentement": {
         "statut": "manquant",
         "preuve_ecrite_reference": null,
-        "usage_hors_ligne_autorise": null
+        "usages_couverts": {
+          "lecons_parcours": null,
+          "dictionnaire_alphabet": null,
+          "revisions_srs": null,
+          "packs_hors_ligne": null
+        }
       },
       "statut_validation": "non_valide_selection_et_audio_requis"
     },
@@ -173,6 +241,13 @@
       "signification_validee": null,
       "locuteur": null,
       "dialecte": null,
+      "variantes_dialectales_notes": null,
+      "roles_audio_attendus": {
+        "normal": null,
+        "slow": null,
+        "syllable": null,
+        "example": null
+      },
       "chemin_audio": null,
       "audio_asset_id": null,
       "audio_sha256": null,
@@ -186,7 +261,12 @@
       "consentement": {
         "statut": "manquant",
         "preuve_ecrite_reference": null,
-        "usage_hors_ligne_autorise": null
+        "usages_couverts": {
+          "lecons_parcours": null,
+          "dictionnaire_alphabet": null,
+          "revisions_srs": null,
+          "packs_hors_ligne": null
+        }
       },
       "statut_validation": "non_valide_mot_et_audio_distinct_requis"
     },
@@ -207,6 +287,13 @@
       "signification_validee": null,
       "locuteur": null,
       "dialecte": null,
+      "variantes_dialectales_notes": null,
+      "roles_audio_attendus": {
+        "normal": null,
+        "slow": null,
+        "syllable": null,
+        "example": null
+      },
       "chemin_audio": null,
       "audio_asset_id": null,
       "audio_sha256": null,
@@ -220,7 +307,12 @@
       "consentement": {
         "statut": "manquant",
         "preuve_ecrite_reference": null,
-        "usage_hors_ligne_autorise": null
+        "usages_couverts": {
+          "lecons_parcours": null,
+          "dictionnaire_alphabet": null,
+          "revisions_srs": null,
+          "packs_hors_ligne": null
+        }
       },
       "statut_validation": "non_valide_selection_et_audio_requis"
     },
@@ -241,6 +333,13 @@
       "signification_validee": null,
       "locuteur": null,
       "dialecte": null,
+      "variantes_dialectales_notes": null,
+      "roles_audio_attendus": {
+        "normal": null,
+        "slow": null,
+        "syllable": null,
+        "example": null
+      },
       "chemin_audio": null,
       "audio_asset_id": null,
       "audio_sha256": null,
@@ -254,7 +353,12 @@
       "consentement": {
         "statut": "manquant",
         "preuve_ecrite_reference": null,
-        "usage_hors_ligne_autorise": null
+        "usages_couverts": {
+          "lecons_parcours": null,
+          "dictionnaire_alphabet": null,
+          "revisions_srs": null,
+          "packs_hors_ligne": null
+        }
       },
       "statut_validation": "non_valide_selection_et_audio_requis"
     },
@@ -275,6 +379,13 @@
       "signification_validee": null,
       "locuteur": null,
       "dialecte": null,
+      "variantes_dialectales_notes": null,
+      "roles_audio_attendus": {
+        "normal": null,
+        "slow": null,
+        "syllable": null,
+        "example": null
+      },
       "chemin_audio": null,
       "audio_asset_id": null,
       "audio_sha256": null,
@@ -288,7 +399,12 @@
       "consentement": {
         "statut": "manquant",
         "preuve_ecrite_reference": null,
-        "usage_hors_ligne_autorise": null
+        "usages_couverts": {
+          "lecons_parcours": null,
+          "dictionnaire_alphabet": null,
+          "revisions_srs": null,
+          "packs_hors_ligne": null
+        }
       },
       "statut_validation": "non_valide_selection_et_audio_requis"
     },
@@ -304,6 +420,13 @@
       "signification_validee": null,
       "locuteur": null,
       "dialecte": null,
+      "variantes_dialectales_notes": null,
+      "roles_audio_attendus": {
+        "normal": null,
+        "slow": null,
+        "syllable": null,
+        "example": null
+      },
       "chemin_audio": null,
       "audio_asset_id": null,
       "audio_sha256": null,
@@ -317,7 +440,12 @@
       "consentement": {
         "statut": "manquant",
         "preuve_ecrite_reference": null,
-        "usage_hors_ligne_autorise": null
+        "usages_couverts": {
+          "lecons_parcours": null,
+          "dictionnaire_alphabet": null,
+          "revisions_srs": null,
+          "packs_hors_ligne": null
+        }
       },
       "statut_validation": "manquant_collecte_requise"
     },
@@ -333,6 +461,13 @@
       "signification_validee": null,
       "locuteur": null,
       "dialecte": null,
+      "variantes_dialectales_notes": null,
+      "roles_audio_attendus": {
+        "normal": null,
+        "slow": null,
+        "syllable": null,
+        "example": null
+      },
       "chemin_audio": null,
       "audio_asset_id": null,
       "audio_sha256": null,
@@ -346,7 +481,12 @@
       "consentement": {
         "statut": "manquant",
         "preuve_ecrite_reference": null,
-        "usage_hors_ligne_autorise": null
+        "usages_couverts": {
+          "lecons_parcours": null,
+          "dictionnaire_alphabet": null,
+          "revisions_srs": null,
+          "packs_hors_ligne": null
+        }
       },
       "statut_validation": "manquant_collecte_requise"
     },
@@ -362,6 +502,11 @@
       "signification_validee": null,
       "locuteur": null,
       "dialecte": null,
+      "variantes_dialectales_notes": null,
+      "roles_audio_attendus": {
+        "normal": null,
+        "slow": null
+      },
       "chemin_audio": null,
       "audio_asset_id": null,
       "audio_sha256": null,
@@ -375,7 +520,12 @@
       "consentement": {
         "statut": "manquant",
         "preuve_ecrite_reference": null,
-        "usage_hors_ligne_autorise": null
+        "usages_couverts": {
+          "lecons_parcours": null,
+          "dictionnaire_alphabet": null,
+          "revisions_srs": null,
+          "packs_hors_ligne": null
+        }
       },
       "statut_validation": "manquant_collecte_requise"
     },
@@ -391,6 +541,11 @@
       "signification_validee": null,
       "locuteur": null,
       "dialecte": null,
+      "variantes_dialectales_notes": null,
+      "roles_audio_attendus": {
+        "normal": null,
+        "slow": null
+      },
       "chemin_audio": null,
       "audio_asset_id": null,
       "audio_sha256": null,
@@ -404,7 +559,12 @@
       "consentement": {
         "statut": "manquant",
         "preuve_ecrite_reference": null,
-        "usage_hors_ligne_autorise": null
+        "usages_couverts": {
+          "lecons_parcours": null,
+          "dictionnaire_alphabet": null,
+          "revisions_srs": null,
+          "packs_hors_ligne": null
+        }
       },
       "statut_validation": "manquant_collecte_requise"
     }
