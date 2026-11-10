@@ -17,31 +17,31 @@
         <div class="container">
             <div class="badge">
                 {% if current_lang == "ar" %}
-                    {{ unit.theme.title_ar|default:unit.theme.title_fr }}
+                    {{ unit.theme.title_ar|default:unit.theme.title_fr|render_erfe }}
                 {% elif current_lang == "en" %}
-                    {{ unit.theme.title_en|default:unit.theme.title_fr }}
+                    {{ unit.theme.title_en|default:unit.theme.title_fr|render_erfe }}
                 {% else %}
-                    {{ unit.theme.title_fr }}
+                    {{ unit.theme.title_fr|render_erfe }}
                 {% endif %}
             </div>
 
             <h1>
                 {% if current_lang == "ar" %}
-                    {{ unit.title_ar|default:unit.title_fr }}
+                    {{ unit.title_ar|default:unit.title_fr|render_erfe }}
                 {% elif current_lang == "en" %}
-                    {{ unit.title_en|default:unit.title_fr }}
+                    {{ unit.title_en|default:unit.title_fr|render_erfe }}
                 {% else %}
-                    {{ unit.title_fr }}
+                    {{ unit.title_fr|render_erfe }}
                 {% endif %}
             </h1>
 
             <p>
                 {% if current_lang == "ar" %}
-                    {{ unit.description_ar|default:unit.description_fr }}
+                    {{ unit.description_ar|default:unit.description_fr|render_erfe }}
                 {% elif current_lang == "en" %}
-                    {{ unit.description_en|default:unit.description_fr }}
+                    {{ unit.description_en|default:unit.description_fr|render_erfe }}
                 {% else %}
-                    {{ unit.description_fr }}
+                    {{ unit.description_fr|render_erfe }}
                 {% endif %}
             </p>
 
@@ -191,21 +191,21 @@
                             <article class="lesson-card glass">
                                 <h3>
                                     {% if current_lang == "ar" %}
-                                        {{ lesson.title_ar|default:lesson.title_fr }}
+                                        {{ lesson.title_ar|default:lesson.title_fr|render_erfe }}
                                     {% elif current_lang == "en" %}
-                                        {{ lesson.title_en|default:lesson.title_fr }}
+                                        {{ lesson.title_en|default:lesson.title_fr|render_erfe }}
                                     {% else %}
-                                        {{ lesson.title_fr }}
+                                        {{ lesson.title_fr|render_erfe }}
                                     {% endif %}
                                 </h3>
 
                                 <p class="word-meta">
                                     {% if current_lang == "ar" %}
-                                        {{ lesson.description_ar|default:lesson.description_fr }}
+                                        {{ lesson.description_ar|default:lesson.description_fr|render_erfe }}
                                     {% elif current_lang == "en" %}
-                                        {{ lesson.description_en|default:lesson.description_fr }}
+                                        {{ lesson.description_en|default:lesson.description_fr|render_erfe }}
                                     {% else %}
-                                        {{ lesson.description_fr }}
+                                        {{ lesson.description_fr|render_erfe }}
                                     {% endif %}
                                 </p>
 
@@ -214,21 +214,21 @@
                                         <div class="lesson-item">
                                             <strong>
                                                 {% if current_lang == "ar" %}
-                                                    {{ item.title_ar|default:item.title_fr|default:item.item_type }}
+                                                    {{ item.title_ar|default:item.title_fr|default:item.item_type|render_erfe }}
                                                 {% elif current_lang == "en" %}
-                                                    {{ item.title_en|default:item.title_fr|default:item.item_type }}
+                                                    {{ item.title_en|default:item.title_fr|default:item.item_type|render_erfe }}
                                                 {% else %}
-                                                    {{ item.title_fr|default:item.item_type }}
+                                                    {{ item.title_fr|default:item.item_type|render_erfe }}
                                                 {% endif %}
                                             </strong>
 
                                             <div class="word-meta">
                                                 {% if current_lang == "ar" %}
-                                                    {{ item.oral_prompt_ar|default:item.oral_prompt_fr }}
+                                                    {{ item.oral_prompt_ar|default:item.oral_prompt_fr|render_erfe }}
                                                 {% elif current_lang == "en" %}
-                                                    {{ item.oral_prompt_en|default:item.oral_prompt_fr }}
+                                                    {{ item.oral_prompt_en|default:item.oral_prompt_fr|render_erfe }}
                                                 {% else %}
-                                                    {{ item.oral_prompt_fr }}
+                                                    {{ item.oral_prompt_fr|render_erfe }}
                                                 {% endif %}
                                             </div>
 
@@ -345,11 +345,11 @@
 
                                 <div class="word-meta">
                                     {% if current_lang == "ar" %}
-                                        {{ quiz.prompt_ar|default:quiz.prompt_fr }}
+                                        {{ quiz.prompt_ar|default:quiz.prompt_fr|render_erfe }}
                                     {% elif current_lang == "en" %}
-                                        {{ quiz.prompt_en|default:quiz.prompt_fr }}
+                                        {{ quiz.prompt_en|default:quiz.prompt_fr|render_erfe }}
                                     {% else %}
-                                        {{ quiz.prompt_fr }}
+                                        {{ quiz.prompt_fr|render_erfe }}
                                     {% endif %}
                                 </div>
 

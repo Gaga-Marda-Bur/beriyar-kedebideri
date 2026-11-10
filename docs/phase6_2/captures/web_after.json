@@ -1,0 +1,40 @@
+{
+  "http": 200,
+  "title": {
+    "text": "\n                \n                    Unité 2 : La consonne Te (𖺵) et le mot \"ta\"\n                \n            ",
+    "font": "\"BK Erfe\", Inter, system-ui, sans-serif"
+  },
+  "fonts": [
+    {
+      "url": "http://127.0.0.1:8766/static/webapp/fonts/Kedebideri-Bold.ttf",
+      "status": 200,
+      "type": "application/octet-stream"
+    },
+    {
+      "url": "http://127.0.0.1:8766/static/webapp/fonts/Kedebideri-Regular.ttf",
+      "status": 200,
+      "type": "application/octet-stream"
+    },
+    {
+      "url": "http://127.0.0.1:8766/static/webapp/fonts/Kedebideri-Black.ttf",
+      "status": 200,
+      "type": "application/octet-stream"
+    }
+  ],
+  "rendered": {
+    "fonts": [
+      {
+        "familyName": "Kedebideri",
+        "postScriptName": "Kedebideri-Bold",
+        "isCustomFont": true,
+        "glyphCount": 1
+      },
+      {
+        "familyName": "Segoe UI",
+        "postScriptName": "SegoeUI-Bold",
+        "isCustomFont": false,
+        "glyphCount": 41
+      }
+    ]
+  }
+}

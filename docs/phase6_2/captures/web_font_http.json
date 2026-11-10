@@ -1,0 +1,32 @@
+[
+  {
+    "url": "http://127.0.0.1:8766/static/webapp/fonts/Kedebideri-Bold.ttf",
+    "status": 200,
+    "type": "application/octet-stream"
+  },
+  {
+    "url": "http://127.0.0.1:8766/static/webapp/fonts/Kedebideri-Regular.ttf",
+    "status": 200,
+    "type": "application/octet-stream"
+  },
+  {
+    "url": "http://127.0.0.1:8766/static/webapp/fonts/Kedebideri-Black.ttf",
+    "status": 200,
+    "type": "application/octet-stream"
+  },
+  {
+    "url": "http://127.0.0.1:8766/static/webapp/fonts/Kedebideri-Medium.ttf",
+    "status": 200,
+    "type": "application/octet-stream"
+  },
+  {
+    "url": "http://127.0.0.1:8766/static/webapp/fonts/Kedebideri-SemiBold.ttf",
+    "status": 200,
+    "type": "application/octet-stream"
+  },
+  {
+    "url": "http://127.0.0.1:8766/static/webapp/fonts/Kedebideri-ExtraBold.ttf",
+    "status": 200,
+    "type": "application/octet-stream"
+  }
+]

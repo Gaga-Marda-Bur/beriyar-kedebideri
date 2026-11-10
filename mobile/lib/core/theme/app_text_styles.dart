@@ -60,6 +60,7 @@ class AppTextStyles {
   // --- Échelle typographique Latine / Système (Lot 4B.1) -------------------
   static const TextStyle latinHeading = TextStyle(
     fontFamily: AppTokens.fontFamilyLatin,
+    fontFamilyFallback: [AppTokens.fontFamilyErfe],
     fontSize: AppTokens.latinHeadingSize, // 22 sp
     fontWeight: FontWeight.w800,
     height: 1.25,
@@ -67,6 +68,7 @@ class AppTextStyles {
 
   static const TextStyle latinInstruction = TextStyle(
     fontFamily: AppTokens.fontFamilyLatin,
+    fontFamilyFallback: [AppTokens.fontFamilyErfe],
     fontSize: AppTokens.latinInstructionSize, // 16 sp
     fontWeight: FontWeight.w600,
     height: 1.45,
@@ -74,6 +76,7 @@ class AppTextStyles {
 
   static const TextStyle latinCaption = TextStyle(
     fontFamily: AppTokens.fontFamilyLatin,
+    fontFamilyFallback: [AppTokens.fontFamilyErfe],
     fontSize: AppTokens.latinCaptionSize, // 13 sp
     fontWeight: FontWeight.w500,
     height: 1.35,

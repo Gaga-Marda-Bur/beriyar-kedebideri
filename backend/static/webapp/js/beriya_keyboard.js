@@ -247,7 +247,8 @@
     function hasBeriya(text) {
         return Array.from(text).some((char) => {
             const code = char.codePointAt(0);
-            return code >= 0x16EA0 && code <= 0x16EB8;
+            return (code >= 0x16EA0 && code <= 0x16EB8) ||
+                (code >= 0x16EBB && code <= 0x16ED3);
         });
     }
 

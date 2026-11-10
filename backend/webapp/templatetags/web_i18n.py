@@ -1,6 +1,24 @@
 from django import template
+from django.utils.html import escape, format_html
+from django.utils.safestring import mark_safe
+import re
 
 register = template.Library()
+
+_ERFE_RUN = re.compile(r'[\U00016EA0-\U00016EB8\U00016EBB-\U00016ED3][\u0300\u0301\u0304\u0307]*')
+
+
+@register.filter
+def render_erfe(value):
+    """Presentation only: preserve codepoints, escape even pre-marked input."""
+    text = '' if value is None else str(value)
+    parts, end = [], 0
+    for match in _ERFE_RUN.finditer(text):
+        parts.append(str(escape(text[end:match.start()])))
+        parts.append(str(format_html('<span class="erfe-glyph" dir="ltr">{}</span>', match.group())))
+        end = match.end()
+    parts.append(str(escape(text[end:])))
+    return mark_safe(''.join(parts))
 
 
 @register.filter

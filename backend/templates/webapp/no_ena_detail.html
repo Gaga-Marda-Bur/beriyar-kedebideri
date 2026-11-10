@@ -17,9 +17,9 @@
                 {% endif %}
             </div>
 
-            <h1>{{ publication|i18n_title:current_lang }}</h1>
+            <h1>{{ publication|i18n_title:current_lang|render_erfe }}</h1>
 
-            <p>{{ publication|i18n_caption:current_lang }}</p>
+            <p>{{ publication|i18n_caption:current_lang|render_erfe }}</p>
         </div>
     </section>
 
@@ -40,12 +40,12 @@
                 {% elif publication.image_file %}
                     <img
                         src="{{ publication.image_file.url }}"
-                        alt="{{ publication|i18n_title:current_lang }}"
+                        alt="{{ publication|i18n_title:current_lang|render_erfe }}"
                     >
                 {% elif publication.thumbnail %}
                     <img
                         src="{{ publication.thumbnail.url }}"
-                        alt="{{ publication|i18n_title:current_lang }}"
+                        alt="{{ publication|i18n_title:current_lang|render_erfe }}"
                     >
                 {% else %}
                     <div style="color:#D4AF37;font-size:42px;">No Ena</div>
@@ -65,7 +65,7 @@
 
                 {% if publication.beriya_title %}
                     <div class="word-text beriya-font" style="font-size:30px;">
-                        {{ publication.beriya_title }}
+                        {{ publication.beriya_title|render_erfe }}
                     </div>
                 {% endif %}
 
@@ -163,7 +163,7 @@
                                 style="color:#D4AF37"
                                 href="{% url 'web-unit-detail' publication.related_unit.slug %}"
                             >
-                                {{ publication.related_unit|i18n_title:current_lang }}
+                                {{ publication.related_unit|i18n_title:current_lang|render_erfe }}
                             </a>
                         </div>
                     {% endif %}
@@ -227,12 +227,12 @@
                                 {% if item.thumbnail %}
                                     <img
                                         src="{{ item.thumbnail.url }}"
-                                        alt="{{ item|i18n_title:current_lang }}"
+                                        alt="{{ item|i18n_title:current_lang|render_erfe }}"
                                     >
                                 {% elif item.image_file %}
                                     <img
                                         src="{{ item.image_file.url }}"
-                                        alt="{{ item|i18n_title:current_lang }}"
+                                        alt="{{ item|i18n_title:current_lang|render_erfe }}"
                                     >
                                 {% elif item.video_file %}
                                     <video muted>
@@ -248,10 +248,10 @@
                                     {{ item.publication_type|i18n_publication_type:current_lang }}
                                 </div>
 
-                                <h3>{{ item|i18n_title:current_lang }}</h3>
+                                <h3>{{ item|i18n_title:current_lang|render_erfe }}</h3>
 
                                 <p>
-                                    {{ item|i18n_caption:current_lang|truncatewords:16 }}
+                                    {{ item|i18n_caption:current_lang|truncatewords:16|render_erfe }}
                                 </p>
                             </div>
                         </a>

@@ -227,7 +227,8 @@ class _BeriyaTextFieldState extends State<BeriyaTextField> {
           style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
-            fontFamily: 'Kedebideri',
+            fontFamily: 'Roboto',
+            fontFamilyFallback: ['Kedebideri'],
           ),
           decoration: InputDecoration(
             hintText: widget.hint,

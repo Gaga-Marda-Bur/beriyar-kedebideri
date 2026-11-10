@@ -1,0 +1,4 @@
+# Audit evidence hashes describe bytes: preserve them across checkouts.
+docs/PHASE6_AUDIT_GLOBAL_ERFE_MONETISATION_PRODUCTION.md -text whitespace=-blank-at-eol,cr-at-eol
+docs/phase6_reprise/** -text whitespace=-blank-at-eol,cr-at-eol
+docs/phase6_2/captures/** -text

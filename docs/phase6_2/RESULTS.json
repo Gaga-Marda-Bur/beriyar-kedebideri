@@ -1,0 +1,129 @@
+{
+  "date": "2026-11-10",
+  "checkpoint": "4cb8708",
+  "source_db_unchanged": true,
+  "source_db_sha256": "2684f6ce3662fa7f3e771258887c3e48e76b72362a271598f25d1599f92b3543",
+  "audit_manifest_unchanged": true,
+  "six_kedebideri_binaries_unchanged": true,
+  "existing_erfe_combining_sequences": [],
+  "keyboard_macron_sequences": [
+    "𖺠̄",
+    "𖺣̄",
+    "𖺧̄",
+    "𖺯̄",
+    "𖺶̄"
+  ],
+  "new_pdf_fonts": [
+    {
+      "file": "NotoSans-Regular.ttf",
+      "bytes": 569208,
+      "sha256": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+      "same_in_mobile": true
+    },
+    {
+      "file": "NotoSansArabic-Regular.ttf",
+      "bytes": 240456,
+      "sha256": "ceea25b464a656dc3b26849bab9356740401af62aedf1bfa8b7f0d9b75925b1b",
+      "same_in_mobile": true
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "captures/django_after.png",
+      "bytes": 336280,
+      "sha256": "8fcac6911cbd91dcb1089beb6bb03d5ddc7296d286998d785a0c013fe6b1af63"
+    },
+    {
+      "file": "captures/django_before.png",
+      "bytes": 335807,
+      "sha256": "71db6361d6b8fea95cfdb18bd25ac80a5b66bb4f83d22063f4fc8ffd531a002b"
+    },
+    {
+      "file": "captures/editor_mixed_after.png",
+      "bytes": 322466,
+      "sha256": "3d609b82d856ad98a7f47d6207a38f8acb82e81ee6f6500539d99476ae480dbf"
+    },
+    {
+      "file": "captures/pdf_flutter_after.png",
+      "bytes": 54641,
+      "sha256": "bb990d91696a8d8b008f52ae7a86018acd62f7a77c749e1f8298b2b7665cda28"
+    },
+    {
+      "file": "captures/pdf_flutter_before.png",
+      "bytes": 54707,
+      "sha256": "20de8b6426ffe14c20927aec51f5a5323d2a671e33f03fc82d383980026e24f7"
+    },
+    {
+      "file": "captures/pdf_web_after.png",
+      "bytes": 33032,
+      "sha256": "d8515a0db1981813dd69daa2a21bf91881b2c282ad149a13c1faffca908ae2d5"
+    },
+    {
+      "file": "captures/phase62_after.pdf",
+      "bytes": 13198,
+      "sha256": "a17eb362bc6ce66a11e9acd98d5c2072db79ca9c9448c3f2bd7fa89efdbdcca8"
+    },
+    {
+      "file": "captures/phase62_after_dark.png",
+      "bytes": 102184,
+      "sha256": "12976137bcf56a033e4d6729752b02201765ce12e078bf958b3eda0fa223a1c2"
+    },
+    {
+      "file": "captures/phase62_after_light.png",
+      "bytes": 101584,
+      "sha256": "dce64d4a8955082b735af27e8d8577da31932e1990e0f04101eec6a1f699aa7c"
+    },
+    {
+      "file": "captures/phase62_before.pdf",
+      "bytes": 11559,
+      "sha256": "7589c4e81f13cb53636443d7f1cd3c12372dc7ef2d8138a24b357fdf157a1a54"
+    },
+    {
+      "file": "captures/phase62_before_dark.png",
+      "bytes": 71600,
+      "sha256": "4ba918c218e5384ff785fd512f75a26610071dd992682eca557d3a1d11a2315c"
+    },
+    {
+      "file": "captures/phase62_before_light.png",
+      "bytes": 71462,
+      "sha256": "53942cc6614bb11bcf71df795ca5370f4d269ed97d27e6221c42e258c74f18cd"
+    },
+    {
+      "file": "captures/web_after.json",
+      "bytes": 1050,
+      "sha256": "f789580be6f59dc623fcd26d9ec965faef031e6dad0ef6ec50da95ca7929096f"
+    },
+    {
+      "file": "captures/web_before.json",
+      "bytes": 627,
+      "sha256": "307a8e114efd2e7303103c7ed14b61c8ab61d3f8deb969b738a627df7445862f"
+    },
+    {
+      "file": "captures/web_export_after.pdf",
+      "bytes": 444074,
+      "sha256": "2a8f8d6d55f5ead73017d56896d43c0474488933e757767470b0145afbd72b2f"
+    },
+    {
+      "file": "captures/web_font_http.json",
+      "bytes": 875,
+      "sha256": "5df8524c719a006f4166a6443aae20436e43c093c9812cc6a2f7b4fdd2d96e2c"
+    },
+    {
+      "file": "captures/web_grid_after.png",
+      "bytes": 489693,
+      "sha256": "62fb68e41e9406acf377cf11447e9cf101c931f7b0ab9eca9258b0469bb74a80"
+    },
+    {
+      "file": "captures/web_image_export_after.png",
+      "bytes": 97464,
+      "sha256": "f60373619ff49ffbe7548ffc47bd0de371f65c77f59f9200fd3a2508bc6c280b"
+    }
+  ],
+  "test_results": {
+    "django_passed": 99,
+    "flutter_passed": 130,
+    "javascript_passed": 5,
+    "javascript_baseline_failed": 2,
+    "flutter_analyze": "No issues found"
+  }
+}

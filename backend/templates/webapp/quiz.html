@@ -70,7 +70,7 @@
               {% endif %}
             </div>
 
-            <h2>{{ quiz|i18n_prompt:current_lang }}</h2>
+            <h2>{{ quiz|i18n_prompt:current_lang|render_erfe }}</h2>
 
             {% with audio_url=quiz|published_audio:"question" %}
               {% if audio_url %}

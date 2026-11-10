@@ -221,7 +221,7 @@
         const lineHeight = fontSize * 1.5;
 
         // Measure needed height
-        ctx.font = `${fontSize}px 'Kedebideri', Inter, sans-serif`;
+        ctx.font = `${fontSize}px 'BK Erfe', Inter, sans-serif`;
         const maxWidth = width - (padding * 2);
 
         function wrapText(text) {
@@ -291,7 +291,7 @@
         // Draw Title
         if (title) {
             ctx.fillStyle = theme.text;
-            ctx.font = `bold ${titleFontSize}px 'Kedebideri', Inter, sans-serif`;
+            ctx.font = `bold ${titleFontSize}px 'BK Erfe', Inter, sans-serif`;
             ctx.textAlign = currentAlignment;
             const xPos = currentAlignment === "center" ? width / 2 : (currentAlignment === "right" ? width - padding : padding);
             ctx.fillText(title, xPos, currentY + titleFontSize);
@@ -300,7 +300,7 @@
 
         // Draw Body
         ctx.fillStyle = theme.text;
-        ctx.font = `${fontSize}px 'Kedebideri', Inter, sans-serif`;
+        ctx.font = `${fontSize}px 'BK Erfe', Inter, sans-serif`;
         ctx.textAlign = currentAlignment;
 
         for (const line of wrappedLines) {
@@ -353,6 +353,51 @@
 
             // 3. Embed TrueType font directly inside the PDF stream!
             const customFont = await pdfDoc.embedFont(fontBytes);
+            const fallbackNames = ["NotoSans-Regular.ttf", "NotoSansArabic-Regular.ttf"];
+            const fallbackFonts = await Promise.all(fallbackNames.map(async (name) => {
+                const response = await fetch(`/static/webapp/fonts/${name}`);
+                if (!response.ok) throw new Error(`Impossible de charger ${name}`);
+                return pdfDoc.embedFont(await response.arrayBuffer());
+            }));
+            const choices = [...fallbackFonts, customFont].map(font => ({font, points: new Set(font.getCharacterSet())}));
+            const erfeLayoutFont = fontkit.create(new Uint8Array(fontBytes));
+            const segments = new Intl.Segmenter(undefined, {granularity: "grapheme"});
+            function fontRuns(text) {
+                const runs = [];
+                for (const {segment} of segments.segment(text)) {
+                    const points = Array.from(segment, c => c.codePointAt(0));
+                    const choice = choices.find(item => points.every(cp => item.points.has(cp)));
+                    if (!choice) throw new Error("Caractère non couvert par les polices PDF.");
+                    if (runs.length && runs[runs.length - 1].font === choice.font) runs[runs.length - 1].text += segment;
+                    else runs.push({font: choice.font, text: segment});
+                }
+                return runs;
+            }
+            function mixedWidth(text, size) {
+                return fontRuns(text).reduce((width, run) => width + run.font.widthOfTextAtSize(run.text, size), 0);
+            }
+            function drawMixed(page, text, options) {
+                let x = options.x;
+                for (const run of fontRuns(text)) {
+                    if (run.font === customFont) {
+                        // pdf-lib encodes glyphs but ignores GPOS offsets. Keep
+                        // Kedebideri's actual mark anchors when drawing Erfe.
+                        const layout = erfeLayoutFont.layout(run.text);
+                        const scale = options.size / erfeLayoutFont.unitsPerEm;
+                        let advance = 0;
+                        layout.glyphs.forEach((glyph, index) => {
+                            const position = layout.positions[index];
+                            page.drawText(String.fromCodePoint(...glyph.codePoints), {
+                                ...options, font:customFont,
+                                x:x+(advance+position.xOffset)*scale,
+                                y:options.y+position.yOffset*scale,
+                            });
+                            advance += position.xAdvance;
+                        });
+                    } else page.drawText(run.text, {...options, x, font: run.font});
+                    x += run.font.widthOfTextAtSize(run.text, options.size);
+                }
+            }
             const helvetica = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
             const helveticaBold = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
 
@@ -404,7 +449,7 @@
             const title = titleInput.value.trim();
             if (title) {
                 const titleSize = Math.round(currentFontSize * 1.15);
-                page.drawText(title, {
+                drawMixed(page, title, {
                     x: margin,
                     y: y,
                     size: titleSize,
@@ -432,7 +477,7 @@
 
                 for (let i = 1; i < words.length; i++) {
                     const testLine = currentLine + " " + words[i];
-                    const testWidth = customFont.widthOfTextAtSize(testLine, bodySize);
+                    const testWidth = mixedWidth(testLine, bodySize);
 
                     if (testWidth < contentWidth) {
                         currentLine = testLine;
@@ -443,7 +488,7 @@
                             y = pageHeight - margin - 30;
                         }
 
-                        page.drawText(currentLine, {
+                        drawMixed(page, currentLine, {
                             x: margin,
                             y: y,
                             size: bodySize,
@@ -462,7 +507,7 @@
                         y = pageHeight - margin - 30;
                     }
 
-                    page.drawText(currentLine, {
+                    drawMixed(page, currentLine, {
                         x: margin,
                         y: y,
                         size: bodySize,

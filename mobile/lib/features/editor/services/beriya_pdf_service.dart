@@ -11,19 +11,37 @@ import '../models/beriya_draft.dart';
 class BeriyaPdfService {
   static pw.Font? _cachedRegularFont;
   static pw.Font? _cachedBoldFont;
+  static pw.Font? _cachedLatinFont;
+  static pw.Font? _cachedArabicFont;
 
   static Future<void> _initFonts() async {
-    if (_cachedRegularFont != null && _cachedBoldFont != null) return;
+    if (_cachedRegularFont != null &&
+        _cachedBoldFont != null &&
+        _cachedLatinFont != null &&
+        _cachedArabicFont != null) {
+      return;
+    }
+
+    _cachedLatinFont = pw.Font.ttf(
+      await rootBundle.load('assets/fonts/NotoSans-Regular.ttf'),
+    );
+    _cachedArabicFont = pw.Font.ttf(
+      await rootBundle.load('assets/fonts/NotoSansArabic-Regular.ttf'),
+    );
 
     try {
-      final regData = await rootBundle.load('assets/fonts/Kedebideri-Regular.ttf');
+      final regData = await rootBundle.load(
+        'assets/fonts/Kedebideri-Regular.ttf',
+      );
       _cachedRegularFont = pw.Font.ttf(regData);
     } catch (_) {
       _cachedRegularFont = null;
     }
 
     try {
-      final boldData = await rootBundle.load('assets/fonts/Kedebideri-Bold.ttf');
+      final boldData = await rootBundle.load(
+        'assets/fonts/Kedebideri-Bold.ttf',
+      );
       _cachedBoldFont = pw.Font.ttf(boldData);
     } catch (_) {
       _cachedBoldFont = _cachedRegularFont;
@@ -94,6 +112,7 @@ class BeriyaPdfService {
         theme: pw.ThemeData.withFont(
           base: fontRegular,
           bold: fontBold,
+          fontFallback: [_cachedLatinFont!, _cachedArabicFont!],
         ),
         header: (context) {
           return pw.Container(
@@ -147,7 +166,10 @@ class BeriyaPdfService {
             padding: const pw.EdgeInsets.only(top: 8),
             decoration: const pw.BoxDecoration(
               border: pw.Border(
-                top: pw.BorderSide(color: PdfColor.fromInt(0xFFE0E0E0), width: 0.8),
+                top: pw.BorderSide(
+                  color: PdfColor.fromInt(0xFFE0E0E0),
+                  width: 0.8,
+                ),
               ),
             ),
             child: pw.Row(
@@ -253,7 +275,9 @@ class BeriyaPdfService {
     final bytes = await generatePdfBytes(draft);
     await Printing.layoutPdf(
       onLayout: (PdfPageFormat format) async => bytes,
-      name: draft.title.trim().isNotEmpty ? draft.title.trim() : 'Document_Beriya',
+      name: draft.title.trim().isNotEmpty
+          ? draft.title.trim()
+          : 'Document_Beriya',
     );
   }
 }

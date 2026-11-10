@@ -82,6 +82,17 @@ flutter:
     - family: Kedebideri
       fonts:
         - asset: assets/fonts/Kedebideri-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Kedebideri-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Kedebideri-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Kedebideri-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Kedebideri-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Kedebideri-Black.ttf
+          weight: 900
 
 flutter_launcher_icons:
   android: true
@@ -99,4 +110,3 @@ flutter_native_splash:
   android_12:
     color: "#0F3227"
     image: assets/icons/splash_logo.png
-  

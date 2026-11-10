@@ -1,0 +1,24 @@
+{
+  "http": 200,
+  "title": {
+    "text": "\n                \n                    Unité 2 : La consonne Te (𖺵) et le mot \"ta\"\n                \n            ",
+    "font": "Inter, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+  },
+  "fonts": [
+    {
+      "url": "http://127.0.0.1:8766/static/webapp/fonts/Kedebideri-Regular.ttf",
+      "status": 200,
+      "type": "application/octet-stream"
+    }
+  ],
+  "rendered": {
+    "fonts": [
+      {
+        "familyName": "Segoe UI",
+        "postScriptName": "SegoeUI-Bold",
+        "isCustomFont": false,
+        "glyphCount": 42
+      }
+    ]
+  }
+}

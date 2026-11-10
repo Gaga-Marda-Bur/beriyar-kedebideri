@@ -41,7 +41,8 @@
     function hasBeriya(text) {
         return Array.from(text).some((char) => {
             const code = char.codePointAt(0);
-            return code >= 0x16EA0 && code <= 0x16EB8;
+            return (code >= 0x16EA0 && code <= 0x16EB8) ||
+                (code >= 0x16EBB && code <= 0x16ED3);
         });
     }
 
@@ -314,9 +315,9 @@
         ctx.save();
 
         if (currentStyle === "calligraphy") {
-            ctx.font = "700 72px Kedebideri, Arial, sans-serif";
+            ctx.font = "700 72px 'BK Erfe', Arial, sans-serif";
         } else {
-            ctx.font = "900 64px Kedebideri, Arial, sans-serif";
+            ctx.font = "900 64px 'BK Erfe', Arial, sans-serif";
         }
 
         ctx.textAlign = "center";

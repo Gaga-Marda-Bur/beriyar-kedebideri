@@ -55,11 +55,11 @@
                     </div>
 
                     <h2 style="margin: 8px 0 8px;">
-                        {{ theme|i18n_title:current_lang }}
+                        {{ theme|i18n_title:current_lang|render_erfe }}
                     </h2>
 
                     <p class="section-text">
-                        {{ theme|i18n_description:current_lang }}
+                        {{ theme|i18n_description:current_lang|render_erfe }}
                     </p>
 
                     <div class="units-grid">
@@ -68,21 +68,21 @@
                                 <article class="unit-card">
                                     <h3>
                                         {% if current_lang == "ar" %}
-                                            {{ unit.title_ar|default:unit.title_fr }}
+                                            {{ unit.title_ar|default:unit.title_fr|render_erfe }}
                                         {% elif current_lang == "en" %}
-                                            {{ unit.title_en|default:unit.title_fr }}
+                                            {{ unit.title_en|default:unit.title_fr|render_erfe }}
                                         {% else %}
-                                            {{ unit.title_fr }}
+                                            {{ unit.title_fr|render_erfe }}
                                         {% endif %}
                                     </h3>
 
                                     <p class="word-meta">
                                         {% if current_lang == "ar" %}
-                                            {{ unit.description_ar|default:unit.description_fr|truncatewords:24 }}
+                                            {{ unit.description_ar|default:unit.description_fr|truncatewords:24|render_erfe }}
                                         {% elif current_lang == "en" %}
-                                            {{ unit.description_en|default:unit.description_fr|truncatewords:24 }}
+                                            {{ unit.description_en|default:unit.description_fr|truncatewords:24|render_erfe }}
                                         {% else %}
-                                            {{ unit.description_fr|truncatewords:24 }}
+                                            {{ unit.description_fr|truncatewords:24|render_erfe }}
                                         {% endif %}
                                     </p>
 

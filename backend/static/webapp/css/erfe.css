@@ -1,0 +1,112 @@
+/* Scoped Erfe fallback: Latin and Arabic keep their own fonts. */
+
+@font-face {
+    font-family: "Kedebideri";
+    src: url("../fonts/Kedebideri-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kedebideri";
+    src: url("../fonts/Kedebideri-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kedebideri";
+    src: url("../fonts/Kedebideri-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kedebideri";
+    src: url("../fonts/Kedebideri-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kedebideri";
+    src: url("../fonts/Kedebideri-ExtraBold.ttf") format("truetype");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Kedebideri";
+    src: url("../fonts/Kedebideri-Black.ttf") format("truetype");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "BK Erfe";
+    src: url("../fonts/Kedebideri-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+16EA0-16EB8, U+16EBB-16ED3, U+0300-0301, U+0304, U+0307, U+25CC;
+}
+
+@font-face {
+    font-family: "BK Erfe";
+    src: url("../fonts/Kedebideri-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+16EA0-16EB8, U+16EBB-16ED3, U+0300-0301, U+0304, U+0307, U+25CC;
+}
+
+@font-face {
+    font-family: "BK Erfe";
+    src: url("../fonts/Kedebideri-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+16EA0-16EB8, U+16EBB-16ED3, U+0300-0301, U+0304, U+0307, U+25CC;
+}
+
+@font-face {
+    font-family: "BK Erfe";
+    src: url("../fonts/Kedebideri-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+16EA0-16EB8, U+16EBB-16ED3, U+0300-0301, U+0304, U+0307, U+25CC;
+}
+
+@font-face {
+    font-family: "BK Erfe";
+    src: url("../fonts/Kedebideri-ExtraBold.ttf") format("truetype");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+16EA0-16EB8, U+16EBB-16ED3, U+0300-0301, U+0304, U+0307, U+25CC;
+}
+
+@font-face {
+    font-family: "BK Erfe";
+    src: url("../fonts/Kedebideri-Black.ttf") format("truetype");
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+16EA0-16EB8, U+16EBB-16ED3, U+0300-0301, U+0304, U+0307, U+25CC;
+}
+
+body, input, textarea, select, button, .beriya-font, .beriya-input, .character-symbol, .word-text, .symbol-box {
+    font-family: "BK Erfe", Inter, system-ui, sans-serif;
+}
+.erfe-glyph {
+    font-family: Kedebideri, sans-serif;
+    direction: ltr;
+    unicode-bidi: isolate;
+}

@@ -1,0 +1,7 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'webapp/css/erfe.css' %}">
+<style>body, input, textarea, select, button { font-family: "BK Erfe", var(--font-family-primary, system-ui); }</style>
+{% endblock %}

@@ -22,6 +22,7 @@ class AppTheme {
         BkThemePalette.dark,
       ],
       fontFamily: AppTokens.fontFamilyLatin,
+      fontFamilyFallback: const [AppTokens.fontFamilyErfe],
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         foregroundColor: AppColors.white,
@@ -117,6 +118,7 @@ class AppTheme {
         BkThemePalette.light,
       ],
       fontFamily: AppTokens.fontFamilyLatin,
+      fontFamilyFallback: const [AppTokens.fontFamilyErfe],
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         foregroundColor: AppColors.lightTextPrimary,

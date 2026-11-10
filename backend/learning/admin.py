@@ -220,7 +220,8 @@ class LearningUnitAdmin(admin.ModelAdmin):
     )
 
     def core_flow_preview(self, obj):
-        from django.utils.html import format_html
+        from django.utils.html import format_html, format_html_join
+        from webapp.templatetags.web_i18n import render_erfe
         if not obj.pk:
             return "Sauvegardez l'unité pour générer l'aperçu du flux."
         steps = obj.generate_core_flow()
@@ -233,29 +234,27 @@ class LearningUnitAdmin(admin.ModelAdmin):
             stype = step.get('step_type', '')
             details = []
             if 'symbol' in step:
-                details.append(f"<b>Glyphe:</b> {step['symbol']}")
+                details.append(format_html('<b>Glyphe:</b> {}', render_erfe(step['symbol'])))
             if 'phoneme_ipa' in step and step['phoneme_ipa'] != 'À_VALIDER':
-                details.append(f"<b>Son:</b> /{step['phoneme_ipa']}/")
+                details.append(format_html('<b>Son:</b> /{}/', render_erfe(step['phoneme_ipa'])))
             if 'target_symbol' in step:
-                details.append(f"<b>Cible:</b> {step['target_symbol']} vs {step.get('other_symbol', '')}")
+                details.append(format_html('<b>Cible:</b> {} vs {}', render_erfe(step['target_symbol']), render_erfe(step.get('other_symbol', ''))))
             if 'components' in step:
-                details.append(f"<b>Fusion:</b> {' + '.join(step['components'])} &rarr; {step.get('result_syllable', '')}")
+                details.append(format_html('<b>Fusion:</b> {} &rarr; {}', render_erfe(' + '.join(step['components'])), render_erfe(step.get('result_syllable', ''))))
             if 'word' in step:
-                details.append(f"<b>Mot:</b> {step['word']} ({step.get('french_translation', '')})")
+                details.append(format_html('<b>Mot:</b> {} ({})', render_erfe(step['word']), render_erfe(step.get('french_translation', ''))))
             if 'keyboard_keys' in step:
-                details.append(f"<b>Touches clavier:</b> {' '.join(step['keyboard_keys'])}")
+                details.append(format_html('<b>Touches clavier:</b> {}', render_erfe(' '.join(step['keyboard_keys']))))
             if 'weights' in step:
                 w = step['weights']
-                details.append(f"<b>Pondérations:</b> Reconnaissance {w.get('recognition')}% | Tracé {w.get('tracing')}% | Encodage {w.get('encoding')}%")
+                details.append(format_html('<b>Pondérations:</b> Reconnaissance {}% | Tracé {}% | Encodage {}%', w.get('recognition'), w.get('tracing'), w.get('encoding')))
 
-            detail_str = " &nbsp;|&nbsp; ".join(details) if details else step.get('instruction', '')
-            rows.append(
-                f"<tr>"
-                f"<td style='padding:6px 12px; border:1px solid #ddd; text-align:center;'><b>{idx}</b></td>"
-                f"<td style='padding:6px 12px; border:1px solid #ddd; font-weight:bold; color:#1b4332;'>{stype}</td>"
-                f"<td style='padding:6px 12px; border:1px solid #ddd;'>{detail_str}</td>"
-                f"</tr>"
-            )
+            detail_str = format_html_join(' | ', '{}', ((detail,) for detail in details)) if details else render_erfe(step.get('instruction', ''))
+            rows.append(format_html(
+                '<tr><td style="padding:6px 12px; border:1px solid #ddd;"><b>{}</b></td>'
+                '<td style="padding:6px 12px; border:1px solid #ddd;">{}</td>'
+                '<td style="padding:6px 12px; border:1px solid #ddd;">{}</td></tr>',
+                idx, render_erfe(stype), detail_str))
 
         html = (
             "<div style='max-width:800px; margin-top:8px;'>"
@@ -265,10 +264,10 @@ class LearningUnitAdmin(admin.ModelAdmin):
             "<th style='padding:6px; border:1px solid #ddd; width:150px;'>Type d'étape</th>"
             "<th style='padding:6px; border:1px solid #ddd;'>Détails & Contenu</th>"
             "</tr></thead>"
-            f"<tbody>{''.join(rows)}</tbody>"
+            "<tbody>{}</tbody>"
             "</table></div>"
         )
-        return format_html(html)
+        return format_html(html, format_html_join('', '{}', ((row,) for row in rows)))
 
     core_flow_preview.short_description = "Aperçu dynamique du flux (Learning Core)"
     @admin.display(description="Dépendances")
