@@ -1,0 +1,412 @@
+{
+  "schema_version": 1,
+  "pilot_id": "pilote-a-oral-vers-erfe-v1",
+  "title": "Pilote A — Je parle Beřiya, j'apprends l'Erfe (12 éléments : 4 caractères, 6 mots, 2 énoncés courts)",
+  "updated_at": "2026-11-10",
+  "rules": {
+    "no_artificial_translations": true,
+    "no_synthetic_voice": true,
+    "draft_or_review_never_counted_as_validated": true,
+    "no_audio_attribution_without_verified_concordance": true,
+    "human_verification_and_speaker_consent_mandatory": true
+  },
+  "summary": {
+    "total_elements": 12,
+    "categories": {
+      "character": 4,
+      "word": 6,
+      "short_utterance": 2
+    },
+    "fully_validated_count": 0,
+    "pending_human_verification_count": 1,
+    "missing_audio_or_linguistic_selection_count": 11
+  },
+  "elements": [
+    {
+      "id_pedagogique": "PILOTE-A-C1",
+      "slot": "C1",
+      "categorie": "character",
+      "db_candidate": {
+        "model": "alphabet.Character",
+        "id": 1,
+        "db_validation_status": "published"
+      },
+      "texte_erfe": "𖺠",
+      "unicode_code": "U+16EA0",
+      "transcription_latine": "a",
+      "phoneme_ipa": "a",
+      "signification_validee": "Voyelle A (nom/valeur phonétique exacte par rapport à l'enregistrement arkap.wav à confirmer par le référent linguistique)",
+      "locuteur": "Gaga",
+      "dialecte": null,
+      "chemin_audio": "audio_assets/files/arkap.wav",
+      "audio_asset_id": "1bb9f0cc13b54d01a662fab130e79a3e",
+      "audio_sha256": "255e7121ad2d8de443aebad7781c3fa695b81a2425f1cce046420ee83f9db459",
+      "controle_qualite": {
+        "fichier_present": true,
+        "format_technique": "WAV PCM 16-bit 44100 Hz stéréo (791192 octets, 4.485 s)",
+        "recording_quality_db": null,
+        "concordance_son_element_verifiee": false,
+        "observation": "Même fichier WAV lié au caractère ID 1 (𖺠) et au mot ID 1 (arkap). Concordance phonème pur vs nom de lettre vs mot à vérifier humainement."
+      },
+      "consentement": {
+        "statut": "non_documente",
+        "preuve_ecrite_reference": null,
+        "usage_hors_ligne_autorise": null
+      },
+      "statut_validation": "en_attente_verification_humaine_et_consentement"
+    },
+    {
+      "id_pedagogique": "PILOTE-A-C2",
+      "slot": "C2",
+      "categorie": "character",
+      "db_candidate": {
+        "model": "alphabet.Character",
+        "id": 2,
+        "db_validation_status": "published"
+      },
+      "texte_erfe": "𖺡",
+      "unicode_code": "U+16EA1",
+      "transcription_latine": "b",
+      "phoneme_ipa": "b",
+      "signification_validee": "Consonne B",
+      "locuteur": null,
+      "dialecte": null,
+      "chemin_audio": null,
+      "audio_asset_id": null,
+      "audio_sha256": null,
+      "controle_qualite": {
+        "fichier_present": false,
+        "format_technique": null,
+        "recording_quality_db": null,
+        "concordance_son_element_verifiee": false,
+        "observation": "Caractère publié en base mais aucun enregistrement CharacterAudio associé."
+      },
+      "consentement": {
+        "statut": "manquant",
+        "preuve_ecrite_reference": null,
+        "usage_hors_ligne_autorise": null
+      },
+      "statut_validation": "incomplet_audio_manquant"
+    },
+    {
+      "id_pedagogique": "PILOTE-A-C3",
+      "slot": "C3",
+      "categorie": "character",
+      "db_candidate": {
+        "model": "alphabet.Character",
+        "id": 4,
+        "db_validation_status": "review",
+        "note": "Candidat en statut review (𖺣 / e) — non considéré comme publié ou validé sans décision humaine."
+      },
+      "texte_erfe": null,
+      "unicode_code": null,
+      "transcription_latine": null,
+      "phoneme_ipa": null,
+      "signification_validee": null,
+      "locuteur": null,
+      "dialecte": null,
+      "chemin_audio": null,
+      "audio_asset_id": null,
+      "audio_sha256": null,
+      "controle_qualite": {
+        "fichier_present": false,
+        "format_technique": null,
+        "recording_quality_db": null,
+        "concordance_son_element_verifiee": false,
+        "observation": "Sélection linguistique définitive et enregistrement vocal authentique requis."
+      },
+      "consentement": {
+        "statut": "manquant",
+        "preuve_ecrite_reference": null,
+        "usage_hors_ligne_autorise": null
+      },
+      "statut_validation": "non_valide_selection_et_audio_requis"
+    },
+    {
+      "id_pedagogique": "PILOTE-A-C4",
+      "slot": "C4",
+      "categorie": "character",
+      "db_candidate": {
+        "model": "alphabet.Character",
+        "id": 3,
+        "db_validation_status": "review",
+        "note": "Candidats en statut review (ID 3 𖺢 / d ou ID 22 𖺵 / t) — non considérés comme publiés ou validés sans décision humaine."
+      },
+      "texte_erfe": null,
+      "unicode_code": null,
+      "transcription_latine": null,
+      "phoneme_ipa": null,
+      "signification_validee": null,
+      "locuteur": null,
+      "dialecte": null,
+      "chemin_audio": null,
+      "audio_asset_id": null,
+      "audio_sha256": null,
+      "controle_qualite": {
+        "fichier_present": false,
+        "format_technique": null,
+        "recording_quality_db": null,
+        "concordance_son_element_verifiee": false,
+        "observation": "Sélection linguistique définitive et enregistrement vocal authentique requis."
+      },
+      "consentement": {
+        "statut": "manquant",
+        "preuve_ecrite_reference": null,
+        "usage_hors_ligne_autorise": null
+      },
+      "statut_validation": "non_valide_selection_et_audio_requis"
+    },
+    {
+      "id_pedagogique": "PILOTE-A-M1",
+      "slot": "M1",
+      "categorie": "word",
+      "db_candidate": {
+        "model": "vocabulary.Word",
+        "id": 1,
+        "db_validation_status": "published",
+        "note": "Le mot ID 1 porte le texte '𖺠', la transcription 'arkap', la traduction 'exemple test' et partage arkap.wav avec C1. Non qualifié comme mot pédagogique distinct sans validation humaine. Le mot ID 2 (𖺡𖺣 / be) est en statut draft."
+      },
+      "texte_erfe": null,
+      "unicode_code": null,
+      "transcription_latine": null,
+      "phoneme_ipa": null,
+      "signification_validee": null,
+      "locuteur": null,
+      "dialecte": null,
+      "chemin_audio": null,
+      "audio_asset_id": null,
+      "audio_sha256": null,
+      "controle_qualite": {
+        "fichier_present": false,
+        "format_technique": null,
+        "recording_quality_db": null,
+        "concordance_son_element_verifiee": false,
+        "observation": "Interdiction d'utiliser un brouillon (draft) comme validé ou d'attribuer arkap.wav sans concordance vérifiée."
+      },
+      "consentement": {
+        "statut": "manquant",
+        "preuve_ecrite_reference": null,
+        "usage_hors_ligne_autorise": null
+      },
+      "statut_validation": "non_valide_mot_et_audio_distinct_requis"
+    },
+    {
+      "id_pedagogique": "PILOTE-A-M2",
+      "slot": "M2",
+      "categorie": "word",
+      "db_candidate": {
+        "model": "vocabulary.Word",
+        "id": 2,
+        "db_validation_status": "draft",
+        "note": "Candidat en brouillon (draft) en base — non promu ni utilisé comme validé."
+      },
+      "texte_erfe": null,
+      "unicode_code": null,
+      "transcription_latine": null,
+      "phoneme_ipa": null,
+      "signification_validee": null,
+      "locuteur": null,
+      "dialecte": null,
+      "chemin_audio": null,
+      "audio_asset_id": null,
+      "audio_sha256": null,
+      "controle_qualite": {
+        "fichier_present": false,
+        "format_technique": null,
+        "recording_quality_db": null,
+        "concordance_son_element_verifiee": false,
+        "observation": "Validation linguistique, passage en statut published et enregistrement audio authentique requis."
+      },
+      "consentement": {
+        "statut": "manquant",
+        "preuve_ecrite_reference": null,
+        "usage_hors_ligne_autorise": null
+      },
+      "statut_validation": "non_valide_selection_et_audio_requis"
+    },
+    {
+      "id_pedagogique": "PILOTE-A-M3",
+      "slot": "M3",
+      "categorie": "word",
+      "db_candidate": {
+        "model": "vocabulary.Word",
+        "id": 3,
+        "db_validation_status": "draft",
+        "note": "Candidat en brouillon (draft) en base — non promu ni utilisé comme validé."
+      },
+      "texte_erfe": null,
+      "unicode_code": null,
+      "transcription_latine": null,
+      "phoneme_ipa": null,
+      "signification_validee": null,
+      "locuteur": null,
+      "dialecte": null,
+      "chemin_audio": null,
+      "audio_asset_id": null,
+      "audio_sha256": null,
+      "controle_qualite": {
+        "fichier_present": false,
+        "format_technique": null,
+        "recording_quality_db": null,
+        "concordance_son_element_verifiee": false,
+        "observation": "Validation linguistique, passage en statut published et enregistrement audio authentique requis."
+      },
+      "consentement": {
+        "statut": "manquant",
+        "preuve_ecrite_reference": null,
+        "usage_hors_ligne_autorise": null
+      },
+      "statut_validation": "non_valide_selection_et_audio_requis"
+    },
+    {
+      "id_pedagogique": "PILOTE-A-M4",
+      "slot": "M4",
+      "categorie": "word",
+      "db_candidate": {
+        "model": "vocabulary.Word",
+        "id": 4,
+        "db_validation_status": "draft",
+        "note": "Candidat en brouillon (draft) en base — non promu ni utilisé comme validé."
+      },
+      "texte_erfe": null,
+      "unicode_code": null,
+      "transcription_latine": null,
+      "phoneme_ipa": null,
+      "signification_validee": null,
+      "locuteur": null,
+      "dialecte": null,
+      "chemin_audio": null,
+      "audio_asset_id": null,
+      "audio_sha256": null,
+      "controle_qualite": {
+        "fichier_present": false,
+        "format_technique": null,
+        "recording_quality_db": null,
+        "concordance_son_element_verifiee": false,
+        "observation": "Validation linguistique, passage en statut published et enregistrement audio authentique requis."
+      },
+      "consentement": {
+        "statut": "manquant",
+        "preuve_ecrite_reference": null,
+        "usage_hors_ligne_autorise": null
+      },
+      "statut_validation": "non_valide_selection_et_audio_requis"
+    },
+    {
+      "id_pedagogique": "PILOTE-A-M5",
+      "slot": "M5",
+      "categorie": "word",
+      "db_candidate": null,
+      "texte_erfe": null,
+      "unicode_code": null,
+      "transcription_latine": null,
+      "phoneme_ipa": null,
+      "signification_validee": null,
+      "locuteur": null,
+      "dialecte": null,
+      "chemin_audio": null,
+      "audio_asset_id": null,
+      "audio_sha256": null,
+      "controle_qualite": {
+        "fichier_present": false,
+        "format_technique": null,
+        "recording_quality_db": null,
+        "concordance_son_element_verifiee": false,
+        "observation": "Aucun mot candidat supplémentaire en base. Sélection par locuteur/enseignant et enregistrement requis."
+      },
+      "consentement": {
+        "statut": "manquant",
+        "preuve_ecrite_reference": null,
+        "usage_hors_ligne_autorise": null
+      },
+      "statut_validation": "manquant_collecte_requise"
+    },
+    {
+      "id_pedagogique": "PILOTE-A-M6",
+      "slot": "M6",
+      "categorie": "word",
+      "db_candidate": null,
+      "texte_erfe": null,
+      "unicode_code": null,
+      "transcription_latine": null,
+      "phoneme_ipa": null,
+      "signification_validee": null,
+      "locuteur": null,
+      "dialecte": null,
+      "chemin_audio": null,
+      "audio_asset_id": null,
+      "audio_sha256": null,
+      "controle_qualite": {
+        "fichier_present": false,
+        "format_technique": null,
+        "recording_quality_db": null,
+        "concordance_son_element_verifiee": false,
+        "observation": "Aucun mot candidat supplémentaire en base. Sélection par locuteur/enseignant et enregistrement requis."
+      },
+      "consentement": {
+        "statut": "manquant",
+        "preuve_ecrite_reference": null,
+        "usage_hors_ligne_autorise": null
+      },
+      "statut_validation": "manquant_collecte_requise"
+    },
+    {
+      "id_pedagogique": "PILOTE-A-P1",
+      "slot": "P1",
+      "categorie": "short_utterance",
+      "db_candidate": null,
+      "texte_erfe": null,
+      "unicode_code": null,
+      "transcription_latine": null,
+      "phoneme_ipa": null,
+      "signification_validee": null,
+      "locuteur": null,
+      "dialecte": null,
+      "chemin_audio": null,
+      "audio_asset_id": null,
+      "audio_sha256": null,
+      "controle_qualite": {
+        "fichier_present": false,
+        "format_technique": null,
+        "recording_quality_db": null,
+        "concordance_son_element_verifiee": false,
+        "observation": "Énoncé court en contexte 1 à définir et enregistrer par un locuteur Beřiya (sans fabrication artificielle)."
+      },
+      "consentement": {
+        "statut": "manquant",
+        "preuve_ecrite_reference": null,
+        "usage_hors_ligne_autorise": null
+      },
+      "statut_validation": "manquant_collecte_requise"
+    },
+    {
+      "id_pedagogique": "PILOTE-A-P2",
+      "slot": "P2",
+      "categorie": "short_utterance",
+      "db_candidate": null,
+      "texte_erfe": null,
+      "unicode_code": null,
+      "transcription_latine": null,
+      "phoneme_ipa": null,
+      "signification_validee": null,
+      "locuteur": null,
+      "dialecte": null,
+      "chemin_audio": null,
+      "audio_asset_id": null,
+      "audio_sha256": null,
+      "controle_qualite": {
+        "fichier_present": false,
+        "format_technique": null,
+        "recording_quality_db": null,
+        "concordance_son_element_verifiee": false,
+        "observation": "Énoncé court en contexte 2 à définir et enregistrer par un locuteur Beřiya (sans fabrication artificielle)."
+      },
+      "consentement": {
+        "statut": "manquant",
+        "preuve_ecrite_reference": null,
+        "usage_hors_ligne_autorise": null
+      },
+      "statut_validation": "manquant_collecte_requise"
+    }
+  ]
+}
