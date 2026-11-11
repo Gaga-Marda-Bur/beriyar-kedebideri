@@ -51,9 +51,13 @@ dependencies:
   pdf: ^3.12.0
   printing: ^5.14.3
   crypto: ^3.0.7
+  # Maintained Ed25519 verifier; no Ads, billing or private signing key in the app.
+  cryptography: ^2.7.0
   path: ^1.9.1
 
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.14.3

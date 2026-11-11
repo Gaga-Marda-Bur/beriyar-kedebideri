@@ -88,6 +88,8 @@ fun releaseConfigurationIssues(defines: Map<String, String>): List<String> {
 val a13ReleaseIssues: List<String> = releaseConfigurationIssues(
     decodeDartDefines(project.findProperty("dart-defines") as String?)
 )
+// A separate package prevents the commerce QA harness from replacing the learning app.
+val commerceQa = decodeDartDefines(project.findProperty("dart-defines") as String?)["BK_COMMERCE_QA"] == "true"
 val a13SigningIssues: List<String> = buildList {
     if (!keystorePropertiesFile.exists()) {
         add("android/key.properties introuvable : la release doit être signée avec la clé existante.")
@@ -135,6 +137,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            if (commerceQa) applicationIdSuffix = ".qa64b"
+        }
         release {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
@@ -147,6 +152,7 @@ android {
 tasks.matching { it.name == "preReleaseBuild" }.configureEach {
     val issues = a13ReleaseIssues + a13SigningIssues
     doFirst {
+        if (commerceQa) throw GradleException("Commerce QA is debug-only; release refused.")
         if (issues.isNotEmpty()) {
             throw GradleException(
                 "Build release refusé (A13) :\n - " + issues.joinToString("\n - ") +

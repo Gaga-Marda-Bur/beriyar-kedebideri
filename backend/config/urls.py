@@ -26,6 +26,7 @@ urlpatterns = [
     path('api/feedback/', include('feedback.urls')),
     path('api/no-ena/', include('no_ena.urls')),
     path('api/core/', include('core.urls')),
+    path('api/monetization/v1/', include('monetization.urls')),
 ]
 
 

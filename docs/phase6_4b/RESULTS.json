@@ -1,0 +1,123 @@
+{
+  "phase": "6.4B simulation foundation",
+  "date": "2026-11-11",
+  "base": "c59808e",
+  "branch": "codex/phase6-4b-simulation-foundation",
+  "baseline_executed": {
+    "django": 117,
+    "flutter": 130,
+    "javascript": 5
+  },
+  "final_executed": {
+    "django_sqlite": {
+      "run": 147,
+      "passed": 145,
+      "skipped_postgres_only": 2
+    },
+    "new_module_postgresql": {
+      "run": 30,
+      "passed": 30,
+      "concurrent_tests": 2
+    },
+    "flutter": {
+      "passed": 145,
+      "new_commerce_tests": 15
+    },
+    "javascript": {
+      "passed": 5
+    },
+    "flutter_analysis": "no issues",
+    "django_check": "no issues",
+    "makemigrations_check": "no changes",
+    "apk_debug": "compiled",
+    "android_native_emulator_steps_passed": [
+      "initial Keystore/AES-GCM/signature",
+      "force-stop/relaunch in airplane mode, package retained",
+      "system reboot requires online verification"
+    ],
+    "native_p256_proof_independently_verified_python": true
+  },
+  "device": {
+    "date": "2026-11-11",
+    "physical_phone": false,
+    "device": "emulator-5554",
+    "model": "sdk_gphone64_x86_64",
+    "android_release": "16",
+    "sdk": "36",
+    "qa_package": "com.afrigama.beriyarkedebideri.qa64b",
+    "airplane_mode_at_check": "1",
+    "learning_package_not_installed_or_overwritten_by_tests": true,
+    "qa_separate_application_id_verified": "package:com.afrigama.beriyarkedebideri.qa64b"
+  },
+  "source_db_sha256": "8c1d4b1cf3a9415b17510fe5ce0b80c080ed056d7ca884730352214eadc65aef",
+  "source_db_matches_phase63": true,
+  "source_or_production_migrations_applied": false,
+  "preserved_previous_tracked_deliverables": true,
+  "not_performed": [
+    "physical Android phone validation",
+    "production deployment",
+    "real payment",
+    "real bank account configuration",
+    "SDK Ads or IAP integration",
+    "commercial activation",
+    "native account login UI",
+    "migration of existing guest/A/B pedagogical caches",
+    "production signing-key provisioning or live key rotation",
+    "runtime performance benchmark"
+  ],
+  "limits": [
+    "offline immediate revocation impossible",
+    "privileged full-state rollback/root not defeated",
+    "pre-API23 or missing boot identity: extra features fail closed",
+    "merchant country undetermined",
+    "no legal parental-consent validation inferred",
+    "previous production blockers remain"
+  ],
+  "cleanup_observed": {
+    "qa_package_uninstalled": true,
+    "emulator_stopped": true,
+    "own_postgres_cluster_stopped": true
+  },
+  "logs": {
+    "android-airplane.log": {
+      "bytes": 1314,
+      "sha256": "8df5bb310a0946892281f9e53b2d8e4ce5df7d089eac050f92889d6e1e6944d0"
+    },
+    "android-initial.log": {
+      "bytes": 1679,
+      "sha256": "a086b4839586692679397986c9579730a37366cd04bd0363cf3fb280666f9833"
+    },
+    "android-reboot.log": {
+      "bytes": 1313,
+      "sha256": "a022a30a449fd7b857201daca3057067429eb7ec2710b85b9863b55916f11368"
+    },
+    "django-global.log": {
+      "bytes": 434,
+      "sha256": "22be08c22a8e1c27fae7278127bf3520ae80f79076376983b2b74918bd71d069"
+    },
+    "flutter-analyze.log": {
+      "bytes": 98,
+      "sha256": "83c70671721200199f9f620bd8214817632cb274a7ec0902512e87478d304c5e"
+    },
+    "flutter-global.log": {
+      "bytes": 45145,
+      "sha256": "5934af05b04f740753a099b75db24f0ac6c0eabdc73c0913b50faf5e488bae06"
+    },
+    "flutter-targeted.log": {
+      "bytes": 2767,
+      "sha256": "b4b3ffa25e1b9977eb6853ec76495b1d876671769ac287e037e9e3d29a548fdb"
+    },
+    "javascript.log": {
+      "bytes": 1132,
+      "sha256": "e7f20bf98799ea9c5ee207318f77a0e04ec4b2aaeec98a698068e217d1ebbdc0"
+    },
+    "postgres-tests.log": {
+      "bytes": 7385,
+      "sha256": "86e5a729fceac8d5eec148d5fe43a9f398c0651229f0096b47729a1e79f5ce32"
+    }
+  },
+  "decision": {
+    "isolated_simulation_foundation": "GO technical review",
+    "real_provider_or_production": "NO-GO pending explicit approval and prerequisites"
+  }
+}

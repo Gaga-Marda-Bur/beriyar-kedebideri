@@ -1,0 +1,35 @@
+{
+  "mode": "simulation only",
+  "currency": "XXX",
+  "country": "ZZ",
+  "real_encashment": false,
+  "methods_tested": [
+    "bank",
+    "mobile_money",
+    "cash",
+    "online"
+  ],
+  "path_tested": [
+    "pending",
+    "verified",
+    "activated"
+  ],
+  "additional_tests": [
+    "reject",
+    "cancel",
+    "refund",
+    "revoke",
+    "donation without grant",
+    "complimentary/scholarship without fictitious payment",
+    "duplicate receipt refusal",
+    "idempotency conflict",
+    "independent approver",
+    "protected age extra permission",
+    "Admin form and HTTP actions",
+    "simultaneous activation",
+    "simultaneous request creation"
+  ],
+  "tests_module": "backend/monetization/tests.py and tests_concurrency.py",
+  "postgres_log_sha256": "86e5a729fceac8d5eec148d5fe43a9f398c0651229f0096b47729a1e79f5ce32",
+  "result": "passed"
+}

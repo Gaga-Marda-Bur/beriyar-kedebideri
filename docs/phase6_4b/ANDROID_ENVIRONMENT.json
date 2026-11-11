@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-11",
+  "physical_phone": false,
+  "device": "emulator-5554",
+  "model": "sdk_gphone64_x86_64",
+  "android_release": "16",
+  "sdk": "36",
+  "qa_package": "com.afrigama.beriyarkedebideri.qa64b",
+  "airplane_mode_at_check": "1",
+  "learning_package_not_installed_or_overwritten_by_tests": true,
+  "qa_separate_application_id_verified": "package:com.afrigama.beriyarkedebideri.qa64b"
+}

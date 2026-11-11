@@ -1,0 +1,49 @@
+{
+  "checked_on": "2026-11-11",
+  "makemigrations_check": "no changes",
+  "django_check": "passed",
+  "migration_operations": [
+    {
+      "migration": "monetization.0002_alter_commercialrequest_feature_snapshot",
+      "operations": [
+        "AlterField"
+      ],
+      "dependencies": [
+        [
+          "monetization",
+          "0001_initial"
+        ]
+      ]
+    },
+    {
+      "migration": "monetization.0001_initial",
+      "operations": [
+        "CreateModel",
+        "CreateModel",
+        "CreateModel",
+        "CreateModel",
+        "CreateModel",
+        "CreateModel",
+        "CreateModel",
+        "CreateModel",
+        "CreateModel",
+        "CreateModel",
+        "AddField",
+        "CreateModel",
+        "CreateModel",
+        "CreateModel",
+        "AddConstraint",
+        "AddConstraint"
+      ],
+      "dependencies": [
+        [
+          "auth",
+          "__first__"
+        ]
+      ]
+    }
+  ],
+  "source_sqlite_sha256": "8c1d4b1cf3a9415b17510fe5ce0b80c080ed056d7ca884730352214eadc65aef",
+  "matches_phase63_reference": true,
+  "source_migrations_applied": false
+}

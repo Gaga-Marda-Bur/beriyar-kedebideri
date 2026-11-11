@@ -1,0 +1,12 @@
+{
+  "test_only": true,
+  "device_type": "Android emulator, not physical phone",
+  "public_proof": {
+    "public_key": "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEqhcvhy5t52EI1CS5mEVFdkXE/klkuAl3ibwIM4f2SL/+3tPTSMxrCohVzxnWw/a1O2S7IMtFWywz4BoVcmKfCg==",
+    "message": "BK-DEVICE/v1\nenroll\n00000000-0000-4000-8000-000000000000\nsynthetic-native-nonce",
+    "signature": "MEUCIQDOn8MPCcCmsDx6OKcM0IGg18vcFFmsRS/0737pYtAEgAIgajT9I0fxKiYYHBeyhRkskEoyZxIWv1Evdlp8lTOH6hA="
+  },
+  "verification": "passed",
+  "algorithm": "P-256 / SHA-256 / DER ECDSA",
+  "source_log_sha256": "a086b4839586692679397986c9579730a37366cd04bd0363cf3fb280666f9833"
+}

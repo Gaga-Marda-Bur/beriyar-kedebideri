@@ -11,6 +11,10 @@ from .security import build_security_settings, build_feedback_rates
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# External simulation signer; no fallback to Django SECRET_KEY or automatic key generation.
+MONETIZATION_SIGNING_KEY_FILE = config('MONETIZATION_SIGNING_KEY_FILE', default='')
+MONETIZATION_SIGNING_KID = config('MONETIZATION_SIGNING_KID', default='')
+
 # A14 : SECRET_KEY, DEBUG, ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS, proxy, HTTPS,
 # HSTS et cookies sont décidés en un seul endroit (config/security.py). En
 # production, un secret manquant ou une valeur dangereuse empêche le démarrage.
@@ -45,6 +49,7 @@ INSTALLED_APPS = [
     'feedback',
     'no_ena',
     'webapp',
+    'monetization',
 ]
 
 MIDDLEWARE = [
