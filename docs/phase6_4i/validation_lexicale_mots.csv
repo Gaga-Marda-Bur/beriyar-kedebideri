@@ -1,0 +1,5 @@
+﻿Identifiant (ID),Texte Erfe,Transcription Latine,Traduction Francaise Actuelle,Traduction Anglaise Actuelle,Traduction Arabe Actuelle,Prompt Oral Existant,Audio Associe,Statut Actuel,Anomalie / Diagnostic,Validation Traduction FR (Humaine),Validation Traduction EN (Humaine),Validation Traduction AR (Humaine),Statut Propose,Commentaire
+1,𖺠,arkap,exemple test,test example,مثال تجريبي,,Arkap (audio_assets/files/arkap.wav) [published],published,Libellé de test provisoire détecté; Texte Erfe identique à la lettre U+16EA0 unique,,,,,
+2,𖺡𖺣,be,pays,country,بلد,"Écoute le mot ""be"" qui signifie le pays.",Aucun,draft,Aucun enregistrement vocal disponible; En attente de validation éditoriale pour publication,,,,,
+3,𖺵𖺠,ta,maison,house,بيت,"Écoute le mot ""ta"" qui signifie la maison.",Aucun,draft,Aucun enregistrement vocal disponible; En attente de validation éditoriale pour publication,,,,,
+4,𖺢𖺣,de,terre,land,أرض,"Écoute le mot ""de"" qui signifie la terre.",Aucun,draft,Aucun enregistrement vocal disponible; En attente de validation éditoriale pour publication,,,,,
