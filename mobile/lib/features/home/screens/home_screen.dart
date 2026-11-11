@@ -25,6 +25,9 @@ import '../../progress/models/unit_progress_local_model.dart';
 import '../../progress/services/unit_progress_local_storage.dart';
 import '../../settings/screens/settings_screen.dart';
 import '../../vocabulary/screens/vocabulary_screen.dart';
+import '../../no_ena/screens/no_ena_screen.dart';
+import '../../sticker_studio/presentation/sticker_studio_screen.dart';
+import '../../editor/screens/beriya_editor_screen.dart';
 
 /// Écran d'accueil modernisé (Lot 4B.5 — Design System Sahel Modern).
 ///
@@ -416,6 +419,36 @@ class _HomeScreenState extends State<HomeScreen> {
         .then((_) => _reload());
   }
 
+  void _openNoEna() {
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute(
+            builder: (_) => const NoEnaScreen(),
+          ),
+        )
+        .then((_) => _reload());
+  }
+
+  void _openStickerStudio() {
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute(
+            builder: (_) => const StickerStudioScreen(),
+          ),
+        )
+        .then((_) => _reload());
+  }
+
+  void _openEditor() {
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute(
+            builder: (_) => const BeriyaEditorScreen(),
+          ),
+        )
+        .then((_) => _reload());
+  }
+
   void _openHub() {
     Navigator.of(context)
         .push(
@@ -484,7 +517,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 22),
 
-                  // PRIORITÉ 5 — Accès secondaires : dictionnaire, alphabet, leçons, profil
+                  // PRIORITÉ 5 — Outils & Création (No Ena, Studio Sticker, Éditeur Beriya)
+                  _buildToolsAndCreationSection(
+                    loc: loc,
+                    lang: lang,
+                    palette: palette,
+                  ),
+                  const SizedBox(height: 22),
+
+                  // PRIORITÉ 6 — Accès secondaires : dictionnaire, alphabet, leçons, profil
                   _buildSecondaryAccessSection(
                     loc: loc,
                     lang: lang,
@@ -1145,6 +1186,150 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildToolsAndCreationSection({
+    required AppLocalizations loc,
+    required String lang,
+    required BkThemePalette palette,
+  }) {
+    final title = _localized(
+      lang,
+      'Outils & Création',
+      'Tools & Creation',
+      'أدوات وإبداع',
+    );
+
+    final tools = [
+      _CreationToolItem(
+        key: const ValueKey('home-tool-no-ena'),
+        title: 'No Ena',
+        subtitle: _localized(
+          lang,
+          'Publications et récits illustrés',
+          'Publications and illustrated stories',
+          'منشورات وقصص مصورة',
+        ),
+        badge: _localized(lang, 'Culture', 'Culture', 'ثقافة'),
+        icon: Icons.auto_awesome_rounded,
+        onTap: _openNoEna,
+      ),
+      _CreationToolItem(
+        key: const ValueKey('home-tool-sticker-studio'),
+        title: 'Studio Sticker',
+        subtitle: _localized(
+          lang,
+          'Créer et exporter des stickers Erfe',
+          'Create & export Erfe stickers',
+          'تصميم وتصدير ملصقات إرفي',
+        ),
+        badge: _localized(lang, 'Graphisme', 'Design', 'تصميم'),
+        icon: Icons.draw_rounded,
+        onTap: _openStickerStudio,
+      ),
+      _CreationToolItem(
+        key: const ValueKey('home-tool-editor'),
+        title: _localized(lang, 'Éditeur Beriya', 'Beriya Editor', 'محرر بيريا'),
+        subtitle: _localized(
+          lang,
+          'Saisie Erfe, brouillons & export PDF',
+          'Erfe typing, drafts & PDF export',
+          'كتابة إرفي، مسودات وتصدير PDF',
+        ),
+        badge: _localized(lang, 'Écriture', 'Writing', 'كتابة'),
+        icon: Icons.article_rounded,
+        onTap: _openEditor,
+      ),
+    ];
+
+    return Column(
+      key: const ValueKey('home-tools-creation-section'),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final isNarrow = constraints.maxWidth < 340;
+            return Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: palette.textSecondary,
+                          fontWeight: FontWeight.w800,
+                        ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                TextButton.icon(
+                  key: const ValueKey('home-tools-view-all-button'),
+                  onPressed: _openHub,
+                  icon: const Icon(Icons.apps_rounded, size: 16),
+                  label: isNarrow
+                      ? const SizedBox.shrink()
+                      : Text(
+                          _localized(lang, 'Tout voir', 'View all', 'عرض الكل'),
+                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+                        ),
+                  style: TextButton.styleFrom(
+                    foregroundColor: palette.accentGold,
+                    visualDensity: VisualDensity.compact,
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+        const SizedBox(height: AppTokens.spaceSm),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final isNarrow = constraints.maxWidth < 480;
+            if (isNarrow) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (var i = 0; i < tools.length; i++) ...[
+                    _CreationToolTile(item: tools[i], palette: palette),
+                    if (i < tools.length - 1)
+                      const SizedBox(height: AppTokens.spaceSm),
+                  ],
+                ],
+              );
+            }
+
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: _CreationToolTile(
+                        item: tools[0],
+                        palette: palette,
+                      ),
+                    ),
+                    const SizedBox(width: AppTokens.spaceSm),
+                    Expanded(
+                      child: _CreationToolTile(
+                        item: tools[1],
+                        palette: palette,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppTokens.spaceSm),
+                _CreationToolTile(
+                  item: tools[2],
+                  palette: palette,
+                ),
+              ],
+            );
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _buildSecondaryAccessSection({
     required AppLocalizations loc,
     required String lang,
@@ -1178,7 +1363,6 @@ class _HomeScreenState extends State<HomeScreen> {
         subtitle: loc.settings,
         icon: Icons.tune_rounded,
         onTap: _openSettings,
-        onLongPress: _openHub,
       ),
     ];
 
@@ -1458,7 +1642,6 @@ class _SecondaryAccessItem {
   final String subtitle;
   final IconData icon;
   final VoidCallback onTap;
-  final VoidCallback? onLongPress;
 
   const _SecondaryAccessItem({
     required this.itemKey,
@@ -1466,7 +1649,6 @@ class _SecondaryAccessItem {
     required this.subtitle,
     required this.icon,
     required this.onTap,
-    this.onLongPress,
   });
 }
 
@@ -1490,7 +1672,6 @@ class _SecondaryAccessTile extends StatelessWidget {
           key: item.itemKey,
           borderRadius: BorderRadius.circular(28),
           onTap: item.onTap,
-          onLongPress: item.onLongPress,
           child: ConstrainedBox(
             constraints: const BoxConstraints(
               minHeight: AppTokens.minTouchTarget,
@@ -1531,6 +1712,137 @@ class _SecondaryAccessTile extends StatelessWidget {
                         ),
                       ],
                     ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CreationToolItem {
+  final Key key;
+  final String title;
+  final String subtitle;
+  final String badge;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _CreationToolItem({
+    required this.key,
+    required this.title,
+    required this.subtitle,
+    required this.badge,
+    required this.icon,
+    required this.onTap,
+  });
+}
+
+class _CreationToolTile extends StatelessWidget {
+  final _CreationToolItem item;
+  final BkThemePalette palette;
+
+  const _CreationToolTile({
+    required this.item,
+    required this.palette,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: '${item.title} - ${item.subtitle}',
+      child: GlassCard(
+        padding: EdgeInsets.zero,
+        child: InkWell(
+          key: item.key,
+          borderRadius: BorderRadius.circular(28),
+          onTap: item.onTap,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              minHeight: AppTokens.minTouchTarget,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Row(
+                children: [
+                  Container(
+                    width: 44,
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: palette.accentGold.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: palette.accentGold.withValues(alpha: 0.35),
+                      ),
+                    ),
+                    child: Icon(
+                      item.icon,
+                      color: palette.accentGold,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                item.title,
+                                style: TextStyle(
+                                  color: palette.textPrimary,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 14,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: palette.accentGold.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                item.badge,
+                                style: TextStyle(
+                                  color: palette.accentGold,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          item.subtitle,
+                          style: TextStyle(
+                            color: palette.textSecondary,
+                            fontSize: 12,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    size: 14,
+                    color: palette.textSecondary.withValues(alpha: 0.6),
                   ),
                 ],
               ),

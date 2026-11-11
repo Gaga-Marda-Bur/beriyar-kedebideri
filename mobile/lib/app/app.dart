@@ -21,6 +21,7 @@ import '../features/content_hub/screens/content_hub_screen.dart';
 import '../features/feedback/screens/feedback_screen.dart';
 import '../features/learning/screens/learning_core_unit_screen.dart';
 import '../features/editor/screens/beriya_editor_screen.dart';
+import '../features/sticker_studio/presentation/sticker_studio_screen.dart';
 
 class BeriyarApp extends StatelessWidget {
   const BeriyarApp({super.key});
@@ -60,6 +61,7 @@ class BeriyarApp extends StatelessWidget {
         '/feedback': (_) => const FeedbackScreen(),
         '/learning-core': (_) => const LearningCoreUnitScreen(),
         '/editor': (_) => const BeriyaEditorScreen(),
+        '/sticker-studio': (_) => const StickerStudioScreen(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == '/unit-practice') {
