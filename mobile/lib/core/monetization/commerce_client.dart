@@ -18,7 +18,7 @@ class CommerceClient {
   Future<Map<String, dynamic>> publicConfig() =>
       api.getMap('$_base/public-config/');
 
-  Future<void> enrollAndRefresh() async {
+  Future<Map<String, dynamic>> enrollAndRefresh() async {
     final generation = ++_generation;
     final headers = await authenticatedHeaders();
     final challenge = await api.postMap(
@@ -71,6 +71,7 @@ class CommerceClient {
       nonce: fresh['nonce'] as String,
       requestClock: clock,
     );
+    return device;
   }
 
   // Logout/account deletion must call this before any new account context.

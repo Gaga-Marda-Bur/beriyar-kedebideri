@@ -7,6 +7,7 @@ import '../features/settings/screens/settings_screen.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../core/theme/app_theme.dart';
 import 'app_state.dart';
+import '../features/premium/screens/premium_screen.dart';
 
 import '../features/alphabet/screens/alphabet_screen.dart';
 import '../features/vocabulary/screens/vocabulary_screen.dart';
@@ -42,6 +43,7 @@ class BeriyarApp extends StatelessWidget {
       routes: {
         '/': (_) => const HomeScreen(),
         '/settings': (_) => const SettingsScreen(),
+        '/premium': (_) => const PremiumScreen(),
         '/alphabet': (_) => const AlphabetScreen(),
         '/vocabulary': (_) => const VocabularyScreen(),
         '/learning': (_) => const LearningPathScreen(),

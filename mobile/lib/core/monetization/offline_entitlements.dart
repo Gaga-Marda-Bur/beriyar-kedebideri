@@ -32,6 +32,7 @@ abstract class CommerceVault {
 
 class AndroidCommerceVault implements CommerceVault {
   static const channel = MethodChannel('bk/commerce_v1');
+  Future<void> resetSession() => channel.invokeMethod<void>('resetSession');
   @override
   Future<Map<String, dynamic>> clock() async => Map<String, dynamic>.from(
     (await channel.invokeMapMethod<String, dynamic>('clock'))!,
@@ -58,7 +59,8 @@ enum CommerceStatus { free, active, expired, verificationRequired }
 class CommerceAccess {
   final CommerceStatus status;
   final Set<String> features;
-  const CommerceAccess(this.status, [this.features = const {}]);
+  final DateTime? expiresAt;
+  const CommerceAccess(this.status, [this.features = const {}, this.expiresAt]);
   bool canUse(String code) =>
       freeLearningFeatures.contains(code) ||
       (status == CommerceStatus.active && features.contains(code));
@@ -281,12 +283,20 @@ class OfflineEntitlements {
         return const CommerceAccess(CommerceStatus.verificationRequired);
       }
       final serverTime = (anchor['server_now'] as int) + elapsed ~/ 1000;
+      if ((claims['features'] as List).isEmpty && (claims['grant_ids'] as List).isEmpty) {
+        return const CommerceAccess(CommerceStatus.free);
+      }
       if (serverTime >= claims['expires_at']) {
-        return const CommerceAccess(CommerceStatus.expired);
+        return CommerceAccess(CommerceStatus.expired,const {},
+          DateTime.fromMillisecondsSinceEpoch((claims['expires_at'] as int)*1000,isUtc:true));
       }
       return CommerceAccess(
         CommerceStatus.active,
         Set<String>.from(claims['features']),
+        DateTime.fromMillisecondsSinceEpoch(
+          (claims['expires_at'] as int) * 1000,
+          isUtc: true,
+        ),
       );
     } catch (_) {
       return const CommerceAccess(CommerceStatus.verificationRequired);

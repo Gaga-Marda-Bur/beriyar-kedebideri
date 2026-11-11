@@ -63,6 +63,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: ListView(
             padding: const EdgeInsets.all(20),
             children: [
+              ListTile(
+                leading:const Icon(Icons.workspace_premium_outlined),
+                title:const Text('Premium · Simulation'),
+                onTap:()=>Navigator.pushNamed(context,'/premium'),
+              ),
               GlassCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

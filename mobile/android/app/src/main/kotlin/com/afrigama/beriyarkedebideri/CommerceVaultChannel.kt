@@ -31,6 +31,15 @@ class CommerceVaultChannel(private val context: Context, messenger: BinaryMessen
             try {
                 if (Build.VERSION.SDK_INT < 23) throw IllegalStateException("Keystore API unavailable")
                 when (call.method) {
+                    "resetSession" -> {
+                        // Cryptographic erasure even if deleting an old ciphertext fails.
+                        // This alias encrypts ONLY commerce data, never learning preferences.
+                        if (store.containsAlias(vaultAlias)) store.deleteEntry(vaultAlias)
+                        context.noBackupFilesDir.listFiles()?.filter {
+                            it.name.matches(Regex("bk-commerce-[0-9a-f]{64}(\\.bak|\\.new)?"))
+                        }?.forEach { it.delete() }
+                        result.success(null)
+                    }
                     "clock" -> {
                         val boot = if (Build.VERSION.SDK_INT >= 24) {
                             Settings.Global.getInt(context.contentResolver, Settings.Global.BOOT_COUNT).toString()
