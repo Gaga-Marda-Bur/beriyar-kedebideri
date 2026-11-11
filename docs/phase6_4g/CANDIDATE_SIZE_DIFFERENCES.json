@@ -1,0 +1,15 @@
+{
+  "scope": "debug artifacts from different source states/workspaces; not release sizing",
+  "entry_size_differences": [
+    {
+      "entry": "assets/flutter_assets/assets/fonts/Noto-OFL.txt",
+      "reference_bytes": 4471,
+      "candidate_bytes": 4377
+    },
+    {
+      "entry": "assets/flutter_assets/kernel_blob.bin",
+      "reference_bytes": 91578512,
+      "candidate_bytes": 91557512
+    }
+  ]
+}

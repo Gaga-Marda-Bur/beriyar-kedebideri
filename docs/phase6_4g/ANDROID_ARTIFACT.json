@@ -1,0 +1,67 @@
+{
+  "reference_commit": "964b73d5c884d9dc9a115e18c7c87b37f1cc28fb",
+  "source_mobile_tree": "4b29f66f563d85caaac58b5e1f1ec1bed66ab788",
+  "source_kind": "git archive 964b73d; Android/Dart source unchanged; seven non-Android generated desktop registrants rewritten by pub get",
+  "apk_sha256": "edc228af2ce1d50ecb222e980b331562d479aba1b42cc35271ff41b62b155a31",
+  "apk_bytes": 168823574,
+  "package": "com.afrigama.beriyarkedebideri.qa64c",
+  "version_code": "1",
+  "version_name": "1.0.0",
+  "variant": "debug QA educational (not signed release)",
+  "flags": {
+    "BK_IDENTITY_QA": true,
+    "BK_PREMIUM_SIMULATION": false,
+    "API_FLAVOR": "local",
+    "API_BASE_URL": "http://127.0.0.1:18778/api"
+  },
+  "flutter_version": {
+    "frameworkVersion": "3.44.1",
+    "channel": "stable",
+    "repositoryUrl": "https://github.com/flutter/flutter.git",
+    "frameworkRevision": "924134a44c189315be2148659913dda1671cbe99",
+    "frameworkCommitDate": "2026-05-29 12:13:22 -0400",
+    "engineRevision": "c416acfeb8126e097f758c664aaa3da929e27da0",
+    "engineCommitDate": "2026-05-27 20:19:31.000Z",
+    "engineContentHash": "39b1f7043775b9578bbb26a1676e79c4e31c8b5e",
+    "engineBuildDate": "2026-05-27 23:50:43.210",
+    "dartSdkVersion": "3.12.1",
+    "devToolsVersion": "2.57.0",
+    "flutterVersion": "3.44.1",
+    "flutterRoot": "C:\\Users\\MONSTER\\Projects\\django_notes_backend\\flutter"
+  },
+  "android_build_tools": "36.0.0",
+  "device": {
+    "model": "SM-A336E",
+    "android": "16",
+    "sdk": "36"
+  },
+  "install_result": "Success",
+  "main_before": {
+    "userId": null,
+    "versionCode": "1 minSdk=24 targetSdk=36",
+    "versionName": "1.0.0",
+    "lastUpdateTime": "2026-06-22 15:27:14",
+    "apk_sha256": "ef162f2cf41823c88ab4beffb51377583acb0b4232cd0003f2c44865e521318c"
+  },
+  "main_after": {
+    "userId": null,
+    "versionCode": "1 minSdk=24 targetSdk=36",
+    "versionName": "1.0.0",
+    "lastUpdateTime": "2026-06-22 15:27:14",
+    "apk_sha256": "ef162f2cf41823c88ab4beffb51377583acb0b4232cd0003f2c44865e521318c"
+  },
+  "main_fingerprint_equal": true,
+  "no_ad_id_permission": true,
+  "bit_for_bit_clean_rebuild": "passed on same machine/toolchain; see REPRODUCIBILITY.json",
+  "tool_generated_desktop_changes": [
+    "mobile/linux/flutter/generated_plugin_registrant.cc",
+    "mobile/linux/flutter/generated_plugin_registrant.h",
+    "mobile/linux/flutter/generated_plugins.cmake",
+    "mobile/macos/Flutter/GeneratedPluginRegistrant.swift",
+    "mobile/windows/flutter/generated_plugin_registrant.cc",
+    "mobile/windows/flutter/generated_plugin_registrant.h",
+    "mobile/windows/flutter/generated_plugins.cmake"
+  ],
+  "min_sdk": "24",
+  "target_sdk": "36"
+}

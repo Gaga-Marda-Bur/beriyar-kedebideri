@@ -27,7 +27,7 @@ def require_account(user):
 
 
 def signing_key():
-    if settings.DJANGO_ENV == 'production':
+    if settings.DJANGO_ENV not in ('development', 'test'):
         raise PermissionDenied('Simulation leases are disabled in production.')
     filename = getattr(settings, 'MONETIZATION_SIGNING_KEY_FILE', '')
     kid = getattr(settings, 'MONETIZATION_SIGNING_KID', '')
@@ -51,7 +51,7 @@ def sign_claims(claims, key, kid):
 
 def challenge(user, purpose):
     require_account(user)
-    if settings.DJANGO_ENV == 'production' or purpose not in ('enroll','lease'):
+    if settings.DJANGO_ENV not in ('development', 'test') or purpose not in ('enroll','lease'):
         raise PermissionDenied('Simulation only.')
     now = timezone.now()
     if DeviceChallenge.objects.filter(user=user, used=False, expires_at__gt=now).count() >= 20:
@@ -88,7 +88,7 @@ def verify_proof(row, public_key, signature):
 @transaction.atomic
 def enroll(user, challenge_id, public_key, signature):
     require_account(user)
-    if settings.DJANGO_ENV == 'production':
+    if settings.DJANGO_ENV not in ('development', 'test'):
         raise PermissionDenied('Simulation only.')
     row = consume_challenge(user, challenge_id, 'enroll')
     thumbprint = verify_proof(row, public_key, signature)

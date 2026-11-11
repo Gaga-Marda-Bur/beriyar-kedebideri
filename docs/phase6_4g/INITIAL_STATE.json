@@ -1,0 +1,12 @@
+{
+  "reference": "964b73d5c884d9dc9a115e18c7c87b37f1cc28fb",
+  "preexisting_dirty_files": {
+    "backend/feedback/__pycache__/models.cpython-313.pyc": "87ec1656af2f47e6fe4634120c8b2c9c66ea0b3401196ff37a3338968c468500",
+    "backend/feedback/__pycache__/urls.cpython-313.pyc": "bb471fd0a78c4503f3f9523b5144f4a28e29f40ede7eb8c6dababe6e69034707",
+    "backend/lessons/__pycache__/models.cpython-313.pyc": "4725e3bc003aaad3a1cb43670638efc0895b4c2ffb26fac3ee36d5688dad6f3a",
+    "backend/no_ena/__pycache__/models.cpython-313.pyc": "b9bba4446b604dea4ff3aed2c9afaaf20c5c7fe5f3e914ded35002c25a858ae8",
+    "backend/offline_packs/__pycache__/models.cpython-313.pyc": "74dd576bd60ac3073f2c21b0658877add4bf7cf130bea429103a63539a380949",
+    "backend/quizzes/__pycache__/models.cpython-313.pyc": "231c9fa22b5110d13901c78e6fc1774986f6d62c6d050e569306b35f82d7ccfb"
+  },
+  "source_database_sha256": "8c1d4b1cf3a9415b17510fe5ce0b80c080ed056d7ca884730352214eadc65aef"
+}

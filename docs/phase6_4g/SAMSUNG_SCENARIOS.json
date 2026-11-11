@@ -1,0 +1,96 @@
+[
+  {
+    "phase": "initial",
+    "passed": true,
+    "physical": true,
+    "log_sha256": "607dd6047d35314b4f5a6cfe105ffa57c473c3566a7c0976bc17f942a83f71d9",
+    "airplane_mode": "0",
+    "backend_usb_forward_removed": false,
+    "harness": "reference 964b73d integration_test/premium_identity_test.dart, simulation=true",
+    "sentinel_limitation": "reference harness rewrites sentinel each run; not proof of cross-run pedagogical persistence"
+  },
+  {
+    "phase": "switch",
+    "passed": true,
+    "physical": true,
+    "log_sha256": "2fe2eb661454a2aa5f6063b9667c41d5641cedc12aca79909882ffe98af7bd79",
+    "airplane_mode": "0",
+    "backend_usb_forward_removed": false,
+    "harness": "reference 964b73d integration_test/premium_identity_test.dart, simulation=true",
+    "sentinel_limitation": "reference harness rewrites sentinel each run; not proof of cross-run pedagogical persistence"
+  },
+  {
+    "phase": "b-restart",
+    "passed": true,
+    "physical": true,
+    "log_sha256": "30b8a05e82bd228cba7c77f913bd3c603bc2e8dc9dff4fea440ab903a4d16378",
+    "airplane_mode": "0",
+    "backend_usb_forward_removed": false,
+    "harness": "reference 964b73d integration_test/premium_identity_test.dart, simulation=true",
+    "sentinel_limitation": "reference harness rewrites sentinel each run; not proof of cross-run pedagogical persistence"
+  },
+  {
+    "phase": "login-a",
+    "passed": true,
+    "physical": true,
+    "log_sha256": "635d8c0eb445d23d54ae453fd1e7f91c1ed7ba3f22eb580b395d3fdd7a89a843",
+    "airplane_mode": "0",
+    "backend_usb_forward_removed": false,
+    "harness": "reference 964b73d integration_test/premium_identity_test.dart, simulation=true",
+    "sentinel_limitation": "reference harness rewrites sentinel each run; not proof of cross-run pedagogical persistence"
+  },
+  {
+    "phase": "offline",
+    "passed": true,
+    "physical": true,
+    "log_sha256": "5109bef78ac76692b2ef2451a04588ebe32bb323085d85f46dd66fb1d58811ac",
+    "airplane_mode": "1",
+    "backend_usb_forward_removed": true,
+    "harness": "reference 964b73d integration_test/premium_identity_test.dart, simulation=true",
+    "sentinel_limitation": "reference harness rewrites sentinel each run; not proof of cross-run pedagogical persistence"
+  },
+  {
+    "phase": "guest-offline",
+    "passed": true,
+    "physical": true,
+    "log_sha256": "e3f4cabce55152030834ec74abc07e34aebe849923359a5551a18d3d2aebe342",
+    "airplane_mode": "1",
+    "backend_usb_forward_removed": true,
+    "harness": "reference 964b73d integration_test/premium_identity_test.dart, simulation=true",
+    "sentinel_limitation": "reference harness rewrites sentinel each run; not proof of cross-run pedagogical persistence"
+  },
+  {
+    "phase": "erfe",
+    "passed": true,
+    "physical": true,
+    "log_sha256": "e433b423ae5688d88a094eea42ae366e291ea61041081fe7e38cc675b1da4a22",
+    "airplane_mode": "1",
+    "backend_usb_forward_removed": true,
+    "harness": "reference 964b73d integration_test/premium_identity_test.dart, simulation=true",
+    "sentinel_limitation": "reference harness rewrites sentinel each run; not proof of cross-run pedagogical persistence"
+  },
+  {
+    "phase": "learning-seed",
+    "passed": true,
+    "physical": true,
+    "log_sha256": "9b266566bded970d806e0eab44ce467faa14975fa33cd4645bf551ec88e2b15e",
+    "airplane_mode": "0",
+    "backend_usb_forward_removed": false,
+    "harness": "integration_test/qualification_offline_test.dart",
+    "application_source": "964b73d",
+    "simulation": true,
+    "sentinel_limitation": "identity harness rewrites sentinel; separate learning harness checks actual saved progress without rewriting"
+  },
+  {
+    "phase": "learning-offline",
+    "passed": true,
+    "physical": true,
+    "log_sha256": "1857ac4ca2f47dd6a9c9cb37f053c7f2a7d8fecddf5983415cbde0e06cc3c566",
+    "airplane_mode": "1",
+    "backend_usb_forward_removed": true,
+    "harness": "integration_test/qualification_offline_test.dart",
+    "application_source": "964b73d",
+    "simulation": true,
+    "sentinel_limitation": "identity harness rewrites sentinel; separate learning harness checks actual saved progress without rewriting"
+  }
+]

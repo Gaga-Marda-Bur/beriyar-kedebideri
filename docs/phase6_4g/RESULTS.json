@@ -1,0 +1,308 @@
+{
+  "lot": "6.4G",
+  "date": "2026-11-11",
+  "base_commit": "964b73d5c884d9dc9a115e18c7c87b37f1cc28fb",
+  "branch": "codex/phase6-4g-staging-readiness",
+  "baseline_executed": {
+    "django_run": 155,
+    "django_skipped_postgres": 2,
+    "flutter": 151,
+    "javascript": 5,
+    "postgres_module": 38
+  },
+  "final_executed": {
+    "django_run": 158,
+    "django_passed": 156,
+    "django_skipped_postgres": 2,
+    "postgres_module_passed": 41,
+    "flutter_passed": 152,
+    "javascript_passed": 5,
+    "flutter_analysis": "clean",
+    "chrome_checks": 12,
+    "chrome_passed": 10,
+    "chrome_failed_observed": [
+      "theme_preference_light_dark",
+      "unit_and_lessons"
+    ],
+    "samsung_scenarios_passed": 9,
+    "samsung_corrected_direct_route": "passed",
+    "staging_regression_red_failures": 2,
+    "staging_regression_green_passed": 3,
+    "deploy_warning_ids": [
+      "security.W005",
+      "security.W021"
+    ]
+  },
+  "source_db_sha256": "8c1d4b1cf3a9415b17510fe5ce0b80c080ed056d7ca884730352214eadc65aef",
+  "source_db_unchanged": true,
+  "preexisting_dirty_bytecodes_preserved": [
+    "backend/feedback/__pycache__/models.cpython-313.pyc",
+    "backend/feedback/__pycache__/urls.cpython-313.pyc",
+    "backend/lessons/__pycache__/models.cpython-313.pyc",
+    "backend/no_ena/__pycache__/models.cpython-313.pyc",
+    "backend/offline_packs/__pycache__/models.cpython-313.pyc",
+    "backend/quizzes/__pycache__/models.cpython-313.pyc"
+  ],
+  "reference_apk": {
+    "reference_commit": "964b73d5c884d9dc9a115e18c7c87b37f1cc28fb",
+    "source_mobile_tree": "4b29f66f563d85caaac58b5e1f1ec1bed66ab788",
+    "source_kind": "git archive 964b73d; Android/Dart source unchanged; seven non-Android generated desktop registrants rewritten by pub get",
+    "apk_sha256": "edc228af2ce1d50ecb222e980b331562d479aba1b42cc35271ff41b62b155a31",
+    "apk_bytes": 168823574,
+    "package": "com.afrigama.beriyarkedebideri.qa64c",
+    "version_code": "1",
+    "version_name": "1.0.0",
+    "variant": "debug QA educational (not signed release)",
+    "flags": {
+      "BK_IDENTITY_QA": true,
+      "BK_PREMIUM_SIMULATION": false,
+      "API_FLAVOR": "local",
+      "API_BASE_URL": "http://127.0.0.1:18778/api"
+    },
+    "flutter_version": {
+      "frameworkVersion": "3.44.1",
+      "channel": "stable",
+      "repositoryUrl": "https://github.com/flutter/flutter.git",
+      "frameworkRevision": "924134a44c189315be2148659913dda1671cbe99",
+      "frameworkCommitDate": "2026-05-29 12:13:22 -0400",
+      "engineRevision": "c416acfeb8126e097f758c664aaa3da929e27da0",
+      "engineCommitDate": "2026-05-27 20:19:31.000Z",
+      "engineContentHash": "39b1f7043775b9578bbb26a1676e79c4e31c8b5e",
+      "engineBuildDate": "2026-05-27 23:50:43.210",
+      "dartSdkVersion": "3.12.1",
+      "devToolsVersion": "2.57.0",
+      "flutterVersion": "3.44.1",
+      "flutterRoot": "C:\\Users\\MONSTER\\Projects\\django_notes_backend\\flutter"
+    },
+    "android_build_tools": "36.0.0",
+    "device": {
+      "model": "SM-A336E",
+      "android": "16",
+      "sdk": "36"
+    },
+    "install_result": "Success",
+    "main_before": {
+      "userId": null,
+      "versionCode": "1 minSdk=24 targetSdk=36",
+      "versionName": "1.0.0",
+      "lastUpdateTime": "2026-06-22 15:27:14",
+      "apk_sha256": "ef162f2cf41823c88ab4beffb51377583acb0b4232cd0003f2c44865e521318c"
+    },
+    "main_after": {
+      "userId": null,
+      "versionCode": "1 minSdk=24 targetSdk=36",
+      "versionName": "1.0.0",
+      "lastUpdateTime": "2026-06-22 15:27:14",
+      "apk_sha256": "ef162f2cf41823c88ab4beffb51377583acb0b4232cd0003f2c44865e521318c"
+    },
+    "main_fingerprint_equal": true,
+    "no_ad_id_permission": true,
+    "bit_for_bit_clean_rebuild": "passed on same machine/toolchain; see REPRODUCIBILITY.json",
+    "tool_generated_desktop_changes": [
+      "mobile/linux/flutter/generated_plugin_registrant.cc",
+      "mobile/linux/flutter/generated_plugin_registrant.h",
+      "mobile/linux/flutter/generated_plugins.cmake",
+      "mobile/macos/Flutter/GeneratedPluginRegistrant.swift",
+      "mobile/windows/flutter/generated_plugin_registrant.cc",
+      "mobile/windows/flutter/generated_plugin_registrant.h",
+      "mobile/windows/flutter/generated_plugins.cmake"
+    ],
+    "min_sdk": "24",
+    "target_sdk": "36"
+  },
+  "reproducibility": {
+    "commit": "964b73d",
+    "same_machine_same_toolchain": true,
+    "clean_then_pub_get_offline": true,
+    "first_sha256": "edc228af2ce1d50ecb222e980b331562d479aba1b42cc35271ff41b62b155a31",
+    "second_sha256": "edc228af2ce1d50ecb222e980b331562d479aba1b42cc35271ff41b62b155a31",
+    "byte_identical": true,
+    "apk_entry_payload_differences": [],
+    "note": "No cross-machine reproducibility claimed; both builds target the same reference Android/Dart sources."
+  },
+  "corrected_candidate": {
+    "candidate_base": "964b73d",
+    "patch_files": [
+      "mobile/lib/app/app.dart",
+      "backend/monetization/services.py",
+      "backend/monetization/licensing.py"
+    ],
+    "apk_sha256": "076fa449c1386eb38b84db247bb024e70900d1a2e0757fd683ce10733f1ed943",
+    "apk_bytes": 194084972,
+    "variant": "debug QA educational, simulation=false",
+    "installed": true,
+    "physical": true,
+    "direct_initial_route": "/premium",
+    "premium_ui_present": false,
+    "free_learning_ui_detected": true,
+    "main_fingerprint_equal_to_start": true,
+    "ui_node_count_own_package": 26,
+    "scope": "patched candidate; distinct from original reference APK and simulation harness"
+  },
+  "learning_offline": {
+    "phase": "learning-offline",
+    "progress_preserved": true,
+    "pack_integrity": true,
+    "audio_files_present": 4,
+    "zip_sha256": "1195e4c54f9ae0b16c246eea5189259e9f2502198ba8efe1edd694a2529bea9b",
+    "pack_read_succeeded": true,
+    "commerce_key_erasure_preserves_learning": true,
+    "audio_human_audibility": "not_checked"
+  },
+  "cleanup": {
+    "owned_local_servers_stopped": true,
+    "own_pg_cluster_stopped": true,
+    "qa_app_stopped_not_uninstalled": true,
+    "phone_network_restored_to_initial": true,
+    "qa_usb_forwards_removed": true
+  },
+  "not_executed": [
+    "remote deployment",
+    "production or source migration",
+    "actual staging TLS/proxy/ACL/DB role verification",
+    "full BK remote backup/restore",
+    "signed release build",
+    "physical system reboot this lot",
+    "human audio listening this lot",
+    "manual accessibility and PDF requalification"
+  ],
+  "decision": {
+    "local_qualification_dossier": "GO",
+    "immediate_staging_deployment": "NO-GO",
+    "reasons": [
+      "target secrets/domains/TLS/roles/media/backups not provisioned and verified",
+      "public theme index empty",
+      "local corpus still in review and a published translation placeholder",
+      "web light theme not observed"
+    ]
+  },
+  "logs": {
+    "django.log": {
+      "sha256": "96d8514e85bcfac64b29a24a3b7e0deeaa985e445465195118b572c9f36451d4",
+      "bytes": 442
+    },
+    "django-final.log": {
+      "sha256": "bd8b469f65a84024eef44e6b4d3d622a36c6fd3f3d085e43f388ffcc8354081d",
+      "bytes": 445
+    },
+    "postgres-tests.log": {
+      "sha256": "c0f019851a3eaf93f358ea4b674d3ead55f057c74c9b7aab1e2033db4a58bef6",
+      "bytes": 8660
+    },
+    "postgres-final.log": {
+      "sha256": "48bbde348415e298eff7d41066b70f1ee7e8a3ba19d10a3c30cf66e8febfba1d",
+      "bytes": 9138
+    },
+    "flutter.log": {
+      "sha256": "dba11ecb0b06e59cdd5db514f15fd72b948f11895a3936cc539556d799af30ae",
+      "bytes": 47568
+    },
+    "flutter-final.log": {
+      "sha256": "622cd5aac09b252d901474df198bae9ab68a0d2b19ced625aa87ab0b9693eb48",
+      "bytes": 48078
+    },
+    "javascript.log": {
+      "sha256": "1f9d72c4502975bcf4ff5e30ac2ddedc07f5fdd96c3be3f14098582592339602",
+      "bytes": 1131
+    },
+    "analyze.log": {
+      "sha256": "168377a910992178ac70dddabffb09612e3f3c1ba82a1d6c423064258b889873",
+      "bytes": 99
+    },
+    "browser.log": {
+      "sha256": "893bfc219c4efaf27a9db415f555a6e47d948e16b32eb6099cc414fcfb90f065",
+      "bytes": 636
+    },
+    "staging-red.log": {
+      "sha256": "77623b64ad98dc1dd650c7937ce3ddcd73e5189deaa915301a21b58e23cfcd80",
+      "bytes": 2006
+    },
+    "staging-green.log": {
+      "sha256": "7507ee84aba0fa7e6d64eb2215295dffb9f854631310bcbf755aa13d487f4491",
+      "bytes": 273
+    },
+    "staging-check.log": {
+      "sha256": "1340ac102a337a872db3954ffb3f7b833fa3ff1bcf688660f9d0becbaf99602b",
+      "bytes": 558
+    },
+    "apk-reference.log": {
+      "sha256": "d40c4001649baad643b136e300a366a977521fc1d8cca35b72b8cb8214b7f5dc",
+      "bytes": 1530
+    },
+    "cold-rebuild.log": {
+      "sha256": "29e47f4e04655bea682079074d6819529c07097dd2d1c8c35d31797feacb61cb",
+      "bytes": 2995
+    },
+    "apk-corrected.log": {
+      "sha256": "a294a7a263197e1abcefb53529153237d978f2a60d9c806c75503619b9a2f844",
+      "bytes": 986
+    }
+  },
+  "captures": {
+    "alphabet_desktop.png": {
+      "bytes": 561509,
+      "sha256": "4e17dac45f447b3259d45a640dfb8859f877d694d486466c21a33bbf5a525a06"
+    },
+    "audio_playing.png": {
+      "bytes": 560834,
+      "sha256": "777237359ca7c4eb98653e818affe697fc4f420fb2af6bce229303048aa8c960"
+    },
+    "dictionary_search.png": {
+      "bytes": 552840,
+      "sha256": "e3c5cd8647b0fdc0e667c42e3d62cf6a65f35e5804f919404b10a2edd533c934"
+    },
+    "direct_unit_lesson.png": {
+      "bytes": 744507,
+      "sha256": "6d79dea0f407710ac3394c97340b396b3944ef2f8268749e66a7aa2e01807c77"
+    },
+    "home_mobile_menu.png": {
+      "bytes": 787181,
+      "sha256": "5d7459ea5e015abc3f044abcae1e3be835a5d2a729a28ca263e1a09b507787c8"
+    },
+    "keyboard_erfe.png": {
+      "bytes": 563570,
+      "sha256": "9c5fbf9da9ed9ce50d3dda9b4f523c6ac8163a4187af1392e244aa07a244d90a"
+    },
+    "learning_path.png": {
+      "bytes": 467816,
+      "sha256": "9902c4ccba9806a0148a9e7d3b036402f3c675233210e885636f18b2893368fc"
+    },
+    "quiz_feedback.png": {
+      "bytes": 653760,
+      "sha256": "b3c1fcf9adb01d26c16a494669d29b3e822265d5f627cb4371bba05dc204d0e4"
+    },
+    "samsung_erfe_dark.png": {
+      "bytes": 69927,
+      "sha256": "063a422f1888dfc8b5920b5a40540afd7f85e87adc338ec2f5feee6ca7768d79"
+    },
+    "samsung_erfe_light.png": {
+      "bytes": 70518,
+      "sha256": "65283dec9a47121cb96ae19e8ed600749051d0606ce6b85ff372bd3f9bef2ef6"
+    },
+    "samsung_premium_b_free.png": {
+      "bytes": 126427,
+      "sha256": "5194d7c96eb2500f0f08df3f096313a07618effab801a8f491efc34a96760a2e"
+    },
+    "samsung_premium_guest_dark.png": {
+      "bytes": 116940,
+      "sha256": "70aa558a65ddd69d52d40b33018ec6da7a1f6818546d46d1c98f13b579733020"
+    },
+    "samsung_premium_offline.png": {
+      "bytes": 131786,
+      "sha256": "41312bbd7966c85fb18698188ae633da38124a5c3ec2705ebea650c8d5940019"
+    },
+    "unit_erfe_mobile.png": {
+      "bytes": 336280,
+      "sha256": "8fcac6911cbd91dcb1089beb6bb03d5ddc7296d286998d785a0c013fe6b1af63"
+    },
+    "web_dark.png": {
+      "bytes": 837058,
+      "sha256": "e107fcbc6370c01bced08111e91ac26c41d41ad06ab8428fecc67a30d50358a4"
+    },
+    "web_light.png": {
+      "bytes": 836727,
+      "sha256": "1eb6a2f502c4d2146f97cfb980a32c253865a328aaa4910b1d278a4577215f66"
+    }
+  },
+  "business_code_patch_sha256": "37417bb7287ad2b2cad51b6dc9eefc153e022356b264e92c40f4eab79123a5bd"
+}

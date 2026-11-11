@@ -19,8 +19,8 @@ def require(actor, *permissions):
     if not actor or not actor.is_authenticated or not actor.is_active or any(
             not actor.has_perm('monetization.' + p) for p in permissions):
         raise PermissionDenied('Explicit commerce permissions required.')
-    if settings.DJANGO_ENV == 'production':
-        raise PermissionDenied('Simulation writes are disabled in production.')
+    if settings.DJANGO_ENV not in ('development', 'test'):
+        raise PermissionDenied('Simulation writes are restricted to isolated development/test.')
 
 
 def audit(actor, action, target, reason):

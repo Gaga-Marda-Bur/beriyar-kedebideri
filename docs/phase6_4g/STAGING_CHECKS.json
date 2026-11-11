@@ -1,0 +1,55 @@
+{
+  "synthetic_only": true,
+  "effective": {
+    "DJANGO_ENV": "staging",
+    "DEBUG": false,
+    "ALLOWED_HOSTS": [
+      "staging.example.invalid"
+    ],
+    "CSRF_TRUSTED_ORIGINS": [
+      "https://staging.example.invalid"
+    ],
+    "CORS_ALLOWED_ORIGINS": [],
+    "CORS_ALLOW_ALL_ORIGINS": false,
+    "SECURE_PROXY_SSL_HEADER": null,
+    "SECURE_SSL_REDIRECT": true,
+    "SECURE_HSTS_SECONDS": 300,
+    "SECURE_HSTS_INCLUDE_SUBDOMAINS": false,
+    "SECURE_HSTS_PRELOAD": false,
+    "SESSION_COOKIE_SECURE": true,
+    "CSRF_COOKIE_SECURE": true,
+    "SESSION_COOKIE_HTTPONLY": true,
+    "SESSION_COOKIE_SAMESITE": "Lax"
+  },
+  "rejection_probes": {
+    "debug": "rejected",
+    "wildcard_host": "rejected",
+    "http_csrf": "rejected",
+    "cors_all": "rejected",
+    "weak_secret": "rejected",
+    "proxy_without_count": "rejected"
+  },
+  "django_deploy_check": "completed",
+  "deploy_messages": [
+    {
+      "id": "security.W005",
+      "message": "You have not set the SECURE_HSTS_INCLUDE_SUBDOMAINS setting to True. Without this, your site is potentially vulnerable to attack via an insecure connection to a subdomain. Only set this to True if you are certain that all subdomains of your domain should be served exclusively via SSL."
+    },
+    {
+      "id": "security.W021",
+      "message": "You have not set the SECURE_HSTS_PRELOAD setting to True. Without this, your site cannot be submitted to the browser preload list."
+    }
+  ],
+  "no_actual_database_connection": true,
+  "unverified_remote": [
+    "TLS termination",
+    "real domains and DNS",
+    "proxy overwrite",
+    "secret provenance",
+    "database role and TLS",
+    "media persistence/ACL",
+    "file permissions",
+    "log redaction/retention",
+    "backup restore target"
+  ]
+}

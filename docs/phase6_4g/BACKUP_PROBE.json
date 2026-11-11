@@ -1,0 +1,15 @@
+{
+  "scope": "synthetic PostgreSQL utility smoke test, not full BK restoration",
+  "postgres_local_port": 55464,
+  "dump_sha256": "43f9974189e7aa666bddf82ee5b528f2aa8b2e7f6fb4555dc7cd7fa069abe825",
+  "synthetic_rows_restored": 2,
+  "audio_byte_copy_sha256": "255e7121ad2d8de443aebad7781c3fa695b81a2425f1cce046420ee83f9db459",
+  "audio_copy_equal": true,
+  "own_test_databases_removed": true,
+  "not_verified": [
+    "real staging role",
+    "remote backup encryption/retention",
+    "full BK database plus object storage atomicity",
+    "actual staging restoration"
+  ]
+}

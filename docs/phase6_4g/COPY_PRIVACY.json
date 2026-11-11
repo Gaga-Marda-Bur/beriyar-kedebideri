@@ -1,0 +1,28 @@
+{
+  "source_untouched": true,
+  "copy_accounts_neutralized": true,
+  "copy_private_tables_cleared": {
+    "auth_user_groups": 0,
+    "auth_user_user_permissions": 0,
+    "django_admin_log": 0,
+    "feedback_feedbackreport": 0,
+    "monetization_paymentmethod": 0,
+    "monetization_premiumfeature": 0,
+    "monetization_adplacement": 0,
+    "monetization_auditevent": 0,
+    "monetization_commerceaccountstate": 0,
+    "monetization_commercialpolicy": 0,
+    "monetization_devicechallenge": 0,
+    "monetization_outboxevent": 0,
+    "monetization_premiumplan": 0,
+    "monetization_premiumplan_features": 0,
+    "monetization_devicekey": 0,
+    "monetization_entitlementgrant": 0,
+    "monetization_paymenttransaction": 0,
+    "monetization_commercialrequest": 0,
+    "progress_unitprogress": 0,
+    "progress_progressdevicecredential": 0
+  },
+  "browser_account": "synthetic-only",
+  "original_private_media_not_served": true
+}

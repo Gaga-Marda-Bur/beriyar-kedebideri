@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -43,7 +44,11 @@ class BeriyarApp extends StatelessWidget {
       routes: {
         '/': (_) => const HomeScreen(),
         '/settings': (_) => const SettingsScreen(),
-        '/premium': (_) => const PremiumScreen(),
+        // Gate the route itself, including direct initial routes/deep-link dispatch.
+        '/premium': (_) =>
+            const bool.fromEnvironment('BK_PREMIUM_SIMULATION') && !kReleaseMode
+            ? const PremiumScreen()
+            : const HomeScreen(),
         '/alphabet': (_) => const AlphabetScreen(),
         '/vocabulary': (_) => const VocabularyScreen(),
         '/learning': (_) => const LearningPathScreen(),

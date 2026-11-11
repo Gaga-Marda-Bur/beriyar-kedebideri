@@ -1,0 +1,55 @@
+{
+  "pack_relations_publication_status": {
+    "characters": {
+      "published": 2,
+      "review": 3
+    },
+    "words": {
+      "published": 1
+    }
+  },
+  "stored_checksum_matches_zip": true,
+  "json_files": [
+    {
+      "file": "characters.json",
+      "type": "list",
+      "entries": 5
+    },
+    {
+      "file": "lessons.json",
+      "type": "list",
+      "entries": 1
+    },
+    {
+      "file": "manifest.json",
+      "type": "dict",
+      "entries": 15
+    },
+    {
+      "file": "metadata.json",
+      "type": "dict",
+      "entries": 15
+    },
+    {
+      "file": "quizzes.json",
+      "type": "list",
+      "entries": 1
+    },
+    {
+      "file": "themes.json",
+      "type": "list",
+      "entries": 1
+    },
+    {
+      "file": "units.json",
+      "type": "list",
+      "entries": 1
+    },
+    {
+      "file": "words.json",
+      "type": "list",
+      "entries": 1
+    }
+  ],
+  "linguistic_ready": "requires human validation; publication of pack is not publication proof for all linked content"
+}

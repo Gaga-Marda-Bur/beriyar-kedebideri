@@ -1,0 +1,10 @@
+{
+  "commit": "964b73d",
+  "same_machine_same_toolchain": true,
+  "clean_then_pub_get_offline": true,
+  "first_sha256": "edc228af2ce1d50ecb222e980b331562d479aba1b42cc35271ff41b62b155a31",
+  "second_sha256": "edc228af2ce1d50ecb222e980b331562d479aba1b42cc35271ff41b62b155a31",
+  "byte_identical": true,
+  "apk_entry_payload_differences": [],
+  "note": "No cross-machine reproducibility claimed; both builds target the same reference Android/Dart sources."
+}

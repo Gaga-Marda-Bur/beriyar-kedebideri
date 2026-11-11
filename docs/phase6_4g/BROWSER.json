@@ -1,0 +1,155 @@
+{
+  "engine": "157.0.8103.50",
+  "real_browser": true,
+  "headless": true,
+  "base": "http://127.0.0.1:18778",
+  "results": [
+    {
+      "name": "navigation_desktop",
+      "status": "passed",
+      "proof": {
+        "url": "http://127.0.0.1:18778/alphabet/"
+      }
+    },
+    {
+      "name": "dictionary_search",
+      "status": "passed",
+      "proof": {
+        "before": 1,
+        "after": 1,
+        "query_from_existing_entry": true
+      }
+    },
+    {
+      "name": "keyboard_erfe",
+      "status": "passed",
+      "proof": {
+        "actual_click_insert_and_delete": true,
+        "unicode_scalars": 1
+      }
+    },
+    {
+      "name": "unit_and_lessons",
+      "status": "failed",
+      "error": "Error: No unit links"
+    },
+    {
+      "name": "quiz_javascript",
+      "status": "passed",
+      "proof": {
+        "selection": true,
+        "feedback_displayed": true
+      }
+    },
+    {
+      "name": "audio_real_playback",
+      "status": "passed",
+      "proof": {
+        "started": true,
+        "ended": false,
+        "error": null,
+        "duration": 4.484966,
+        "time": 0.207255,
+        "audible_to_human": "not_tested",
+        "file_http": 200
+      }
+    },
+    {
+      "name": "browser_session_csrf_login_logout",
+      "status": "passed",
+      "proof": {
+        "login": 200,
+        "authenticated": 200,
+        "logout": 200,
+        "after": 401
+      }
+    },
+    {
+      "name": "direct_published_unit_and_lesson_content",
+      "status": "passed",
+      "proof": {
+        "http": 200,
+        "lesson_sections": 3,
+        "note": "Direct opening does not resolve missing discovery from path index"
+      }
+    },
+    {
+      "name": "responsive_mobile_js_menu",
+      "status": "passed",
+      "proof": {
+        "viewport": 390,
+        "document": 390,
+        "menu_clicked": true
+      }
+    },
+    {
+      "name": "font_used_by_chrome",
+      "status": "passed",
+      "proof": {
+        "fonts": [
+          {
+            "familyName": "Kedebideri",
+            "postScriptName": "Kedebideri-Bold",
+            "isCustomFont": true,
+            "glyphCount": 1
+          },
+          {
+            "familyName": "Segoe UI",
+            "postScriptName": "SegoeUI-Bold",
+            "isCustomFont": false,
+            "glyphCount": 41
+          }
+        ]
+      }
+    },
+    {
+      "name": "theme_preference_light_dark",
+      "status": "failed",
+      "error": "Error: Both preferences exercised but no distinct light/dark theme observed"
+    },
+    {
+      "name": "six_font_weights_http_integrity",
+      "status": "passed",
+      "proof": [
+        {
+          "name": "Kedebideri-Black.ttf",
+          "http": 200,
+          "sha256": "1dc372337ae92748a22253df1e819d8d783260b5cf42fbb371acc828ac6c6343"
+        },
+        {
+          "name": "Kedebideri-Bold.ttf",
+          "http": 200,
+          "sha256": "39f0a2f0b1cce14d561eb4c932495c0841171adcf6e2142f12e6f615cbd43592"
+        },
+        {
+          "name": "Kedebideri-ExtraBold.ttf",
+          "http": 200,
+          "sha256": "427b673155dfde19a375687677d729d97ba5f9c4e8b2cef017aacf552714c7bc"
+        },
+        {
+          "name": "Kedebideri-Medium.ttf",
+          "http": 200,
+          "sha256": "9f7d4cce968c225513e5f858ac3300650c189ff55559ddbf7c33d9acb796fd4f"
+        },
+        {
+          "name": "Kedebideri-Regular.ttf",
+          "http": 200,
+          "sha256": "1671703a29cb2178ea40d5b0de23fba728cf29b320dd9eaf54d72b5318e7e7d5"
+        },
+        {
+          "name": "Kedebideri-SemiBold.ttf",
+          "http": 200,
+          "sha256": "63cc63b43704cb6239a8f13460e60b3f6741ba53cd7b543a4f1d13618c303a2c"
+        }
+      ]
+    }
+  ],
+  "page_errors": [],
+  "http_errors": [
+    {
+      "path": "/api/monetization/v1/session/",
+      "status": 401
+    }
+  ],
+  "third_party_origins": []
+}

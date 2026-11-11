@@ -1,0 +1,195 @@
+{
+  "source_sha256": "8c1d4b1cf3a9415b17510fe5ce0b80c080ed056d7ca884730352214eadc65aef",
+  "opened_read_only": true,
+  "tables": {
+    "alphabet_character": {
+      "count": 50,
+      "validation_status": {
+        "published": 2,
+        "review": 48
+      },
+      "is_active": {
+        "1": 50
+      }
+    },
+    "alphabet_characteraudio": {
+      "count": 1
+    },
+    "audio_assets_audioasset": {
+      "count": 2,
+      "validation_status": {
+        "published": 2
+      },
+      "files": [
+        {
+          "id": "1bb9f0cc13b54d01a662fab130e79a3e",
+          "path": "audio_assets/files/arkap.wav",
+          "local_present": true,
+          "bytes": 791192,
+          "sha256": "255e7121ad2d8de443aebad7781c3fa695b81a2425f1cce046420ee83f9db459"
+        },
+        {
+          "id": "35f83da127f144feb3b70a27c6b40032",
+          "path": "audio_assets/files/I.mp3",
+          "local_present": true,
+          "bytes": 9643,
+          "sha256": "1f2b39f0aec90930f2013556fd106d0e50cd34e0b1869e33978d85e2487e947b"
+        }
+      ]
+    },
+    "learning_learningtheme": {
+      "count": 2,
+      "status": {
+        "draft": 2
+      },
+      "is_active": {
+        "1": 2
+      }
+    },
+    "learning_learningunit": {
+      "count": 4,
+      "status": {
+        "published": 4
+      },
+      "is_active": {
+        "1": 4
+      }
+    },
+    "learning_learningunit_characters": {
+      "count": 11
+    },
+    "learning_learningunit_distractor_characters": {
+      "count": 5
+    },
+    "learning_learningunit_words": {
+      "count": 4
+    },
+    "lessons_lesson": {
+      "count": 1,
+      "status": {
+        "published": 1
+      },
+      "is_active": {
+        "1": 1
+      }
+    },
+    "lessons_lessonitem": {
+      "count": 1,
+      "is_active": {
+        "1": 1
+      }
+    },
+    "lessons_lessonitemaudio": {
+      "count": 1
+    },
+    "offline_packs_lessonpack": {
+      "count": 1,
+      "status": {
+        "published": 1
+      },
+      "is_active": {
+        "1": 1
+      },
+      "files": [
+        {
+          "id": 1,
+          "path": "offline_packs/files/starter-beriya-erfe_v1_iMr8Evw.zip",
+          "local_present": true,
+          "bytes": 1951973,
+          "sha256": "1195e4c54f9ae0b16c246eea5189259e9f2502198ba8efe1edd694a2529bea9b",
+          "zip_entries": 12,
+          "zip_crc_error": null
+        }
+      ]
+    },
+    "offline_packs_lessonpack_characters": {
+      "count": 5
+    },
+    "offline_packs_lessonpack_lessons": {
+      "count": 1
+    },
+    "offline_packs_lessonpack_quiz_questions": {
+      "count": 1
+    },
+    "offline_packs_lessonpack_themes": {
+      "count": 1
+    },
+    "offline_packs_lessonpack_units": {
+      "count": 1
+    },
+    "offline_packs_lessonpack_words": {
+      "count": 1
+    },
+    "quizzes_quizoption": {
+      "count": 8
+    },
+    "quizzes_quizquestion": {
+      "count": 2,
+      "status": {
+        "published": 2
+      },
+      "is_active": {
+        "1": 2
+      },
+      "question_type": {
+        "audio_to_character": 2
+      }
+    },
+    "quizzes_quizquestionaudio": {
+      "count": 3
+    },
+    "vocabulary_word": {
+      "count": 4,
+      "validation_status": {
+        "draft": 3,
+        "published": 1
+      },
+      "is_active": {
+        "1": 4
+      }
+    },
+    "vocabulary_wordaudio": {
+      "count": 1
+    },
+    "vocabulary_wordcategory": {
+      "count": 4,
+      "is_active": {
+        "1": 4
+      }
+    }
+  },
+  "units": [
+    {
+      "id": 1,
+      "slug": "premiers-5-caracteres",
+      "title_fr": "Premiers 5 caractères",
+      "is_active": 1
+    },
+    {
+      "id": 2,
+      "slug": "unite-1-be",
+      "title_fr": "Unité 1 : Les premières lettres et le mot \"be\"",
+      "is_active": 1
+    },
+    {
+      "id": 3,
+      "slug": "unite-2-ta",
+      "title_fr": "Unité 2 : La consonne Te (𖺵) et le mot \"ta\"",
+      "is_active": 1
+    },
+    {
+      "id": 4,
+      "slug": "unite-3-de",
+      "title_fr": "Unité 3 : La consonne De (𖺢) et le mot \"de\"",
+      "is_active": 1
+    }
+  ],
+  "not_proven": [
+    "human linguistic validation",
+    "speaker recording consent",
+    "audio perceptual quality",
+    "remote object existence",
+    "tracks pedagogically complete"
+  ],
+  "published_word_placeholder_warning_count": 1
+}

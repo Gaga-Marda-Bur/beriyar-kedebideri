@@ -1,0 +1,36 @@
+{
+  "script": "docs/phase6_4e/e2e_web_receipt.py",
+  "technique": "urllib HTTP client and cookie jar; no browser engine",
+  "unique_result_keys": 19,
+  "keys": [
+    "admin_commercial_req_ok",
+    "admin_grants_view_ok",
+    "admin_login_redirect",
+    "admin_login_status",
+    "csrf_bootstrap_ok",
+    "guest_alphabet_status",
+    "guest_erfe_char_present",
+    "guest_erfe_css_present",
+    "guest_home_status",
+    "guest_home_title_ok",
+    "guest_parcours_status",
+    "guest_vocab_status",
+    "guest_vocab_word_present",
+    "login_a_status",
+    "login_a_subject_ok",
+    "logout_a_status",
+    "post_logout_status",
+    "session_cookie_stored",
+    "status_a_match"
+  ],
+  "assert_statements": 0,
+  "no_javascript_execution": true,
+  "no_audio_decode_or_playback": true,
+  "no_responsive_layout_check": true,
+  "limitations": [
+    "HTML substring checks are not visual rendering",
+    "returned booleans not asserted",
+    "HTTP redirects followed",
+    "fixture server not proof of real educational corpus"
+  ]
+}

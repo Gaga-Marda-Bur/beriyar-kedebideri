@@ -1,0 +1,14 @@
+{
+  "commit": "964b73d",
+  "original_files_checked": 316,
+  "modified_original_files": [
+    "mobile/linux/flutter/generated_plugin_registrant.cc",
+    "mobile/linux/flutter/generated_plugin_registrant.h",
+    "mobile/linux/flutter/generated_plugins.cmake",
+    "mobile/macos/Flutter/GeneratedPluginRegistrant.swift",
+    "mobile/windows/flutter/generated_plugin_registrant.cc",
+    "mobile/windows/flutter/generated_plugin_registrant.h",
+    "mobile/windows/flutter/generated_plugins.cmake"
+  ],
+  "note": "QA harness overlays, if any, are separate from original application files"
+}

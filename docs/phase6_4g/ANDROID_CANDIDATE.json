@@ -1,0 +1,19 @@
+{
+  "candidate_base": "964b73d",
+  "patch_files": [
+    "mobile/lib/app/app.dart",
+    "backend/monetization/services.py",
+    "backend/monetization/licensing.py"
+  ],
+  "apk_sha256": "076fa449c1386eb38b84db247bb024e70900d1a2e0757fd683ce10733f1ed943",
+  "apk_bytes": 194084972,
+  "variant": "debug QA educational, simulation=false",
+  "installed": true,
+  "physical": true,
+  "direct_initial_route": "/premium",
+  "premium_ui_present": false,
+  "free_learning_ui_detected": true,
+  "main_fingerprint_equal_to_start": true,
+  "ui_node_count_own_package": 26,
+  "scope": "patched candidate; distinct from original reference APK and simulation harness"
+}

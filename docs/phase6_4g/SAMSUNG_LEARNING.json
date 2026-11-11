@@ -1,0 +1,10 @@
+{
+  "phase": "learning-offline",
+  "progress_preserved": true,
+  "pack_integrity": true,
+  "audio_files_present": 4,
+  "zip_sha256": "1195e4c54f9ae0b16c246eea5189259e9f2502198ba8efe1edd694a2529bea9b",
+  "pack_read_succeeded": true,
+  "commerce_key_erasure_preserves_learning": true,
+  "audio_human_audibility": "not_checked"
+}
