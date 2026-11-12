@@ -59,13 +59,17 @@
             function button(label, action) {
                 const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.addEventListener('click', action); return b;
             }
-            let snapshot = null, range = null;
+            let snapshot = null, range = null, conversionNotice = '';
             const convert = button('Convertir', () => {
                 range = [el.selectionStart, el.selectionEnd]; snapshot = el.value;
                 const text = range[0] !== range[1] ? el.value.slice(...range) : el.value;
                 const result = api.transliterate(text, source.value, target.value, lower.checked);
                 output.value = result.text; output.dir = target.value === 'arabic' ? 'rtl' : 'ltr';
-                status.textContent = result.unmapped.length ? 'Conservés sans correspondance : ' + result.unmapped.map(c => c.codepoint).join(', ') : '';
+                const missingArabic = result.unmapped.some(c => c.reason === 'missing_arabic_mapping');
+                conversionNotice = result.unmapped.length ? 'Conversion incomplète — ' +
+                    (missingArabic ? 'correspondances arabes non définies ; ' : '') +
+                    'formes conservées : ' + result.unmapped.map(c => c.codepoint).join(', ') : '';
+                status.textContent = conversionNotice;
             });
             const apply = button('Insérer', () => {
                 if (snapshot === null || el.value !== snapshot) return;
@@ -87,10 +91,10 @@
             });
             const undo = button('Annuler la conversion', () => {});
             const copy = button('Copier', async () => {
-                try { await navigator.clipboard.writeText(output.value); status.textContent = 'Copié'; }
-                catch (_) { output.focus(); output.select(); status.textContent = 'Sélectionnez le résultat puis copiez-le.'; }
+                try { await navigator.clipboard.writeText(output.value); status.textContent = 'Copié. ' + conversionNotice; }
+                catch (_) { output.focus(); output.select(); status.textContent = 'Sélectionnez le résultat puis copiez-le. ' + conversionNotice; }
             });
-            const invalidate = () => {snapshot = null; output.value = '';};
+            const invalidate = () => {snapshot = null; output.value = ''; conversionNotice = ''; status.textContent = '';};
             source.addEventListener('change', invalidate); target.addEventListener('change', invalidate); lower.addEventListener('change', invalidate);
             panel.append(source, target, lowerLabel, convert, output, copy, apply, undo, status);
             details.append(panel);

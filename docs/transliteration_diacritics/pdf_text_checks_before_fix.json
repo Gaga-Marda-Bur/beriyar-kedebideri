@@ -1,0 +1,46 @@
+{
+  "web_diacritics.pdf": {
+    "pages": 2,
+    "missing_erfe_units": [
+      "\ud81b\udea7\u0307",
+      "\ud81b\udea7\u0304",
+      "\ud81b\udeb6\u0304",
+      "\ud81b\udeaf\u0304",
+      "\ud81b\udea0\u0304",
+      "\ud81b\udea3\u0304",
+      "\ud81b\udea0\u0300",
+      "\ud81b\udea0\u0301",
+      "\ud81b\udea3\u0300",
+      "\ud81b\udea3\u0301",
+      "\ud81b\udea7\u0300",
+      "\ud81b\udea7\u0301",
+      "\ud81b\udeb6\u0300",
+      "\ud81b\udeb6\u0301",
+      "\ud81b\udeaf\u0300",
+      "\ud81b\udeaf\u0301"
+    ],
+    "all_16_searchable": false
+  },
+  "flutter_diacritics.pdf": {
+    "pages": 2,
+    "missing_erfe_units": [
+      "\ud81b\udea7\u0307",
+      "\ud81b\udea7\u0304",
+      "\ud81b\udeb6\u0304",
+      "\ud81b\udeaf\u0304",
+      "\ud81b\udea0\u0304",
+      "\ud81b\udea3\u0304",
+      "\ud81b\udea0\u0300",
+      "\ud81b\udea0\u0301",
+      "\ud81b\udea3\u0300",
+      "\ud81b\udea3\u0301",
+      "\ud81b\udea7\u0300",
+      "\ud81b\udea7\u0301",
+      "\ud81b\udeb6\u0300",
+      "\ud81b\udeb6\u0301",
+      "\ud81b\udeaf\u0300",
+      "\ud81b\udeaf\u0301"
+    ],
+    "all_16_searchable": false
+  }
+}

@@ -8,6 +8,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../models/beriya_draft.dart';
 import '../../../shared/beriya/transliteration.dart';
+import 'erfe_pdf_text.dart';
 
 class BeriyaPdfService {
   static pw.Font? _cachedRegularFont;
@@ -62,7 +63,10 @@ class BeriyaPdfService {
   }
 
   static Future<Uint8List> generatePdfBytes(BeriyaDraft draft) async {
-    draft = draft.copyWith(title: normalizeErfe(draft.title), content: normalizeErfe(draft.content));
+    draft = draft.copyWith(
+      title: normalizeErfe(draft.title),
+      content: normalizeErfe(draft.content),
+    );
     await _initFonts();
 
     final doc = pw.Document(
@@ -203,16 +207,15 @@ class BeriyaPdfService {
               pw.Container(
                 width: double.infinity,
                 margin: const pw.EdgeInsets.only(bottom: 18),
-                child: pw.Text(
+                child: erfePdfText(
+                  context,
                   draft.title.trim(),
                   textAlign: textAlign,
-                  style: pw.TextStyle(
-                    font: fontBold,
-                    fontSize: draft.fontSize * 1.25,
-                    fontWeight: pw.FontWeight.bold,
-                    color: primaryColor,
-                    lineSpacing: 1.2,
-                  ),
+                  font: fontBold,
+                  fontSize: draft.fontSize * 1.25,
+                  bold: true,
+                  color: primaryColor,
+                  lineSpacing: 1.2,
                 ),
               ),
             );
@@ -226,15 +229,14 @@ class BeriyaPdfService {
                 pw.Container(
                   width: double.infinity,
                   margin: const pw.EdgeInsets.only(bottom: 10),
-                  child: pw.Text(
+                  child: erfePdfText(
+                    context,
                     p,
                     textAlign: textAlign,
-                    style: pw.TextStyle(
-                      font: fontRegular,
-                      fontSize: draft.fontSize,
-                      color: textColor,
-                      lineSpacing: 1.4,
-                    ),
+                    font: fontRegular,
+                    fontSize: draft.fontSize,
+                    color: textColor,
+                    lineSpacing: 1.4,
                   ),
                 ),
               );

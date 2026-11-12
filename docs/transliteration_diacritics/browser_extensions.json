@@ -1,0 +1,60 @@
+{
+  "browser": "Chrome 157.0.8103.51",
+  "results": [
+    {
+      "name": "all 16 NFC and NFD forms through visible converter",
+      "status": "passed",
+      "proof": {
+        "forms": 16,
+        "precomposed_and_decomposed": true
+      }
+    },
+    {
+      "name": "paste lower Erfe accents, selection, explicit insertion and undo",
+      "status": "passed",
+      "proof": {
+        "normalization": true,
+        "selection_utf16": [
+          0,
+          9
+        ],
+        "newline_preserved": true,
+        "undo": true
+      }
+    },
+    {
+      "name": "incomplete Arabic remains explicit even after copying",
+      "status": "passed",
+      "proof": {
+        "whole_forms_preserved": true,
+        "warning_persistent": true
+      }
+    },
+    {
+      "name": "all 16 generated options available in actual keyboard",
+      "status": "passed",
+      "proof": {
+        "I_variants": 4,
+        "total_generated": 16
+      }
+    },
+    {
+      "name": "actual PNG and PDF downloads with the 16 canonicalized forms",
+      "status": "passed",
+      "proof": {
+        "forms": 16,
+        "PNG_downloaded": true,
+        "PDF_downloaded": true
+      }
+    },
+    {
+      "name": "Sticker PNG export preserves normalized diacritics",
+      "status": "passed",
+      "proof": {
+        "forms": 16,
+        "PNG_downloaded": true
+      }
+    }
+  ],
+  "errors": []
+}

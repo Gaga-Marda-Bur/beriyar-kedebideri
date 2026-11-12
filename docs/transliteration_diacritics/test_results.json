@@ -1,0 +1,37 @@
+{
+  "branch": "codex/erfe-diacritics-extension",
+  "base_commit": "e827c7e",
+  "linguistic_confirmation": "all three conventions confirmed by user",
+  "base_mappings_unchanged": 25,
+  "new_mappings": 16,
+  "arabic_mappings_missing": 16,
+  "django": {
+    "run": 173,
+    "skipped": 2,
+    "failures": 0
+  },
+  "flutter": {
+    "passed": 172
+  },
+  "javascript": {
+    "passed": 7
+  },
+  "parity_vectors_per_platform": 627,
+  "legacy_vectors_unchanged": 314,
+  "legacy_vector_intentionally_updated": 1,
+  "browser_extension_scenarios_passed": 6,
+  "browser_historical_scenarios_passed": 7,
+  "pdf_erfe_units_extractable_per_export": 16,
+  "flutter_analysis": {
+    "new_diagnostics": 0,
+    "existing_warning": "unused path_provider import in integration_test/historical_tools_final_qa_test.dart:8"
+  },
+  "physical_android": "not_executed",
+  "integrity": {
+    "database_sha256_before": "7fe288b82f0539166d8008b89725f27db490805d9b07542f469c816f5c219d03",
+    "database_sha256_after": "7fe288b82f0539166d8008b89725f27db490805d9b07542f469c816f5c219d03",
+    "database_unchanged": true
+  },
+  "deployment": false,
+  "distribution": false
+}

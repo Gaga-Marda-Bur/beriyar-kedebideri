@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "source_file": "erfe(1).xlsx",
   "source_sha256": "82b1993b9a6b79422b909e2e8b5a90ba918a980566da49a65051a670905f711e",
   "canonical_script": "erfe_upper",
@@ -263,5 +263,130 @@
       "erfe_lower_alias": "𖻓",
       "erfe_lower_codepoint": "U+16ED3"
     }
-  ]
+  ],
+  "base_json_sha256": "2b6f2b8eea1eaa661bffebe79ed2e60d0f1b4017c5ea23aa1cc3d26f48a3eada",
+  "diacritic_letters": [
+    {
+      "erfe": "𖺧̇",
+      "erfe_lower_alias": "𖻂̇",
+      "latin_upper": "Ị",
+      "latin_lower": "ị",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺧̄",
+      "erfe_lower_alias": "𖻂̄",
+      "latin_upper": "Î",
+      "latin_lower": "î",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺶̄",
+      "erfe_lower_alias": "𖻑̄",
+      "latin_upper": "Û",
+      "latin_lower": "û",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺯̄",
+      "erfe_lower_alias": "𖻊̄",
+      "latin_upper": "Ô",
+      "latin_lower": "ô",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺠̄",
+      "erfe_lower_alias": "𖺻̄",
+      "latin_upper": "Â",
+      "latin_lower": "â",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺣̄",
+      "erfe_lower_alias": "𖺾̄",
+      "latin_upper": "Ê",
+      "latin_lower": "ê",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺠̀",
+      "erfe_lower_alias": "𖺻̀",
+      "latin_upper": "À",
+      "latin_lower": "à",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺠́",
+      "erfe_lower_alias": "𖺻́",
+      "latin_upper": "Á",
+      "latin_lower": "á",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺣̀",
+      "erfe_lower_alias": "𖺾̀",
+      "latin_upper": "È",
+      "latin_lower": "è",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺣́",
+      "erfe_lower_alias": "𖺾́",
+      "latin_upper": "É",
+      "latin_lower": "é",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺧̀",
+      "erfe_lower_alias": "𖻂̀",
+      "latin_upper": "Ì",
+      "latin_lower": "ì",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺧́",
+      "erfe_lower_alias": "𖻂́",
+      "latin_upper": "Í",
+      "latin_lower": "í",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺶̀",
+      "erfe_lower_alias": "𖻑̀",
+      "latin_upper": "Ù",
+      "latin_lower": "ù",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺶́",
+      "erfe_lower_alias": "𖻑́",
+      "latin_upper": "Ú",
+      "latin_lower": "ú",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺯̀",
+      "erfe_lower_alias": "𖻊̀",
+      "latin_upper": "Ò",
+      "latin_lower": "ò",
+      "arabic": null
+    },
+    {
+      "erfe": "𖺯́",
+      "erfe_lower_alias": "𖻊́",
+      "latin_upper": "Ó",
+      "latin_lower": "ó",
+      "arabic": null
+    }
+  ],
+  "diacritics_validation": {
+    "source": "User supplied extension, 2026-11-12",
+    "status": "confirmed_by_user",
+    "confirmed_conventions": [
+      "Latin I + U+0323 maps to Erfe I + U+0307",
+      "Initial ÂÂ means Ââ",
+      "Ó/ó output uses canonical uppercase Erfe O + U+0301"
+    ],
+    "arabic_status": "undefined_for_all_16_forms"
+  }
 }

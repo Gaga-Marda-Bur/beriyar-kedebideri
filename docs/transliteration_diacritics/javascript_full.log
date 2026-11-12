@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: buttons expose playing and paused states and retain accessible labels
+ok 1 - buttons expose playing and paused states and retain accessible labels
+  ---
+  duration_ms: 3.3669
+  type: 'test'
+  ...
+# Subtest: failed audio displays retry and can recover
+ok 2 - failed audio displays retry and can recover
+  ---
+  duration_ms: 1.7016
+  type: 'test'
+  ...
+# Subtest: switching buttons and native quiz playback never overlaps voices
+ok 3 - switching buttons and native quiz playback never overlaps voices
+  ---
+  duration_ms: 3.1716
+  type: 'test'
+  ...
+# Subtest: cross-platform reference vectors
+ok 4 - cross-platform reference vectors
+  ---
+  duration_ms: 56.1148
+  type: 'test'
+  ...
+# Subtest: all lower Erfe aliases, NFC and round trips
+ok 5 - all lower Erfe aliases, NFC and round trips
+  ---
+  duration_ms: 4.7598
+  type: 'test'
+  ...
+# Subtest: beriya_keyboard.js: all assigned Erfe characters select the Erfe style
+ok 6 - beriya_keyboard.js: all assigned Erfe characters select the Erfe style
+  ---
+  duration_ms: 20.4105
+  type: 'test'
+  ...
+# Subtest: sticker_studio.js: all assigned Erfe characters select the Erfe style
+ok 7 - sticker_studio.js: all assigned Erfe characters select the Erfe style
+  ---
+  duration_ms: 2.1755
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 384.3505

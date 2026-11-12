@@ -1,7 +1,7 @@
 /* Real Chrome interaction against local isolated Django, never a remote site. */
 const fs = require('node:fs'), path = require('node:path'), assert = require('node:assert/strict');
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE || 'C:/Users/MONSTER/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
-const out = __dirname, results = [], errors = [];
+const out = process.env.BK_RECEIPT_OUTPUT_DIR || __dirname, results = [], errors = [];
 (async () => {
   let browser;
   try { browser = await chromium.launch({channel: 'chrome', headless: true}); }

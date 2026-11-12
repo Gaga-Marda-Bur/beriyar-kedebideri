@@ -1,0 +1,7 @@
+00:00 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/transliteration_diacritics_test.dart
+00:00 +0: 16 diacritic forms round-trip and generated keyboard options
+00:00 +1: paste accents retains UTF16 selection and newlines; Latin NFD becomes NFC
+00:00 +2: PDF export with all 16 lower Erfe forms and Latin accents
+00:00 +3: conversion warns about missing Arabic, retains accents and original input
+00:01 +4: actual font rendering of 16 forms and PNG encoding
+00:01 +5: All tests passed!

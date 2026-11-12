@@ -110,7 +110,7 @@ Future<void> showTransliterationDialog(
                 ),
                 if (result != null && result!.unmapped.isNotEmpty)
                   Text(
-                    'Conservés sans correspondance : ${result!.unmapped.map((c) => c['codepoint']).join(', ')}',
+                    'Conversion incomplète — ${result!.unmapped.any((c) => c['reason'] == 'missing_arabic_mapping') ? 'correspondances arabes non définies ; ' : ''}formes conservées : ${result!.unmapped.map((c) => c['codepoint']).join(', ')}',
                   ),
                 TextButton.icon(
                   onPressed: result == null

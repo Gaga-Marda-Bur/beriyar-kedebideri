@@ -1,0 +1,29 @@
+{
+  "Kedebideri-Black.ttf": {
+    "tested_codepoints": 54,
+    "missing": []
+  },
+  "Kedebideri-Bold.ttf": {
+    "tested_codepoints": 54,
+    "missing": []
+  },
+  "Kedebideri-ExtraBold.ttf": {
+    "tested_codepoints": 54,
+    "missing": []
+  },
+  "Kedebideri-Medium.ttf": {
+    "tested_codepoints": 54,
+    "missing": []
+  },
+  "Kedebideri-Regular.ttf": {
+    "tested_codepoints": 54,
+    "missing": []
+  },
+  "Kedebideri-SemiBold.ttf": {
+    "tested_codepoints": 54,
+    "missing": []
+  },
+  "latin_fallback": {
+    "missing": []
+  }
+}

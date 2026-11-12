@@ -1,0 +1,549 @@
+FFFFFFFFFFFFFFFFFFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFE
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Ị]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Î]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Û]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Ô]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Â]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Ê]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [À]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Á]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [È]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [É]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Ì]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Í]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Ù]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Ú]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Ò]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+ERROR: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [Ó]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 30, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['unmapped'][0]['reason'], 'missing_arabic_mapping')
+                     ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'reason'
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Ị]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Ị', 'unmapped': [{'character': 'Ị', 'code[26 chars] 0}]} != {'text': '\U00016ea7̇', 'unmapped': []}
++ {'text': '\U00016ea7̇', 'unmapped': []}
+- {'text': 'Ị',
+-  'unmapped': [{'character': 'Ị', 'codepoint': 'U+1ECA', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Î]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Î', 'unmapped': [{'character': 'Î', 'code[26 chars] 0}]} != {'text': '\U00016ea7̄', 'unmapped': []}
++ {'text': '\U00016ea7̄', 'unmapped': []}
+- {'text': 'Î',
+-  'unmapped': [{'character': 'Î', 'codepoint': 'U+00CE', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Û]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Û', 'unmapped': [{'character': 'Û', 'code[26 chars] 0}]} != {'text': '\U00016eb6̄', 'unmapped': []}
++ {'text': '\U00016eb6̄', 'unmapped': []}
+- {'text': 'Û',
+-  'unmapped': [{'character': 'Û', 'codepoint': 'U+00DB', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Ô]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Ô', 'unmapped': [{'character': 'Ô', 'code[26 chars] 0}]} != {'text': '\U00016eaf̄', 'unmapped': []}
++ {'text': '\U00016eaf̄', 'unmapped': []}
+- {'text': 'Ô',
+-  'unmapped': [{'character': 'Ô', 'codepoint': 'U+00D4', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Â]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Â', 'unmapped': [{'character': 'Â', 'code[26 chars] 0}]} != {'text': '\U00016ea0̄', 'unmapped': []}
++ {'text': '\U00016ea0̄', 'unmapped': []}
+- {'text': 'Â',
+-  'unmapped': [{'character': 'Â', 'codepoint': 'U+00C2', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Ê]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Ê', 'unmapped': [{'character': 'Ê', 'code[26 chars] 0}]} != {'text': '\U00016ea3̄', 'unmapped': []}
++ {'text': '\U00016ea3̄', 'unmapped': []}
+- {'text': 'Ê',
+-  'unmapped': [{'character': 'Ê', 'codepoint': 'U+00CA', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [À]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'À', 'unmapped': [{'character': 'À', 'code[26 chars] 0}]} != {'text': '\U00016ea0̀', 'unmapped': []}
++ {'text': '\U00016ea0̀', 'unmapped': []}
+- {'text': 'À',
+-  'unmapped': [{'character': 'À', 'codepoint': 'U+00C0', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Á]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Á', 'unmapped': [{'character': 'Á', 'code[26 chars] 0}]} != {'text': '\U00016ea0́', 'unmapped': []}
++ {'text': '\U00016ea0́', 'unmapped': []}
+- {'text': 'Á',
+-  'unmapped': [{'character': 'Á', 'codepoint': 'U+00C1', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [È]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'È', 'unmapped': [{'character': 'È', 'code[26 chars] 0}]} != {'text': '\U00016ea3̀', 'unmapped': []}
++ {'text': '\U00016ea3̀', 'unmapped': []}
+- {'text': 'È',
+-  'unmapped': [{'character': 'È', 'codepoint': 'U+00C8', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [É]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'É', 'unmapped': [{'character': 'É', 'code[26 chars] 0}]} != {'text': '\U00016ea3́', 'unmapped': []}
++ {'text': '\U00016ea3́', 'unmapped': []}
+- {'text': 'É',
+-  'unmapped': [{'character': 'É', 'codepoint': 'U+00C9', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Ì]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Ì', 'unmapped': [{'character': 'Ì', 'code[26 chars] 0}]} != {'text': '\U00016ea7̀', 'unmapped': []}
++ {'text': '\U00016ea7̀', 'unmapped': []}
+- {'text': 'Ì',
+-  'unmapped': [{'character': 'Ì', 'codepoint': 'U+00CC', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Í]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Í', 'unmapped': [{'character': 'Í', 'code[26 chars] 0}]} != {'text': '\U00016ea7́', 'unmapped': []}
++ {'text': '\U00016ea7́', 'unmapped': []}
+- {'text': 'Í',
+-  'unmapped': [{'character': 'Í', 'codepoint': 'U+00CD', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Ù]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Ù', 'unmapped': [{'character': 'Ù', 'code[26 chars] 0}]} != {'text': '\U00016eb6̀', 'unmapped': []}
++ {'text': '\U00016eb6̀', 'unmapped': []}
+- {'text': 'Ù',
+-  'unmapped': [{'character': 'Ù', 'codepoint': 'U+00D9', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Ú]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Ú', 'unmapped': [{'character': 'Ú', 'code[26 chars] 0}]} != {'text': '\U00016eb6́', 'unmapped': []}
++ {'text': '\U00016eb6́', 'unmapped': []}
+- {'text': 'Ú',
+-  'unmapped': [{'character': 'Ú', 'codepoint': 'U+00DA', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Ò]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Ò', 'unmapped': [{'character': 'Ò', 'code[26 chars] 0}]} != {'text': '\U00016eaf̀', 'unmapped': []}
++ {'text': '\U00016eaf̀', 'unmapped': []}
+- {'text': 'Ò',
+-  'unmapped': [{'character': 'Ò', 'codepoint': 'U+00D2', 'index': 0}]}
+
+======================================================================
+FAIL: test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe (core.tests_transliteration_diacritics.DiacriticsTests.test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe) [Ó]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 17, in test_all_16_forms_in_both_directions_nfc_nfd_and_lower_erfe
+    self.assertEqual(transliterate(ud.normalize(form, r[key]), 'latin', 'erfe'), {'text': r['erfe'], 'unmapped': []})
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'text': 'Ó', 'unmapped': [{'character': 'Ó', 'code[26 chars] 0}]} != {'text': '\U00016eaf́', 'unmapped': []}
++ {'text': '\U00016eaf́', 'unmapped': []}
+- {'text': 'Ó',
+-  'unmapped': [{'character': 'Ó', 'codepoint': 'U+00D3', 'index': 0}]}
+
+======================================================================
+FAIL: test_examples_and_no_inferred_marks (core.tests_transliteration_diacritics.DiacriticsTests.test_examples_and_no_inferred_marks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 34, in test_examples_and_no_inferred_marks
+    self.assertEqual(transliterate('𖺠́𖺣̀𖺧̄', 'erfe', 'latin')['text'], 'ÁÈÎ')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ÁÈĪ' != 'ÁÈÎ'
+- ÁÈĪ
+?   ^
++ ÁÈÎ
+?   ^
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺧̇]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ی̇' != '\U00016ea7̇'
+- ی̇
++ 𖺧̇
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺧̄]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ی̄' != '\U00016ea7̄'
+- ی̄
++ 𖺧̄
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺶̄]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ۇ̄' != '\U00016eb6̄'
+- ۇ̄
++ 𖺶̄
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺯̄]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ۆ̄' != '\U00016eaf̄'
+- ۆ̄
++ 𖺯̄
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺠̄]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ا̄' != '\U00016ea0̄'
+- ا̄
++ 𖺠̄
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺣̄]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'آ̄' != '\U00016ea3̄'
+- آ̄
++ 𖺣̄
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺠̀]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ا̀' != '\U00016ea0̀'
+- ا̀
++ 𖺠̀
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺠́]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ا́' != '\U00016ea0́'
+- ا́
++ 𖺠́
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺣̀]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'آ̀' != '\U00016ea3̀'
+- آ̀
++ 𖺣̀
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺣́]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'آ́' != '\U00016ea3́'
+- آ́
++ 𖺣́
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺧̀]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ی̀' != '\U00016ea7̀'
+- ی̀
++ 𖺧̀
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺧́]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ی́' != '\U00016ea7́'
+- ی́
++ 𖺧́
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺶̀]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ۇ̀' != '\U00016eb6̀'
+- ۇ̀
++ 𖺶̀
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺶́]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ۇ́' != '\U00016eb6́'
+- ۇ́
++ 𖺶́
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺯̀]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ۆ̀' != '\U00016eaf̀'
+- ۆ̀
++ 𖺯̀
+
+
+======================================================================
+FAIL: test_missing_arabic_preserves_entire_source_unit (core.tests_transliteration_diacritics.DiacriticsTests.test_missing_arabic_preserves_entire_source_unit) [𖺯́]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\MONSTER\Desktop\BeriyaClean\beriyar-kedebideri\backend\core\tests_transliteration_diacritics.py", line 27, in test_missing_arabic_preserves_entire_source_unit
+    self.assertEqual(result['text'], value)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'ۆ́' != '\U00016eaf́'
+- ۆ́
++ 𖺯́
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.013s
+
+FAILED (failures=33, errors=16)
+Found 3 test(s).
+System check identified no issues (0 silenced).

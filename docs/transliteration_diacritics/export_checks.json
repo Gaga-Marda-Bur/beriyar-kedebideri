@@ -1,0 +1,40 @@
+{
+  "web_diacritics.pdf": {
+    "pages": 2,
+    "missing_erfe_units": [],
+    "missing_latin_units": [],
+    "all_16_units_extractable": true,
+    "supplementary_UTF16BE_cmap": true
+  },
+  "flutter_diacritics.pdf": {
+    "pages": 2,
+    "missing_erfe_units": [],
+    "missing_latin_units": [],
+    "all_16_units_extractable": true,
+    "supplementary_UTF16BE_cmap": true
+  },
+  "web_diacritics.png": {
+    "format": "PNG",
+    "size": [
+      2000,
+      1722
+    ],
+    "valid_png": true
+  },
+  "flutter_diacritics.png": {
+    "format": "PNG",
+    "size": [
+      1600,
+      1200
+    ],
+    "valid_png": true
+  },
+  "sticker_16_forms.png": {
+    "format": "PNG",
+    "size": [
+      1080,
+      1080
+    ],
+    "valid_png": true
+  }
+}

@@ -34,11 +34,7 @@ window.BERIYA_KEYBOARD_DATA = {
     ],
 
     longPressOptions: {
-        "\u{16EA0}": ["\u{16EA0}\u{0304}"],
-        "\u{16EA3}": ["\u{16EA3}\u{0304}"],
-        "\u{16EA7}": ["\u{16EA7}\u{0304}"],
-        "\u{16EAF}": ["\u{16EAF}\u{0304}"],
-        "\u{16EB6}": ["\u{16EB6}\u{0304}"],
+        ...window.BKTransliterationData.diacritic_options,
         ".": [".", ",", "?", "!", ":", ";", "…"],
         "-": ["-", "—", "_"],
         "'": ["'", "\"", "«", "»"]

@@ -1,0 +1,11 @@
+00:00 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/transliteration_test.dart
+00:00 +0: offline search finds canonical and historical Erfe without rewriting cache
+CACHE SAVE [words]: 1 items
+CACHE READ [words]: 1 raw items
+CACHE READ [words]: 1 raw items
+00:00 +1: new draft serialization canonicalizes, historical import remains intact
+00:00 +2: cross-platform reference vectors and round trips
+00:00 +3: paste multiline, UTF16 selection and active composition
+00:00 +4: learning accepts canonical input against historical lower Erfe
+00:00 +5: explicit conversion, selection, insertion and undo
+00:01 +6: All tests passed!

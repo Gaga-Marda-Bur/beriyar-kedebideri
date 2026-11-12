@@ -1,3 +1,5 @@
+import 'transliteration_data.dart';
+
 class BeriyaChars {
   const BeriyaChars._();
 
@@ -141,12 +143,11 @@ class BeriyaChars {
     ["'", '"', '/', '@', '&', '+'],
   ];
 
-  static const Map<String, List<String>> longPressOptions = {
-    '\u{16EA0}': ['\u{16EA0}\u{0304}'],
-    '\u{16EA3}': ['\u{16EA3}\u{0304}'],
-    '\u{16EA7}': ['\u{16EA7}\u{0304}'],
-    '\u{16EAF}': ['\u{16EAF}\u{0304}'],
-    '\u{16EB6}': ['\u{16EB6}\u{0304}'],
+  static final Map<String, List<String>> longPressOptions = {
+    for (final entry
+        in (transliterationData['diacritic_options'] as Map<String, dynamic>)
+            .entries)
+      entry.key: List<String>.from(entry.value as List),
     '.': ['.', ',', '?', '!', ':', ';', '…'],
     '-': ['-', '—', '_'],
     "'": ["'", '"', '«', '»'],

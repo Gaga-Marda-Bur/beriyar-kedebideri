@@ -388,15 +388,29 @@
                         const layout = erfeLayoutFont.layout(run.text);
                         const scale = options.size / erfeLayoutFont.unitsPerEm;
                         let advance = 0;
-                        layout.glyphs.forEach((glyph, index) => {
+                        for (let index = 0; index < layout.glyphs.length; index++) {
+                            const glyph = layout.glyphs[index];
                             const position = layout.positions[index];
+                            const next = layout.glyphs[index + 1], mark = layout.positions[index + 1];
+                            const pair = next ? String.fromCodePoint(...glyph.codePoints, ...next.codePoints) : '';
+                            const validatedUnit = window.BKTransliterationData.rows.some(r => r[0] === pair && Array.from(r[0]).length > 1);
+                            if (validatedUnit && position.xOffset === 0 && position.yOffset === 0 && mark.yOffset === 0 && mark.xAdvance === 0) {
+                                // Preserve the base + mark as one searchable text unit.
+                                // Exact GPOS x offset, not approximate centering.
+                                page.pushOperators(PDFLib.pushGraphicsState(), PDFLib.setCharacterSpacing(mark.xOffset * scale));
+                                page.drawText(pair, {...options, font: customFont, x: x + advance * scale});
+                                page.pushOperators(PDFLib.popGraphicsState());
+                                advance += position.xAdvance + mark.xAdvance;
+                                index++;
+                                continue;
+                            }
                             page.drawText(String.fromCodePoint(...glyph.codePoints), {
                                 ...options, font:customFont,
                                 x:x+(advance+position.xOffset)*scale,
                                 y:options.y+position.yOffset*scale,
                             });
                             advance += position.xAdvance;
-                        });
+                        }
                     } else page.drawText(run.text, {...options, x, font: run.font});
                     x += run.font.widthOfTextAtSize(run.text, options.size);
                 }
