@@ -5,7 +5,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:mobile/core/theme/app_theme.dart';
 import 'package:mobile/features/editor/models/beriya_draft.dart';

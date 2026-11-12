@@ -1,0 +1,79 @@
+{
+  "device": "Samsung SM-A336E (Galaxy A33 5G)",
+  "android_version": "Android 16 (API 36)",
+  "serial": "R6CT6003WRT",
+  "package_isolated": "com.afrigama.beriyarkedebideri.qa_tools",
+  "pdf_verification": {
+    "file": "samsung_erfe_diacritics.pdf",
+    "size_bytes": 14342,
+    "page_count": 2,
+    "missing_erfe_units": [],
+    "missing_latin_units": [],
+    "all_16_erfe_extractable": true,
+    "all_16_latin_extractable": true,
+    "supplementary_utf16be_cmap": true,
+    "preview_text_snippet": "Beriya Kedebideri\nEditionBeriya•beriyarkedebideri.com 12/11/2026\nBeriyaKedebideri-PoliceKedebideriincorporee Page1/2\nQA Diacritiques 𖺠́𖺣̀𖺧̄ 𖺯́ 𖺧̇\n16FORMESDIACRITIQUESERFE:\n𖺧̇/ Ị ị(I_dot_above)\n𖺧̄/Îî(I_macron)\n𖺶̄/Ûû(U_macron)\n𖺯̄/Ôô(O_macron)\n𖺠̄/Ââ(A_macron)\n𖺣̄/Êê(E_macron)\n𖺠̀/Àà(A_grave)\n𖺠́/Áá(A_acute)\n𖺣̀/Èè(E_grave)\n𖺣́/Éé(E_acute)\n𖺧̀/Ìì(I_grave)\n𖺧́"
+  },
+  "png_verifications": {
+    "samsung_transliteration_arabic_warning.png": {
+      "format": "PNG",
+      "size": [
+        768,
+        1707
+      ],
+      "mode": "RGBA",
+      "size_bytes": 105981,
+      "valid_png": true
+    },
+    "samsung_sticker_diacritics_composed.png": {
+      "format": "PNG",
+      "size": [
+        768,
+        1707
+      ],
+      "mode": "RGBA",
+      "size_bytes": 106415,
+      "valid_png": true
+    },
+    "samsung_sticker_diacritics.png": {
+      "format": "PNG",
+      "size": [
+        873,
+        597
+      ],
+      "mode": "RGBA",
+      "size_bytes": 36777,
+      "valid_png": true
+    },
+    "samsung_editor_diacritics.png": {
+      "format": "PNG",
+      "size": [
+        768,
+        1707
+      ],
+      "mode": "RGBA",
+      "size_bytes": 173366,
+      "valid_png": true
+    },
+    "samsung_font_16_forms.png": {
+      "format": "PNG",
+      "size": [
+        768,
+        2200
+      ],
+      "mode": "RGBA",
+      "size_bytes": 141521,
+      "valid_png": true
+    },
+    "samsung_no_ena_check.png": {
+      "format": "PNG",
+      "size": [
+        768,
+        1707
+      ],
+      "mode": "RGBA",
+      "size_bytes": 133738,
+      "valid_png": true
+    }
+  }
+}
