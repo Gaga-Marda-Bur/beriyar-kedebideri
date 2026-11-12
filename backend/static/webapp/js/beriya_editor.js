@@ -10,6 +10,7 @@
 
     let activeInput = bodyTextarea;
     let saveTimeout = null;
+    let restoringDraft = false;
     let currentTheme = "dark_forest";
     let currentAlignment = "left";
     let currentFontSize = 24;
@@ -34,27 +35,29 @@
 
     // Load Draft from localStorage
     function loadDraft() {
+        restoringDraft = true;
         try {
             const raw = localStorage.getItem(STORAGE_KEY);
             if (!raw) return;
             const draft = JSON.parse(raw);
-            if (draft.title !== undefined) titleInput.value = draft.title;
-            if (draft.content !== undefined) bodyTextarea.value = draft.content;
+            if (draft.title !== undefined) titleInput.value = window.BKTransliteration.normalize_erfe(draft.title);
+            if (draft.content !== undefined) bodyTextarea.value = window.BKTransliteration.normalize_erfe(draft.content);
             if (draft.theme) setTheme(draft.theme);
             if (draft.alignment) setAlignment(draft.alignment);
             if (draft.fontSize) setFontSize(draft.fontSize);
-        } catch (_) {}
+        } catch (_) {} finally { restoringDraft = false; }
     }
 
     function saveDraft() {
+        if (restoringDraft) return;
         if (statusBadge) statusBadge.classList.add("saving");
         if (statusText) statusText.textContent = i18n.saving;
 
         clearTimeout(saveTimeout);
         saveTimeout = setTimeout(() => {
             const draft = {
-                title: titleInput.value,
-                content: bodyTextarea.value,
+                title: window.BKTransliteration.normalize_erfe(titleInput.value),
+                content: window.BKTransliteration.normalize_erfe(bodyTextarea.value),
                 theme: currentTheme,
                 alignment: currentAlignment,
                 fontSize: currentFontSize,
@@ -142,8 +145,8 @@
     const copyBtn = document.getElementById("copyTextBtn");
     if (copyBtn) {
         copyBtn.addEventListener("click", () => {
-            const title = titleInput.value.trim();
-            const body = bodyTextarea.value.trim();
+            const title = window.BKTransliteration.normalize_erfe(titleInput.value).trim();
+            const body = window.BKTransliteration.normalize_erfe(bodyTextarea.value).trim();
             const full = title ? `${title}\n\n${body}` : body;
             if (!full) return;
 
@@ -212,8 +215,8 @@
         const ctx = offscreen.getContext("2d");
 
         // Prepare text lines
-        const title = titleInput.value.trim();
-        const body = bodyTextarea.value;
+        const title = window.BKTransliteration.normalize_erfe(titleInput.value).trim();
+        const body = window.BKTransliteration.normalize_erfe(bodyTextarea.value);
         const paragraphs = body.split("\n");
 
         const fontSize = currentFontSize * scale;
@@ -446,7 +449,7 @@
             y -= 30;
 
             // Draw Title
-            const title = titleInput.value.trim();
+            const title = window.BKTransliteration.normalize_erfe(titleInput.value).trim();
             if (title) {
                 const titleSize = Math.round(currentFontSize * 1.15);
                 drawMixed(page, title, {
@@ -460,7 +463,7 @@
             }
 
             // Draw Body Paragraphs with multiline wrapping
-            const body = bodyTextarea.value.trim();
+            const body = window.BKTransliteration.normalize_erfe(bodyTextarea.value).trim();
             const paragraphs = body.split("\n");
             const bodySize = currentFontSize;
             const lineHeight = bodySize * 1.45;

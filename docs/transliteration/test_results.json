@@ -1,0 +1,58 @@
+{
+  "base_commit": "48a2783",
+  "branch": "codex/official-erfe-transliteration",
+  "before": {
+    "django": {
+      "run": 161,
+      "skipped": 2,
+      "failed": 0
+    },
+    "flutter": {
+      "passed": 161
+    },
+    "reproductions": {
+      "django_integration_failures": 3,
+      "flutter_historical_case_failures": 1
+    }
+  },
+  "after": {
+    "django": {
+      "run": 169,
+      "skipped": 2,
+      "failed": 0
+    },
+    "flutter": {
+      "passed": 167
+    },
+    "javascript": {
+      "passed": 7,
+      "failed": 0
+    },
+    "parity_vectors_per_platform": 315,
+    "platforms": [
+      "Python",
+      "Dart",
+      "JavaScript"
+    ],
+    "browser": {
+      "passed": 7,
+      "page_errors": 0
+    },
+    "flutter_analysis": {
+      "new_diagnostics": 0,
+      "preexisting_warning": "unused_import: integration_test/historical_tools_final_qa_test.dart:8",
+      "fully_clean": false
+    },
+    "android_physical": {
+      "status": "not_executed",
+      "reason": "ADB inventory empty"
+    }
+  },
+  "integrity": {
+    "database_sha256_before": "7fe288b82f0539166d8008b89725f27db490805d9b07542f469c816f5c219d03",
+    "database_sha256_after": "7fe288b82f0539166d8008b89725f27db490805d9b07542f469c816f5c219d03",
+    "database_unchanged": true,
+    "migrations_run_on_existing_database": false
+  },
+  "distribution": "awaiting_user_approval"
+}

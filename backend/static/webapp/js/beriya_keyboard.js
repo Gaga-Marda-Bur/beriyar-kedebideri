@@ -71,6 +71,7 @@
     }
 
     function insertText(text) {
+        if (window.BKTransliteration) text = window.BKTransliteration.normalize_erfe(text);
         if (!activeInput) {
             const possibleInput = document.querySelector("[data-beriya-keyboard='true']");
             if (possibleInput) {
@@ -108,10 +109,13 @@
             end = lastSelectionEnd || activeInput.value.length;
         }
 
-        activeInput.value =
-            activeInput.value.substring(0, start) +
-            text +
-            activeInput.value.substring(end);
+        activeInput.setSelectionRange(start, end);
+        if (!document.execCommand('insertText', false, text)) {
+            activeInput.value =
+                activeInput.value.substring(0, start) +
+                text +
+                activeInput.value.substring(end);
+        }
 
         const newPosition = start + text.length;
         activeInput.setSelectionRange(newPosition, newPosition);

@@ -300,8 +300,8 @@ document.addEventListener("DOMContentLoaded", function () {
       let isCorrect = false;
 
       if (textAnswer) {
-        const expected = (textAnswer.dataset.correctText || "").trim();
-        const given = (textAnswer.value || "").trim();
+        const expected = window.BKTransliteration.normalize_erfe(textAnswer.dataset.correctText || "").trim();
+        const given = window.BKTransliteration.normalize_erfe(textAnswer.value || "").trim();
 
         if (!given) {
           feedback.hidden = false;

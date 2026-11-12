@@ -1,4 +1,5 @@
 import 'dart:convert';
+import '../../../shared/beriya/transliteration.dart';
 
 class BeriyaDraft {
   final String id;
@@ -56,8 +57,8 @@ class BeriyaDraft {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'title': title,
-      'content': content,
+      'title': normalizeErfe(title),
+      'content': normalizeErfe(content),
       'fontSize': fontSize,
       'alignment': alignment,
       'theme': theme,

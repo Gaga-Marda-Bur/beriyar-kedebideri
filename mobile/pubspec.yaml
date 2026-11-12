@@ -54,6 +54,7 @@ dependencies:
   # Maintained Ed25519 verifier; no Ads, billing or private signing key in the app.
   cryptography: ^2.7.0
   path: ^1.9.1
+  unorm_dart: 0.3.3
 
 dev_dependencies:
   integration_test:

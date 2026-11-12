@@ -309,7 +309,7 @@
     }
 
     function drawText() {
-        const text = textInput.value.trim() || i18n.emptyText;
+        const text = window.BKTransliteration.normalize_erfe(textInput.value).trim() || i18n.emptyText;
         const maxWidth = 760;
 
         ctx.save();

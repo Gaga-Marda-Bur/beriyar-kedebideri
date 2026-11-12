@@ -1,3 +1,5 @@
+import '../../../shared/beriya/transliteration.dart';
+
 class QuizQuestionModel {
   final int id;
   final int? unit;
@@ -186,7 +188,7 @@ class QuizQuestionModel {
   }
 
   static String _normalizeText(String input) {
-    return input.trim().replaceAll(RegExp(r'\s+'), ' ');
+    return normalizeErfe(input).trim().replaceAll(RegExp(r'\s+'), ' ');
   }
 
   static List<Map<String, dynamic>> _asMapList(dynamic value) {

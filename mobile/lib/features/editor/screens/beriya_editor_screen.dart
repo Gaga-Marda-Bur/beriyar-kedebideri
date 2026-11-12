@@ -9,6 +9,9 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../l10n/generated/app_localizations.dart';
 import '../../../shared/beriya/beriya_keyboard.dart';
+import '../../../shared/beriya/erfe_input_formatter.dart';
+import '../../../shared/beriya/transliteration.dart';
+import '../../../shared/beriya/transliteration_dialog.dart';
 import '../../../shared/beriya/beriya_keyboard_preferences.dart';
 import '../../../shared/beriya/beriya_keyboard_preferences_service.dart';
 import '../../../shared/beriya/beriya_keyboard_sheet.dart';
@@ -71,8 +74,8 @@ class _BeriyaEditorScreenState extends State<BeriyaEditorScreen> {
     final draft = await BeriyaDraftStorage.loadActiveDraft();
     if (!mounted) return;
     setState(() {
-      _titleController.text = draft.title;
-      _bodyController.text = draft.content;
+      _titleController.text = normalizeErfe(draft.title);
+      _bodyController.text = normalizeErfe(draft.content);
       _fontSize = draft.fontSize;
       _alignment = draft.alignment;
       _theme = draft.theme;
@@ -88,8 +91,8 @@ class _BeriyaEditorScreenState extends State<BeriyaEditorScreen> {
     _debounceTimer = Timer(const Duration(milliseconds: 600), () async {
       final draft = BeriyaDraft(
         id: 'default_draft',
-        title: _titleController.text,
-        content: _bodyController.text,
+        title: normalizeErfe(_titleController.text),
+        content: normalizeErfe(_bodyController.text),
         fontSize: _fontSize,
         alignment: _alignment,
         theme: _theme,
@@ -109,8 +112,8 @@ class _BeriyaEditorScreenState extends State<BeriyaEditorScreen> {
   BeriyaDraft _getCurrentDraft() {
     return BeriyaDraft(
       id: 'default_draft',
-      title: _titleController.text,
-      content: _bodyController.text,
+      title: normalizeErfe(_titleController.text),
+      content: normalizeErfe(_bodyController.text),
       fontSize: _fontSize,
       alignment: _alignment,
       theme: _theme,
@@ -439,6 +442,8 @@ class _BeriyaEditorScreenState extends State<BeriyaEditorScreen> {
           ],
         ),
         actions: [
+          IconButton(tooltip: "Erfe | Latin | Arabe", icon: const Icon(Icons.translate),
+            onPressed: () => showTransliterationDialog(context, _activeField == _ActiveField.title ? _titleController : _bodyController, onChanged: _onContentChanged)),
           IconButton(
             tooltip: loc.editorCopyText,
             icon: const Icon(Icons.copy_rounded, color: Colors.white70),
@@ -547,6 +552,7 @@ class _BeriyaEditorScreenState extends State<BeriyaEditorScreen> {
                         // Document Title
                         TextField(
                           controller: _titleController,
+                          inputFormatters: const [ErfeInputFormatter()],
                           textAlign: textAlign,
                           readOnly: true,
                           showCursor: true,
@@ -585,6 +591,7 @@ class _BeriyaEditorScreenState extends State<BeriyaEditorScreen> {
                         // Document Body
                         TextField(
                           controller: _bodyController,
+                          inputFormatters: const [ErfeInputFormatter()],
                           textAlign: textAlign,
                           readOnly: true,
                           showCursor: true,

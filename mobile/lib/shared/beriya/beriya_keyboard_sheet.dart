@@ -6,6 +6,8 @@ import 'beriya_keyboard.dart';
 import 'beriya_keyboard_preferences.dart';
 import 'beriya_keyboard_preferences_service.dart';
 import 'utf16_safe.dart';
+import 'erfe_input_formatter.dart';
+
 
 /// Shows the Beriya Erfe Keyboard as an architecturally managed Modal BottomSheet.
 /// 
@@ -96,14 +98,14 @@ class _BeriyaKeyboardSheetState extends State<BeriyaKeyboardSheet> {
     final next = text.replaceRange(safeStart, safeEnd, value);
     final sanitized = Utf16Safe.sanitize(next);
 
-    widget.controller.value = TextEditingValue(
-      text: sanitized,
-      selection: TextSelection.collapsed(
-        offset: (safeStart + value.length).clamp(0, sanitized.length),
-      ),
-    );
+    widget.controller.value = const ErfeInputFormatter().formatEditUpdate(
+      widget.controller.value, TextEditingValue(
+        text: sanitized,
+        selection: TextSelection.collapsed(
+          offset: (safeStart + value.length).clamp(0, sanitized.length)),
+      ));
 
-    widget.onChanged?.call(sanitized);
+    widget.onChanged?.call(widget.controller.text);
   }
 
   void _backspace() {

@@ -1,0 +1,8 @@
+.bk-transliteration { margin: .6rem 0; font: 14px/1.5 system-ui, sans-serif; }
+.bk-transliteration summary { cursor: pointer; padding: .5rem; border: 1px solid currentColor; border-radius: .5rem; }
+.bk-transliteration fieldset { display: flex; flex-wrap: wrap; gap: .5rem; padding: .6rem; margin-top: .5rem; max-width: 100%; border-radius: .5rem; border: 1px solid currentColor; }
+.bk-transliteration button, .bk-transliteration select { padding: .45rem .6rem; border: 1px solid #8b9d92; border-radius: .4rem; background: #183d30; color: #fff; font: inherit; }
+.bk-transliteration button:focus-visible, .bk-transliteration select:focus-visible { outline: 3px solid #d4af37; }
+.bk-transliteration textarea { background: #f6f7ef; color: #14291e; font-family: "Kedebideri", system-ui, sans-serif; font-size: 20px; padding: .5rem; box-sizing: border-box; border-radius: .4rem; }
+.bk-transliteration [role=status] { overflow-wrap: anywhere; }
+@media print { .bk-transliteration { display: none !important; } }

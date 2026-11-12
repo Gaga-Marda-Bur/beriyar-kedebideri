@@ -1,0 +1,267 @@
+{
+  "schema_version": "1.0",
+  "source_file": "erfe(1).xlsx",
+  "source_sha256": "82b1993b9a6b79422b909e2e8b5a90ba918a980566da49a65051a670905f711e",
+  "canonical_script": "erfe_upper",
+  "unicode_normalization": "NFC",
+  "transliteration_policy": {
+    "latin_output": "uppercase",
+    "erfe_lowercase_input": "normalize_to_uppercase",
+    "unmapped_characters": "preserve_and_report",
+    "arabic_codepoints": "strict_exact_match",
+    "direction": "explicit_source_and_target",
+    "punctuation_whitespace_digits": "preserve"
+  },
+  "letters": [
+    {
+      "erfe": "𖺠",
+      "latin_upper": "A",
+      "latin_lower": "a",
+      "arabic": "ا",
+      "erfe_codepoint": "U+16EA0",
+      "arabic_codepoint": "U+0627",
+      "erfe_lower_alias": "𖺻",
+      "erfe_lower_codepoint": "U+16EBB"
+    },
+    {
+      "erfe": "𖺡",
+      "latin_upper": "B",
+      "latin_lower": "b",
+      "arabic": "ب",
+      "erfe_codepoint": "U+16EA1",
+      "arabic_codepoint": "U+0628",
+      "erfe_lower_alias": "𖺼",
+      "erfe_lower_codepoint": "U+16EBC"
+    },
+    {
+      "erfe": "𖺢",
+      "latin_upper": "D",
+      "latin_lower": "d",
+      "arabic": "د",
+      "erfe_codepoint": "U+16EA2",
+      "arabic_codepoint": "U+062F",
+      "erfe_lower_alias": "𖺽",
+      "erfe_lower_codepoint": "U+16EBD"
+    },
+    {
+      "erfe": "𖺣",
+      "latin_upper": "E",
+      "latin_lower": "e",
+      "arabic": "آ",
+      "erfe_codepoint": "U+16EA3",
+      "arabic_codepoint": "U+0622",
+      "erfe_lower_alias": "𖺾",
+      "erfe_lower_codepoint": "U+16EBE"
+    },
+    {
+      "erfe": "𖺤",
+      "latin_upper": "F",
+      "latin_lower": "f",
+      "arabic": "ف",
+      "erfe_codepoint": "U+16EA4",
+      "arabic_codepoint": "U+0641",
+      "erfe_lower_alias": "𖺿",
+      "erfe_lower_codepoint": "U+16EBF"
+    },
+    {
+      "erfe": "𖺥",
+      "latin_upper": "G",
+      "latin_lower": "g",
+      "arabic": "ق",
+      "erfe_codepoint": "U+16EA5",
+      "arabic_codepoint": "U+0642",
+      "erfe_lower_alias": "𖻀",
+      "erfe_lower_codepoint": "U+16EC0"
+    },
+    {
+      "erfe": "𖺦",
+      "latin_upper": "H",
+      "latin_lower": "h",
+      "arabic": "ه",
+      "erfe_codepoint": "U+16EA6",
+      "arabic_codepoint": "U+0647",
+      "erfe_lower_alias": "𖻁",
+      "erfe_lower_codepoint": "U+16EC1"
+    },
+    {
+      "erfe": "𖺧",
+      "latin_upper": "I",
+      "latin_lower": "i",
+      "arabic": "ی",
+      "erfe_codepoint": "U+16EA7",
+      "arabic_codepoint": "U+06CC",
+      "erfe_lower_alias": "𖻂",
+      "erfe_lower_codepoint": "U+16EC2"
+    },
+    {
+      "erfe": "𖺨",
+      "latin_upper": "J",
+      "latin_lower": "j",
+      "arabic": "ج",
+      "erfe_codepoint": "U+16EA8",
+      "arabic_codepoint": "U+062C",
+      "erfe_lower_alias": "𖻃",
+      "erfe_lower_codepoint": "U+16EC3"
+    },
+    {
+      "erfe": "𖺩",
+      "latin_upper": "K",
+      "latin_lower": "k",
+      "arabic": "ك",
+      "erfe_codepoint": "U+16EA9",
+      "arabic_codepoint": "U+0643",
+      "erfe_lower_alias": "𖻄",
+      "erfe_lower_codepoint": "U+16EC4"
+    },
+    {
+      "erfe": "𖺪",
+      "latin_upper": "L",
+      "latin_lower": "l",
+      "arabic": "ل",
+      "erfe_codepoint": "U+16EAA",
+      "arabic_codepoint": "U+0644",
+      "erfe_lower_alias": "𖻅",
+      "erfe_lower_codepoint": "U+16EC5"
+    },
+    {
+      "erfe": "𖺫",
+      "latin_upper": "M",
+      "latin_lower": "m",
+      "arabic": "م",
+      "erfe_codepoint": "U+16EAB",
+      "arabic_codepoint": "U+0645",
+      "erfe_lower_alias": "𖻆",
+      "erfe_lower_codepoint": "U+16EC6"
+    },
+    {
+      "erfe": "𖺬",
+      "latin_upper": "N",
+      "latin_lower": "n",
+      "arabic": "ن",
+      "erfe_codepoint": "U+16EAC",
+      "arabic_codepoint": "U+0646",
+      "erfe_lower_alias": "𖻇",
+      "erfe_lower_codepoint": "U+16EC7"
+    },
+    {
+      "erfe": "𖺭",
+      "latin_upper": "Ɲ",
+      "latin_lower": "ɲ",
+      "arabic": "ڽ",
+      "erfe_codepoint": "U+16EAD",
+      "arabic_codepoint": "U+06BD",
+      "erfe_lower_alias": "𖻈",
+      "erfe_lower_codepoint": "U+16EC8"
+    },
+    {
+      "erfe": "𖺮",
+      "latin_upper": "Ŋ",
+      "latin_lower": "ŋ",
+      "arabic": "ڠ",
+      "erfe_codepoint": "U+16EAE",
+      "arabic_codepoint": "U+06A0",
+      "erfe_lower_alias": "𖻉",
+      "erfe_lower_codepoint": "U+16EC9"
+    },
+    {
+      "erfe": "𖺯",
+      "latin_upper": "O",
+      "latin_lower": "o",
+      "arabic": "ۆ",
+      "erfe_codepoint": "U+16EAF",
+      "arabic_codepoint": "U+06C6",
+      "erfe_lower_alias": "𖻊",
+      "erfe_lower_codepoint": "U+16ECA"
+    },
+    {
+      "erfe": "𖺰",
+      "latin_upper": "P",
+      "latin_lower": "p",
+      "arabic": "پ",
+      "erfe_codepoint": "U+16EB0",
+      "arabic_codepoint": "U+067E",
+      "erfe_lower_alias": "𖻋",
+      "erfe_lower_codepoint": "U+16ECB"
+    },
+    {
+      "erfe": "𖺱",
+      "latin_upper": "R",
+      "latin_lower": "r",
+      "arabic": "ر",
+      "erfe_codepoint": "U+16EB1",
+      "arabic_codepoint": "U+0631",
+      "erfe_lower_alias": "𖻌",
+      "erfe_lower_codepoint": "U+16ECC"
+    },
+    {
+      "erfe": "𖺲",
+      "latin_upper": "Ř",
+      "latin_lower": "ř",
+      "arabic": "ڕ",
+      "erfe_codepoint": "U+16EB2",
+      "arabic_codepoint": "U+0695",
+      "erfe_lower_alias": "𖻍",
+      "erfe_lower_codepoint": "U+16ECD"
+    },
+    {
+      "erfe": "𖺳",
+      "latin_upper": "S",
+      "latin_lower": "s",
+      "arabic": "س",
+      "erfe_codepoint": "U+16EB3",
+      "arabic_codepoint": "U+0633",
+      "erfe_lower_alias": "𖻎",
+      "erfe_lower_codepoint": "U+16ECE"
+    },
+    {
+      "erfe": "𖺴",
+      "latin_upper": "Š",
+      "latin_lower": "š",
+      "arabic": "ش",
+      "erfe_codepoint": "U+16EB4",
+      "arabic_codepoint": "U+0634",
+      "erfe_lower_alias": "𖻏",
+      "erfe_lower_codepoint": "U+16ECF"
+    },
+    {
+      "erfe": "𖺵",
+      "latin_upper": "T",
+      "latin_lower": "t",
+      "arabic": "ت",
+      "erfe_codepoint": "U+16EB5",
+      "arabic_codepoint": "U+062A",
+      "erfe_lower_alias": "𖻐",
+      "erfe_lower_codepoint": "U+16ED0"
+    },
+    {
+      "erfe": "𖺶",
+      "latin_upper": "U",
+      "latin_lower": "u",
+      "arabic": "ۇ",
+      "erfe_codepoint": "U+16EB6",
+      "arabic_codepoint": "U+06C7",
+      "erfe_lower_alias": "𖻑",
+      "erfe_lower_codepoint": "U+16ED1"
+    },
+    {
+      "erfe": "𖺷",
+      "latin_upper": "W",
+      "latin_lower": "w",
+      "arabic": "و",
+      "erfe_codepoint": "U+16EB7",
+      "arabic_codepoint": "U+0648",
+      "erfe_lower_alias": "𖻒",
+      "erfe_lower_codepoint": "U+16ED2"
+    },
+    {
+      "erfe": "𖺸",
+      "latin_upper": "Y",
+      "latin_lower": "y",
+      "arabic": "ي",
+      "erfe_codepoint": "U+16EB8",
+      "arabic_codepoint": "U+064A",
+      "erfe_lower_alias": "𖻓",
+      "erfe_lower_codepoint": "U+16ED3"
+    }
+  ]
+}

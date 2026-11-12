@@ -7,6 +7,9 @@ import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../shared/beriya/beriya_keyboard.dart';
+import '../../../shared/beriya/erfe_input_formatter.dart';
+import '../../../shared/beriya/transliteration.dart';
+import '../../../shared/beriya/transliteration_dialog.dart';
 import '../../../shared/beriya/beriya_keyboard_sheet.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../../../shared/beriya/beriya_keyboard_preferences.dart';
@@ -101,6 +104,8 @@ class _StickerStudioScreenState extends State<StickerStudioScreen> {
         elevation: 0,
         title: Text(loc.studioSticker),
         actions: [
+          IconButton(tooltip: "Erfe | Latin | Arabe", icon: const Icon(Icons.translate),
+            onPressed: () => showTransliterationDialog(context, _controller, onChanged: () => setState(() {}))),
           IconButton(
             onPressed: _shareImage,
             icon: const Icon(Icons.ios_share_rounded),
@@ -169,6 +174,7 @@ class _StickerStudioScreenState extends State<StickerStudioScreen> {
           const SizedBox(height: 10),
           TextField(
             controller: _controller,
+            inputFormatters: const [ErfeInputFormatter()],
             maxLines: 4,
             minLines: 3,
             readOnly: true,
@@ -346,9 +352,9 @@ class _StickerStudioScreenState extends State<StickerStudioScreen> {
             child: AspectRatio(
               aspectRatio: 1,
               child: _StickerPreview(
-                text: _controller.text.trim().isEmpty
+                text: normalizeErfe(_controller.text).trim().isEmpty
                     ? loc.studioEmptyText
-                    : _controller.text.trim(),
+                    : normalizeErfe(_controller.text).trim(),
                 color: _mainColor,
                 style: _style,
                 mode: _mode,

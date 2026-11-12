@@ -1,3 +1,4 @@
+import '../../shared/beriya/transliteration.dart';
 import 'dart:io';
 import '../../features/alphabet/alphabet_api_service.dart';
 import '../../features/alphabet/models/character_model.dart';
@@ -140,7 +141,7 @@ class CachedContentService {
     String? search,
     bool forceRefresh = false,
   }) async {
-    final query = search?.trim().toLowerCase() ?? '';
+    final query = normalizeErfe(search?.trim() ?? '').toLowerCase();
     final online = await _backendStatusService.isBackendReachable();
 
     if (!forceRefresh && query.isEmpty) {
@@ -219,7 +220,7 @@ class CachedContentService {
     }
 
     return source.where((word) {
-      return word.beriyaText.toLowerCase().contains(query) ||
+      return normalizeErfe(word.beriyaText).toLowerCase().contains(query) ||
           word.latinTranscription.toLowerCase().contains(query) ||
           word.translationFr.toLowerCase().contains(query) ||
           word.translationEn.toLowerCase().contains(query) ||

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from core.forms import CanonicalErfeModelForm
 
 from .models import Word, WordAudio, WordCategory
 
@@ -38,6 +39,11 @@ class WordAudioInline(admin.TabularInline):
 
 @admin.register(Word)
 class WordAdmin(admin.ModelAdmin):
+    form = CanonicalErfeModelForm
+    class Media:
+        css = {'all': ('webapp/css/transliteration.css',)}
+        js = ('webapp/js/transliteration_data.js', 'webapp/js/transliteration.js', 'webapp/js/transliteration_inputs.js')
+
     list_display = [
         'beriya_text',
         'latin_transcription',

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from core.forms import CanonicalErfeModelForm
 
 from .models import Character, CharacterAudio
 
@@ -11,6 +12,11 @@ class CharacterAudioInline(admin.TabularInline):
 
 @admin.register(Character)
 class CharacterAdmin(admin.ModelAdmin):
+    form = CanonicalErfeModelForm
+    class Media:
+        css = {'all': ('webapp/css/transliteration.css',)}
+        js = ('webapp/js/transliteration_data.js', 'webapp/js/transliteration.js', 'webapp/js/transliteration_inputs.js')
+
     list_display = [
         'symbol',
         'unicode_code',

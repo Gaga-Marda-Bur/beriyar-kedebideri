@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'utf16_safe.dart';
+
+import 'erfe_input_formatter.dart';
+import 'transliteration_dialog.dart';
 import '../../l10n/generated/app_localizations.dart';
 import 'beriya_keyboard.dart';
 import 'beriya_keyboard_preferences.dart';
@@ -115,14 +118,14 @@ class _BeriyaTextFieldState extends State<BeriyaTextField> {
     final next = text.replaceRange(safeStart, safeEnd, value);
     final sanitized = Utf16Safe.sanitize(next);
 
-    widget.controller.value = TextEditingValue(
-      text: sanitized,
-      selection: TextSelection.collapsed(
-        offset: (safeStart + value.length).clamp(0, sanitized.length),
-      ),
-    );
+    widget.controller.value = const ErfeInputFormatter().formatEditUpdate(
+      widget.controller.value, TextEditingValue(
+        text: sanitized,
+        selection: TextSelection.collapsed(
+          offset: (safeStart + value.length).clamp(0, sanitized.length)),
+      ));
 
-    widget.onChanged?.call(sanitized);
+    widget.onChanged?.call(widget.controller.text);
     setState(() {});
   }
 
@@ -211,8 +214,12 @@ class _BeriyaTextFieldState extends State<BeriyaTextField> {
           const SizedBox(height: 10),
         ],
 
+        TextButton.icon(onPressed: () => showTransliterationDialog(context, widget.controller,
+          onChanged: () { widget.onChanged?.call(widget.controller.text); setState(() {}); }),
+          icon: const Icon(Icons.translate), label: const Text("Erfe | Latin | Arabe")),
         TextField(
           controller: widget.controller,
+          inputFormatters: const [ErfeInputFormatter()],
           readOnly: _isBeriyaMode,
           showCursor: true,
           minLines: widget.minLines,

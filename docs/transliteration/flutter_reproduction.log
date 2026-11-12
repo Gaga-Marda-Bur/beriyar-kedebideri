@@ -1,0 +1,17 @@
+00:00 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/transliteration_test.dart
+00:00 +0: cross-platform reference vectors and round trips
+00:00 +1: paste multiline, UTF16 selection and active composition
+00:00 +2: learning accepts canonical input against historical lower Erfe
+00:00 +2 -1: learning accepts canonical input against historical lower Erfe [E]
+  Expected: true
+    Actual: <false>
+
+  package:matcher                                     expect
+  package:flutter_test/src/widget_tester.dart 473:18  expect
+  test\transliteration_test.dart 40:5                 main.<fn>
+
+00:00 +2 -1: explicit conversion, selection, insertion and undo
+00:01 +3 -1: Some tests failed.
+
+Failing tests:
+  C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/transliteration_test.dart: learning accepts canonical input against historical lower Erfe

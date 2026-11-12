@@ -1,3 +1,5 @@
+from core.erfe_search import erfe_search_expression
+from core.transliteration import normalize_erfe
 from django.shortcuts import get_object_or_404, redirect, render
 
 from alphabet.models import Character
@@ -135,8 +137,9 @@ def vocabulary_page(request):
     )
 
     if search:
+        words = words.alias(_erfe_search=erfe_search_expression('beriya_text', search))
         words = (
-            words.filter(beriya_text__icontains=search)
+            words.filter(_erfe_search__icontains=normalize_erfe(search))
             | words.filter(latin_transcription__icontains=search)
             | words.filter(french_translation__icontains=search)
             | words.filter(english_translation__icontains=search)

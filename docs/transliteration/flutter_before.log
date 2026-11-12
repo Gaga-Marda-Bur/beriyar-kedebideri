@@ -1,0 +1,520 @@
+
+┌─────────────────────────────────────────────────────────┐
+│ A new version of Flutter is available!                  │
+│                                                         │
+│ To update to the latest version, run "flutter upgrade". │
+└─────────────────────────────────────────────────────────┘
+
+00:00 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:01 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:02 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:03 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:04 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:05 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:06 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:07 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:08 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:09 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:10 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:11 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:12 +0: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart
+00:12 +0: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart: ... Tests (A10) getList returns all items across multiple pages when next is present
+00:12 +1: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart: ... Tests (A10) getList returns all items across multiple pages when next is present
+00:12 +2: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart: ... Tests (A10) getList returns all items across multiple pages when next is present
+00:12 +3: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart: ... Tests (A10) getList returns all items across multiple pages when next is present
+00:12 +4: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_config_release_test.dart: ... de la configuration release hôtes publics proches des plages privées restent acceptés
+00:12 +5: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_config_release_test.dart: ... de la configuration release hôtes publics proches des plages privées restent acceptés
+00:12 +5: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_config_release_test.dart: ... de la configuration release le développement local reste possible hors release
+00:12 +6: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart: ... Pagination Tests (A10) getList deduplicates items sharing the same ID across pages
+00:12 +7: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart: ... Pagination Tests (A10) getList deduplicates items sharing the same ID across pages
+00:12 +8: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart: ... Pagination Tests (A10) getList deduplicates items sharing the same ID across pages
+00:12 +8: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart: ... Tests (A10) getList retains already loaded pages when a subsequent page fails
+00:12 +9: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart: ... Tests (A10) getList retains already loaded pages when a subsequent page fails
+00:12 +9: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart: ... refuses following next URLs targeting unauthorized foreign domains (SSRF protection)
+00:12 +10: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/api_client_pagination_test.dart: ... following next URLs targeting unauthorized foreign domains (SSRF protection)
+00:12 +10: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/app_tokens_test.dart
+00:12 +10: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/app_tokens_test.dart: AppTokens & AppColors Design System (Lot 3) Tokens represent the canonical Beriya palette
+00:12 +11: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/app_tokens_test.dart: AppTokens & AppColors Design System (Lot 3) Tokens represent the canonical Beriya palette
+00:12 +11: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/app_tokens_test.dart: AppTokens & AppColors Design System (Lot 3) Spacing tokens match 4/8/12/16/24/32/48 scale
+00:12 +12: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/app_tokens_test.dart: AppTokens & AppColors Design System (Lot 3) Spacing tokens match 4/8/12/16/24/32/48 scale
+00:12 +12: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/app_tokens_test.dart: AppTokens & AppColors Design System (Lot 3) Radii and touch target meet accessibility criteria
+00:12 +13: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/app_tokens_test.dart: AppTokens & AppColors Design System (Lot 3) Radii and touch target meet accessibility criteria
+00:12 +13: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/app_tokens_test.dart: AppTokens & AppColors Design System (Lot 3) Semantic status colors are defined
+00:12 +14: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/app_tokens_test.dart: AppTokens & AppColors Design System (Lot 3) Semantic status colors are defined
+00:12 +14: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/app_tokens_test.dart: ... & AppColors Design System (Lot 3) AppColors backwards-compatible aliases point to AppTokens
+00:12 +15: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/app_tokens_test.dart: ... & AppColors Design System (Lot 3) AppColors backwards-compatible aliases point to AppTokens
+00:13 +15: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/app_tokens_test.dart: ... & AppColors Design System (Lot 3) AppColors backwards-compatible aliases point to AppTokens
+00:13 +15: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_export_contract_test.dart
+00:13 +15: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_export_contract_test.dart: Django ZIP installs and lesson/quiz audio survives reader restart offline
+00:13 +15: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_export_contract_test.dart: Django ZIP installs and lesson/quiz audio survives reader restart offline
+SOURCE CLEAR
+
+00:13 +16: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_export_contract_test.dart: Django ZIP installs and lesson/quiz audio survives reader restart offline
+00:13 +16: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_export_contract_test.dart: legacy lesson with no media stays readable with null audio
+00:13 +17: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_export_contract_test.dart: legacy lesson with no media stays readable with null audio
+00:14 +17: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_export_contract_test.dart: legacy lesson with no media stays readable with null audio
+00:14 +17: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart
+00:14 +17: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: play, pause and completion expose usable playback states
+00:14 +18: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: play, pause and completion expose usable playback states
+00:14 +18: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: failed playback can be retried and missing local media is explicit
+00:14 +18: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: failed playback can be retried and missing local media is explicit
+ERROR: Audio playback failed
+DETAIL: Bad state: unavailable
+#0      FakeAudioPlayer.play (file:///C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart:22:15)
+#1      AudioUrlPlayer.playUrl (package:mobile/core/audio/audio_url_player.dart:60:21)
+<asynchronous suspension>
+#2      main.<anonymous closure> (file:///C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart:73:7)
+<asynchronous suspension>
+#3      Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:253:15)
+<asynchronous suspension>
+#4      Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:250:11)
+<asynchronous suspension>
+#5      Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:318:9)
+<asynchronous suspension>
+
+ERROR: Audio playback failed
+DETAIL: FileSystemException: Audio file unavailable or corrupted, path = ''
+#0      AudioUrlPlayer.playUrl (package:mobile/core/audio/audio_url_player.dart:55:11)
+<asynchronous suspension>
+#1      main.<anonymous closure> (file:///C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart:78:7)
+<asynchronous suspension>
+#2      Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:253:15)
+<asynchronous suspension>
+#3      Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:250:11)
+<asynchronous suspension>
+#4      Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:318:9)
+<asynchronous suspension>
+
+
+00:14 +19: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: failed playback can be retried and missing local media is explicit
+00:14 +19: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:14 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:15 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:16 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:17 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:18 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:19 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:20 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:21 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:22 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:23 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:24 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:25 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:26 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:27 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:28 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:29 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/audio_url_player_test.dart: starting another screen player stops the previous player
+00:29 +20: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart
+00:29 +20: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaDraft Model Tests Initial draft is empty and has sensible defaults
+00:29 +21: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaDraft Model Tests Initial draft is empty and has sensible defaults
+00:29 +21: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaDraft Model Tests Serialization to/from JSON roundtrips correctly
+00:29 +22: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaDraft Model Tests Serialization to/from JSON roundtrips correctly
+00:29 +22: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaDraft Model Tests copyWith properly updates selective attributes
+00:29 +23: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaDraft Model Tests copyWith properly updates selective attributes
+00:29 +23: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaDraftStorage Tests loadActiveDraft returns initial draft when empty
+00:29 +24: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaDraftStorage Tests loadActiveDraft returns initial draft when empty
+00:29 +24: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaDraftStorage Tests saveDraft and loadActiveDraft persist state correctly
+00:29 +25: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaDraftStorage Tests saveDraft and loadActiveDraft persist state correctly
+00:29 +25: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaDraftStorage Tests clearActiveDraft removes saved draft
+00:29 +26: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaDraftStorage Tests clearActiveDraft removes saved draft
+00:29 +26: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaPdfService Tests generatePdfBytes produces valid PDF byte stream with header
+00:29 +27: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaPdfService Tests generatePdfBytes produces valid PDF byte stream with header
+00:30 +27: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/beriya_editor_test.dart: BeriyaPdfService Tests generatePdfBytes produces valid PDF byte stream with header
+00:30 +27: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/cached_content_service_a16_test.dart
+00:30 +27: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/cached_content_service_a16_test.dart: ... met à jour le cache et retourne une liste vide sans ressusciter l’ancien cache
+00:30 +27: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/cached_content_service_a16_test.dart: A16 — Distinction réponse API vide vs erreur vs cache une réponse API 200 vide met à jour le cache et retourne une liste vide sans ressusciter l’ancien cache
+SOURCE CLEAR
+CACHE SAVE [characters]: 1 items
+CACHED LOAD characters: backendOnline=true
+CACHED LOAD characters: API=0
+CACHE SAVE [characters]: 0 items
+SOURCE SET [characters] = empty
+CACHE READ [characters]: 0 raw items
+
+00:30 +28: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/cached_content_service_a16_test.dart: ... met à jour le cache et retourne une liste vide sans ressusciter l’ancien cache
+00:30 +28: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/cached_content_service_a16_test.dart: ... cas d’erreur réseau (500), le cache existant est préservé et utilisé en repli
+00:30 +28: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/cached_content_service_a16_test.dart: A16 — Distinction réponse API vide vs erreur vs cache en cas d’erreur réseau (500), le cache existant est préservé et utilisé en repli
+SOURCE CLEAR
+CACHE SAVE [characters]: 1 items
+CACHED LOAD characters: backendOnline=true
+ERROR: CACHED LOAD characters API failed
+DETAIL: Exception: GET /alphabet/characters/ failed with status 500: Server Error
+#0      ApiClient.getMap (package:mobile/core/api/api_client.dart:71:7)
+<asynchronous suspension>
+#1      ApiClient.getList (package:mobile/core/api/api_client.dart:92:27)
+<asynchronous suspension>
+#2      AlphabetApiService.fetchCharacters (package:mobile/features/alphabet/alphabet_api_service.dart:30:19)
+<asynchronous suspension>
+#3      CachedContentService.loadCharacters (package:mobile/core/cache/cached_content_service.dart:86:23)
+<asynchronous suspension>
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/cached_content_service_a16_test.dart:106:23)
+<asynchronous suspension>
+#5      Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:253:15)
+<asynchronous suspension>
+#6      Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:250:11)
+<asynchronous suspension>
+#7      Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:318:9)
+<asynchronous suspension>
+
+CACHE READ [characters]: 1 raw items
+CACHED LOAD characters: cache=1
+SOURCE SET [characters] = localCache
+
+00:30 +29: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/cached_content_service_a16_test.dart: ... cas d’erreur réseau (500), le cache existant est préservé et utilisé en repli
+00:30 +29: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/cached_content_service_a16_test.dart: ... sans résultat sur le serveur retourne une liste vide sans réinjecter le cache
+00:30 +29: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/cached_content_service_a16_test.dart: A16 — Distinction réponse API vide vs erreur vs cache une recherche sans résultat sur le serveur retourne une liste vide sans réinjecter le cache
+SOURCE CLEAR
+CACHE SAVE [words]: 1 items
+SOURCE SET [words] = empty
+
+00:30 +30: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/cached_content_service_a16_test.dart: ... sans résultat sur le serveur retourne une liste vide sans réinjecter le cache
+00:31 +30: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/cached_content_service_a16_test.dart: ... sans résultat sur le serveur retourne une liste vide sans réinjecter le cache
+00:31 +30: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_client_test.dart
+00:31 +30: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_client_test.dart: HTTP 401 does not discard a provable offline lease or local learning
+00:31 +31: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_client_test.dart: HTTP 401 does not discard a provable offline lease or local learning
+00:31 +31: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_client_test.dart: HTTP 403 does not discard a provable offline lease or local learning
+00:31 +32: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_client_test.dart: HTTP 403 does not discard a provable offline lease or local learning
+00:31 +32: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_client_test.dart: HTTP 503 does not discard a provable offline lease or local learning
+00:31 +33: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_client_test.dart: HTTP 503 does not discard a provable offline lease or local learning
+00:31 +33: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart
+00:31 +33: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: Python signature verifies in Dart; all current learning stays free
+00:31 +34: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: Python signature verifies in Dart; all current learning stays free
+00:31 +34: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: app restart and airplane mode reuse authenticated cache on same boot
+00:31 +35: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: app restart and airplane mode reuse authenticated cache on same boot
+00:31 +35: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: expiry at seven days never deletes the local data
+00:31 +36: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: expiry at seven days never deletes the local data
+00:31 +36: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: civil clock not used; backward monotonic anchor and reboot require network
+00:31 +37: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: civil clock not used; backward monotonic anchor and reboot require network
+00:31 +37: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: logout and A to B isolation
+00:31 +38: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: logout and A to B isolation
+00:31 +38: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: reinstallation/new installation key cannot recover old rights
+00:31 +39: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: reinstallation/new installation key cannot recover old rights
+00:31 +39: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: tampered claims and signatures are refused
+00:31 +40: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: tampered claims and signatures are refused
+00:31 +40: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: nonce mismatch, slow network and response replay cannot reanchor expiry
+00:31 +41: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: nonce mismatch, slow network and response replay cannot reanchor expiry
+00:31 +41: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: production rejects synthetic keys and leases
+00:31 +42: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: production rejects synthetic keys and leases
+00:31 +42: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: missing/corrupt commercial cache fails closed, retaining all free features
+00:31 +43: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: missing/corrupt commercial cache fails closed, retaining all free features
+00:31 +43: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: server revocation after reconnect removes paid extras, never free data
+00:31 +44: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: server revocation after reconnect removes paid extras, never free data
+00:31 +44: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: valid signatures cannot bypass maximum TTL, owner, feature allowlist or epoch
+00:31 +45: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: valid signatures cannot bypass maximum TTL, owner, feature allowlist or epoch
+00:32 +45: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: valid signatures cannot bypass maximum TTL, owner, feature allowlist or epoch
+00:33 +45: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: valid signatures cannot bypass maximum TTL, owner, feature allowlist or epoch
+00:34 +45: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/commerce_offline_test.dart: valid signatures cannot bypass maximum TTL, owner, feature allowlist or epoch
+00:34 +45: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/educational_route_gate_test.dart
+00:34 +45: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/educational_route_gate_test.dart: educational direct Premium route resolves to free home, not a hidden commercial screen
+00:34 +46: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/educational_route_gate_test.dart: educational direct Premium route resolves to free home, not a hidden commercial screen
+00:34 +46: loading C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/erfe_typography_test.dart
+00:34 +46: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/erfe_typography_test.dart: both themes provide Erfe fallback without replacing Latin
+00:34 +47: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/erfe_typography_test.dart: both themes provide Erfe fallback without replacing Latin
+00:34 +47: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/erfe_typography_test.dart: explicit Latin styles retain Erfe fallback
+00:34 +48: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/erfe_typography_test.dart: explicit Latin styles retain Erfe fallback
+00:34 +48: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/erfe_typography_test.dart: compact mixed-script layout dark=false
+00:34 +49: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/erfe_typography_test.dart: compact mixed-script layout dark=false
+00:35 +49: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/erfe_typography_test.dart: compact mixed-script layout dark=false
+00:35 +49: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/incomplete_collection_test.dart: partial network response cannot overwrite complete persistent vocabulary cache
+CACHE SAVE [words]: 2 items
+ERROR: CACHED LOAD words API failed
+DETAIL: Collection incomplete (1 items): Exception: GET http://10.0.2.2:8000/api/vocabulary/words/?page=2 failed with status 503: failed
+#0      ApiClient.getList (package:mobile/core/api/api_client.dart:143:9)
+<asynchronous suspension>
+#1      VocabularyApiService.fetchWords (package:mobile/features/vocabulary/vocabulary_api_service.dart:40:19)
+<asynchronous suspension>
+#2      CachedContentService.loadWords (package:mobile/core/cache/cached_content_service.dart:163:23)
+<asynchronous suspension>
+#3      main.<anonymous closure> (file:///C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/incomplete_collection_test.dart:59:21)
+<asynchronous suspension>
+#4      Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:253:15)
+<asynchronous suspension>
+#5      Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:250:11)
+<asynchronous suspension>
+#6      Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:318:9)
+<asynchronous suspension>
+
+CACHE READ [words]: 2 raw items
+SOURCE SET [words] = localCache
+
+00:35 +50: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/erfe_typography_test.dart: compact mixed-script layout dark=false
+00:35 +51: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/erfe_typography_test.dart: compact mixed-script layout dark=false
+00:35 +52: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/erfe_typography_test.dart: compact mixed-script layout dark=false
+00:35 +53: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:35 +54: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:35 +55: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:35 +56: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:35 +57: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +57: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +58: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +59: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +60: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +61: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +62: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +63: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +64: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +65: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +66: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +67: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +68: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +69: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +70: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/feedback_retry_test.dart: feedback text survives rate limiting and remains editable for retry
+00:36 +71: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:36 +72: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:37 +72: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:37 +73: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:37 +74: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:37 +75: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:37 +76: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:37 +77: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:37 +78: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +78: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +79: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +80: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +81: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +82: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +83: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +84: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +85: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +86: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +87: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +88: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +89: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +90: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/learning_session_screen_test.dart: cannot skip answers; failed assessment finishes in review, not mastery
+00:38 +91: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:38 +92: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:38 +93: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:38 +94: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:38 +95: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:38 +96: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:38 +97: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:38 +98: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:38 +99: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:38 +100: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:38 +101: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:38 +102: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:39 +102: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:39 +103: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:39 +104: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:39 +105: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:39 +106: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:39 +107: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:39 +108: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:39 +109: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:39 +110: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:40 +110: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_2_audio_first_session_test.dart: ... avec BkAudioHeroButton, BkOptionCard, BkFeedbackSheet et bilan RÉVISER
+00:40 +111: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_4_learning_path_test.dart: ... la prochaine activité recommandée, le compteur SRS et les packs hors ligne
+00:40 +112: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_3_srs_test.dart: ... : enregistre les résultats SRS à la fin des exercices et propose la séance de révision
+00:40 +113: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_3_srs_test.dart: ... : enregistre les résultats SRS à la fin des exercices et propose la séance de révision
+00:40 +114: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_3_srs_test.dart: ... : enregistre les résultats SRS à la fin des exercices et propose la séance de révision
+00:40 +115: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_3_srs_test.dart: ... : enregistre les résultats SRS à la fin des exercices et propose la séance de révision
+00:40 +116: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_3_srs_test.dart: ... : enregistre les résultats SRS à la fin des exercices et propose la séance de révision
+00:40 +117: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... l'accueil (Parcours actif, Continuer, SRS état vide, Hors ligne, Accès secondaires)
+00:40 +117: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/offline_pack_download_service_test.dart: OfflinePackDownloadService (A05 Security & Validation) downloadAndExtract verifies SHA-256 and installs valid pack
+SOURCE CLEAR
+
+00:40 +118: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... l'accueil (Parcours actif, Continuer, SRS état vide, Hors ligne, Accès secondaires)
+00:40 +119: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... l'accueil (Parcours actif, Continuer, SRS état vide, Hors ligne, Accès secondaires)
+00:40 +120: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... l'accueil (Parcours actif, Continuer, SRS état vide, Hors ligne, Accès secondaires)
+00:40 +121: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... l'accueil (Parcours actif, Continuer, SRS état vide, Hors ligne, Accès secondaires)
+00:40 +122: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... l'accueil (Parcours actif, Continuer, SRS état vide, Hors ligne, Accès secondaires)
+00:41 +122: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... l'accueil (Parcours actif, Continuer, SRS état vide, Hors ligne, Accès secondaires)
+00:41 +122: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/online_content_cache_service_test.dart: saved cache survives service restart with content and date intact
+CACHE SAVE [words]: 1 items
+CACHE READ [words]: 1 raw items
+
+00:41 +123: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... l'accueil (Parcours actif, Continuer, SRS état vide, Hors ligne, Accès secondaires)
+00:41 +123: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/online_content_cache_service_test.dart: legacy raw lists remain readable without rewriting preferences
+CACHE READ [words]: 1 raw items
+
+00:41 +124: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... l'accueil (Parcours actif, Continuer, SRS état vide, Hors ligne, Accès secondaires)
+00:41 +124: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/online_content_cache_service_test.dart: empty saved list remains a valid cache with a timestamp
+CACHE SAVE [words]: 0 items
+CACHE READ [words]: 0 raw items
+
+00:41 +125: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... l'accueil (Parcours actif, Continuer, SRS état vide, Hors ligne, Accès secondaires)
+00:41 +125: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/online_content_cache_service_test.dart: missing cache returns no content or timestamp
+CACHE READ [words]: empty
+
+00:41 +126: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... l'accueil (Parcours actif, Continuer, SRS état vide, Hors ligne, Accès secondaires)
+00:41 +126: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/online_content_cache_service_test.dart: invalid JSON remains stored for recovery and does not throw
+ERROR: CACHE READ [words] failed
+DETAIL: FormatException: Unexpected character (at character 2)
+{broken
+ ^
+
+
+00:41 +127: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... l'accueil (Parcours actif, Continuer, SRS état vide, Hors ligne, Accès secondaires)
+00:41 +127: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/online_content_cache_service_test.dart: unsupported roots and invalid item containers fail safely without deletion
+CACHE READ [words]: 0 raw items
+
+00:41 +128: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_4_learning_path_test.dart: ... et sombre, petits écrans (320x568 & 360x800) et TextScaler 1.3x sans débordement
+00:41 +128: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/online_content_cache_service_test.dart: unsupported roots and invalid item containers fail safely without deletion
+CACHE READ [words]: 0 raw items
+CACHE READ [words]: 0 raw items
+CACHE READ [words]: 0 raw items
+CACHE READ [words]: 0 raw items
+CACHE READ [words]: 0 raw items
+
+00:41 +129: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_4_learning_path_test.dart: ... et sombre, petits écrans (320x568 & 360x800) et TextScaler 1.3x sans débordement
+00:41 +129: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/online_content_cache_service_test.dart: mixed cached lists retain valid objects in both supported formats
+CACHE READ [words]: 1 raw items
+CACHE READ [words]: 1 raw items
+
+00:41 +130: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_4_learning_path_test.dart: ... et sombre, petits écrans (320x568 & 360x800) et TextScaler 1.3x sans débordement
+00:41 +130: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 1 — Résolution des fichiers audio (P3-01) le cache hors ligne résout les URLs audio distantes vers les fichiers locaux du pack
+SOURCE CLEAR
+CACHE SAVE [units]: 1 items
+CACHE READ [units]: 1 raw items
+SOURCE SET [units] = localCache
+
+00:41 +131: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_4_learning_path_test.dart: ... et sombre, petits écrans (320x568 & 360x800) et TextScaler 1.3x sans débordement
+00:41 +131: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 1 — Résolution des fichiers audio (P3-01) streaming distant conservé en ligne quand aucun média local disponible
+SOURCE CLEAR
+CACHE SAVE [units]: 1 items
+ERROR: CACHED LOAD units API failed
+DETAIL: Exception: GET /learning/units/ failed with status 400:
+#0      ApiClient.getMap (package:mobile/core/api/api_client.dart:71:7)
+<asynchronous suspension>
+#1      ApiClient.getList (package:mobile/core/api/api_client.dart:92:27)
+<asynchronous suspension>
+#2      LearningApiService.fetchUnits (package:mobile/features/learning/learning_api_service.dart:66:19)
+<asynchronous suspension>
+#3      CachedContentService.loadUnits (package:mobile/core/cache/cached_content_service.dart:315:23)
+<asynchronous suspension>
+#4      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart:339:21)
+<asynchronous suspension>
+#5      Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:253:15)
+<asynchronous suspension>
+#6      Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:250:11)
+<asynchronous suspension>
+#7      Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:318:9)
+<asynchronous suspension>
+
+CACHE READ [units]: 1 raw items
+SOURCE SET [units] = localCache
+
+00:41 +132: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_4_learning_path_test.dart: ... et sombre, petits écrans (320x568 & 360x800) et TextScaler 1.3x sans débordement
+00:41 +132: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 1 — Résolution des fichiers audio (P3-01) rejet des médias absents, corrompus (0 octet) et supprimés sans chemin local obsolète
+SOURCE CLEAR
+
+00:41 +133: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_4_learning_path_test.dart: ... et sombre, petits écrans (320x568 & 360x800) et TextScaler 1.3x sans débordement
+00:41 +133: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 1 — Résolution des fichiers audio (P3-01) rejet des médias absents, corrompus (0 octet) et supprimés sans chemin local obsolète
+CACHE READ [units]: empty
+SOURCE SET [units] = offlinePack
+SOURCE SET [units] = memory
+MEMORY HIT units: 1
+ERROR: Audio playback failed
+DETAIL: FileSystemException: Audio file unavailable or corrupted, path = ''
+#0      AudioUrlPlayer.playUrl (package:mobile/core/audio/audio_url_player.dart:55:11)
+<asynchronous suspension>
+#1      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart:402:7)
+<asynchronous suspension>
+#2      Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:253:15)
+<asynchronous suspension>
+#3      Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:250:11)
+<asynchronous suspension>
+#4      Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:318:9)
+<asynchronous suspension>
+
+ERROR: Audio playback failed
+DETAIL: FileSystemException: Audio file unavailable or corrupted, path = ''
+#0      AudioUrlPlayer.playUrl (package:mobile/core/audio/audio_url_player.dart:55:11)
+<asynchronous suspension>
+#1      main.<anonymous closure>.<anonymous closure> (file:///C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart:406:7)
+<asynchronous suspension>
+#2      Declarer.test.<anonymous closure>.<anonymous closure> (package:test_api/src/backend/declarer.dart:253:15)
+<asynchronous suspension>
+#3      Declarer.test.<anonymous closure> (package:test_api/src/backend/declarer.dart:250:11)
+<asynchronous suspension>
+#4      Invoker._waitForOutstandingCallbacks.<anonymous closure> (package:test_api/src/backend/invoker.dart:318:9)
+<asynchronous suspension>
+
+
+00:41 +134: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_4_learning_path_test.dart: ... et sombre, petits écrans (320x568 & 360x800) et TextScaler 1.3x sans débordement
+00:41 +134: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 2 — Doublons de quiz (P3-02) loadQuizzes répété (global et filtré par unité) est idempotent et ne duplique pas les quiz
+SOURCE CLEAR
+CACHE READ [quizzes]: empty
+CACHE SAVE [quizzes]: 2 items
+SOURCE SET [quizzes_all] = online
+CACHE READ [quizzes]: 2 raw items
+CACHE SAVE [quizzes]: 2 items
+SOURCE SET [quizzes_all] = online
+CACHE READ [quizzes]: 2 raw items
+CACHE SAVE [quizzes]: 2 items
+SOURCE SET [quizzes_unit-a] = online
+CACHE READ [quizzes]: 2 raw items
+CACHE SAVE [quizzes]: 2 items
+SOURCE SET [quizzes_all] = online
+CACHE READ [quizzes]: 2 raw items
+
+00:41 +135: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_4_learning_path_test.dart: ... et sombre, petits écrans (320x568 & 360x800) et TextScaler 1.3x sans débordement
+00:41 +135: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 2 — Doublons de quiz (P3-02) auto-réparation des doublons existants, réimports de packs et préservation des progressions
+SOURCE CLEAR
+CACHE SAVE [quizzes]: 4 items
+CACHE READ [quizzes]: 4 raw items
+SOURCE SET [quizzes_all] = localCache
+CACHE SAVE [quizzes]: 2 items
+SOURCE SET [quizzes_all] = localCache
+CACHE READ [quizzes]: 2 raw items
+
+00:41 +136: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_4_learning_path_test.dart: ... et sombre, petits écrans (320x568 & 360x800) et TextScaler 1.3x sans débordement
+00:41 +137: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... pédagogique 3. Persistance locale du parcours A/B et modification à tout moment
+00:42 +137: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... pédagogique 3. Persistance locale du parcours A/B et modification à tout moment
+00:42 +138: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... pédagogique 3. Persistance locale du parcours A/B et modification à tout moment
+00:42 +139: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/lot_4b_5_home_screen_test.dart: ... pédagogique 3. Persistance locale du parcours A/B et modification à tout moment
+00:42 +140: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... hors ligne affiche les packs installés, leur bouton d’ouverture et Mes téléchargements
+00:42 +141: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... hors ligne affiche les packs installés, leur bouton d’ouverture et Mes téléchargements
+00:42 +142: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... hors ligne affiche les packs installés, leur bouton d’ouverture et Mes téléchargements
+00:42 +143: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... hors ligne affiche les packs installés, leur bouton d’ouverture et Mes téléchargements
+00:42 +144: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... hors ligne affiche les packs installés, leur bouton d’ouverture et Mes téléchargements
+00:42 +145: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... hors ligne affiche les packs installés, leur bouton d’ouverture et Mes téléchargements
+00:42 +146: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... hors ligne affiche les packs installés, leur bouton d’ouverture et Mes téléchargements
+00:42 +147: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... hors ligne affiche les packs installés, leur bouton d’ouverture et Mes téléchargements
+00:42 +148: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... hors ligne affiche les packs installés, leur bouton d’ouverture et Mes téléchargements
+00:42 +148: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 3 — Accès aux packs hors ligne (P3-03) le catalogue hors ligne affiche les packs installés, leur bouton d’ouverture et Mes téléchargements
+SOURCE CLEAR
+WARNING: API fetchPacks failed (offline or unreachable): SocketException: No network connection
+
+00:42 +149: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/sticker_studio_test.dart: Studio Sticker Tests StickerStudioScreen se monte avec son apercu et ses contrôles
+00:42 +150: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/sticker_studio_test.dart: Studio Sticker Tests StickerStudioScreen se monte avec son apercu et ses contrôles
+00:43 +150: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/sticker_studio_test.dart: Studio Sticker Tests StickerStudioScreen se monte avec son apercu et ses contrôles
+00:43 +151: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/sticker_studio_test.dart: Studio Sticker Tests StickerStudioScreen se monte avec son apercu et ses contrôles
+00:43 +152: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/sticker_studio_test.dart: Studio Sticker Tests StickerStudioScreen se monte avec son apercu et ses contrôles
+00:43 +153: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/sticker_studio_test.dart: Studio Sticker Tests StickerStudioScreen se monte avec son apercu et ses contrôles
+00:43 +153: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 3 — Accès aux packs hors ligne (P3-03) état vide informatif quand aucun pack n’est installé hors ligne
+SOURCE CLEAR
+WARNING: API fetchPacks failed (offline or unreachable): SocketException: No network connection
+
+00:43 +154: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/sticker_studio_test.dart: Studio Sticker Tests StickerStudioScreen se monte avec son apercu et ses contrôles
+00:43 +154: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 4 — Cohérence feedback et score du quiz (P3-04) QCM et exercice d’écoute avec options mélangées : cohérence totale entre feedback et score
+SOURCE CLEAR
+CACHE SAVE [quizzes]: 1 items
+
+00:43 +155: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/sticker_studio_test.dart: Studio Sticker Tests StickerStudioScreen se monte avec son apercu et ses contrôles
+00:43 +156: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/sticker_studio_test.dart: Studio Sticker Tests StickerStudioScreen se monte avec son apercu et ses contrôles
+00:43 +157: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/sticker_studio_test.dart: Studio Sticker Tests StickerStudioScreen se monte avec son apercu et ses contrôles
+00:43 +157: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 4 — Cohérence feedback et score du quiz (P3-04) QCM et exercice d’écoute avec options mélangées : cohérence totale entre feedback et score
+CACHE READ [quizzes]: 1 raw items
+SOURCE SET [quizzes_all] = localCache
+SOURCE SET [quizzes_all] = localCache
+
+00:43 +158: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/sticker_studio_test.dart: Studio Sticker Tests StickerStudioScreen se monte avec son apercu et ses contrôles
+00:43 +158: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 4 — Cohérence feedback et score du quiz (P3-04) mauvaise réponse et tentatives répétées : feedback cohérent et verrouillage
+SOURCE CLEAR
+CACHE SAVE [quizzes]: 1 items
+
+00:43 +159: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... (P3-04) mauvaise réponse et tentatives répétées : feedback cohérent et verrouillage
+00:44 +159: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... (P3-04) mauvaise réponse et tentatives répétées : feedback cohérent et verrouillage
+00:44 +159: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 4 — Cohérence feedback et score du quiz (P3-04) mauvaise réponse et tentatives répétées : feedback cohérent et verrouillage
+CACHE READ [quizzes]: 1 raw items
+SOURCE SET [quizzes_all] = localCache
+SOURCE SET [quizzes_all] = localCache
+
+00:44 +160: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... (P3-04) mauvaise réponse et tentatives répétées : feedback cohérent et verrouillage
+00:44 +160: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... saisies clavier : cas limites vides, Unicode Erfe et rejet des erreurs linguistiques
+00:44 +160: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: Correctif 4 — Cohérence feedback et score du quiz (P3-04) évaluation centralisée des saisies clavier : cas limites vides, Unicode Erfe et rejet des erreurs linguistiques
+SOURCE CLEAR
+
+00:44 +161: C:/Users/MONSTER/Desktop/BeriyaClean/beriyar-kedebideri/mobile/test/phase3_1_defects_test.dart: ... saisies clavier : cas limites vides, Unicode Erfe et rejet des erreurs linguistiques
+00:44 +161: All tests passed!

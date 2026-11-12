@@ -1,0 +1,3501 @@
+[
+  {
+    "name": "0:erfe-erfe",
+    "input": "\ud81b\udea0",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "0:erfe-latin",
+    "input": "\ud81b\udea0",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "A",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "0:erfe-arabic",
+    "input": "\ud81b\udea0",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "0:latin-erfe",
+    "input": "A",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "0:latin-latin",
+    "input": "A",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "A",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "0:latin-arabic",
+    "input": "A",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "0:arabic-erfe",
+    "input": "\u0627",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "0:arabic-latin",
+    "input": "\u0627",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "A",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "0:arabic-arabic",
+    "input": "\u0627",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "0:latin-input-lower",
+    "input": "a",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "0:erfe-input-lower",
+    "input": "\ud81b\udebb",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "0:latin-output-lower",
+    "input": "\u0627",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "a",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "1:erfe-erfe",
+    "input": "\ud81b\udea1",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea1",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "1:erfe-latin",
+    "input": "\ud81b\udea1",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "B",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "1:erfe-arabic",
+    "input": "\ud81b\udea1",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0628",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "1:latin-erfe",
+    "input": "B",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea1",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "1:latin-latin",
+    "input": "B",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "B",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "1:latin-arabic",
+    "input": "B",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0628",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "1:arabic-erfe",
+    "input": "\u0628",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea1",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "1:arabic-latin",
+    "input": "\u0628",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "B",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "1:arabic-arabic",
+    "input": "\u0628",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0628",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "1:latin-input-lower",
+    "input": "b",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea1",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "1:erfe-input-lower",
+    "input": "\ud81b\udebc",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0628",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "1:latin-output-lower",
+    "input": "\u0628",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "b",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "2:erfe-erfe",
+    "input": "\ud81b\udea2",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "2:erfe-latin",
+    "input": "\ud81b\udea2",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "D",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "2:erfe-arabic",
+    "input": "\ud81b\udea2",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u062f",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "2:latin-erfe",
+    "input": "D",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "2:latin-latin",
+    "input": "D",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "D",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "2:latin-arabic",
+    "input": "D",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u062f",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "2:arabic-erfe",
+    "input": "\u062f",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "2:arabic-latin",
+    "input": "\u062f",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "D",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "2:arabic-arabic",
+    "input": "\u062f",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u062f",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "2:latin-input-lower",
+    "input": "d",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "2:erfe-input-lower",
+    "input": "\ud81b\udebd",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u062f",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "2:latin-output-lower",
+    "input": "\u062f",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "d",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "3:erfe-erfe",
+    "input": "\ud81b\udea3",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "3:erfe-latin",
+    "input": "\ud81b\udea3",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "E",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "3:erfe-arabic",
+    "input": "\ud81b\udea3",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "3:latin-erfe",
+    "input": "E",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "3:latin-latin",
+    "input": "E",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "E",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "3:latin-arabic",
+    "input": "E",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "3:arabic-erfe",
+    "input": "\u0622",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "3:arabic-latin",
+    "input": "\u0622",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "E",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "3:arabic-arabic",
+    "input": "\u0622",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "3:latin-input-lower",
+    "input": "e",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "3:erfe-input-lower",
+    "input": "\ud81b\udebe",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "3:latin-output-lower",
+    "input": "\u0622",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "e",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "4:erfe-erfe",
+    "input": "\ud81b\udea4",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea4",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "4:erfe-latin",
+    "input": "\ud81b\udea4",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "F",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "4:erfe-arabic",
+    "input": "\ud81b\udea4",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0641",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "4:latin-erfe",
+    "input": "F",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea4",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "4:latin-latin",
+    "input": "F",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "F",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "4:latin-arabic",
+    "input": "F",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0641",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "4:arabic-erfe",
+    "input": "\u0641",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea4",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "4:arabic-latin",
+    "input": "\u0641",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "F",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "4:arabic-arabic",
+    "input": "\u0641",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0641",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "4:latin-input-lower",
+    "input": "f",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea4",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "4:erfe-input-lower",
+    "input": "\ud81b\udebf",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0641",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "4:latin-output-lower",
+    "input": "\u0641",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "f",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "5:erfe-erfe",
+    "input": "\ud81b\udea5",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea5",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "5:erfe-latin",
+    "input": "\ud81b\udea5",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "G",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "5:erfe-arabic",
+    "input": "\ud81b\udea5",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0642",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "5:latin-erfe",
+    "input": "G",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea5",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "5:latin-latin",
+    "input": "G",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "G",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "5:latin-arabic",
+    "input": "G",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0642",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "5:arabic-erfe",
+    "input": "\u0642",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea5",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "5:arabic-latin",
+    "input": "\u0642",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "G",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "5:arabic-arabic",
+    "input": "\u0642",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0642",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "5:latin-input-lower",
+    "input": "g",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea5",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "5:erfe-input-lower",
+    "input": "\ud81b\udec0",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0642",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "5:latin-output-lower",
+    "input": "\u0642",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "g",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "6:erfe-erfe",
+    "input": "\ud81b\udea6",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea6",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "6:erfe-latin",
+    "input": "\ud81b\udea6",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "H",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "6:erfe-arabic",
+    "input": "\ud81b\udea6",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0647",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "6:latin-erfe",
+    "input": "H",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea6",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "6:latin-latin",
+    "input": "H",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "H",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "6:latin-arabic",
+    "input": "H",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0647",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "6:arabic-erfe",
+    "input": "\u0647",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea6",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "6:arabic-latin",
+    "input": "\u0647",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "H",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "6:arabic-arabic",
+    "input": "\u0647",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0647",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "6:latin-input-lower",
+    "input": "h",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea6",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "6:erfe-input-lower",
+    "input": "\ud81b\udec1",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0647",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "6:latin-output-lower",
+    "input": "\u0647",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "h",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "7:erfe-erfe",
+    "input": "\ud81b\udea7",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "7:erfe-latin",
+    "input": "\ud81b\udea7",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "I",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "7:erfe-arabic",
+    "input": "\ud81b\udea7",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "7:latin-erfe",
+    "input": "I",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "7:latin-latin",
+    "input": "I",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "I",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "7:latin-arabic",
+    "input": "I",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "7:arabic-erfe",
+    "input": "\u06cc",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "7:arabic-latin",
+    "input": "\u06cc",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "I",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "7:arabic-arabic",
+    "input": "\u06cc",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "7:latin-input-lower",
+    "input": "i",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "7:erfe-input-lower",
+    "input": "\ud81b\udec2",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "7:latin-output-lower",
+    "input": "\u06cc",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "i",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "8:erfe-erfe",
+    "input": "\ud81b\udea8",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea8",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "8:erfe-latin",
+    "input": "\ud81b\udea8",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "J",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "8:erfe-arabic",
+    "input": "\ud81b\udea8",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u062c",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "8:latin-erfe",
+    "input": "J",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea8",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "8:latin-latin",
+    "input": "J",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "J",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "8:latin-arabic",
+    "input": "J",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u062c",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "8:arabic-erfe",
+    "input": "\u062c",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea8",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "8:arabic-latin",
+    "input": "\u062c",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "J",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "8:arabic-arabic",
+    "input": "\u062c",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u062c",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "8:latin-input-lower",
+    "input": "j",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea8",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "8:erfe-input-lower",
+    "input": "\ud81b\udec3",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u062c",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "8:latin-output-lower",
+    "input": "\u062c",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "j",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "9:erfe-erfe",
+    "input": "\ud81b\udea9",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea9",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "9:erfe-latin",
+    "input": "\ud81b\udea9",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "K",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "9:erfe-arabic",
+    "input": "\ud81b\udea9",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0643",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "9:latin-erfe",
+    "input": "K",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea9",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "9:latin-latin",
+    "input": "K",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "K",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "9:latin-arabic",
+    "input": "K",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0643",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "9:arabic-erfe",
+    "input": "\u0643",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea9",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "9:arabic-latin",
+    "input": "\u0643",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "K",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "9:arabic-arabic",
+    "input": "\u0643",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0643",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "9:latin-input-lower",
+    "input": "k",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea9",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "9:erfe-input-lower",
+    "input": "\ud81b\udec4",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0643",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "9:latin-output-lower",
+    "input": "\u0643",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "k",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "10:erfe-erfe",
+    "input": "\ud81b\udeaa",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaa",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "10:erfe-latin",
+    "input": "\ud81b\udeaa",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "L",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "10:erfe-arabic",
+    "input": "\ud81b\udeaa",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0644",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "10:latin-erfe",
+    "input": "L",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaa",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "10:latin-latin",
+    "input": "L",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "L",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "10:latin-arabic",
+    "input": "L",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0644",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "10:arabic-erfe",
+    "input": "\u0644",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaa",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "10:arabic-latin",
+    "input": "\u0644",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "L",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "10:arabic-arabic",
+    "input": "\u0644",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0644",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "10:latin-input-lower",
+    "input": "l",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaa",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "10:erfe-input-lower",
+    "input": "\ud81b\udec5",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0644",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "10:latin-output-lower",
+    "input": "\u0644",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "l",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "11:erfe-erfe",
+    "input": "\ud81b\udeab",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeab",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "11:erfe-latin",
+    "input": "\ud81b\udeab",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "M",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "11:erfe-arabic",
+    "input": "\ud81b\udeab",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0645",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "11:latin-erfe",
+    "input": "M",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeab",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "11:latin-latin",
+    "input": "M",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "M",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "11:latin-arabic",
+    "input": "M",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0645",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "11:arabic-erfe",
+    "input": "\u0645",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeab",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "11:arabic-latin",
+    "input": "\u0645",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "M",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "11:arabic-arabic",
+    "input": "\u0645",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0645",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "11:latin-input-lower",
+    "input": "m",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeab",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "11:erfe-input-lower",
+    "input": "\ud81b\udec6",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0645",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "11:latin-output-lower",
+    "input": "\u0645",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "m",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "12:erfe-erfe",
+    "input": "\ud81b\udeac",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeac",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "12:erfe-latin",
+    "input": "\ud81b\udeac",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "N",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "12:erfe-arabic",
+    "input": "\ud81b\udeac",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0646",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "12:latin-erfe",
+    "input": "N",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeac",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "12:latin-latin",
+    "input": "N",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "N",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "12:latin-arabic",
+    "input": "N",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0646",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "12:arabic-erfe",
+    "input": "\u0646",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeac",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "12:arabic-latin",
+    "input": "\u0646",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "N",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "12:arabic-arabic",
+    "input": "\u0646",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0646",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "12:latin-input-lower",
+    "input": "n",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeac",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "12:erfe-input-lower",
+    "input": "\ud81b\udec7",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0646",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "12:latin-output-lower",
+    "input": "\u0646",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "n",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "13:erfe-erfe",
+    "input": "\ud81b\udead",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udead",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "13:erfe-latin",
+    "input": "\ud81b\udead",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u019d",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "13:erfe-arabic",
+    "input": "\ud81b\udead",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06bd",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "13:latin-erfe",
+    "input": "\u019d",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udead",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "13:latin-latin",
+    "input": "\u019d",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u019d",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "13:latin-arabic",
+    "input": "\u019d",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06bd",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "13:arabic-erfe",
+    "input": "\u06bd",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udead",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "13:arabic-latin",
+    "input": "\u06bd",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u019d",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "13:arabic-arabic",
+    "input": "\u06bd",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06bd",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "13:latin-input-lower",
+    "input": "\u0272",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udead",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "13:erfe-input-lower",
+    "input": "\ud81b\udec8",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06bd",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "13:latin-output-lower",
+    "input": "\u06bd",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "\u0272",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "14:erfe-erfe",
+    "input": "\ud81b\udeae",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeae",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "14:erfe-latin",
+    "input": "\ud81b\udeae",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u014a",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "14:erfe-arabic",
+    "input": "\ud81b\udeae",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06a0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "14:latin-erfe",
+    "input": "\u014a",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeae",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "14:latin-latin",
+    "input": "\u014a",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u014a",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "14:latin-arabic",
+    "input": "\u014a",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06a0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "14:arabic-erfe",
+    "input": "\u06a0",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeae",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "14:arabic-latin",
+    "input": "\u06a0",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u014a",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "14:arabic-arabic",
+    "input": "\u06a0",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06a0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "14:latin-input-lower",
+    "input": "\u014b",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeae",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "14:erfe-input-lower",
+    "input": "\ud81b\udec9",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06a0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "14:latin-output-lower",
+    "input": "\u06a0",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "\u014b",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "15:erfe-erfe",
+    "input": "\ud81b\udeaf",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "15:erfe-latin",
+    "input": "\ud81b\udeaf",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "O",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "15:erfe-arabic",
+    "input": "\ud81b\udeaf",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "15:latin-erfe",
+    "input": "O",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "15:latin-latin",
+    "input": "O",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "O",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "15:latin-arabic",
+    "input": "O",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "15:arabic-erfe",
+    "input": "\u06c6",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "15:arabic-latin",
+    "input": "\u06c6",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "O",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "15:arabic-arabic",
+    "input": "\u06c6",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "15:latin-input-lower",
+    "input": "o",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "15:erfe-input-lower",
+    "input": "\ud81b\udeca",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "15:latin-output-lower",
+    "input": "\u06c6",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "o",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "16:erfe-erfe",
+    "input": "\ud81b\udeb0",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "16:erfe-latin",
+    "input": "\ud81b\udeb0",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "P",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "16:erfe-arabic",
+    "input": "\ud81b\udeb0",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u067e",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "16:latin-erfe",
+    "input": "P",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "16:latin-latin",
+    "input": "P",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "P",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "16:latin-arabic",
+    "input": "P",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u067e",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "16:arabic-erfe",
+    "input": "\u067e",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "16:arabic-latin",
+    "input": "\u067e",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "P",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "16:arabic-arabic",
+    "input": "\u067e",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u067e",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "16:latin-input-lower",
+    "input": "p",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "16:erfe-input-lower",
+    "input": "\ud81b\udecb",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u067e",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "16:latin-output-lower",
+    "input": "\u067e",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "p",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "17:erfe-erfe",
+    "input": "\ud81b\udeb1",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb1",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "17:erfe-latin",
+    "input": "\ud81b\udeb1",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "R",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "17:erfe-arabic",
+    "input": "\ud81b\udeb1",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0631",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "17:latin-erfe",
+    "input": "R",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb1",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "17:latin-latin",
+    "input": "R",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "R",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "17:latin-arabic",
+    "input": "R",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0631",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "17:arabic-erfe",
+    "input": "\u0631",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb1",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "17:arabic-latin",
+    "input": "\u0631",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "R",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "17:arabic-arabic",
+    "input": "\u0631",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0631",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "17:latin-input-lower",
+    "input": "r",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb1",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "17:erfe-input-lower",
+    "input": "\ud81b\udecc",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0631",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "17:latin-output-lower",
+    "input": "\u0631",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "r",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "18:erfe-erfe",
+    "input": "\ud81b\udeb2",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "18:erfe-latin",
+    "input": "\ud81b\udeb2",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0158",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "18:erfe-arabic",
+    "input": "\ud81b\udeb2",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0695",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "18:latin-erfe",
+    "input": "\u0158",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "18:latin-latin",
+    "input": "\u0158",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0158",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "18:latin-arabic",
+    "input": "\u0158",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0695",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "18:arabic-erfe",
+    "input": "\u0695",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "18:arabic-latin",
+    "input": "\u0695",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0158",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "18:arabic-arabic",
+    "input": "\u0695",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0695",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "18:latin-input-lower",
+    "input": "\u0159",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "18:erfe-input-lower",
+    "input": "\ud81b\udecd",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0695",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "18:latin-output-lower",
+    "input": "\u0695",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "\u0159",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "19:erfe-erfe",
+    "input": "\ud81b\udeb3",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb3",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "19:erfe-latin",
+    "input": "\ud81b\udeb3",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "S",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "19:erfe-arabic",
+    "input": "\ud81b\udeb3",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0633",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "19:latin-erfe",
+    "input": "S",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb3",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "19:latin-latin",
+    "input": "S",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "S",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "19:latin-arabic",
+    "input": "S",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0633",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "19:arabic-erfe",
+    "input": "\u0633",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb3",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "19:arabic-latin",
+    "input": "\u0633",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "S",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "19:arabic-arabic",
+    "input": "\u0633",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0633",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "19:latin-input-lower",
+    "input": "s",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb3",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "19:erfe-input-lower",
+    "input": "\ud81b\udece",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0633",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "19:latin-output-lower",
+    "input": "\u0633",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "s",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "20:erfe-erfe",
+    "input": "\ud81b\udeb4",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb4",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "20:erfe-latin",
+    "input": "\ud81b\udeb4",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0160",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "20:erfe-arabic",
+    "input": "\ud81b\udeb4",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0634",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "20:latin-erfe",
+    "input": "\u0160",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb4",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "20:latin-latin",
+    "input": "\u0160",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0160",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "20:latin-arabic",
+    "input": "\u0160",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0634",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "20:arabic-erfe",
+    "input": "\u0634",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb4",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "20:arabic-latin",
+    "input": "\u0634",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0160",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "20:arabic-arabic",
+    "input": "\u0634",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0634",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "20:latin-input-lower",
+    "input": "\u0161",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb4",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "20:erfe-input-lower",
+    "input": "\ud81b\udecf",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0634",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "20:latin-output-lower",
+    "input": "\u0634",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "\u0161",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "21:erfe-erfe",
+    "input": "\ud81b\udeb5",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb5",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "21:erfe-latin",
+    "input": "\ud81b\udeb5",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "T",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "21:erfe-arabic",
+    "input": "\ud81b\udeb5",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u062a",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "21:latin-erfe",
+    "input": "T",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb5",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "21:latin-latin",
+    "input": "T",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "T",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "21:latin-arabic",
+    "input": "T",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u062a",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "21:arabic-erfe",
+    "input": "\u062a",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb5",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "21:arabic-latin",
+    "input": "\u062a",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "T",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "21:arabic-arabic",
+    "input": "\u062a",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u062a",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "21:latin-input-lower",
+    "input": "t",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb5",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "21:erfe-input-lower",
+    "input": "\ud81b\uded0",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u062a",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "21:latin-output-lower",
+    "input": "\u062a",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "t",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "22:erfe-erfe",
+    "input": "\ud81b\udeb6",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "22:erfe-latin",
+    "input": "\ud81b\udeb6",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "U",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "22:erfe-arabic",
+    "input": "\ud81b\udeb6",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "22:latin-erfe",
+    "input": "U",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "22:latin-latin",
+    "input": "U",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "U",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "22:latin-arabic",
+    "input": "U",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "22:arabic-erfe",
+    "input": "\u06c7",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "22:arabic-latin",
+    "input": "\u06c7",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "U",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "22:arabic-arabic",
+    "input": "\u06c7",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "22:latin-input-lower",
+    "input": "u",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "22:erfe-input-lower",
+    "input": "\ud81b\uded1",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "22:latin-output-lower",
+    "input": "\u06c7",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "u",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "23:erfe-erfe",
+    "input": "\ud81b\udeb7",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb7",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "23:erfe-latin",
+    "input": "\ud81b\udeb7",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "W",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "23:erfe-arabic",
+    "input": "\ud81b\udeb7",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0648",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "23:latin-erfe",
+    "input": "W",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb7",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "23:latin-latin",
+    "input": "W",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "W",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "23:latin-arabic",
+    "input": "W",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0648",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "23:arabic-erfe",
+    "input": "\u0648",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb7",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "23:arabic-latin",
+    "input": "\u0648",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "W",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "23:arabic-arabic",
+    "input": "\u0648",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0648",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "23:latin-input-lower",
+    "input": "w",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb7",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "23:erfe-input-lower",
+    "input": "\ud81b\uded2",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0648",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "23:latin-output-lower",
+    "input": "\u0648",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "w",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "24:erfe-erfe",
+    "input": "\ud81b\udeb8",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb8",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "24:erfe-latin",
+    "input": "\ud81b\udeb8",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "Y",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "24:erfe-arabic",
+    "input": "\ud81b\udeb8",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u064a",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "24:latin-erfe",
+    "input": "Y",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb8",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "24:latin-latin",
+    "input": "Y",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "Y",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "24:latin-arabic",
+    "input": "Y",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u064a",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "24:arabic-erfe",
+    "input": "\u064a",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb8",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "24:arabic-latin",
+    "input": "\u064a",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "Y",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "24:arabic-arabic",
+    "input": "\u064a",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u064a",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "24:latin-input-lower",
+    "input": "y",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb8",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "24:erfe-input-lower",
+    "input": "\ud81b\uded3",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u064a",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "24:latin-output-lower",
+    "input": "\u064a",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": true,
+    "expected": {
+      "text": "y",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "multiline:erfe-erfe",
+    "input": "  \ud81b\udea0\n \u0661\u06623\u060c!?\u2014\ud81b\udea1\n \u0661\u06623\u060c!?\u2014\ud81b\udea2\n \u0661\u06623\u060c!?\u2014\ud81b\udea3\n \u0661\u06623\u060c!?\u2014\ud81b\udea4\n \u0661\u06623\u060c!?\u2014\ud81b\udea5\n \u0661\u06623\u060c!?\u2014\ud81b\udea6\n \u0661\u06623\u060c!?\u2014\ud81b\udea7\n \u0661\u06623\u060c!?\u2014\ud81b\udea8\n \u0661\u06623\u060c!?\u2014\ud81b\udea9\n \u0661\u06623\u060c!?\u2014\ud81b\udeaa\n \u0661\u06623\u060c!?\u2014\ud81b\udeab\n \u0661\u06623\u060c!?\u2014\ud81b\udeac\n \u0661\u06623\u060c!?\u2014\ud81b\udead\n \u0661\u06623\u060c!?\u2014\ud81b\udeae\n \u0661\u06623\u060c!?\u2014\ud81b\udeaf\n \u0661\u06623\u060c!?\u2014\ud81b\udeb0\n \u0661\u06623\u060c!?\u2014\ud81b\udeb1\n \u0661\u06623\u060c!?\u2014\ud81b\udeb2\n \u0661\u06623\u060c!?\u2014\ud81b\udeb3\n \u0661\u06623\u060c!?\u2014\ud81b\udeb4\n \u0661\u06623\u060c!?\u2014\ud81b\udeb5\n \u0661\u06623\u060c!?\u2014\ud81b\udeb6\n \u0661\u06623\u060c!?\u2014\ud81b\udeb7\n \u0661\u06623\u060c!?\u2014\ud81b\udeb8\t",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "  \ud81b\udea0\n \u0661\u06623\u060c!?\u2014\ud81b\udea1\n \u0661\u06623\u060c!?\u2014\ud81b\udea2\n \u0661\u06623\u060c!?\u2014\ud81b\udea3\n \u0661\u06623\u060c!?\u2014\ud81b\udea4\n \u0661\u06623\u060c!?\u2014\ud81b\udea5\n \u0661\u06623\u060c!?\u2014\ud81b\udea6\n \u0661\u06623\u060c!?\u2014\ud81b\udea7\n \u0661\u06623\u060c!?\u2014\ud81b\udea8\n \u0661\u06623\u060c!?\u2014\ud81b\udea9\n \u0661\u06623\u060c!?\u2014\ud81b\udeaa\n \u0661\u06623\u060c!?\u2014\ud81b\udeab\n \u0661\u06623\u060c!?\u2014\ud81b\udeac\n \u0661\u06623\u060c!?\u2014\ud81b\udead\n \u0661\u06623\u060c!?\u2014\ud81b\udeae\n \u0661\u06623\u060c!?\u2014\ud81b\udeaf\n \u0661\u06623\u060c!?\u2014\ud81b\udeb0\n \u0661\u06623\u060c!?\u2014\ud81b\udeb1\n \u0661\u06623\u060c!?\u2014\ud81b\udeb2\n \u0661\u06623\u060c!?\u2014\ud81b\udeb3\n \u0661\u06623\u060c!?\u2014\ud81b\udeb4\n \u0661\u06623\u060c!?\u2014\ud81b\udeb5\n \u0661\u06623\u060c!?\u2014\ud81b\udeb6\n \u0661\u06623\u060c!?\u2014\ud81b\udeb7\n \u0661\u06623\u060c!?\u2014\ud81b\udeb8\t",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "multiline:erfe-latin",
+    "input": "  \ud81b\udea0\n \u0661\u06623\u060c!?\u2014\ud81b\udea1\n \u0661\u06623\u060c!?\u2014\ud81b\udea2\n \u0661\u06623\u060c!?\u2014\ud81b\udea3\n \u0661\u06623\u060c!?\u2014\ud81b\udea4\n \u0661\u06623\u060c!?\u2014\ud81b\udea5\n \u0661\u06623\u060c!?\u2014\ud81b\udea6\n \u0661\u06623\u060c!?\u2014\ud81b\udea7\n \u0661\u06623\u060c!?\u2014\ud81b\udea8\n \u0661\u06623\u060c!?\u2014\ud81b\udea9\n \u0661\u06623\u060c!?\u2014\ud81b\udeaa\n \u0661\u06623\u060c!?\u2014\ud81b\udeab\n \u0661\u06623\u060c!?\u2014\ud81b\udeac\n \u0661\u06623\u060c!?\u2014\ud81b\udead\n \u0661\u06623\u060c!?\u2014\ud81b\udeae\n \u0661\u06623\u060c!?\u2014\ud81b\udeaf\n \u0661\u06623\u060c!?\u2014\ud81b\udeb0\n \u0661\u06623\u060c!?\u2014\ud81b\udeb1\n \u0661\u06623\u060c!?\u2014\ud81b\udeb2\n \u0661\u06623\u060c!?\u2014\ud81b\udeb3\n \u0661\u06623\u060c!?\u2014\ud81b\udeb4\n \u0661\u06623\u060c!?\u2014\ud81b\udeb5\n \u0661\u06623\u060c!?\u2014\ud81b\udeb6\n \u0661\u06623\u060c!?\u2014\ud81b\udeb7\n \u0661\u06623\u060c!?\u2014\ud81b\udeb8\t",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "  A\n \u0661\u06623\u060c!?\u2014B\n \u0661\u06623\u060c!?\u2014D\n \u0661\u06623\u060c!?\u2014E\n \u0661\u06623\u060c!?\u2014F\n \u0661\u06623\u060c!?\u2014G\n \u0661\u06623\u060c!?\u2014H\n \u0661\u06623\u060c!?\u2014I\n \u0661\u06623\u060c!?\u2014J\n \u0661\u06623\u060c!?\u2014K\n \u0661\u06623\u060c!?\u2014L\n \u0661\u06623\u060c!?\u2014M\n \u0661\u06623\u060c!?\u2014N\n \u0661\u06623\u060c!?\u2014\u019d\n \u0661\u06623\u060c!?\u2014\u014a\n \u0661\u06623\u060c!?\u2014O\n \u0661\u06623\u060c!?\u2014P\n \u0661\u06623\u060c!?\u2014R\n \u0661\u06623\u060c!?\u2014\u0158\n \u0661\u06623\u060c!?\u2014S\n \u0661\u06623\u060c!?\u2014\u0160\n \u0661\u06623\u060c!?\u2014T\n \u0661\u06623\u060c!?\u2014U\n \u0661\u06623\u060c!?\u2014W\n \u0661\u06623\u060c!?\u2014Y\t",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "multiline:erfe-arabic",
+    "input": "  \ud81b\udea0\n \u0661\u06623\u060c!?\u2014\ud81b\udea1\n \u0661\u06623\u060c!?\u2014\ud81b\udea2\n \u0661\u06623\u060c!?\u2014\ud81b\udea3\n \u0661\u06623\u060c!?\u2014\ud81b\udea4\n \u0661\u06623\u060c!?\u2014\ud81b\udea5\n \u0661\u06623\u060c!?\u2014\ud81b\udea6\n \u0661\u06623\u060c!?\u2014\ud81b\udea7\n \u0661\u06623\u060c!?\u2014\ud81b\udea8\n \u0661\u06623\u060c!?\u2014\ud81b\udea9\n \u0661\u06623\u060c!?\u2014\ud81b\udeaa\n \u0661\u06623\u060c!?\u2014\ud81b\udeab\n \u0661\u06623\u060c!?\u2014\ud81b\udeac\n \u0661\u06623\u060c!?\u2014\ud81b\udead\n \u0661\u06623\u060c!?\u2014\ud81b\udeae\n \u0661\u06623\u060c!?\u2014\ud81b\udeaf\n \u0661\u06623\u060c!?\u2014\ud81b\udeb0\n \u0661\u06623\u060c!?\u2014\ud81b\udeb1\n \u0661\u06623\u060c!?\u2014\ud81b\udeb2\n \u0661\u06623\u060c!?\u2014\ud81b\udeb3\n \u0661\u06623\u060c!?\u2014\ud81b\udeb4\n \u0661\u06623\u060c!?\u2014\ud81b\udeb5\n \u0661\u06623\u060c!?\u2014\ud81b\udeb6\n \u0661\u06623\u060c!?\u2014\ud81b\udeb7\n \u0661\u06623\u060c!?\u2014\ud81b\udeb8\t",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "  \u0627\n \u0661\u06623\u060c!?\u2014\u0628\n \u0661\u06623\u060c!?\u2014\u062f\n \u0661\u06623\u060c!?\u2014\u0622\n \u0661\u06623\u060c!?\u2014\u0641\n \u0661\u06623\u060c!?\u2014\u0642\n \u0661\u06623\u060c!?\u2014\u0647\n \u0661\u06623\u060c!?\u2014\u06cc\n \u0661\u06623\u060c!?\u2014\u062c\n \u0661\u06623\u060c!?\u2014\u0643\n \u0661\u06623\u060c!?\u2014\u0644\n \u0661\u06623\u060c!?\u2014\u0645\n \u0661\u06623\u060c!?\u2014\u0646\n \u0661\u06623\u060c!?\u2014\u06bd\n \u0661\u06623\u060c!?\u2014\u06a0\n \u0661\u06623\u060c!?\u2014\u06c6\n \u0661\u06623\u060c!?\u2014\u067e\n \u0661\u06623\u060c!?\u2014\u0631\n \u0661\u06623\u060c!?\u2014\u0695\n \u0661\u06623\u060c!?\u2014\u0633\n \u0661\u06623\u060c!?\u2014\u0634\n \u0661\u06623\u060c!?\u2014\u062a\n \u0661\u06623\u060c!?\u2014\u06c7\n \u0661\u06623\u060c!?\u2014\u0648\n \u0661\u06623\u060c!?\u2014\u064a\t",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "multiline:latin-erfe",
+    "input": "  A\n \u0661\u06623\u060c!?\u2014B\n \u0661\u06623\u060c!?\u2014D\n \u0661\u06623\u060c!?\u2014E\n \u0661\u06623\u060c!?\u2014F\n \u0661\u06623\u060c!?\u2014G\n \u0661\u06623\u060c!?\u2014H\n \u0661\u06623\u060c!?\u2014I\n \u0661\u06623\u060c!?\u2014J\n \u0661\u06623\u060c!?\u2014K\n \u0661\u06623\u060c!?\u2014L\n \u0661\u06623\u060c!?\u2014M\n \u0661\u06623\u060c!?\u2014N\n \u0661\u06623\u060c!?\u2014\u019d\n \u0661\u06623\u060c!?\u2014\u014a\n \u0661\u06623\u060c!?\u2014O\n \u0661\u06623\u060c!?\u2014P\n \u0661\u06623\u060c!?\u2014R\n \u0661\u06623\u060c!?\u2014\u0158\n \u0661\u06623\u060c!?\u2014S\n \u0661\u06623\u060c!?\u2014\u0160\n \u0661\u06623\u060c!?\u2014T\n \u0661\u06623\u060c!?\u2014U\n \u0661\u06623\u060c!?\u2014W\n \u0661\u06623\u060c!?\u2014Y\t",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "  \ud81b\udea0\n \u0661\u06623\u060c!?\u2014\ud81b\udea1\n \u0661\u06623\u060c!?\u2014\ud81b\udea2\n \u0661\u06623\u060c!?\u2014\ud81b\udea3\n \u0661\u06623\u060c!?\u2014\ud81b\udea4\n \u0661\u06623\u060c!?\u2014\ud81b\udea5\n \u0661\u06623\u060c!?\u2014\ud81b\udea6\n \u0661\u06623\u060c!?\u2014\ud81b\udea7\n \u0661\u06623\u060c!?\u2014\ud81b\udea8\n \u0661\u06623\u060c!?\u2014\ud81b\udea9\n \u0661\u06623\u060c!?\u2014\ud81b\udeaa\n \u0661\u06623\u060c!?\u2014\ud81b\udeab\n \u0661\u06623\u060c!?\u2014\ud81b\udeac\n \u0661\u06623\u060c!?\u2014\ud81b\udead\n \u0661\u06623\u060c!?\u2014\ud81b\udeae\n \u0661\u06623\u060c!?\u2014\ud81b\udeaf\n \u0661\u06623\u060c!?\u2014\ud81b\udeb0\n \u0661\u06623\u060c!?\u2014\ud81b\udeb1\n \u0661\u06623\u060c!?\u2014\ud81b\udeb2\n \u0661\u06623\u060c!?\u2014\ud81b\udeb3\n \u0661\u06623\u060c!?\u2014\ud81b\udeb4\n \u0661\u06623\u060c!?\u2014\ud81b\udeb5\n \u0661\u06623\u060c!?\u2014\ud81b\udeb6\n \u0661\u06623\u060c!?\u2014\ud81b\udeb7\n \u0661\u06623\u060c!?\u2014\ud81b\udeb8\t",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "multiline:latin-latin",
+    "input": "  A\n \u0661\u06623\u060c!?\u2014B\n \u0661\u06623\u060c!?\u2014D\n \u0661\u06623\u060c!?\u2014E\n \u0661\u06623\u060c!?\u2014F\n \u0661\u06623\u060c!?\u2014G\n \u0661\u06623\u060c!?\u2014H\n \u0661\u06623\u060c!?\u2014I\n \u0661\u06623\u060c!?\u2014J\n \u0661\u06623\u060c!?\u2014K\n \u0661\u06623\u060c!?\u2014L\n \u0661\u06623\u060c!?\u2014M\n \u0661\u06623\u060c!?\u2014N\n \u0661\u06623\u060c!?\u2014\u019d\n \u0661\u06623\u060c!?\u2014\u014a\n \u0661\u06623\u060c!?\u2014O\n \u0661\u06623\u060c!?\u2014P\n \u0661\u06623\u060c!?\u2014R\n \u0661\u06623\u060c!?\u2014\u0158\n \u0661\u06623\u060c!?\u2014S\n \u0661\u06623\u060c!?\u2014\u0160\n \u0661\u06623\u060c!?\u2014T\n \u0661\u06623\u060c!?\u2014U\n \u0661\u06623\u060c!?\u2014W\n \u0661\u06623\u060c!?\u2014Y\t",
+    "source": "latin",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "  A\n \u0661\u06623\u060c!?\u2014B\n \u0661\u06623\u060c!?\u2014D\n \u0661\u06623\u060c!?\u2014E\n \u0661\u06623\u060c!?\u2014F\n \u0661\u06623\u060c!?\u2014G\n \u0661\u06623\u060c!?\u2014H\n \u0661\u06623\u060c!?\u2014I\n \u0661\u06623\u060c!?\u2014J\n \u0661\u06623\u060c!?\u2014K\n \u0661\u06623\u060c!?\u2014L\n \u0661\u06623\u060c!?\u2014M\n \u0661\u06623\u060c!?\u2014N\n \u0661\u06623\u060c!?\u2014\u019d\n \u0661\u06623\u060c!?\u2014\u014a\n \u0661\u06623\u060c!?\u2014O\n \u0661\u06623\u060c!?\u2014P\n \u0661\u06623\u060c!?\u2014R\n \u0661\u06623\u060c!?\u2014\u0158\n \u0661\u06623\u060c!?\u2014S\n \u0661\u06623\u060c!?\u2014\u0160\n \u0661\u06623\u060c!?\u2014T\n \u0661\u06623\u060c!?\u2014U\n \u0661\u06623\u060c!?\u2014W\n \u0661\u06623\u060c!?\u2014Y\t",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "multiline:latin-arabic",
+    "input": "  A\n \u0661\u06623\u060c!?\u2014B\n \u0661\u06623\u060c!?\u2014D\n \u0661\u06623\u060c!?\u2014E\n \u0661\u06623\u060c!?\u2014F\n \u0661\u06623\u060c!?\u2014G\n \u0661\u06623\u060c!?\u2014H\n \u0661\u06623\u060c!?\u2014I\n \u0661\u06623\u060c!?\u2014J\n \u0661\u06623\u060c!?\u2014K\n \u0661\u06623\u060c!?\u2014L\n \u0661\u06623\u060c!?\u2014M\n \u0661\u06623\u060c!?\u2014N\n \u0661\u06623\u060c!?\u2014\u019d\n \u0661\u06623\u060c!?\u2014\u014a\n \u0661\u06623\u060c!?\u2014O\n \u0661\u06623\u060c!?\u2014P\n \u0661\u06623\u060c!?\u2014R\n \u0661\u06623\u060c!?\u2014\u0158\n \u0661\u06623\u060c!?\u2014S\n \u0661\u06623\u060c!?\u2014\u0160\n \u0661\u06623\u060c!?\u2014T\n \u0661\u06623\u060c!?\u2014U\n \u0661\u06623\u060c!?\u2014W\n \u0661\u06623\u060c!?\u2014Y\t",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "  \u0627\n \u0661\u06623\u060c!?\u2014\u0628\n \u0661\u06623\u060c!?\u2014\u062f\n \u0661\u06623\u060c!?\u2014\u0622\n \u0661\u06623\u060c!?\u2014\u0641\n \u0661\u06623\u060c!?\u2014\u0642\n \u0661\u06623\u060c!?\u2014\u0647\n \u0661\u06623\u060c!?\u2014\u06cc\n \u0661\u06623\u060c!?\u2014\u062c\n \u0661\u06623\u060c!?\u2014\u0643\n \u0661\u06623\u060c!?\u2014\u0644\n \u0661\u06623\u060c!?\u2014\u0645\n \u0661\u06623\u060c!?\u2014\u0646\n \u0661\u06623\u060c!?\u2014\u06bd\n \u0661\u06623\u060c!?\u2014\u06a0\n \u0661\u06623\u060c!?\u2014\u06c6\n \u0661\u06623\u060c!?\u2014\u067e\n \u0661\u06623\u060c!?\u2014\u0631\n \u0661\u06623\u060c!?\u2014\u0695\n \u0661\u06623\u060c!?\u2014\u0633\n \u0661\u06623\u060c!?\u2014\u0634\n \u0661\u06623\u060c!?\u2014\u062a\n \u0661\u06623\u060c!?\u2014\u06c7\n \u0661\u06623\u060c!?\u2014\u0648\n \u0661\u06623\u060c!?\u2014\u064a\t",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "multiline:arabic-erfe",
+    "input": "  \u0627\n \u0661\u06623\u060c!?\u2014\u0628\n \u0661\u06623\u060c!?\u2014\u062f\n \u0661\u06623\u060c!?\u2014\u0622\n \u0661\u06623\u060c!?\u2014\u0641\n \u0661\u06623\u060c!?\u2014\u0642\n \u0661\u06623\u060c!?\u2014\u0647\n \u0661\u06623\u060c!?\u2014\u06cc\n \u0661\u06623\u060c!?\u2014\u062c\n \u0661\u06623\u060c!?\u2014\u0643\n \u0661\u06623\u060c!?\u2014\u0644\n \u0661\u06623\u060c!?\u2014\u0645\n \u0661\u06623\u060c!?\u2014\u0646\n \u0661\u06623\u060c!?\u2014\u06bd\n \u0661\u06623\u060c!?\u2014\u06a0\n \u0661\u06623\u060c!?\u2014\u06c6\n \u0661\u06623\u060c!?\u2014\u067e\n \u0661\u06623\u060c!?\u2014\u0631\n \u0661\u06623\u060c!?\u2014\u0695\n \u0661\u06623\u060c!?\u2014\u0633\n \u0661\u06623\u060c!?\u2014\u0634\n \u0661\u06623\u060c!?\u2014\u062a\n \u0661\u06623\u060c!?\u2014\u06c7\n \u0661\u06623\u060c!?\u2014\u0648\n \u0661\u06623\u060c!?\u2014\u064a\t",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "  \ud81b\udea0\n \u0661\u06623\u060c!?\u2014\ud81b\udea1\n \u0661\u06623\u060c!?\u2014\ud81b\udea2\n \u0661\u06623\u060c!?\u2014\ud81b\udea3\n \u0661\u06623\u060c!?\u2014\ud81b\udea4\n \u0661\u06623\u060c!?\u2014\ud81b\udea5\n \u0661\u06623\u060c!?\u2014\ud81b\udea6\n \u0661\u06623\u060c!?\u2014\ud81b\udea7\n \u0661\u06623\u060c!?\u2014\ud81b\udea8\n \u0661\u06623\u060c!?\u2014\ud81b\udea9\n \u0661\u06623\u060c!?\u2014\ud81b\udeaa\n \u0661\u06623\u060c!?\u2014\ud81b\udeab\n \u0661\u06623\u060c!?\u2014\ud81b\udeac\n \u0661\u06623\u060c!?\u2014\ud81b\udead\n \u0661\u06623\u060c!?\u2014\ud81b\udeae\n \u0661\u06623\u060c!?\u2014\ud81b\udeaf\n \u0661\u06623\u060c!?\u2014\ud81b\udeb0\n \u0661\u06623\u060c!?\u2014\ud81b\udeb1\n \u0661\u06623\u060c!?\u2014\ud81b\udeb2\n \u0661\u06623\u060c!?\u2014\ud81b\udeb3\n \u0661\u06623\u060c!?\u2014\ud81b\udeb4\n \u0661\u06623\u060c!?\u2014\ud81b\udeb5\n \u0661\u06623\u060c!?\u2014\ud81b\udeb6\n \u0661\u06623\u060c!?\u2014\ud81b\udeb7\n \u0661\u06623\u060c!?\u2014\ud81b\udeb8\t",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "multiline:arabic-latin",
+    "input": "  \u0627\n \u0661\u06623\u060c!?\u2014\u0628\n \u0661\u06623\u060c!?\u2014\u062f\n \u0661\u06623\u060c!?\u2014\u0622\n \u0661\u06623\u060c!?\u2014\u0641\n \u0661\u06623\u060c!?\u2014\u0642\n \u0661\u06623\u060c!?\u2014\u0647\n \u0661\u06623\u060c!?\u2014\u06cc\n \u0661\u06623\u060c!?\u2014\u062c\n \u0661\u06623\u060c!?\u2014\u0643\n \u0661\u06623\u060c!?\u2014\u0644\n \u0661\u06623\u060c!?\u2014\u0645\n \u0661\u06623\u060c!?\u2014\u0646\n \u0661\u06623\u060c!?\u2014\u06bd\n \u0661\u06623\u060c!?\u2014\u06a0\n \u0661\u06623\u060c!?\u2014\u06c6\n \u0661\u06623\u060c!?\u2014\u067e\n \u0661\u06623\u060c!?\u2014\u0631\n \u0661\u06623\u060c!?\u2014\u0695\n \u0661\u06623\u060c!?\u2014\u0633\n \u0661\u06623\u060c!?\u2014\u0634\n \u0661\u06623\u060c!?\u2014\u062a\n \u0661\u06623\u060c!?\u2014\u06c7\n \u0661\u06623\u060c!?\u2014\u0648\n \u0661\u06623\u060c!?\u2014\u064a\t",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "  A\n \u0661\u06623\u060c!?\u2014B\n \u0661\u06623\u060c!?\u2014D\n \u0661\u06623\u060c!?\u2014E\n \u0661\u06623\u060c!?\u2014F\n \u0661\u06623\u060c!?\u2014G\n \u0661\u06623\u060c!?\u2014H\n \u0661\u06623\u060c!?\u2014I\n \u0661\u06623\u060c!?\u2014J\n \u0661\u06623\u060c!?\u2014K\n \u0661\u06623\u060c!?\u2014L\n \u0661\u06623\u060c!?\u2014M\n \u0661\u06623\u060c!?\u2014N\n \u0661\u06623\u060c!?\u2014\u019d\n \u0661\u06623\u060c!?\u2014\u014a\n \u0661\u06623\u060c!?\u2014O\n \u0661\u06623\u060c!?\u2014P\n \u0661\u06623\u060c!?\u2014R\n \u0661\u06623\u060c!?\u2014\u0158\n \u0661\u06623\u060c!?\u2014S\n \u0661\u06623\u060c!?\u2014\u0160\n \u0661\u06623\u060c!?\u2014T\n \u0661\u06623\u060c!?\u2014U\n \u0661\u06623\u060c!?\u2014W\n \u0661\u06623\u060c!?\u2014Y\t",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "multiline:arabic-arabic",
+    "input": "  \u0627\n \u0661\u06623\u060c!?\u2014\u0628\n \u0661\u06623\u060c!?\u2014\u062f\n \u0661\u06623\u060c!?\u2014\u0622\n \u0661\u06623\u060c!?\u2014\u0641\n \u0661\u06623\u060c!?\u2014\u0642\n \u0661\u06623\u060c!?\u2014\u0647\n \u0661\u06623\u060c!?\u2014\u06cc\n \u0661\u06623\u060c!?\u2014\u062c\n \u0661\u06623\u060c!?\u2014\u0643\n \u0661\u06623\u060c!?\u2014\u0644\n \u0661\u06623\u060c!?\u2014\u0645\n \u0661\u06623\u060c!?\u2014\u0646\n \u0661\u06623\u060c!?\u2014\u06bd\n \u0661\u06623\u060c!?\u2014\u06a0\n \u0661\u06623\u060c!?\u2014\u06c6\n \u0661\u06623\u060c!?\u2014\u067e\n \u0661\u06623\u060c!?\u2014\u0631\n \u0661\u06623\u060c!?\u2014\u0695\n \u0661\u06623\u060c!?\u2014\u0633\n \u0661\u06623\u060c!?\u2014\u0634\n \u0661\u06623\u060c!?\u2014\u062a\n \u0661\u06623\u060c!?\u2014\u06c7\n \u0661\u06623\u060c!?\u2014\u0648\n \u0661\u06623\u060c!?\u2014\u064a\t",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "  \u0627\n \u0661\u06623\u060c!?\u2014\u0628\n \u0661\u06623\u060c!?\u2014\u062f\n \u0661\u06623\u060c!?\u2014\u0622\n \u0661\u06623\u060c!?\u2014\u0641\n \u0661\u06623\u060c!?\u2014\u0642\n \u0661\u06623\u060c!?\u2014\u0647\n \u0661\u06623\u060c!?\u2014\u06cc\n \u0661\u06623\u060c!?\u2014\u062c\n \u0661\u06623\u060c!?\u2014\u0643\n \u0661\u06623\u060c!?\u2014\u0644\n \u0661\u06623\u060c!?\u2014\u0645\n \u0661\u06623\u060c!?\u2014\u0646\n \u0661\u06623\u060c!?\u2014\u06bd\n \u0661\u06623\u060c!?\u2014\u06a0\n \u0661\u06623\u060c!?\u2014\u06c6\n \u0661\u06623\u060c!?\u2014\u067e\n \u0661\u06623\u060c!?\u2014\u0631\n \u0661\u06623\u060c!?\u2014\u0695\n \u0661\u06623\u060c!?\u2014\u0633\n \u0661\u06623\u060c!?\u2014\u0634\n \u0661\u06623\u060c!?\u2014\u062a\n \u0661\u06623\u060c!?\u2014\u06c7\n \u0661\u06623\u060c!?\u2014\u0648\n \u0661\u06623\u060c!?\u2014\u064a\t",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "nfc-sensitive",
+    "input": "R\u030cS\u030c",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0695\u0634",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "CRLF",
+    "input": "ABD\r\nABD\rABD",
+    "source": "latin",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0628\u062f\r\n\u0627\u0628\u062f\r\u0627\u0628\u062f",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "unknown-supplementary",
+    "input": "A\ud83d\ude00C\ud840\udc00",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0\ud83d\ude00C\ud840\udc00",
+      "unmapped": [
+        {
+          "character": "\ud83d\ude00",
+          "codepoint": "U+1F600",
+          "index": 1
+        },
+        {
+          "character": "C",
+          "codepoint": "U+0043",
+          "index": 2
+        },
+        {
+          "character": "\ud840\udc00",
+          "codepoint": "U+20000",
+          "index": 3
+        }
+      ]
+    }
+  },
+  {
+    "name": "unmapped-composed-vowel",
+    "input": "A\u0304",
+    "source": "latin",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0100",
+      "unmapped": [
+        {
+          "character": "\u0100",
+          "codepoint": "U+0100",
+          "index": 0
+        }
+      ]
+    }
+  },
+  {
+    "name": "unmapped-erfe-mark",
+    "input": "\ud81b\udea0\u0304",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0100",
+      "unmapped": [
+        {
+          "character": "\u0304",
+          "codepoint": "U+0304",
+          "index": 1
+        }
+      ]
+    }
+  },
+  {
+    "name": "arabic-presentation-form-not-inferred",
+    "input": "\ufe8d",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ufe8d",
+      "unmapped": [
+        {
+          "character": "\ufe8d",
+          "codepoint": "U+FE8D",
+          "index": 0
+        }
+      ]
+    }
+  }
+]

@@ -7,6 +7,7 @@ import 'package:printing/printing.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../models/beriya_draft.dart';
+import '../../../shared/beriya/transliteration.dart';
 
 class BeriyaPdfService {
   static pw.Font? _cachedRegularFont;
@@ -61,6 +62,7 @@ class BeriyaPdfService {
   }
 
   static Future<Uint8List> generatePdfBytes(BeriyaDraft draft) async {
+    draft = draft.copyWith(title: normalizeErfe(draft.title), content: normalizeErfe(draft.content));
     await _initFonts();
 
     final doc = pw.Document(

@@ -12,6 +12,7 @@ import '../../../core/widgets/bk_option_card.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../shared/beriya/beriya_keyboard.dart';
 import '../../../shared/beriya/utf16_safe.dart';
+import '../../../shared/beriya/transliteration.dart';
 import '../../progress/services/unit_progress_local_storage.dart';
 import '../../quiz/models/quiz_question_model.dart';
 import '../engine/tracing_engine.dart';
@@ -1367,7 +1368,7 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
                     return;
                   }
                   setState(() {
-                    _typedText += char;
+                    _typedText = normalizeErfe(_typedText + char);
                   });
                   _persistSession().catchError((Object _) {});
                 },

@@ -1,3 +1,5 @@
+from core.erfe_search import erfe_search_expression
+from core.transliteration import normalize_erfe
 from rest_framework import generics
 
 from core.permissions import is_staff_preview
@@ -51,8 +53,9 @@ class WordListAPIView(generics.ListAPIView):
             queryset = queryset.filter(available_offline=True)
 
         if search:
+            queryset = queryset.alias(_erfe_search=erfe_search_expression('beriya_text', search))
             queryset = queryset.filter(
-                beriya_text__icontains=search
+                _erfe_search__icontains=normalize_erfe(search)
             ) | queryset.filter(
                 latin_transcription__icontains=search
             ) | queryset.filter(

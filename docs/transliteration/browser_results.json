@@ -1,0 +1,66 @@
+{
+  "browser": "Chrome headless real DOM",
+  "results": [
+    {
+      "name": "historical draft read does not rewrite local storage",
+      "status": "passed",
+      "proof": {
+        "display": "canonical",
+        "storage": "unchanged"
+      }
+    },
+    {
+      "name": "HTTP fonts and converter scripts",
+      "status": "passed",
+      "proof": {
+        "converter": 1,
+        "font_loaded": true
+      }
+    },
+    {
+      "name": "paste lower Erfe, multiline and native undo",
+      "status": "passed",
+      "proof": {
+        "paste": "canonical",
+        "selection": [
+          13,
+          13
+        ],
+        "undo": "restored"
+      }
+    },
+    {
+      "name": "selected Latin conversion, insertion and explicit undo",
+      "status": "passed",
+      "proof": {
+        "selection_only": true,
+        "conversion_explicit": true,
+        "undo": true
+      }
+    },
+    {
+      "name": "virtual keyboard canonical insertion and native undo",
+      "status": "passed",
+      "proof": {
+        "canonical": true,
+        "native_undo": true
+      }
+    },
+    {
+      "name": "strict Arabic, RTL, unknown report, copy and mobile",
+      "status": "passed",
+      "proof": {
+        "viewport": 390,
+        "document": 390
+      }
+    },
+    {
+      "name": "sticker uses normalized text and explicit converter",
+      "status": "passed",
+      "proof": {
+        "canonical": true
+      }
+    }
+  ],
+  "errors": []
+}
