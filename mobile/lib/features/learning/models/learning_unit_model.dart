@@ -111,7 +111,12 @@ class LearningUnitModel {
           break;
         }
       }
-      other ??= (distractors.isNotEmpty ? distractors.first : null);
+      for (final d in distractors) {
+        if (other != null) break;
+        if (d.symbol != c.symbol) {
+          other = d;
+        }
+      }
 
       if (other != null) {
         steps.add({

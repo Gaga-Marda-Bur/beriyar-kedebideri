@@ -7,24 +7,59 @@ class OfflineMediaResolver {
 
     final trimmed = value.trim();
 
-    if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    if (trimmed.startsWith('http://') ||
+        trimmed.startsWith('https://') ||
+        trimmed.startsWith('assets/')) {
       return trimmed;
     }
 
-    if (trimmed.startsWith('/')) {
-      return trimmed;
+    final normalizedPack = _normalizePath(localPackPath);
+    if (normalizedPack.isEmpty) return null;
+    final rawPack = localPackPath.trim().replaceFirst(RegExp(r'[/\\]+$'), '');
+
+    final unixLike = trimmed.replaceAll('\\', '/');
+
+    if (unixLike.startsWith('/media/')) {
+      return _joinInsidePack(rawPack, unixLike.substring('/media/'.length));
     }
 
-    if (trimmed.contains(':\\')) {
-      return trimmed;
+    if (unixLike.startsWith('/') || RegExp(r'^[A-Za-z]:/').hasMatch(unixLike)) {
+      return _isInsidePack(normalizedPack, unixLike) ? trimmed : null;
     }
 
-    final normalized = trimmed
-        .replaceAll('\\', '/')
-        .replaceFirst('./', '')
-        .replaceFirst('media/', '');
+    var rel = unixLike;
+    if (rel.startsWith('./')) {
+      rel = rel.substring(2);
+    }
+    if (rel.startsWith('media/')) {
+      rel = rel.substring('media/'.length);
+    }
 
-    return '$localPackPath/$normalized';
+    return _joinInsidePack(rawPack, rel);
+  }
+
+  static String _normalizePath(String path) {
+    final replaced = path.replaceAll('\\', '/').trim();
+    return replaced.endsWith('/') && replaced.length > 1
+        ? replaced.substring(0, replaced.length - 1)
+        : replaced;
+  }
+
+  static bool _hasTraversal(String path) {
+    return path.split('/').any((seg) => seg == '..');
+  }
+
+  static bool _isInsidePack(String normalizedPack, String candidate) {
+    final normCandidate = _normalizePath(candidate);
+    if (_hasTraversal(normCandidate)) return false;
+    return normCandidate == normalizedPack ||
+        normCandidate.startsWith('$normalizedPack/');
+  }
+
+  static String? _joinInsidePack(String normalizedPack, String relative) {
+    final cleaned = relative.replaceFirst(RegExp(r'^/+'), '');
+    if (cleaned.isEmpty || _hasTraversal(cleaned)) return null;
+    return '$normalizedPack/$cleaned';
   }
 
   static Map<String, dynamic> resolveFields(

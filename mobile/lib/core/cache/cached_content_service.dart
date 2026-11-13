@@ -274,15 +274,29 @@ class CachedContentService {
     }
 
     final cached = await _cacheService.readList(key: CacheKeys.themes);
+    List<LearningThemeModel> offline = [];
+    try {
+      offline = await _offlineContentService.loadThemes();
+    } catch (e) {
+      AppLogger.warning('Could not load offline themes: $e');
+    }
 
     if (cached.isNotEmpty) {
-      final items = cached.map(LearningThemeModel.fromJson).toList();
+      final merged = <String, LearningThemeModel>{};
+      for (final item in offline) {
+        final key = item.id > 0 ? 'id:${item.id}' : 'slug:${item.slug}';
+        merged[key] = item;
+      }
+      for (final item in cached.map(LearningThemeModel.fromJson)) {
+        final key = item.id > 0 ? 'id:${item.id}' : 'slug:${item.slug}';
+        merged[key] = item;
+      }
+      final items = merged.values.toList()
+        ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
       _memoryCache.set(CacheKeys.memoryThemes, items);
       _sourceState.setSource(CacheKeys.themes, ContentSourceType.localCache);
       return items;
     }
-
-    final offline = await _offlineContentService.loadThemes();
 
     _memoryCache.set(CacheKeys.memoryThemes, offline);
     _sourceState.setSource(
@@ -338,16 +352,31 @@ class CachedContentService {
     }
 
     final cached = await _cacheService.readList(key: CacheKeys.units);
+    List<LearningUnitModel> offline = [];
+    try {
+      offline = await _offlineContentService.loadUnits();
+    } catch (e) {
+      AppLogger.warning('Could not load offline units: $e');
+    }
 
     if (cached.isNotEmpty) {
-      final items = cached.map(LearningUnitModel.fromJson).toList();
+      final merged = <String, LearningUnitModel>{};
+      for (final item in offline) {
+        final key = item.id > 0 ? 'id:${item.id}' : 'slug:${item.slug}';
+        merged[key] = item;
+      }
+      for (final item in cached.map(LearningUnitModel.fromJson)) {
+        final key = item.id > 0 ? 'id:${item.id}' : 'slug:${item.slug}';
+        merged[key] = item;
+      }
+      final items = merged.values.toList()
+        ..sort((a, b) => a.orderIndex.compareTo(b.orderIndex));
       final resolved = await _resolveUnitsMedia(items, isOnline: online);
       _memoryCache.set(CacheKeys.memoryUnits, resolved);
       _sourceState.setSource(CacheKeys.units, ContentSourceType.localCache);
       return resolved;
     }
 
-    final offline = await _offlineContentService.loadUnits();
     final resolved = await _resolveUnitsMedia(offline, isOnline: online);
 
     _memoryCache.set(CacheKeys.memoryUnits, resolved);
@@ -457,9 +486,21 @@ class CachedContentService {
       );
     }
 
-    final source = cachedMap.isNotEmpty
-        ? cachedMap.values.toList()
-        : await _offlineContentService.loadLessons();
+    List<LessonModel> offlineLessons = [];
+    try {
+      offlineLessons = await _offlineContentService.loadLessons();
+    } catch (e) {
+      AppLogger.warning('Could not load offline lessons: $e');
+    }
+
+    final mergedMap = <String, LessonModel>{};
+    for (final lesson in offlineLessons) {
+      mergedMap[_lessonStableKey(lesson)] = lesson;
+    }
+    for (final lesson in cachedMap.values) {
+      mergedMap[_lessonStableKey(lesson)] = lesson;
+    }
+    final source = mergedMap.values.toList();
 
     final filtered = unitSlug == null || unitSlug.isEmpty
         ? source
@@ -677,7 +718,7 @@ class CachedContentService {
       final isRemote =
           trimmed.startsWith('http://') || trimmed.startsWith('https://');
       if (!isRemote) {
-        if (_isValidLocalFile(trimmed)) {
+        if (trimmed.startsWith('assets/') || _isValidLocalFile(trimmed)) {
           return trimmed;
         }
         // Obsolete / missing / 0-byte local path -> reject
