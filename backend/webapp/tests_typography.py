@@ -21,6 +21,8 @@ class ErfeTypographyTests(SimpleTestCase):
         self.assertNotIn('<script>', str(web_i18n.render_erfe(mark_safe(text))))
 
     def test_admin_template_loads_shared_fonts(self):
+        from django.contrib.staticfiles import finders
+        from django.contrib.staticfiles.storage import staticfiles_storage
         from django.template.loader import render_to_string
         from django.test import RequestFactory
         request = RequestFactory().get('/admin/')
@@ -29,7 +31,8 @@ class ErfeTypographyTests(SimpleTestCase):
             'site_header': 'BK', 'site_title': 'BK', 'has_permission': False,
             'is_popup': False, 'is_nav_sidebar_enabled': False,
         }, request=request)
-        self.assertIn('webapp/css/erfe.css', html)
+        self.assertIsNotNone(finders.find('webapp/css/erfe.css'))
+        self.assertIn(staticfiles_storage.url('webapp/css/erfe.css'), html)
 
     def test_all_assigned_characters_and_combining_marks(self):
         points = [*range(0x16EA0, 0x16EB9), *range(0x16EBB, 0x16ED4)]

@@ -62,6 +62,8 @@ class PublishedAudioParityTests(TestCase):
                                       role='normal', is_primary=True, order=3)
 
     def test_web_api_and_pack_choose_same_published_role_and_priority(self):
+        from django.contrib.staticfiles import finders
+        from django.contrib.staticfiles.storage import staticfiles_storage
         from alphabet.serializers import CharacterSerializer
         from audio_assets.utils import get_linked_audio_file
         from webapp.templatetags.web_i18n import published_audio
@@ -73,7 +75,8 @@ class PublishedAudioParityTests(TestCase):
         self.assertContains(response, f'data-audio="{expected}"')
         self.assertNotContains(response, self.draft.file.url)
         self.assertNotContains(response, self.slow.file.url)
-        self.assertContains(response, 'webapp/js/audio_player.js')
+        self.assertIsNotNone(finders.find('webapp/js/audio_player.js'))
+        self.assertContains(response, staticfiles_storage.url('webapp/js/audio_player.js'))
         self.assertNotContains(response, 'new Audio(')
 
     def test_no_published_normal_track_never_falls_back_to_draft_or_slow(self):
