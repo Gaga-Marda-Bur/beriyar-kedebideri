@@ -8,15 +8,28 @@ import 'package:share_plus/share_plus.dart';
 
 import '../models/beriya_draft.dart';
 import '../../../shared/beriya/transliteration.dart';
+import 'arabic_pdf_text.dart';
 import 'erfe_pdf_text.dart';
 
 class BeriyaPdfService {
+  /// Internal QA-only flag for experimental reversible Arabic PDF shaping.
+  /// Disabled by default; never exposed in user-facing settings.
+  static bool experimentalArabicPdfEnabled = false;
+
   static pw.Font? _cachedRegularFont;
   static pw.Font? _cachedBoldFont;
   static pw.Font? _cachedLatinFont;
   static pw.Font? _cachedArabicFont;
+  static pw.Font? _cachedExperimentalArabicFont;
 
-  static Future<void> _initFonts() async {
+  static Future<void> _initFonts({bool loadExperimentalArabic = false}) async {
+    if (loadExperimentalArabic && _cachedExperimentalArabicFont == null) {
+      _cachedExperimentalArabicFont = pw.Font.ttf(
+        await rootBundle.load(
+          'assets/fonts/experimental/BeriyaArabicProto-Regular.ttf',
+        ),
+      );
+    }
     if (_cachedRegularFont != null &&
         _cachedBoldFont != null &&
         _cachedLatinFont != null &&
@@ -62,12 +75,18 @@ class BeriyaPdfService {
     }
   }
 
-  static Future<Uint8List> generatePdfBytes(BeriyaDraft draft) async {
+  static Future<Uint8List> generatePdfBytes(
+    BeriyaDraft draft, {
+    bool? useExperimentalArabicPdf,
+    ArabicPdfDiagnostics? arabicDiagnostics,
+  }) async {
+    final useExperimentalArabic =
+        useExperimentalArabicPdf ?? experimentalArabicPdfEnabled;
     draft = draft.copyWith(
       title: normalizeErfe(draft.title),
       content: normalizeErfe(draft.content),
     );
-    await _initFonts();
+    await _initFonts(loadExperimentalArabic: useExperimentalArabic);
 
     final doc = pw.Document(
       title: draft.title.isNotEmpty ? draft.title : 'Document Beriya',
@@ -207,16 +226,30 @@ class BeriyaPdfService {
               pw.Container(
                 width: double.infinity,
                 margin: const pw.EdgeInsets.only(bottom: 18),
-                child: erfePdfText(
-                  context,
-                  draft.title.trim(),
-                  textAlign: textAlign,
-                  font: fontBold,
-                  fontSize: draft.fontSize * 1.25,
-                  bold: true,
-                  color: primaryColor,
-                  lineSpacing: 1.2,
-                ),
+                child: useExperimentalArabic
+                    ? arabicPdfText(
+                        context,
+                        draft.title.trim(),
+                        arabicFont: _cachedExperimentalArabicFont!,
+                        erfeFont: fontBold,
+                        latinFont: _cachedLatinFont,
+                        textAlign: textAlign,
+                        fontSize: draft.fontSize * 1.25,
+                        bold: true,
+                        color: primaryColor,
+                        lineSpacing: 1.2,
+                        diagnostics: arabicDiagnostics,
+                      )
+                    : erfePdfText(
+                        context,
+                        draft.title.trim(),
+                        textAlign: textAlign,
+                        font: fontBold,
+                        fontSize: draft.fontSize * 1.25,
+                        bold: true,
+                        color: primaryColor,
+                        lineSpacing: 1.2,
+                      ),
               ),
             );
           }
@@ -229,15 +262,28 @@ class BeriyaPdfService {
                 pw.Container(
                   width: double.infinity,
                   margin: const pw.EdgeInsets.only(bottom: 10),
-                  child: erfePdfText(
-                    context,
-                    p,
-                    textAlign: textAlign,
-                    font: fontRegular,
-                    fontSize: draft.fontSize,
-                    color: textColor,
-                    lineSpacing: 1.4,
-                  ),
+                  child: useExperimentalArabic
+                      ? arabicPdfText(
+                          context,
+                          p,
+                          arabicFont: _cachedExperimentalArabicFont!,
+                          erfeFont: fontRegular,
+                          latinFont: _cachedLatinFont,
+                          textAlign: textAlign,
+                          fontSize: draft.fontSize,
+                          color: textColor,
+                          lineSpacing: 1.4,
+                          diagnostics: arabicDiagnostics,
+                        )
+                      : erfePdfText(
+                          context,
+                          p,
+                          textAlign: textAlign,
+                          font: fontRegular,
+                          fontSize: draft.fontSize,
+                          color: textColor,
+                          lineSpacing: 1.4,
+                        ),
                 ),
               );
             }
