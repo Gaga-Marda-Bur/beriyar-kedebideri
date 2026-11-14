@@ -252,6 +252,12 @@ class LearningUnit(models.Model):
             l_audio = get_linked_audio_url(char, 'letter_name', request=request)
             type_label = 'la voyelle' if char.character_type == Character.VOWEL else 'la consonne' if char.character_type == Character.CONSONANT else 'le caractère'
             ipa_str = f" /{char.phoneme_ipa}/" if char.phoneme_ipa and char.phoneme_ipa != 'À_VALIDER' else ""
+            latin_hint = char.latin_transcription or char.latin_grapheme or ""
+            discovery_label = (
+                f"Écoute et découvre {type_label}{ipa_str}"
+                if (ipa_str or not latin_hint)
+                else f"Découvre la lettre « {latin_hint} » ({char.symbol})"
+            )
 
             steps.append({
                 'index': len(steps),
@@ -260,7 +266,8 @@ class LearningUnit(models.Model):
                 'unicode_code': char.unicode_code,
                 'character_type': char.character_type,
                 'phoneme_ipa': char.phoneme_ipa,
-                'label': f"Écoute et découvre {type_label}{ipa_str}",
+                'latin_transcription': latin_hint,
+                'label': discovery_label,
                 'audio_url': p_audio,
                 'letter_name_audio_url': l_audio,
                 'weight_category': 'recognition',
@@ -277,13 +284,19 @@ class LearningUnit(models.Model):
                 other_char = distractors[0]
 
             if other_char:
+                disc_instruction = (
+                    f"Touche {type_label}{ipa_str}"
+                    if (ipa_str or not latin_hint)
+                    else f"Touche la lettre Erfe correspondant à « {latin_hint} »"
+                )
                 steps.append({
                     'index': len(steps),
                     'step_type': 'discrimination',
                     'target_symbol': char.symbol,
                     'other_symbol': other_char.symbol,
                     'phoneme_ipa': char.phoneme_ipa,
-                    'instruction': f"Touche {type_label}{ipa_str}",
+                    'latin_transcription': latin_hint,
+                    'instruction': disc_instruction,
                     'audio_url': p_audio,
                     'weight_category': 'recognition',
                 })
@@ -346,6 +359,23 @@ class LearningUnit(models.Model):
                 'keyboard_keys': keyboard_symbols,
                 'audio_url': w_normal_audio,
                 'instruction': f"Écris le mot \"{target_w.latin_transcription or target_w.beriya_text}\" au clavier :",
+                'weight_category': 'encoding',
+            })
+        elif chars:
+            # Parcours alphabet sans mot cible : saisie guidée sans audio au clavier Erfe
+            first_char = chars[0]
+            first_audio = get_linked_audio_url(first_char, 'phoneme', request=request) or get_linked_audio_url(first_char, 'normal', request=request)
+            first_latin = first_char.latin_transcription or first_char.latin_grapheme or first_char.symbol
+            keyboard_symbols = list(dict.fromkeys([c.symbol for c in chars] + [d.symbol for d in distractors]))
+            steps.append({
+                'index': len(steps),
+                'step_type': 'keyboard_encoding',
+                'target_word': first_char.symbol,
+                'latin_transcription': first_latin,
+                'french_translation': f"Lettre {first_latin}",
+                'keyboard_keys': keyboard_symbols,
+                'audio_url': first_audio,
+                'instruction': f"Écris la lettre « {first_latin} » au clavier Erfe :",
                 'weight_category': 'encoding',
             })
 

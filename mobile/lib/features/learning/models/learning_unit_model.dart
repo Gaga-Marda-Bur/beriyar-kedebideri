@@ -90,6 +90,8 @@ class LearningUnitModel {
       final isConsonant = c.characterType == 'consonant';
       final typeLabel = isVowel ? 'la voyelle' : (isConsonant ? 'la consonne' : 'le caractère');
       final ipaStr = c.phonemeIpa.isNotEmpty && c.phonemeIpa != 'À_VALIDER' ? ' /${c.phonemeIpa}/' : '';
+      final charAudio = c.phonemeAudioUrl ?? c.audioUrl;
+      final latinHint = c.latinTranscription.isNotEmpty ? c.latinTranscription : c.latinGrapheme;
 
       steps.add({
         'index': steps.length,
@@ -98,8 +100,11 @@ class LearningUnitModel {
         'unicode_code': c.unicodeCode,
         'character_type': c.characterType,
         'phoneme_ipa': c.phonemeIpa,
-        'label': 'Écoute et découvre $typeLabel$ipaStr',
-        'audio_url': c.phonemeAudioUrl ?? c.audioUrl,
+        'latin_transcription': latinHint,
+        'label': (ipaStr.isNotEmpty || latinHint.isEmpty)
+            ? 'Écoute et découvre $typeLabel$ipaStr'
+            : 'Découvre la lettre « $latinHint » (${c.symbol})',
+        'audio_url': charAudio,
         'letter_name_audio_url': c.letterNameAudioUrl,
         'weight_category': 'recognition',
       });
@@ -125,8 +130,11 @@ class LearningUnitModel {
           'target_symbol': c.symbol,
           'other_symbol': other.symbol,
           'phoneme_ipa': c.phonemeIpa,
-          'instruction': 'Touche $typeLabel$ipaStr',
-          'audio_url': c.phonemeAudioUrl ?? c.audioUrl,
+          'latin_transcription': latinHint,
+          'instruction': (ipaStr.isNotEmpty || latinHint.isEmpty)
+              ? 'Touche $typeLabel$ipaStr'
+              : 'Touche la lettre Erfe correspondant à « $latinHint »',
+          'audio_url': charAudio,
           'weight_category': 'recognition',
         });
       }
@@ -187,6 +195,27 @@ class LearningUnitModel {
         'keyboard_keys': keyboardKeys,
         'audio_url': targetW.audioUrl,
         'instruction': 'Écris le mot "${targetW.latinTranscription.isNotEmpty ? targetW.latinTranscription : targetW.beriyaText}" au clavier :',
+        'weight_category': 'encoding',
+      });
+    } else if (chars.isNotEmpty) {
+      final firstChar = chars.first;
+      final firstLatin = firstChar.latinTranscription.isNotEmpty
+          ? firstChar.latinTranscription
+          : (firstChar.latinGrapheme.isNotEmpty ? firstChar.latinGrapheme : firstChar.symbol);
+      final keyboardKeys = <String>{
+        ...chars.map((e) => e.symbol),
+        ...distractors.map((e) => e.symbol),
+      }.toList();
+
+      steps.add({
+        'index': steps.length,
+        'step_type': 'keyboard_encoding',
+        'target_word': firstChar.symbol,
+        'latin_transcription': firstLatin,
+        'french_translation': 'Lettre $firstLatin',
+        'keyboard_keys': keyboardKeys,
+        'audio_url': firstChar.phonemeAudioUrl ?? firstChar.audioUrl,
+        'instruction': 'Écris la lettre « $firstLatin » au clavier Erfe :',
         'weight_category': 'encoding',
       });
     }
