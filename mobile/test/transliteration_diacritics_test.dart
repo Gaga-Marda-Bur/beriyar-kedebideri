@@ -47,10 +47,41 @@ void main() {
         final original =
             r[script == WritingScript.erfe ? 'erfe' : 'latin_upper'] as String;
         final result = transliterate(original, script, WritingScript.arabic);
-        expect(result.text, original);
-        expect(result.unmapped.single['reason'], 'missing_arabic_mapping');
+        expect(result.text, r['arabic']);
+        expect(result.unmapped, isEmpty);
+        final backToErfe = transliterate(
+          result.text,
+          WritingScript.arabic,
+          WritingScript.erfe,
+        );
+        expect(backToErfe.text, r['erfe']);
+        expect(backToErfe.unmapped, isEmpty);
       }
     }
+    const sample =
+        '1. 𖺯̄ 𖺧̄ !\n'
+        '2. 𖺡𖺯̄𖺵 , 𖺡𖺧̄𖺵 ;\n'
+        '3. 𖺠́ 𖺣̀ 𖺧̄ 𖺯̄ .\n'
+        '4. 𖺶̄ 𖺠̄ 𖺣̄ ?\n'
+        '5. 𖺧̇ 𖺠̀ 𖺣́ :\n'
+        '6. 𖺧̀ 𖺧́ 𖺶̀ 𖺶́ !\n'
+        '7. 𖺯̀ 𖺯́ (𖺯̄ / 𖺧̄)\n'
+        '8. 𖻊̄ 𖻂̄ — fin.';
+    const expected =
+        '1. \u06C6\u0304 \u06CC\u0304 !\n'
+        '2. \u0628\u06C6\u0304\u062A , \u0628\u06CC\u0304\u062A ;\n'
+        '3. \u0627\u0301 \u0622\u0300 \u06CC\u0304 \u06C6\u0304 .\n'
+        '4. \u06C7\u0304 \u0627\u0304 \u0622\u0304 ?\n'
+        '5. \u06CC\u0307 \u0627\u0300 \u0622\u0301 :\n'
+        '6. \u06CC\u0300 \u06CC\u0301 \u06C7\u0300 \u06C7\u0301 !\n'
+        '7. \u06C6\u0300 \u06C6\u0301 (\u06C6\u0304 / \u06CC\u0304)\n'
+        '8. \u06C6\u0304 \u06CC\u0304 — fin.';
+    final reg = transliterate(sample, WritingScript.erfe, WritingScript.arabic);
+    expect(reg.text, expected);
+    expect(
+      reg.text.runes.any((cp) => cp >= 0x16EA0 && cp <= 0x16EDF),
+      isFalse,
+    );
   });
   test(
     'paste accents retains UTF16 selection and newlines; Latin NFD becomes NFC',
@@ -124,11 +155,11 @@ void main() {
         (tester.widget(find.byKey(const Key('conversion-output'))) as TextField)
             .controller!
             .text,
-        'ÁÈÎ',
+        '\u0627\u0301\u0622\u0300\u06CC\u0304',
       );
       expect(
         find.textContaining('correspondances arabes non définies'),
-        findsOneWidget,
+        findsNothing,
       );
       expect(controller.text, 'ÁÈÎ');
       await tester.tap(find.text('Fermer'));

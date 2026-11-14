@@ -188,21 +188,20 @@ void main() {
     for (final row in validatedForms) {
       final erfeForm = row['erfe']!;
       final latinForm = row['latin_upper']!;
+      final arabicForm = row['arabic']!;
 
       final erfeToArabic = transliterate(erfeForm, WritingScript.erfe, WritingScript.arabic);
-      expect(erfeToArabic.text, erfeForm, reason: 'Erfe accent must NOT be stripped in Arabic translit');
-      expect(erfeToArabic.unmapped.isNotEmpty, isTrue);
-      expect(erfeToArabic.unmapped.first['reason'], 'missing_arabic_mapping');
+      expect(erfeToArabic.text, arabicForm);
+      expect(erfeToArabic.unmapped, isEmpty);
 
       final latinToArabic = transliterate(latinForm, WritingScript.latin, WritingScript.arabic);
-      expect(latinToArabic.text, latinForm, reason: 'Latin accent must NOT be stripped in Arabic translit');
-      expect(latinToArabic.unmapped.isNotEmpty, isTrue);
-      expect(latinToArabic.unmapped.first['reason'], 'missing_arabic_mapping');
+      expect(latinToArabic.text, arabicForm);
+      expect(latinToArabic.unmapped, isEmpty);
     }
 
     // Test mixte Arabe avec lettres simples et lettres accentuées
     final mixedTranslit = transliterate('BÁ D', WritingScript.latin, WritingScript.arabic);
-    expect(mixedTranslit.text, 'بÁ د'); // B et D sont convertis, Á reste intact
+    expect(mixedTranslit.text, 'ب\u0627\u0301 د');
 
     // Test interactif : boîte de dialogue de translittération
     final dialogController = TextEditingController(text: 'ÁÈÎ 𖺯́ 𖺧̇');

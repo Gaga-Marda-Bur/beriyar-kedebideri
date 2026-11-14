@@ -3521,15 +3521,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u1eca",
-      "unmapped": [
-        {
-          "character": "\u1eca",
-          "codepoint": "U+1ECA",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0307",
+      "unmapped": []
     }
   },
   {
@@ -3561,15 +3554,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u1ecb",
-      "unmapped": [
-        {
-          "character": "\u1ecb",
-          "codepoint": "U+1ECB",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0307",
+      "unmapped": []
     }
   },
   {
@@ -3601,15 +3587,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u1eca",
-      "unmapped": [
-        {
-          "character": "\u1eca",
-          "codepoint": "U+1ECA",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0307",
+      "unmapped": []
     }
   },
   {
@@ -3641,15 +3620,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u1ecb",
-      "unmapped": [
-        {
-          "character": "\u1ecb",
-          "codepoint": "U+1ECB",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0307",
+      "unmapped": []
     }
   },
   {
@@ -3681,15 +3653,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udea7\u0307",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea7\u0307",
-          "codepoint": "U+16EA7 U+0307",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0307",
+      "unmapped": []
     }
   },
   {
@@ -3721,15 +3686,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u06cc\u0307",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:0:erfe:2-erfe",
+    "input": "\ud81b\udea7\u0307",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udea7\u0307",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea7\u0307",
-          "codepoint": "U+16EA7 U+0307",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:0:erfe:2-latin",
+    "input": "\ud81b\udea7\u0307",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u1eca",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:0:erfe:2-arabic",
+    "input": "\ud81b\udea7\u0307",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0307",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:0:erfe:3-erfe",
+    "input": "\ud81b\udec2\u0307",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7\u0307",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:0:erfe:3-latin",
+    "input": "\ud81b\udec2\u0307",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u1eca",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:0:erfe:3-arabic",
+    "input": "\ud81b\udec2\u0307",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0307",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:0:arabic:0-erfe",
+    "input": "\u06cc\u0307",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7\u0307",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:0:arabic:0-latin",
+    "input": "\u06cc\u0307",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u1eca",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:0:arabic:0-arabic",
+    "input": "\u06cc\u0307",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0307",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:0:arabic:1-erfe",
+    "input": "\u06cc\u0307",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7\u0307",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:0:arabic:1-latin",
+    "input": "\u06cc\u0307",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u1eca",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:0:arabic:1-arabic",
+    "input": "\u06cc\u0307",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0307",
+      "unmapped": []
     }
   },
   {
@@ -3772,15 +3862,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00ce",
-      "unmapped": [
-        {
-          "character": "\u00ce",
-          "codepoint": "U+00CE",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0304",
+      "unmapped": []
     }
   },
   {
@@ -3812,15 +3895,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00ee",
-      "unmapped": [
-        {
-          "character": "\u00ee",
-          "codepoint": "U+00EE",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0304",
+      "unmapped": []
     }
   },
   {
@@ -3852,15 +3928,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00ce",
-      "unmapped": [
-        {
-          "character": "\u00ce",
-          "codepoint": "U+00CE",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0304",
+      "unmapped": []
     }
   },
   {
@@ -3892,15 +3961,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00ee",
-      "unmapped": [
-        {
-          "character": "\u00ee",
-          "codepoint": "U+00EE",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0304",
+      "unmapped": []
     }
   },
   {
@@ -3932,15 +3994,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udea7\u0304",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea7\u0304",
-          "codepoint": "U+16EA7 U+0304",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0304",
+      "unmapped": []
     }
   },
   {
@@ -3972,15 +4027,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u06cc\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:1:erfe:2-erfe",
+    "input": "\ud81b\udea7\u0304",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udea7\u0304",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea7\u0304",
-          "codepoint": "U+16EA7 U+0304",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:1:erfe:2-latin",
+    "input": "\ud81b\udea7\u0304",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00ce",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:1:erfe:2-arabic",
+    "input": "\ud81b\udea7\u0304",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:1:erfe:3-erfe",
+    "input": "\ud81b\udec2\u0304",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:1:erfe:3-latin",
+    "input": "\ud81b\udec2\u0304",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00ce",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:1:erfe:3-arabic",
+    "input": "\ud81b\udec2\u0304",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:1:arabic:0-erfe",
+    "input": "\u06cc\u0304",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:1:arabic:0-latin",
+    "input": "\u06cc\u0304",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00ce",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:1:arabic:0-arabic",
+    "input": "\u06cc\u0304",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:1:arabic:1-erfe",
+    "input": "\u06cc\u0304",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:1:arabic:1-latin",
+    "input": "\u06cc\u0304",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00ce",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:1:arabic:1-arabic",
+    "input": "\u06cc\u0304",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4023,15 +4203,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00db",
-      "unmapped": [
-        {
-          "character": "\u00db",
-          "codepoint": "U+00DB",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4063,15 +4236,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00fb",
-      "unmapped": [
-        {
-          "character": "\u00fb",
-          "codepoint": "U+00FB",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4103,15 +4269,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00db",
-      "unmapped": [
-        {
-          "character": "\u00db",
-          "codepoint": "U+00DB",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4143,15 +4302,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00fb",
-      "unmapped": [
-        {
-          "character": "\u00fb",
-          "codepoint": "U+00FB",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4183,15 +4335,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udeb6\u0304",
-      "unmapped": [
-        {
-          "character": "\ud81b\udeb6\u0304",
-          "codepoint": "U+16EB6 U+0304",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4223,15 +4368,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u06c7\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:2:erfe:2-erfe",
+    "input": "\ud81b\udeb6\u0304",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udeb6\u0304",
-      "unmapped": [
-        {
-          "character": "\ud81b\udeb6\u0304",
-          "codepoint": "U+16EB6 U+0304",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:2:erfe:2-latin",
+    "input": "\ud81b\udeb6\u0304",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00db",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:2:erfe:2-arabic",
+    "input": "\ud81b\udeb6\u0304",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:2:erfe:3-erfe",
+    "input": "\ud81b\uded1\u0304",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:2:erfe:3-latin",
+    "input": "\ud81b\uded1\u0304",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00db",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:2:erfe:3-arabic",
+    "input": "\ud81b\uded1\u0304",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:2:arabic:0-erfe",
+    "input": "\u06c7\u0304",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:2:arabic:0-latin",
+    "input": "\u06c7\u0304",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00db",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:2:arabic:0-arabic",
+    "input": "\u06c7\u0304",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:2:arabic:1-erfe",
+    "input": "\u06c7\u0304",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:2:arabic:1-latin",
+    "input": "\u06c7\u0304",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00db",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:2:arabic:1-arabic",
+    "input": "\u06c7\u0304",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4274,15 +4544,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00d4",
-      "unmapped": [
-        {
-          "character": "\u00d4",
-          "codepoint": "U+00D4",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4314,15 +4577,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00f4",
-      "unmapped": [
-        {
-          "character": "\u00f4",
-          "codepoint": "U+00F4",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4354,15 +4610,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00d4",
-      "unmapped": [
-        {
-          "character": "\u00d4",
-          "codepoint": "U+00D4",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4394,15 +4643,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00f4",
-      "unmapped": [
-        {
-          "character": "\u00f4",
-          "codepoint": "U+00F4",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4434,15 +4676,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udeaf\u0304",
-      "unmapped": [
-        {
-          "character": "\ud81b\udeaf\u0304",
-          "codepoint": "U+16EAF U+0304",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4474,15 +4709,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u06c6\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:3:erfe:2-erfe",
+    "input": "\ud81b\udeaf\u0304",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udeaf\u0304",
-      "unmapped": [
-        {
-          "character": "\ud81b\udeaf\u0304",
-          "codepoint": "U+16EAF U+0304",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:3:erfe:2-latin",
+    "input": "\ud81b\udeaf\u0304",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d4",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:3:erfe:2-arabic",
+    "input": "\ud81b\udeaf\u0304",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:3:erfe:3-erfe",
+    "input": "\ud81b\udeca\u0304",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:3:erfe:3-latin",
+    "input": "\ud81b\udeca\u0304",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d4",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:3:erfe:3-arabic",
+    "input": "\ud81b\udeca\u0304",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:3:arabic:0-erfe",
+    "input": "\u06c6\u0304",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:3:arabic:0-latin",
+    "input": "\u06c6\u0304",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d4",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:3:arabic:0-arabic",
+    "input": "\u06c6\u0304",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:3:arabic:1-erfe",
+    "input": "\u06c6\u0304",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:3:arabic:1-latin",
+    "input": "\u06c6\u0304",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d4",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:3:arabic:1-arabic",
+    "input": "\u06c6\u0304",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4525,15 +4885,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00c2",
-      "unmapped": [
-        {
-          "character": "\u00c2",
-          "codepoint": "U+00C2",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4565,15 +4918,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00e2",
-      "unmapped": [
-        {
-          "character": "\u00e2",
-          "codepoint": "U+00E2",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4605,15 +4951,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00c2",
-      "unmapped": [
-        {
-          "character": "\u00c2",
-          "codepoint": "U+00C2",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4645,15 +4984,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00e2",
-      "unmapped": [
-        {
-          "character": "\u00e2",
-          "codepoint": "U+00E2",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4685,15 +5017,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udea0\u0304",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea0\u0304",
-          "codepoint": "U+16EA0 U+0304",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4725,15 +5050,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u0627\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:4:erfe:2-erfe",
+    "input": "\ud81b\udea0\u0304",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udea0\u0304",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea0\u0304",
-          "codepoint": "U+16EA0 U+0304",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:4:erfe:2-latin",
+    "input": "\ud81b\udea0\u0304",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:4:erfe:2-arabic",
+    "input": "\ud81b\udea0\u0304",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:4:erfe:3-erfe",
+    "input": "\ud81b\udebb\u0304",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:4:erfe:3-latin",
+    "input": "\ud81b\udebb\u0304",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:4:erfe:3-arabic",
+    "input": "\ud81b\udebb\u0304",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:4:arabic:0-erfe",
+    "input": "\u0627\u0304",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:4:arabic:0-latin",
+    "input": "\u0627\u0304",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:4:arabic:0-arabic",
+    "input": "\u0627\u0304",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:4:arabic:1-erfe",
+    "input": "\u0627\u0304",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:4:arabic:1-latin",
+    "input": "\u0627\u0304",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:4:arabic:1-arabic",
+    "input": "\u0627\u0304",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4776,15 +5226,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00ca",
-      "unmapped": [
-        {
-          "character": "\u00ca",
-          "codepoint": "U+00CA",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4816,15 +5259,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00ea",
-      "unmapped": [
-        {
-          "character": "\u00ea",
-          "codepoint": "U+00EA",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4856,15 +5292,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00ca",
-      "unmapped": [
-        {
-          "character": "\u00ca",
-          "codepoint": "U+00CA",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4896,15 +5325,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00ea",
-      "unmapped": [
-        {
-          "character": "\u00ea",
-          "codepoint": "U+00EA",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4936,15 +5358,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udea3\u0304",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea3\u0304",
-          "codepoint": "U+16EA3 U+0304",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0304",
+      "unmapped": []
     }
   },
   {
@@ -4976,15 +5391,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u0622\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:5:erfe:2-erfe",
+    "input": "\ud81b\udea3\u0304",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udea3\u0304",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea3\u0304",
-          "codepoint": "U+16EA3 U+0304",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:5:erfe:2-latin",
+    "input": "\ud81b\udea3\u0304",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00ca",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:5:erfe:2-arabic",
+    "input": "\ud81b\udea3\u0304",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:5:erfe:3-erfe",
+    "input": "\ud81b\udebe\u0304",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:5:erfe:3-latin",
+    "input": "\ud81b\udebe\u0304",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00ca",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:5:erfe:3-arabic",
+    "input": "\ud81b\udebe\u0304",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:5:arabic:0-erfe",
+    "input": "\u0622\u0304",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:5:arabic:0-latin",
+    "input": "\u0622\u0304",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00ca",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:5:arabic:0-arabic",
+    "input": "\u0622\u0304",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:5:arabic:1-erfe",
+    "input": "\u0627\u0653\u0304",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:5:arabic:1-latin",
+    "input": "\u0627\u0653\u0304",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00ca",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:5:arabic:1-arabic",
+    "input": "\u0627\u0653\u0304",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622\u0304",
+      "unmapped": []
     }
   },
   {
@@ -5027,15 +5567,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00c0",
-      "unmapped": [
-        {
-          "character": "\u00c0",
-          "codepoint": "U+00C0",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0300",
+      "unmapped": []
     }
   },
   {
@@ -5067,15 +5600,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00e0",
-      "unmapped": [
-        {
-          "character": "\u00e0",
-          "codepoint": "U+00E0",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0300",
+      "unmapped": []
     }
   },
   {
@@ -5107,15 +5633,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00c0",
-      "unmapped": [
-        {
-          "character": "\u00c0",
-          "codepoint": "U+00C0",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0300",
+      "unmapped": []
     }
   },
   {
@@ -5147,15 +5666,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00e0",
-      "unmapped": [
-        {
-          "character": "\u00e0",
-          "codepoint": "U+00E0",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0300",
+      "unmapped": []
     }
   },
   {
@@ -5187,15 +5699,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udea0\u0300",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea0\u0300",
-          "codepoint": "U+16EA0 U+0300",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0300",
+      "unmapped": []
     }
   },
   {
@@ -5227,15 +5732,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u0627\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:6:erfe:2-erfe",
+    "input": "\ud81b\udea0\u0300",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udea0\u0300",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea0\u0300",
-          "codepoint": "U+16EA0 U+0300",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:6:erfe:2-latin",
+    "input": "\ud81b\udea0\u0300",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:6:erfe:2-arabic",
+    "input": "\ud81b\udea0\u0300",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:6:erfe:3-erfe",
+    "input": "\ud81b\udebb\u0300",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:6:erfe:3-latin",
+    "input": "\ud81b\udebb\u0300",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:6:erfe:3-arabic",
+    "input": "\ud81b\udebb\u0300",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:6:arabic:0-erfe",
+    "input": "\u0627\u0300",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:6:arabic:0-latin",
+    "input": "\u0627\u0300",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:6:arabic:0-arabic",
+    "input": "\u0627\u0300",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:6:arabic:1-erfe",
+    "input": "\u0627\u0300",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:6:arabic:1-latin",
+    "input": "\u0627\u0300",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c0",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:6:arabic:1-arabic",
+    "input": "\u0627\u0300",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0300",
+      "unmapped": []
     }
   },
   {
@@ -5278,15 +5908,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00c1",
-      "unmapped": [
-        {
-          "character": "\u00c1",
-          "codepoint": "U+00C1",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0301",
+      "unmapped": []
     }
   },
   {
@@ -5318,15 +5941,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00e1",
-      "unmapped": [
-        {
-          "character": "\u00e1",
-          "codepoint": "U+00E1",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0301",
+      "unmapped": []
     }
   },
   {
@@ -5358,15 +5974,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00c1",
-      "unmapped": [
-        {
-          "character": "\u00c1",
-          "codepoint": "U+00C1",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0301",
+      "unmapped": []
     }
   },
   {
@@ -5398,15 +6007,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00e1",
-      "unmapped": [
-        {
-          "character": "\u00e1",
-          "codepoint": "U+00E1",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0301",
+      "unmapped": []
     }
   },
   {
@@ -5438,15 +6040,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udea0\u0301",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea0\u0301",
-          "codepoint": "U+16EA0 U+0301",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0627\u0301",
+      "unmapped": []
     }
   },
   {
@@ -5478,15 +6073,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u0627\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:7:erfe:2-erfe",
+    "input": "\ud81b\udea0\u0301",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udea0\u0301",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea0\u0301",
-          "codepoint": "U+16EA0 U+0301",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:7:erfe:2-latin",
+    "input": "\ud81b\udea0\u0301",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c1",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:7:erfe:2-arabic",
+    "input": "\ud81b\udea0\u0301",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:7:erfe:3-erfe",
+    "input": "\ud81b\udebb\u0301",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:7:erfe:3-latin",
+    "input": "\ud81b\udebb\u0301",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c1",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:7:erfe:3-arabic",
+    "input": "\ud81b\udebb\u0301",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:7:arabic:0-erfe",
+    "input": "\u0627\u0301",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:7:arabic:0-latin",
+    "input": "\u0627\u0301",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c1",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:7:arabic:0-arabic",
+    "input": "\u0627\u0301",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:7:arabic:1-erfe",
+    "input": "\u0627\u0301",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea0\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:7:arabic:1-latin",
+    "input": "\u0627\u0301",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c1",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:7:arabic:1-arabic",
+    "input": "\u0627\u0301",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0627\u0301",
+      "unmapped": []
     }
   },
   {
@@ -5529,15 +6249,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00c8",
-      "unmapped": [
-        {
-          "character": "\u00c8",
-          "codepoint": "U+00C8",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0300",
+      "unmapped": []
     }
   },
   {
@@ -5569,15 +6282,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00e8",
-      "unmapped": [
-        {
-          "character": "\u00e8",
-          "codepoint": "U+00E8",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0300",
+      "unmapped": []
     }
   },
   {
@@ -5609,15 +6315,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00c8",
-      "unmapped": [
-        {
-          "character": "\u00c8",
-          "codepoint": "U+00C8",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0300",
+      "unmapped": []
     }
   },
   {
@@ -5649,15 +6348,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00e8",
-      "unmapped": [
-        {
-          "character": "\u00e8",
-          "codepoint": "U+00E8",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0300",
+      "unmapped": []
     }
   },
   {
@@ -5689,15 +6381,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udea3\u0300",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea3\u0300",
-          "codepoint": "U+16EA3 U+0300",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0300",
+      "unmapped": []
     }
   },
   {
@@ -5729,15 +6414,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u0622\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:8:erfe:2-erfe",
+    "input": "\ud81b\udea3\u0300",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udea3\u0300",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea3\u0300",
-          "codepoint": "U+16EA3 U+0300",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:8:erfe:2-latin",
+    "input": "\ud81b\udea3\u0300",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c8",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:8:erfe:2-arabic",
+    "input": "\ud81b\udea3\u0300",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:8:erfe:3-erfe",
+    "input": "\ud81b\udebe\u0300",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:8:erfe:3-latin",
+    "input": "\ud81b\udebe\u0300",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c8",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:8:erfe:3-arabic",
+    "input": "\ud81b\udebe\u0300",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:8:arabic:0-erfe",
+    "input": "\u0622\u0300",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:8:arabic:0-latin",
+    "input": "\u0622\u0300",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c8",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:8:arabic:0-arabic",
+    "input": "\u0622\u0300",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:8:arabic:1-erfe",
+    "input": "\u0627\u0653\u0300",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:8:arabic:1-latin",
+    "input": "\u0627\u0653\u0300",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c8",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:8:arabic:1-arabic",
+    "input": "\u0627\u0653\u0300",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622\u0300",
+      "unmapped": []
     }
   },
   {
@@ -5780,15 +6590,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00c9",
-      "unmapped": [
-        {
-          "character": "\u00c9",
-          "codepoint": "U+00C9",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0301",
+      "unmapped": []
     }
   },
   {
@@ -5820,15 +6623,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00e9",
-      "unmapped": [
-        {
-          "character": "\u00e9",
-          "codepoint": "U+00E9",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0301",
+      "unmapped": []
     }
   },
   {
@@ -5860,15 +6656,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00c9",
-      "unmapped": [
-        {
-          "character": "\u00c9",
-          "codepoint": "U+00C9",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0301",
+      "unmapped": []
     }
   },
   {
@@ -5900,15 +6689,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00e9",
-      "unmapped": [
-        {
-          "character": "\u00e9",
-          "codepoint": "U+00E9",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0301",
+      "unmapped": []
     }
   },
   {
@@ -5940,15 +6722,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udea3\u0301",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea3\u0301",
-          "codepoint": "U+16EA3 U+0301",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u0622\u0301",
+      "unmapped": []
     }
   },
   {
@@ -5980,15 +6755,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u0622\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:9:erfe:2-erfe",
+    "input": "\ud81b\udea3\u0301",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udea3\u0301",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea3\u0301",
-          "codepoint": "U+16EA3 U+0301",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:9:erfe:2-latin",
+    "input": "\ud81b\udea3\u0301",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c9",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:9:erfe:2-arabic",
+    "input": "\ud81b\udea3\u0301",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:9:erfe:3-erfe",
+    "input": "\ud81b\udebe\u0301",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:9:erfe:3-latin",
+    "input": "\ud81b\udebe\u0301",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c9",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:9:erfe:3-arabic",
+    "input": "\ud81b\udebe\u0301",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:9:arabic:0-erfe",
+    "input": "\u0622\u0301",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:9:arabic:0-latin",
+    "input": "\u0622\u0301",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c9",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:9:arabic:0-arabic",
+    "input": "\u0622\u0301",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:9:arabic:1-erfe",
+    "input": "\u0627\u0653\u0301",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea3\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:9:arabic:1-latin",
+    "input": "\u0627\u0653\u0301",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00c9",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:9:arabic:1-arabic",
+    "input": "\u0627\u0653\u0301",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u0622\u0301",
+      "unmapped": []
     }
   },
   {
@@ -6031,15 +6931,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00cc",
-      "unmapped": [
-        {
-          "character": "\u00cc",
-          "codepoint": "U+00CC",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0300",
+      "unmapped": []
     }
   },
   {
@@ -6071,15 +6964,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00ec",
-      "unmapped": [
-        {
-          "character": "\u00ec",
-          "codepoint": "U+00EC",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0300",
+      "unmapped": []
     }
   },
   {
@@ -6111,15 +6997,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00cc",
-      "unmapped": [
-        {
-          "character": "\u00cc",
-          "codepoint": "U+00CC",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0300",
+      "unmapped": []
     }
   },
   {
@@ -6151,15 +7030,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00ec",
-      "unmapped": [
-        {
-          "character": "\u00ec",
-          "codepoint": "U+00EC",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0300",
+      "unmapped": []
     }
   },
   {
@@ -6191,15 +7063,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udea7\u0300",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea7\u0300",
-          "codepoint": "U+16EA7 U+0300",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0300",
+      "unmapped": []
     }
   },
   {
@@ -6231,15 +7096,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u06cc\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:10:erfe:2-erfe",
+    "input": "\ud81b\udea7\u0300",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udea7\u0300",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea7\u0300",
-          "codepoint": "U+16EA7 U+0300",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:10:erfe:2-latin",
+    "input": "\ud81b\udea7\u0300",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00cc",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:10:erfe:2-arabic",
+    "input": "\ud81b\udea7\u0300",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:10:erfe:3-erfe",
+    "input": "\ud81b\udec2\u0300",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:10:erfe:3-latin",
+    "input": "\ud81b\udec2\u0300",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00cc",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:10:erfe:3-arabic",
+    "input": "\ud81b\udec2\u0300",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:10:arabic:0-erfe",
+    "input": "\u06cc\u0300",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:10:arabic:0-latin",
+    "input": "\u06cc\u0300",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00cc",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:10:arabic:0-arabic",
+    "input": "\u06cc\u0300",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:10:arabic:1-erfe",
+    "input": "\u06cc\u0300",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:10:arabic:1-latin",
+    "input": "\u06cc\u0300",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00cc",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:10:arabic:1-arabic",
+    "input": "\u06cc\u0300",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0300",
+      "unmapped": []
     }
   },
   {
@@ -6282,15 +7272,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00cd",
-      "unmapped": [
-        {
-          "character": "\u00cd",
-          "codepoint": "U+00CD",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0301",
+      "unmapped": []
     }
   },
   {
@@ -6322,15 +7305,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00ed",
-      "unmapped": [
-        {
-          "character": "\u00ed",
-          "codepoint": "U+00ED",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0301",
+      "unmapped": []
     }
   },
   {
@@ -6362,15 +7338,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00cd",
-      "unmapped": [
-        {
-          "character": "\u00cd",
-          "codepoint": "U+00CD",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0301",
+      "unmapped": []
     }
   },
   {
@@ -6402,15 +7371,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00ed",
-      "unmapped": [
-        {
-          "character": "\u00ed",
-          "codepoint": "U+00ED",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0301",
+      "unmapped": []
     }
   },
   {
@@ -6442,15 +7404,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udea7\u0301",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea7\u0301",
-          "codepoint": "U+16EA7 U+0301",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06cc\u0301",
+      "unmapped": []
     }
   },
   {
@@ -6482,15 +7437,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u06cc\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:11:erfe:2-erfe",
+    "input": "\ud81b\udea7\u0301",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udea7\u0301",
-      "unmapped": [
-        {
-          "character": "\ud81b\udea7\u0301",
-          "codepoint": "U+16EA7 U+0301",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:11:erfe:2-latin",
+    "input": "\ud81b\udea7\u0301",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00cd",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:11:erfe:2-arabic",
+    "input": "\ud81b\udea7\u0301",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:11:erfe:3-erfe",
+    "input": "\ud81b\udec2\u0301",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:11:erfe:3-latin",
+    "input": "\ud81b\udec2\u0301",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00cd",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:11:erfe:3-arabic",
+    "input": "\ud81b\udec2\u0301",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:11:arabic:0-erfe",
+    "input": "\u06cc\u0301",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:11:arabic:0-latin",
+    "input": "\u06cc\u0301",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00cd",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:11:arabic:0-arabic",
+    "input": "\u06cc\u0301",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:11:arabic:1-erfe",
+    "input": "\u06cc\u0301",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udea7\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:11:arabic:1-latin",
+    "input": "\u06cc\u0301",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00cd",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:11:arabic:1-arabic",
+    "input": "\u06cc\u0301",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06cc\u0301",
+      "unmapped": []
     }
   },
   {
@@ -6533,15 +7613,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00d9",
-      "unmapped": [
-        {
-          "character": "\u00d9",
-          "codepoint": "U+00D9",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0300",
+      "unmapped": []
     }
   },
   {
@@ -6573,15 +7646,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00f9",
-      "unmapped": [
-        {
-          "character": "\u00f9",
-          "codepoint": "U+00F9",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0300",
+      "unmapped": []
     }
   },
   {
@@ -6613,15 +7679,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00d9",
-      "unmapped": [
-        {
-          "character": "\u00d9",
-          "codepoint": "U+00D9",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0300",
+      "unmapped": []
     }
   },
   {
@@ -6653,15 +7712,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00f9",
-      "unmapped": [
-        {
-          "character": "\u00f9",
-          "codepoint": "U+00F9",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0300",
+      "unmapped": []
     }
   },
   {
@@ -6693,15 +7745,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udeb6\u0300",
-      "unmapped": [
-        {
-          "character": "\ud81b\udeb6\u0300",
-          "codepoint": "U+16EB6 U+0300",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0300",
+      "unmapped": []
     }
   },
   {
@@ -6733,15 +7778,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u06c7\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:12:erfe:2-erfe",
+    "input": "\ud81b\udeb6\u0300",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udeb6\u0300",
-      "unmapped": [
-        {
-          "character": "\ud81b\udeb6\u0300",
-          "codepoint": "U+16EB6 U+0300",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:12:erfe:2-latin",
+    "input": "\ud81b\udeb6\u0300",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d9",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:12:erfe:2-arabic",
+    "input": "\ud81b\udeb6\u0300",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:12:erfe:3-erfe",
+    "input": "\ud81b\uded1\u0300",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:12:erfe:3-latin",
+    "input": "\ud81b\uded1\u0300",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d9",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:12:erfe:3-arabic",
+    "input": "\ud81b\uded1\u0300",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:12:arabic:0-erfe",
+    "input": "\u06c7\u0300",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:12:arabic:0-latin",
+    "input": "\u06c7\u0300",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d9",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:12:arabic:0-arabic",
+    "input": "\u06c7\u0300",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:12:arabic:1-erfe",
+    "input": "\u06c7\u0300",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:12:arabic:1-latin",
+    "input": "\u06c7\u0300",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d9",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:12:arabic:1-arabic",
+    "input": "\u06c7\u0300",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7\u0300",
+      "unmapped": []
     }
   },
   {
@@ -6784,15 +7954,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00da",
-      "unmapped": [
-        {
-          "character": "\u00da",
-          "codepoint": "U+00DA",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0301",
+      "unmapped": []
     }
   },
   {
@@ -6824,15 +7987,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00fa",
-      "unmapped": [
-        {
-          "character": "\u00fa",
-          "codepoint": "U+00FA",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0301",
+      "unmapped": []
     }
   },
   {
@@ -6864,15 +8020,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00da",
-      "unmapped": [
-        {
-          "character": "\u00da",
-          "codepoint": "U+00DA",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0301",
+      "unmapped": []
     }
   },
   {
@@ -6904,15 +8053,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00fa",
-      "unmapped": [
-        {
-          "character": "\u00fa",
-          "codepoint": "U+00FA",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0301",
+      "unmapped": []
     }
   },
   {
@@ -6944,15 +8086,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udeb6\u0301",
-      "unmapped": [
-        {
-          "character": "\ud81b\udeb6\u0301",
-          "codepoint": "U+16EB6 U+0301",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c7\u0301",
+      "unmapped": []
     }
   },
   {
@@ -6984,15 +8119,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u06c7\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:13:erfe:2-erfe",
+    "input": "\ud81b\udeb6\u0301",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udeb6\u0301",
-      "unmapped": [
-        {
-          "character": "\ud81b\udeb6\u0301",
-          "codepoint": "U+16EB6 U+0301",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:13:erfe:2-latin",
+    "input": "\ud81b\udeb6\u0301",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00da",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:13:erfe:2-arabic",
+    "input": "\ud81b\udeb6\u0301",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:13:erfe:3-erfe",
+    "input": "\ud81b\uded1\u0301",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:13:erfe:3-latin",
+    "input": "\ud81b\uded1\u0301",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00da",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:13:erfe:3-arabic",
+    "input": "\ud81b\uded1\u0301",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:13:arabic:0-erfe",
+    "input": "\u06c7\u0301",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:13:arabic:0-latin",
+    "input": "\u06c7\u0301",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00da",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:13:arabic:0-arabic",
+    "input": "\u06c7\u0301",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:13:arabic:1-erfe",
+    "input": "\u06c7\u0301",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeb6\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:13:arabic:1-latin",
+    "input": "\u06c7\u0301",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00da",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:13:arabic:1-arabic",
+    "input": "\u06c7\u0301",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c7\u0301",
+      "unmapped": []
     }
   },
   {
@@ -7035,15 +8295,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00d2",
-      "unmapped": [
-        {
-          "character": "\u00d2",
-          "codepoint": "U+00D2",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0300",
+      "unmapped": []
     }
   },
   {
@@ -7075,15 +8328,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00f2",
-      "unmapped": [
-        {
-          "character": "\u00f2",
-          "codepoint": "U+00F2",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0300",
+      "unmapped": []
     }
   },
   {
@@ -7115,15 +8361,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00d2",
-      "unmapped": [
-        {
-          "character": "\u00d2",
-          "codepoint": "U+00D2",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0300",
+      "unmapped": []
     }
   },
   {
@@ -7155,15 +8394,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00f2",
-      "unmapped": [
-        {
-          "character": "\u00f2",
-          "codepoint": "U+00F2",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0300",
+      "unmapped": []
     }
   },
   {
@@ -7195,15 +8427,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udeaf\u0300",
-      "unmapped": [
-        {
-          "character": "\ud81b\udeaf\u0300",
-          "codepoint": "U+16EAF U+0300",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0300",
+      "unmapped": []
     }
   },
   {
@@ -7235,15 +8460,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u06c6\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:14:erfe:2-erfe",
+    "input": "\ud81b\udeaf\u0300",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udeaf\u0300",
-      "unmapped": [
-        {
-          "character": "\ud81b\udeaf\u0300",
-          "codepoint": "U+16EAF U+0300",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:14:erfe:2-latin",
+    "input": "\ud81b\udeaf\u0300",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:14:erfe:2-arabic",
+    "input": "\ud81b\udeaf\u0300",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:14:erfe:3-erfe",
+    "input": "\ud81b\udeca\u0300",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:14:erfe:3-latin",
+    "input": "\ud81b\udeca\u0300",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:14:erfe:3-arabic",
+    "input": "\ud81b\udeca\u0300",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:14:arabic:0-erfe",
+    "input": "\u06c6\u0300",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:14:arabic:0-latin",
+    "input": "\u06c6\u0300",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:14:arabic:0-arabic",
+    "input": "\u06c6\u0300",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:14:arabic:1-erfe",
+    "input": "\u06c6\u0300",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf\u0300",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:14:arabic:1-latin",
+    "input": "\u06c6\u0300",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d2",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:14:arabic:1-arabic",
+    "input": "\u06c6\u0300",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6\u0300",
+      "unmapped": []
     }
   },
   {
@@ -7286,15 +8636,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00d3",
-      "unmapped": [
-        {
-          "character": "\u00d3",
-          "codepoint": "U+00D3",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0301",
+      "unmapped": []
     }
   },
   {
@@ -7326,15 +8669,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00f3",
-      "unmapped": [
-        {
-          "character": "\u00f3",
-          "codepoint": "U+00F3",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0301",
+      "unmapped": []
     }
   },
   {
@@ -7366,15 +8702,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00d3",
-      "unmapped": [
-        {
-          "character": "\u00d3",
-          "codepoint": "U+00D3",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0301",
+      "unmapped": []
     }
   },
   {
@@ -7406,15 +8735,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u00f3",
-      "unmapped": [
-        {
-          "character": "\u00f3",
-          "codepoint": "U+00F3",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0301",
+      "unmapped": []
     }
   },
   {
@@ -7446,15 +8768,8 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\ud81b\udeaf\u0301",
-      "unmapped": [
-        {
-          "character": "\ud81b\udeaf\u0301",
-          "codepoint": "U+16EAF U+0301",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "text": "\u06c6\u0301",
+      "unmapped": []
     }
   },
   {
@@ -7486,15 +8801,140 @@
     "target": "arabic",
     "lowercase": false,
     "expected": {
+      "text": "\u06c6\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:15:erfe:2-erfe",
+    "input": "\ud81b\udeaf\u0301",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
       "text": "\ud81b\udeaf\u0301",
-      "unmapped": [
-        {
-          "character": "\ud81b\udeaf\u0301",
-          "codepoint": "U+16EAF U+0301",
-          "index": 0,
-          "reason": "missing_arabic_mapping"
-        }
-      ]
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:15:erfe:2-latin",
+    "input": "\ud81b\udeaf\u0301",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d3",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:15:erfe:2-arabic",
+    "input": "\ud81b\udeaf\u0301",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:15:erfe:3-erfe",
+    "input": "\ud81b\udeca\u0301",
+    "source": "erfe",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:15:erfe:3-latin",
+    "input": "\ud81b\udeca\u0301",
+    "source": "erfe",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d3",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:15:erfe:3-arabic",
+    "input": "\ud81b\udeca\u0301",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:15:arabic:0-erfe",
+    "input": "\u06c6\u0301",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:15:arabic:0-latin",
+    "input": "\u06c6\u0301",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d3",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:15:arabic:0-arabic",
+    "input": "\u06c6\u0301",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:15:arabic:1-erfe",
+    "input": "\u06c6\u0301",
+    "source": "arabic",
+    "target": "erfe",
+    "lowercase": false,
+    "expected": {
+      "text": "\ud81b\udeaf\u0301",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:15:arabic:1-latin",
+    "input": "\u06c6\u0301",
+    "source": "arabic",
+    "target": "latin",
+    "lowercase": false,
+    "expected": {
+      "text": "\u00d3",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "diacritic:15:arabic:1-arabic",
+    "input": "\u06c6\u0301",
+    "source": "arabic",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "\u06c6\u0301",
+      "unmapped": []
     }
   },
   {
@@ -7531,19 +8971,39 @@
     }
   },
   {
-    "name": "mixed-incomplete-arabic",
-    "input": "B\u00c1 D",
-    "source": "latin",
+    "name": "example:erfe",
+    "input": "\ud81b\udeaf\u0304\ud81b\udea7\u0304",
+    "source": "erfe",
     "target": "arabic",
     "lowercase": false,
     "expected": {
-      "text": "\u0628\u00c1 \u062f",
+      "text": "\u06c6\u0304\u06cc\u0304",
+      "unmapped": []
+    }
+  },
+  {
+    "name": "mixed-incomplete-arabic",
+    "input": "B\ud81b\udea7\u0302 D",
+    "source": "erfe",
+    "target": "arabic",
+    "lowercase": false,
+    "expected": {
+      "text": "B\ud81b\udea7\u0302 D",
       "unmapped": [
         {
-          "character": "\u00c1",
-          "codepoint": "U+00C1",
-          "index": 1,
-          "reason": "missing_arabic_mapping"
+          "character": "B",
+          "codepoint": "U+0042",
+          "index": 0
+        },
+        {
+          "character": "\ud81b\udea7\u0302",
+          "codepoint": "U+16EA7 U+0302",
+          "index": 1
+        },
+        {
+          "character": "D",
+          "codepoint": "U+0044",
+          "index": 4
         }
       ]
     }

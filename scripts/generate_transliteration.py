@@ -28,14 +28,15 @@ def outputs():
     assert len(diacritics) == 16
     assert data['diacritics_validation']['status'] == 'confirmed_by_user'
     for row in diacritics:
-        assert row['arabic'] is None  # No Arabic convention has been supplied.
+        assert isinstance(row['arabic'], str) and len(row['arabic']) == 2
+        assert row['arabic'][1] == row['erfe'][1]
         assert len(row['erfe']) == len(row['erfe_lower_alias']) == 2
         assert ord(row['erfe'][0]) - 0x16EA0 == ord(row['erfe_lower_alias'][0]) - 0x16EBB
         assert row['erfe'][1] == row['erfe_lower_alias'][1]
-        for key in ('latin_upper', 'latin_lower', 'erfe'):
+        for key in ('latin_upper', 'latin_lower', 'erfe', 'arabic'):
             assert unicodedata.normalize('NFC', row[key]) == row[key]
     all_letters = letters + diacritics
-    for key in ('erfe', 'latin_upper', 'latin_lower'):
+    for key in ('erfe', 'latin_upper', 'latin_lower', 'arabic'):
         assert len({r[key] for r in all_letters}) == 41
     # Identical non-linguistic passthrough classification on every runtime.
     ranges, combining_ranges = [], []
@@ -98,18 +99,20 @@ def outputs():
         for source, inputs in [('latin', [row['latin_upper'], row['latin_lower'],
                                          unicodedata.normalize('NFD', row['latin_upper']),
                                          unicodedata.normalize('NFD', row['latin_lower'])]),
-                               ('erfe', [row['erfe'], row['erfe_lower_alias']])]:
+                               ('erfe', [row['erfe'], row['erfe_lower_alias'],
+                                         unicodedata.normalize('NFD', row['erfe']),
+                                         unicodedata.normalize('NFD', row['erfe_lower_alias'])]),
+                               ('arabic', [row['arabic'], unicodedata.normalize('NFD', row['arabic'])])]:
             for j, text in enumerate(inputs):
-                for target, value in [('erfe', row['erfe']), ('latin', row['latin_upper'])]:
+                for target, value in [('erfe', row['erfe']), ('latin', row['latin_upper']), ('arabic', row['arabic'])]:
                     add(f'diacritic:{i}:{source}:{j}-{target}', text, source, target, value)
-                preserved = row['erfe'] if source == 'erfe' else unicodedata.normalize('NFC', text)
-                add(f'diacritic:{i}:{source}:{j}-arabic', text, source, 'arabic', preserved,
-                    unmapped=missing(preserved, reason='missing_arabic_mapping'))
         add(f'diacritic:{i}:lower-output', row['erfe'], 'erfe', 'latin', row['latin_lower'], True)
-    for source, text, expected in [('latin', 'ÁÈÎ', '𖺠́𖺣̀𖺧̄'), ('erfe', '𖺻́𖺾̀𖻂̄', 'ÁÈÎ')]:
-        add('example:' + source, text, source, 'erfe' if source == 'latin' else 'latin', expected)
-    add('mixed-incomplete-arabic', 'BÁ D', 'latin', 'arabic', 'بÁ د',
-        unmapped=missing('Á', index=1, reason='missing_arabic_mapping'))
+    for source, text, expected in [('latin', 'ÁÈÎ', '𖺠́𖺣̀𖺧̄'), ('erfe', '𖺻́𖺾̀𖻂̄', 'ÁÈÎ'), ('erfe', '𖺯̄𖺧̄', 'ۆ̄ی̄')]:
+        add('example:' + source, text, source, 'erfe' if source == 'latin' else ('arabic' if expected == 'ۆ̄ی̄' else 'latin'), expected)
+    add('mixed-incomplete-arabic', 'B𖺧\u0302 D', 'erfe', 'arabic', 'B𖺧\u0302 D',
+        unmapped=[{'character': 'B', 'codepoint': 'U+0042', 'index': 0},
+                  {'character': '𖺧\u0302', 'codepoint': 'U+16EA7 U+0302', 'index': 1},
+                  {'character': 'D', 'codepoint': 'U+0044', 'index': 4}])
     for i, unit in enumerate(['𖺧\u0302', '𖺠\u0301\u0304', 'ا\u064E', '𖺧\u0323', 'İ']):
         add(f'unsupported-whole-unit:{i}', unit, 'arabic' if i == 2 else 'latin' if i == 4 else 'erfe', 'latin', unit,
             unmapped=missing(unit))
