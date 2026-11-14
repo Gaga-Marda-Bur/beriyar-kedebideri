@@ -59,29 +59,39 @@ void main() {
       }
     }
     const sample =
-        '1. 𖺯̄ 𖺧̄ !\n'
-        '2. 𖺡𖺯̄𖺵 , 𖺡𖺧̄𖺵 ;\n'
-        '3. 𖺠́ 𖺣̀ 𖺧̄ 𖺯̄ .\n'
-        '4. 𖺶̄ 𖺠̄ 𖺣̄ ?\n'
-        '5. 𖺧̇ 𖺠̀ 𖺣́ :\n'
-        '6. 𖺧̀ 𖺧́ 𖺶̀ 𖺶́ !\n'
-        '7. 𖺯̀ 𖺯́ (𖺯̄ / 𖺧̄)\n'
-        '8. 𖻊̄ 𖻂̄ — fin.';
+        '𖺯̄𖺩𖺩𖺧𖺸𖺠 𖺡𖺣𖺲𖺧𖺸𖺠𖺱 𖺩𖺣𖺢𖺣𖺡𖺧𖺢𖺣𖺲𖺧 𖺩𖺧̄𖺸𖺧𖺱 𖺩𖺧𖺸𖺣 𖺢𖺧𖺢𖺧 𖺩𖺧̄ 𖺣𖺱 𖺨𖺧𖺸𖺧 𖺣𖺥𖺯 𖺬𖺠𖺢𖺠𖺬𖺢𖺣𖺣 𖺣𖺢𖺧.\n\n'
+        '1. 𖺢𖺧𖺡𖺯 𖺥𖺥𖺠𖺱𖺢𖺧\n'
+        '2. 𖺫𖺯̄𖺥𖺯𖺷\n'
+        '3. 𖺫𖺠𖺦𖺠\n'
+        '4. 𖺦𖺠𖺥𖺠\n'
+        '5. 𖺠𖺱𖺥𖺠𖺬𖺠\n'
+        '6. 𖺦𖺣𖺸𖺥𖺯\n'
+        '7. 𖺵𖺧𖺩𖺵𖺯𖺩\n'
+        '8. 𖺥𖺠𖺱𖺢𖺧';
     const expected =
-        '1. \u06C6\u0304 \u06CC\u0304 !\n'
-        '2. \u0628\u06C6\u0304\u062A , \u0628\u06CC\u0304\u062A ;\n'
-        '3. \u0627\u0301 \u0622\u0300 \u06CC\u0304 \u06C6\u0304 .\n'
-        '4. \u06C7\u0304 \u0627\u0304 \u0622\u0304 ?\n'
-        '5. \u06CC\u0307 \u0627\u0300 \u0622\u0301 :\n'
-        '6. \u06CC\u0300 \u06CC\u0301 \u06C7\u0300 \u06C7\u0301 !\n'
-        '7. \u06C6\u0300 \u06C6\u0301 (\u06C6\u0304 / \u06CC\u0304)\n'
-        '8. \u06C6\u0304 \u06CC\u0304 — fin.';
+        'ۆ̄ككیيا بآڕیيار كآدآبیدآڕی كی̄يیر كیيآ دیدی كی̄ آر جیيی آقۆ ناداندآآ آدی.\n\n'
+        '1. دیبۆ ققاردی\n'
+        '2. مۆ̄قۆو\n'
+        '3. ماها\n'
+        '4. هاقا\n'
+        '5. ارقانا\n'
+        '6. هآيقۆ\n'
+        '7. تیكتۆك\n'
+        '8. قاردی';
     final reg = transliterate(sample, WritingScript.erfe, WritingScript.arabic);
     expect(reg.text, expected);
+    expect(reg.unmapped, isEmpty);
     expect(
       reg.text.runes.any((cp) => cp >= 0x16EA0 && cp <= 0x16EDF),
       isFalse,
     );
+    final back = transliterate(
+      expected,
+      WritingScript.arabic,
+      WritingScript.erfe,
+    );
+    expect(back.text, sample);
+    expect(back.unmapped, isEmpty);
   });
   test(
     'paste accents retains UTF16 selection and newlines; Latin NFD becomes NFC',

@@ -40,28 +40,34 @@ class DiacriticsTests(SimpleTestCase):
 
     def test_regression_eight_numbered_items_erfe_to_arabic_no_erfe_left(self):
         sample = (
-            "1. 𖺯̄ 𖺧̄ !\n"
-            "2. 𖺡𖺯̄𖺵 , 𖺡𖺧̄𖺵 ;\n"
-            "3. 𖺠́ 𖺣̀ 𖺧̄ 𖺯̄ .\n"
-            "4. 𖺶̄ 𖺠̄ 𖺣̄ ?\n"
-            "5. 𖺧̇ 𖺠̀ 𖺣́ :\n"
-            "6. 𖺧̀ 𖺧́ 𖺶̀ 𖺶́ !\n"
-            "7. 𖺯̀ 𖺯́ (𖺯̄ / 𖺧̄)\n"
-            "8. 𖻊̄ 𖻂̄ — fin."
+            "𖺯̄𖺩𖺩𖺧𖺸𖺠 𖺡𖺣𖺲𖺧𖺸𖺠𖺱 𖺩𖺣𖺢𖺣𖺡𖺧𖺢𖺣𖺲𖺧 𖺩𖺧̄𖺸𖺧𖺱 𖺩𖺧𖺸𖺣 𖺢𖺧𖺢𖺧 𖺩𖺧̄ 𖺣𖺱 𖺨𖺧𖺸𖺧 𖺣𖺥𖺯 𖺬𖺠𖺢𖺠𖺬𖺢𖺣𖺣 𖺣𖺢𖺧.\n\n"
+            "1. 𖺢𖺧𖺡𖺯 𖺥𖺥𖺠𖺱𖺢𖺧\n"
+            "2. 𖺫𖺯̄𖺥𖺯𖺷\n"
+            "3. 𖺫𖺠𖺦𖺠\n"
+            "4. 𖺦𖺠𖺥𖺠\n"
+            "5. 𖺠𖺱𖺥𖺠𖺬𖺠\n"
+            "6. 𖺦𖺣𖺸𖺥𖺯\n"
+            "7. 𖺵𖺧𖺩𖺵𖺯𖺩\n"
+            "8. 𖺥𖺠𖺱𖺢𖺧"
         )
         expected = (
-            "1. \u06C6\u0304 \u06CC\u0304 !\n"
-            "2. \u0628\u06C6\u0304\u062A , \u0628\u06CC\u0304\u062A ;\n"
-            "3. \u0627\u0301 \u0622\u0300 \u06CC\u0304 \u06C6\u0304 .\n"
-            "4. \u06C7\u0304 \u0627\u0304 \u0622\u0304 ?\n"
-            "5. \u06CC\u0307 \u0627\u0300 \u0622\u0301 :\n"
-            "6. \u06CC\u0300 \u06CC\u0301 \u06C7\u0300 \u06C7\u0301 !\n"
-            "7. \u06C6\u0300 \u06C6\u0301 (\u06C6\u0304 / \u06CC\u0304)\n"
-            "8. \u06C6\u0304 \u06CC\u0304 — fin."
+            "ۆ̄ككیيا بآڕیيار كآدآبیدآڕی كی̄يیر كیيآ دیدی كی̄ آر جیيی آقۆ ناداندآآ آدی.\n\n"
+            "1. دیبۆ ققاردی\n"
+            "2. مۆ̄قۆو\n"
+            "3. ماها\n"
+            "4. هاقا\n"
+            "5. ارقانا\n"
+            "6. هآيقۆ\n"
+            "7. تیكتۆك\n"
+            "8. قاردی"
         )
         res = transliterate(sample, 'erfe', 'arabic')
         self.assertEqual(res['text'], expected)
+        self.assertEqual(res['unmapped'], [])
         self.assertFalse(any(0x16EA0 <= ord(c) <= 0x16EDF for c in res['text']))
+        back = transliterate(expected, 'arabic', 'erfe')
+        self.assertEqual(back['text'], sample)
+        self.assertEqual(back['unmapped'], [])
 
     def test_examples_and_no_inferred_marks(self):
         self.assertEqual(normalize_erfe('𖺻́𖺾̀𖻂̄'), '𖺠́𖺣̀𖺧̄')
