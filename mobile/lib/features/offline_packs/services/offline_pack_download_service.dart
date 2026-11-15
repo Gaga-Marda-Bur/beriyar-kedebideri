@@ -6,6 +6,8 @@ import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 
+import '../../../core/api/api_config.dart';
+import '../../../core/auth/learner_auth_service.dart';
 import '../../../core/cache/content_source.dart';
 import '../../../core/cache/memory_content_cache.dart';
 import '../../../core/storage/app_directories.dart';
@@ -15,6 +17,7 @@ import 'local_pack_reader_service.dart';
 class OfflinePackDownloadService {
   final http.Client _client;
   final LocalPackReaderService _readerService;
+  final LearnerAuthService? _authService;
 
   static const int maxFileCount = 5000;
   static const int maxTotalBytes = 500 * 1024 * 1024; // 500 Mo max décompressé
@@ -22,8 +25,58 @@ class OfflinePackDownloadService {
   OfflinePackDownloadService({
     http.Client? client,
     LocalPackReaderService? readerService,
+    LearnerAuthService? authService,
   })  : _client = client ?? http.Client(),
-        _readerService = readerService ?? LocalPackReaderService();
+        _readerService = readerService ?? LocalPackReaderService(),
+        _authService = authService;
+
+  LearnerAuthService get _auth => _authService ?? LearnerAuthService.instance;
+
+  bool _isSameApiOrigin(Uri uri) {
+    final apiUri = Uri.tryParse(ApiConfig.baseUrl);
+    if (apiUri == null) return false;
+    return uri.scheme == apiUri.scheme &&
+        uri.host == apiUri.host &&
+        uri.port == apiUri.port;
+  }
+
+  Uri _resolveTargetUri(String rawUrl) {
+    final parsed = Uri.parse(rawUrl);
+    if (parsed.hasScheme) {
+      return parsed;
+    }
+    return Uri.parse(ApiConfig.baseUrl).resolveUri(parsed);
+  }
+
+  Future<http.Response> _sendGetWithOriginCheck(Uri initialUri) async {
+    var currentUri = initialUri;
+    for (var hops = 0; hops < 5; hops++) {
+      final request = http.Request('GET', currentUri)..followRedirects = false;
+      if (_isSameApiOrigin(currentUri)) {
+        request.headers.addAll(_auth.authHeadersForGet());
+      }
+      final streamed = await _client
+          .send(request)
+          .timeout(const Duration(minutes: 5));
+      if (const {301, 302, 303, 307, 308}.contains(streamed.statusCode)) {
+        await streamed.stream.drain<void>();
+        final location = streamed.headers['location'];
+        if (location == null || location.isEmpty) {
+          throw Exception(
+            'Redirect without Location header (${streamed.statusCode}).',
+          );
+        }
+        currentUri = currentUri.resolve(location);
+        continue;
+      }
+      final response = await http.Response.fromStream(streamed);
+      if (response.statusCode == 401 && _isSameApiOrigin(currentUri)) {
+        await _auth.handleUnauthorized();
+      }
+      return response;
+    }
+    throw Exception('Too many redirects while downloading pack.');
+  }
 
   Future<void> downloadAndExtract(LessonPackModel pack) async {
     if (!pack.isDownloadable || pack.fileUrl.isEmpty) {
@@ -35,10 +88,10 @@ class OfflinePackDownloadService {
       version: pack.version,
     );
 
-    // Téléchargement sécurisé avec délai
-    final response = await _client
-        .get(Uri.parse(pack.fileUrl))
-        .timeout(const Duration(minutes: 5));
+    final targetUri = _resolveTargetUri(pack.fileUrl);
+
+    // Téléchargement sécurisé avec délai et contrôle d'origine à chaque redirection
+    final response = await _sendGetWithOriginCheck(targetUri);
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       throw Exception('Download failed with status: ${response.statusCode}');

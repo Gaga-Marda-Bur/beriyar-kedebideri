@@ -87,11 +87,22 @@ class OfflinePackGenerator:
             self._zip_directory(pack_dir, zip_path)
 
             with open(zip_path, 'rb') as opened_file:
-                self.pack.file.save(
-                    self.pack.filename,
-                    File(opened_file),
-                    save=False,
-                )
+                if self.pack.status == LessonPack.PUBLISHED:
+                    self.pack.file.save(
+                        self.pack.filename,
+                        File(opened_file),
+                        save=False,
+                    )
+                    if self.pack.private_file:
+                        self.pack.private_file.delete(save=False)
+                else:
+                    self.pack.private_file.save(
+                        self.pack.filename,
+                        File(opened_file),
+                        save=False,
+                    )
+                    if self.pack.file:
+                        self.pack.file.delete(save=False)
 
             self.pack.manifest = manifest
             self.pack.items_count = self.items_count

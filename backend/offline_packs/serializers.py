@@ -1,5 +1,7 @@
+from django.urls import reverse
 from rest_framework import serializers
 
+from core.permissions import is_staff_preview
 from .models import LessonPack
 
 
@@ -38,6 +40,12 @@ class LessonPackSerializer(serializers.ModelSerializer):
     def get_file_url(self, obj):
         request = self.context.get('request')
 
+        if obj.status != LessonPack.PUBLISHED:
+            if not obj.active_file:
+                return ''
+            path = reverse('lesson-pack-download', kwargs={'pk': obj.pk})
+            return request.build_absolute_uri(path) if request else path
+
         if obj.file and request:
             return request.build_absolute_uri(obj.file.url)
 
@@ -47,4 +55,9 @@ class LessonPackSerializer(serializers.ModelSerializer):
         return ''
 
     def get_is_downloadable(self, obj):
-        return bool(obj.file and obj.status == LessonPack.PUBLISHED)
+        if obj.status == LessonPack.PUBLISHED:
+            return bool(obj.file)
+        if obj.status == LessonPack.VALIDATED:
+            return bool(obj.active_file)
+        request = self.context.get('request')
+        return bool(is_staff_preview(request) and obj.active_file)

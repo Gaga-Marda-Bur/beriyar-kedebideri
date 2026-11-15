@@ -40,6 +40,30 @@ class FeedbackAttachmentStorage(Storage):
 
 
 @deconstructible
+class PrivatePackStorage(Storage):
+    """Private storage for non-published offline lesson packs."""
+
+    def _open(self, name, mode='rb'):
+        return private_backend().open(name, mode)
+
+    def _save(self, name, content):
+        return private_backend().save(name, content)
+
+    def exists(self, name):
+        return private_backend().exists(name)
+
+    def size(self, name):
+        return private_backend().size(name)
+
+    def url(self, name):
+        # Never expose a direct storage or CDN URL for private packs.
+        return ''
+
+    def delete(self, name):
+        private_backend().delete(name)
+
+
+@deconstructible
 class AudioMediaStorage(FeedbackAttachmentStorage):
     def backend(self,name):
         return private_backend() if name.startswith('feedback/audio/') else default_storage

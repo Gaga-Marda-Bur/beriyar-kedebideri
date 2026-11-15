@@ -317,3 +317,184 @@ class LearnerAuthAndPilotPermissionsTest(TestCase):
             self.assertEqual(blocked.status_code, 429)
         finally:
             caches['feedback'].clear()
+
+    def test_private_pilot_pack_storage_and_authenticated_download(self):
+        import tempfile
+        from pathlib import Path
+        from django.test import override_settings
+        from offline_packs.services.offline_pack_generator import OfflinePackGenerator
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            private_root = Path(tmpdir) / 'private_media'
+            public_root = Path(tmpdir) / 'public_media'
+            private_root.mkdir()
+            public_root.mkdir()
+
+            with override_settings(
+                PRIVATE_MEDIA_ROOT=private_root,
+                MEDIA_ROOT=public_root,
+                USE_R2=False,
+            ):
+                OfflinePackGenerator(self.pilot_pack).generate()
+                self.pilot_pack.refresh_from_db()
+
+                # Stored strictly in private_file, never in public default_storage/MEDIA_ROOT
+                self.assertFalse(bool(self.pilot_pack.file))
+                self.assertTrue(bool(self.pilot_pack.private_file))
+                self.assertEqual(self.pilot_pack.private_file.storage.url(self.pilot_pack.private_file.name), '')
+                self.assertEqual(list(public_root.rglob('*.zip')), [])
+                self.assertTrue(len(list(private_root.rglob('*.zip'))) == 1)
+
+                # Generate archive for out-of-pilot validated pack and draft pack
+                OfflinePackGenerator(self.out_pack).generate()
+                draft_pack = LessonPack.objects.create(
+                    slug='draft-pack-secret',
+                    title_fr='Pack Brouillon',
+                    status=LessonPack.DRAFT,
+                    is_active=True,
+                )
+                draft_pack.units.add(self.draft_unit)
+                OfflinePackGenerator(draft_pack).generate()
+
+                # Anonymous & ordinary user denied download (404)
+                anon_client = Client()
+                self.assertEqual(
+                    anon_client.get(f'/api/offline-packs/{self.pilot_pack.pk}/download/').status_code,
+                    404,
+                )
+
+                ordinary_client = Client(enforce_csrf_checks=True)
+                ord_login = self._session_login(ordinary_client, 'ordinary_learner', 'OrdinaryPassword123!')
+                self.assertEqual(ord_login.status_code, 200, ord_login.content)
+                self.assertEqual(
+                    ordinary_client.get(f'/api/offline-packs/{self.pilot_pack.pk}/download/').status_code,
+                    404,
+                )
+
+                # Pilot user sees authenticated download URL (never raw storage URL)
+                pilot_client = Client(enforce_csrf_checks=True)
+                login_resp = self._session_login(pilot_client, 'pilot_learner', 'PilotPassword123!')
+                self.assertEqual(login_resp.status_code, 200, login_resp.content)
+                pack_resp = pilot_client.get(f'/api/offline-packs/{self.pilot_pack.pk}/')
+                self.assertEqual(pack_resp.status_code, 200, pack_resp.content)
+                pack_detail = pack_resp.json()
+                self.assertTrue(pack_detail['is_downloadable'])
+                self.assertTrue(
+                    pack_detail['file_url'].endswith(f'/api/offline-packs/{self.pilot_pack.pk}/download/')
+                )
+
+                dl_resp = pilot_client.get(f'/api/offline-packs/{self.pilot_pack.pk}/download/')
+                self.assertEqual(dl_resp.status_code, 200)
+                self.assertEqual(dl_resp['Cache-Control'], 'private, no-store')
+                self.assertIn('Cookie', dl_resp['Vary'])
+                self.assertEqual(dl_resp['X-Content-Type-Options'], 'nosniff')
+                payload = b''.join(dl_resp.streaming_content)
+                self.assertTrue(payload.startswith(b'PK'))
+
+                # Non-pilot validated pack & draft pack remain 404
+                self.assertEqual(
+                    pilot_client.get(f'/api/offline-packs/{self.out_pack.pk}/download/').status_code,
+                    404,
+                )
+                self.assertEqual(
+                    pilot_client.get(f'/api/offline-packs/{draft_pack.pk}/download/').status_code,
+                    404,
+                )
+
+                # Revocation immediately blocks download
+                self.pilot_user.groups.remove(self.pilot_group)
+                self.assertEqual(
+                    pilot_client.get(f'/api/offline-packs/{self.pilot_pack.pk}/download/').status_code,
+                    404,
+                )
+
+    def test_pack_status_transitions_and_pilot_content_scope(self):
+        import io
+        import json
+        import tempfile
+        import zipfile
+        from django.test import override_settings
+        from core.permissions import PILOT_ALLOWED_UNIT_SLUGS
+        from offline_packs.services.offline_pack_generator import OfflinePackGenerator
+
+        with tempfile.TemporaryDirectory() as media_root, tempfile.TemporaryDirectory() as private_root:
+            with override_settings(
+                MEDIA_ROOT=media_root,
+                PRIVATE_MEDIA_ROOT=private_root,
+                STORAGES={
+                    'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+                    'private': {
+                        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+                        'OPTIONS': {'location': private_root},
+                    },
+                    'staticfiles': {'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'},
+                },
+                USE_R2=False,
+            ):
+                # 1) Pilot pack ZIP content strictly contains only authorized pilot units
+                OfflinePackGenerator(self.pilot_pack).generate()
+                with self.pilot_pack.private_file.open('rb') as zf_stream:
+                    with zipfile.ZipFile(io.BytesIO(zf_stream.read()), 'r') as zf:
+                        units_json = json.loads(zf.read('units.json').decode('utf-8'))
+                        unit_slugs = {u['slug'] for u in units_json}
+                        self.assertTrue(unit_slugs)
+                        self.assertTrue(unit_slugs.issubset(set(PILOT_ALLOWED_UNIT_SLUGS)))
+
+                # 2) Draft -> Validated -> Published -> Draft + Regeneration
+                trans_pack = LessonPack.objects.create(
+                    slug='transition-erf-pack',
+                    title_fr='Transition Pack',
+                    level='beginner',
+                    version=1,
+                    status=LessonPack.DRAFT,
+                    is_active=True,
+                )
+                trans_pack.units.add(self.pilot_unit)
+                OfflinePackGenerator(trans_pack).generate()
+                self.assertTrue(bool(trans_pack.private_file))
+                self.assertFalse(bool(trans_pack.file))
+
+                # Draft -> Validated
+                trans_pack.status = LessonPack.VALIDATED
+                trans_pack.save()
+                self.assertTrue(bool(trans_pack.private_file))
+                self.assertFalse(bool(trans_pack.file))
+
+                pilot_client = Client(enforce_csrf_checks=True)
+                self._session_login(pilot_client, 'pilot_learner', 'PilotPassword123!')
+                dl_resp = pilot_client.get(f'/api/offline-packs/{trans_pack.pk}/download/')
+                self.assertEqual(dl_resp.status_code, 200)
+                dl_resp.close()
+
+                # Validated -> Published (migrates archive to public file, clears private_file)
+                priv_name = trans_pack.private_file.name
+                priv_storage = trans_pack.private_file.storage
+                trans_pack.status = LessonPack.PUBLISHED
+                trans_pack.save()
+                self.assertTrue(bool(trans_pack.file))
+                self.assertFalse(bool(trans_pack.private_file))
+                self.assertFalse(priv_storage.exists(priv_name))
+
+                pub_detail = Client().get(f'/api/offline-packs/{trans_pack.pk}/').json()
+                self.assertTrue(pub_detail['is_downloadable'])
+                self.assertNotIn('/download/', pub_detail['file_url'])
+
+                # Published -> Draft (moves archive back to private_file, deletes public file)
+                pub_name = trans_pack.file.name
+                pub_storage = trans_pack.file.storage
+                trans_pack.status = LessonPack.DRAFT
+                trans_pack.save()
+                self.assertFalse(bool(trans_pack.file))
+                self.assertTrue(bool(trans_pack.private_file))
+                self.assertFalse(pub_storage.exists(pub_name))
+                self.assertEqual(
+                    pilot_client.get(f'/api/offline-packs/{trans_pack.pk}/download/').status_code,
+                    404,
+                )
+
+                # Regeneration in Validated
+                trans_pack.status = LessonPack.VALIDATED
+                trans_pack.save()
+                OfflinePackGenerator(trans_pack).generate()
+                self.assertTrue(bool(trans_pack.private_file))
+                self.assertFalse(bool(trans_pack.file))
