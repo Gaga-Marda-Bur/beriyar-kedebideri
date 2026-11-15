@@ -466,11 +466,12 @@ class LearnerAuthAndPilotPermissionsTest(TestCase):
                 self.assertEqual(dl_resp.status_code, 200)
                 dl_resp.close()
 
-                # Validated -> Published (migrates archive to public file, clears private_file)
+                # Validated -> Published (migrates archive to public file, clears private_file on commit)
                 priv_name = trans_pack.private_file.name
                 priv_storage = trans_pack.private_file.storage
-                trans_pack.status = LessonPack.PUBLISHED
-                trans_pack.save()
+                with self.captureOnCommitCallbacks(execute=True):
+                    trans_pack.status = LessonPack.PUBLISHED
+                    trans_pack.save()
                 self.assertTrue(bool(trans_pack.file))
                 self.assertFalse(bool(trans_pack.private_file))
                 self.assertFalse(priv_storage.exists(priv_name))
@@ -479,11 +480,24 @@ class LearnerAuthAndPilotPermissionsTest(TestCase):
                 self.assertTrue(pub_detail['is_downloadable'])
                 self.assertNotIn('/download/', pub_detail['file_url'])
 
-                # Published -> Draft (moves archive back to private_file, deletes public file)
+                # Simulated DB rollback during Published -> Draft must preserve existing public file
                 pub_name = trans_pack.file.name
                 pub_storage = trans_pack.file.storage
-                trans_pack.status = LessonPack.DRAFT
-                trans_pack.save()
+                from django.db import transaction
+                with self.captureOnCommitCallbacks(execute=True):
+                    with self.assertRaises(RuntimeError):
+                        with transaction.atomic():
+                            trans_pack.status = LessonPack.DRAFT
+                            trans_pack.save()
+                            raise RuntimeError('Simulated DB failure')
+                self.assertTrue(pub_storage.exists(pub_name))
+                trans_pack.refresh_from_db()
+                self.assertEqual(trans_pack.status, LessonPack.PUBLISHED)
+
+                # Published -> Draft (moves archive back to private_file, deletes public file on commit)
+                with self.captureOnCommitCallbacks(execute=True):
+                    trans_pack.status = LessonPack.DRAFT
+                    trans_pack.save()
                 self.assertFalse(bool(trans_pack.file))
                 self.assertTrue(bool(trans_pack.private_file))
                 self.assertFalse(pub_storage.exists(pub_name))
@@ -498,3 +512,29 @@ class LearnerAuthAndPilotPermissionsTest(TestCase):
                 OfflinePackGenerator(trans_pack).generate()
                 self.assertTrue(bool(trans_pack.private_file))
                 self.assertFalse(bool(trans_pack.file))
+
+                # Idempotent orphan inventory / reconciliation command (dry-run then --apply)
+                from django.core.files.base import ContentFile
+                from django.core.files.storage import default_storage
+                from django.core.management import call_command
+                from core.media_storage import private_backend
+
+                orphan_pub = default_storage.save('offline_packs/files/orphan_pub.zip', ContentFile(b'PKorphan'))
+                orphan_priv = private_backend().save('offline_packs/files/orphan_priv.zip', ContentFile(b'PKorphan'))
+                call_command('reconcile_pack_storage', '--dry-run')
+                self.assertTrue(default_storage.exists(orphan_pub))
+                self.assertTrue(private_backend().exists(orphan_priv))
+
+                # Default min-age-seconds=300 protects recently created objects
+                call_command('reconcile_pack_storage', '--apply')
+                self.assertTrue(default_storage.exists(orphan_pub))
+                self.assertTrue(private_backend().exists(orphan_priv))
+
+                call_command('reconcile_pack_storage', '--apply', '--min-age-seconds=0')
+                self.assertFalse(default_storage.exists(orphan_pub))
+                self.assertFalse(private_backend().exists(orphan_priv))
+                self.assertTrue(private_backend().exists(trans_pack.private_file.name))
+
+                # Repeated --apply is idempotent
+                call_command('reconcile_pack_storage', '--apply', '--min-age-seconds=0')
+                self.assertTrue(private_backend().exists(trans_pack.private_file.name))

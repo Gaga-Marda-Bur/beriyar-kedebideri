@@ -86,31 +86,49 @@ class OfflinePackGenerator:
             zip_path = base_dir / self.pack.filename
             self._zip_directory(pack_dir, zip_path)
 
-            with open(zip_path, 'rb') as opened_file:
-                if self.pack.status == LessonPack.PUBLISHED:
-                    self.pack.file.save(
-                        self.pack.filename,
-                        File(opened_file),
-                        save=False,
-                    )
-                    if self.pack.private_file:
-                        self.pack.private_file.delete(save=False)
-                else:
-                    self.pack.private_file.save(
-                        self.pack.filename,
-                        File(opened_file),
-                        save=False,
-                    )
-                    if self.pack.file:
-                        self.pack.file.delete(save=False)
+            from django.db import transaction
 
-            self.pack.manifest = manifest
-            self.pack.items_count = self.items_count
-            self.pack.generated_at = timezone.now()
-            self.pack.save()
+            with transaction.atomic():
+                locked_pack = LessonPack.objects.select_for_update().get(pk=self.pack.pk)
+                self.pack.status = locked_pack.status
+                stale_storage = None
+                stale_name = None
+                with open(zip_path, 'rb') as opened_file:
+                    if self.pack.status == LessonPack.PUBLISHED:
+                        self.pack.file.save(
+                            self.pack.filename,
+                            File(opened_file),
+                            save=False,
+                        )
+                        if locked_pack.private_file:
+                            stale_storage = locked_pack.private_file.storage
+                            stale_name = locked_pack.private_file.name
+                        if self.pack.private_file:
+                            self.pack.private_file.close()
+                            self.pack.private_file = None
+                    else:
+                        self.pack.private_file.save(
+                            self.pack.filename,
+                            File(opened_file),
+                            save=False,
+                        )
+                        if locked_pack.file:
+                            stale_storage = locked_pack.file.storage
+                            stale_name = locked_pack.file.name
+                        if self.pack.file:
+                            self.pack.file.close()
+                            self.pack.file = None
 
-            self.pack.update_file_metadata()
-            self.pack.save()
+                self.pack.manifest = manifest
+                self.pack.items_count = self.items_count
+                self.pack.generated_at = timezone.now()
+                self.pack.save()
+                self.pack.update_file_metadata()
+                self.pack.save()
+                if stale_storage and stale_name:
+                    transaction.on_commit(
+                        lambda s=stale_storage, n=stale_name: LessonPack._safe_delete_storage_object(s, n)
+                    )
 
             return self.pack
 

@@ -1,4 +1,5 @@
 import hashlib
+import logging
 import os
 
 from django.core.files.base import ContentFile
@@ -44,30 +45,66 @@ class LessonPack(ValidatedMediaModel):
             self._sync_storage_for_status()
         return result
 
+    @staticmethod
+    def _safe_delete_storage_object(storage, name):
+        if not name:
+            return
+        try:
+            if storage.exists(name):
+                storage.delete(name)
+        except Exception:
+            logging.getLogger(__name__).warning(
+                'Failed to delete stale LessonPack storage object %r; safe to clean up via reconcile_pack_storage.',
+                name,
+                exc_info=True,
+            )
+
     def _sync_storage_for_status(self):
         """
         Keep physical archive placement aligned with LessonPack.status:
         - Non-published packs must never leave a copy in public `file` storage.
         - Published packs must expose a copy in `file` if only `private_file` exists.
+        Old physical objects are deleted only via transaction.on_commit so a DB
+        rollback never causes data loss.
         """
+        from django.db import transaction
+
         if self.status != self.PUBLISHED and self.file:
             old_name = self.file.name
             old_storage = self.file.storage
+            copied_name = None
             if not self.private_file and old_name and old_storage.exists(old_name):
                 with old_storage.open(old_name, 'rb') as stream:
                     self.private_file.save(self.filename, ContentFile(stream.read()), save=False)
+                copied_name = self.private_file.name
             self.file.close()
-            self.file.delete(save=False)
-            super().save(update_fields=['file', 'private_file'])
+            self.file = None
+            try:
+                super().save(update_fields=['file', 'private_file'])
+            except Exception:
+                if copied_name:
+                    self._safe_delete_storage_object(self.private_file.storage, copied_name)
+                raise
+            if old_name:
+                transaction.on_commit(lambda s=old_storage, n=old_name: self._safe_delete_storage_object(s, n))
         elif self.status == self.PUBLISHED and self.private_file and not self.file:
             priv_name = self.private_file.name
             priv_storage = self.private_file.storage
+            copied_name = None
             if priv_name and priv_storage.exists(priv_name):
                 with priv_storage.open(priv_name, 'rb') as stream:
                     self.file.save(self.filename, ContentFile(stream.read()), save=False)
+                copied_name = self.file.name
             self.private_file.close()
-            self.private_file.delete(save=False)
-            super().save(update_fields=['file', 'private_file'])
+            self.private_file = None
+            try:
+                super().save(update_fields=['file', 'private_file'])
+            except Exception:
+                if copied_name:
+                    self._safe_delete_storage_object(self.file.storage, copied_name)
+                raise
+            if priv_name:
+                transaction.on_commit(lambda s=priv_storage, n=priv_name: self._safe_delete_storage_object(s, n))
 
     BEGINNER = 'beginner'
     INTERMEDIATE = 'intermediate'
