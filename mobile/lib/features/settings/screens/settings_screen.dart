@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app/app_state.dart';
+import '../../../core/auth/learner_auth_service.dart';
 import '../../../core/widgets/app_background.dart';
 import '../../../core/widgets/glass_card.dart';
 import '../../../l10n/generated/app_localizations.dart';
@@ -63,6 +64,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: ListView(
             padding: const EdgeInsets.all(20),
             children: [
+              _LearnerAccountCard(),
+              const SizedBox(height: 16),
               if (const bool.fromEnvironment('BK_PREMIUM_SIMULATION', defaultValue: false))
                 ListTile(
                   leading: const Icon(Icons.workspace_premium_outlined),
@@ -412,6 +415,72 @@ class _LanguageTile extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _LearnerAccountCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final auth = LearnerAuthService.instance;
+    return AnimatedBuilder(
+      animation: auth,
+      builder: (context, _) {
+        final loggedIn = auth.isAuthenticated;
+        final expired = auth.isExpired;
+
+        return GlassCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Compte apprenant',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              const SizedBox(height: 8),
+              if (loggedIn) ...[
+                Text(
+                  'Connecté en tant que ${auth.username ?? ''}',
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  auth.isPilot
+                      ? 'Accès pilote Erfe V1 actif (vérifié serveur)'
+                      : 'Compte standard',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  key: const Key('settings-logout-button'),
+                  onPressed: () async {
+                    await auth.logout();
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Déconnecté')),
+                    );
+                  },
+                  icon: const Icon(Icons.logout),
+                  label: const Text('Se déconnecter'),
+                ),
+              ] else ...[
+                Text(
+                  expired
+                      ? 'Session expirée. Veuillez vous reconnecter.'
+                      : 'Non connecté. Connectez-vous pour accéder à votre parcours.',
+                ),
+                const SizedBox(height: 12),
+                FilledButton.icon(
+                  key: const Key('settings-login-button'),
+                  onPressed: () => Navigator.pushNamed(context, '/login'),
+                  icon: const Icon(Icons.login),
+                  label: const Text('Se connecter'),
+                ),
+              ],
+            ],
+          ),
+        );
+      },
     );
   }
 }

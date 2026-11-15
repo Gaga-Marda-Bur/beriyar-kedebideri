@@ -1,4 +1,5 @@
 import '../../../core/api/api_client.dart';
+import '../../../core/auth/learner_auth_service.dart';
 import '../../../core/device/device_id_service.dart';
 import '../models/unit_progress_local_model.dart';
 
@@ -52,15 +53,20 @@ class UnitProgressSyncService {
       );
     }
 
-    final deviceId = await _deviceIdService.getOrCreateDeviceId();
-    final deviceToken = await _deviceIdService.getOrCreateDeviceToken();
+    final isAuthenticated = LearnerAuthService.instance.isAuthenticated;
+    final deviceId = isAuthenticated
+        ? null
+        : await _deviceIdService.getOrCreateDeviceId();
+    final deviceToken = isAuthenticated
+        ? null
+        : await _deviceIdService.getOrCreateDeviceToken();
 
     final payload = {
       'items': progressList.map((progress) {
         return {
           'unit_slug': progress.unitSlug,
-          'device_id': deviceId,
-          'device_token': deviceToken,
+          'device_id': ?deviceId,
+          'device_token': ?deviceToken,
           'status': progress.status,
           'last_stage': progress.lastStage,
           'lessons_seen': progress.lessonsSeen,
@@ -83,7 +89,9 @@ class UnitProgressSyncService {
     final response = await _apiClient.postMap(
       '/progress/unit-progress/sync/',
       body: payload,
-      headers: {'X-Device-Id': deviceId, 'X-Device-Token': deviceToken},
+      headers: isAuthenticated
+          ? null
+          : {'X-Device-Id': deviceId!, 'X-Device-Token': deviceToken!},
     );
 
     return UnitProgressSyncResult.fromJson(response);

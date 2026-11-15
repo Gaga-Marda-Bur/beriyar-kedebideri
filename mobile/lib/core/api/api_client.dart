@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../auth/learner_auth_service.dart';
 import 'api_config.dart';
 
 class ApiRequestException implements Exception {
@@ -29,8 +30,11 @@ class IncompleteListException implements Exception {
 
 class ApiClient {
   final http.Client _client;
+  final LearnerAuthService _authService;
 
-  ApiClient({http.Client? client}) : _client = client ?? http.Client();
+  ApiClient({http.Client? client, LearnerAuthService? authService})
+    : _client = client ?? http.Client(),
+      _authService = authService ?? LearnerAuthService.instance;
 
   Uri _resolveUri(String pathOrUrl, [Map<String, String>? query]) {
     if (pathOrUrl.startsWith('http://') || pathOrUrl.startsWith('https://')) {
@@ -59,7 +63,11 @@ class ApiClient {
     Map<String, String>? query,
     Map<String, String>? headers,
   }) async {
-    final requestHeaders = {'Accept': 'application/json', ...?headers};
+    final requestHeaders = {
+      'Accept': 'application/json',
+      ..._authService.authHeadersForGet(),
+      ...?headers,
+    };
 
     final uri = _resolveUri(pathOrUrl, query);
 
@@ -67,9 +75,22 @@ class ApiClient {
         .get(uri, headers: requestHeaders)
         .timeout(const Duration(seconds: 4));
 
+    if (response.statusCode == 401) {
+      await _authService.handleUnauthorized();
+      throw const ApiRequestException(
+        401,
+        'Session expirée ou non authentifiée.',
+      );
+    }
+
+    if (response.statusCode == 403) {
+      throw const ApiRequestException(403, 'Accès refusé.');
+    }
+
     if (response.statusCode < 200 || response.statusCode >= 300) {
-      throw Exception(
-        'GET $pathOrUrl failed with status ${response.statusCode}: ${response.body}',
+      throw ApiRequestException(
+        response.statusCode,
+        'GET $pathOrUrl failed with status ${response.statusCode}',
       );
     }
 
@@ -164,6 +185,7 @@ class ApiClient {
     final requestHeaders = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      ..._authService.authHeadersForPost(),
       ...?headers,
     };
 
@@ -174,6 +196,18 @@ class ApiClient {
           body: jsonEncode(body ?? {}),
         )
         .timeout(const Duration(seconds: 4));
+
+    if (response.statusCode == 401) {
+      await _authService.handleUnauthorized();
+      throw const ApiRequestException(
+        401,
+        'Session expirée ou non authentifiée.',
+      );
+    }
+
+    if (response.statusCode == 403) {
+      throw const ApiRequestException(403, 'Accès refusé.');
+    }
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       var detail = 'Request failed';

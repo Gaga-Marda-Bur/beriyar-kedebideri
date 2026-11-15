@@ -7,5 +7,6 @@ class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         CommerceVaultChannel(this, flutterEngine.dartExecutor.binaryMessenger)
+        LearnerAuthVaultChannel(this, flutterEngine.dartExecutor.binaryMessenger)
     }
 }

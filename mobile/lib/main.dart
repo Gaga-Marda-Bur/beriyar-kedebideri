@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'app/app.dart';
 import 'app/app_state.dart';
 import 'core/api/api_config.dart';
+import 'core/auth/learner_auth_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +19,7 @@ Future<void> main() async {
 
   final appState = AppState();
   await appState.load();
+  await LearnerAuthService.instance.restore();
 
   runApp(
     ChangeNotifierProvider.value(value: appState, child: const BeriyarApp()),

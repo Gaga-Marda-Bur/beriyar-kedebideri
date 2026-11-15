@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../features/home/screens/home_screen.dart';
+import '../features/auth/screens/learner_login_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../core/theme/app_theme.dart';
@@ -44,6 +45,7 @@ class BeriyarApp extends StatelessWidget {
       ],
       routes: {
         '/': (_) => const HomeScreen(),
+        '/login': (_) => const LearnerLoginScreen(),
         '/settings': (_) => const SettingsScreen(),
         // Gate the route itself, including direct initial routes/deep-link dispatch.
         '/premium': (_) =>
