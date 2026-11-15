@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth import authenticate, login, logout
+from django.core.cache import caches
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.utils.decorators import method_decorator
@@ -13,6 +14,10 @@ from .permissions import is_pilot_user, is_staff_preview
 
 class LearnerLoginThrottle(AnonRateThrottle):
     rate = '15/min'
+
+    def __init__(self):
+        super().__init__()
+        self.cache = caches['feedback']
 
     def get_cache_key(self, request, view):
         return self.cache_format % {

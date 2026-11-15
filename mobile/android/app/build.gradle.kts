@@ -92,6 +92,7 @@ val a13ReleaseIssues: List<String> = releaseConfigurationIssues(
 val commerceQa = decodeDartDefines(project.findProperty("dart-defines") as String?)["BK_COMMERCE_QA"] == "true"
 val identityQa = decodeDartDefines(project.findProperty("dart-defines") as String?)["BK_IDENTITY_QA"] == "true"
 val toolsQa = decodeDartDefines(project.findProperty("dart-defines") as String?)["BK_TOOLS_QA"] == "true"
+val pilotBuild = decodeDartDefines(project.findProperty("dart-defines") as String?)["BK_PILOT"] == "true"
 val a13SigningIssues: List<String> = buildList {
     if (!keystorePropertiesFile.exists()) {
         add("android/key.properties introuvable : la release doit être signée avec la clé existante.")
@@ -145,6 +146,11 @@ android {
             if (toolsQa) applicationIdSuffix = ".qa_tools"
         }
         release {
+            if (pilotBuild) {
+                applicationIdSuffix = ".pilot"
+                versionNameSuffix = "-pilot"
+                resValue("string", "app_name", "Beřiyar Pilote")
+            }
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             isShrinkResources = false

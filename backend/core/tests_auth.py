@@ -299,3 +299,21 @@ class LearnerAuthAndPilotPermissionsTest(TestCase):
         self.assertIn(self.pilot_unit.slug, unit_slugs)
         self.assertIn(self.sixth_validated_unit.slug, unit_slugs)
         self.assertIn(self.draft_unit.slug, unit_slugs)
+
+    def test_login_throttle_uses_shared_feedback_cache_and_blocks_excess_attempts(self):
+        from django.core.cache import caches
+        from core.auth_views import LearnerLoginThrottle
+
+        throttle = LearnerLoginThrottle()
+        self.assertIs(throttle.cache, caches['feedback'])
+
+        caches['feedback'].clear()
+        try:
+            client = Client(enforce_csrf_checks=True)
+            for _ in range(15):
+                resp = self._session_login(client, 'pilot_tester', 'WrongPass123!')
+                self.assertEqual(resp.status_code, 401)
+            blocked = self._session_login(client, 'pilot_tester', 'WrongPass123!')
+            self.assertEqual(blocked.status_code, 429)
+        finally:
+            caches['feedback'].clear()
