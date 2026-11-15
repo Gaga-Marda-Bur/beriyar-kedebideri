@@ -1,7 +1,8 @@
+from django.db.models import Q
 from rest_framework import serializers
 
 from alphabet.serializers import CharacterSerializer
-from core.permissions import allowed_statuses_for_request, filter_by_access
+from core.permissions import PILOT_ALLOWED_UNIT_SLUGS, filter_by_access, is_pilot_user, is_staff_preview
 from vocabulary.serializers import WordSerializer
 from .models import LearningTheme, LearningUnit
 
@@ -39,7 +40,8 @@ class LearningUnitCompactSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         qs = obj.characters.filter(is_active=True)
         if request is not None:
-            qs = filter_by_access(qs, request, status_field='validation_status')
+            pilot_q = Q(pk__in=qs.values_list('pk', flat=True)) if obj.slug in PILOT_ALLOWED_UNIT_SLUGS else None
+            qs = filter_by_access(qs, request, status_field='validation_status', pilot_q=pilot_q)
         return qs.count()
 
     def get_words_count(self, obj):
@@ -81,7 +83,7 @@ class LearningThemeSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         qs = obj.units.filter(is_active=True)
         if request is not None:
-            qs = filter_by_access(qs, request)
+            qs = filter_by_access(qs, request, pilot_q=Q(slug__in=PILOT_ALLOWED_UNIT_SLUGS))
         return LearningUnitCompactSerializer(
             qs.order_by('order_index', 'title_fr'),
             many=True,
@@ -92,7 +94,7 @@ class LearningThemeSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         qs = obj.units.filter(is_active=True)
         if request is not None:
-            qs = filter_by_access(qs, request)
+            qs = filter_by_access(qs, request, pilot_q=Q(slug__in=PILOT_ALLOWED_UNIT_SLUGS))
         return qs.count()
 
 
@@ -156,14 +158,16 @@ class LearningUnitSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         qs = obj.characters.filter(is_active=True)
         if request is not None:
-            qs = filter_by_access(qs, request, status_field='validation_status')
+            pilot_q = Q(pk__in=qs.values_list('pk', flat=True)) if obj.slug in PILOT_ALLOWED_UNIT_SLUGS else None
+            qs = filter_by_access(qs, request, status_field='validation_status', pilot_q=pilot_q)
         return list(qs.values_list('id', flat=True))
 
     def get_distractor_character_ids(self, obj):
         request = self.context.get('request')
         qs = obj.distractor_characters.filter(is_active=True)
         if request is not None:
-            qs = filter_by_access(qs, request, status_field='validation_status')
+            pilot_q = Q(pk__in=qs.values_list('pk', flat=True)) if obj.slug in PILOT_ALLOWED_UNIT_SLUGS else None
+            qs = filter_by_access(qs, request, status_field='validation_status', pilot_q=pilot_q)
         return list(qs.values_list('id', flat=True))
 
     def get_word_ids(self, obj):
@@ -181,21 +185,23 @@ class LearningUnitSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
 
         # Filtrage strict selon les droits HTTP : exclure tout élément non autorisé
-        allowed = allowed_statuses_for_request(request) if request is not None else None
-        if allowed is not None:
+        if request is not None and not is_staff_preview(request):
+            char_allowed = ('published', 'validated') if (
+                is_pilot_user(request) and instance.slug in PILOT_ALLOWED_UNIT_SLUGS
+            ) else ('published',)
             if data.get('characters'):
                 data['characters'] = [
-                    c for c in data['characters'] if c.get('validation_status') in allowed
+                    c for c in data['characters'] if c.get('validation_status') in char_allowed
                 ]
             if data.get('distractor_characters'):
                 data['distractor_characters'] = [
-                    c for c in data['distractor_characters'] if c.get('validation_status') in allowed
+                    c for c in data['distractor_characters'] if c.get('validation_status') in char_allowed
                 ]
             if data.get('words'):
                 data['words'] = [
-                    w for w in data['words'] if w.get('validation_status') in allowed
+                    w for w in data['words'] if w.get('validation_status') == 'published'
                 ]
-            if instance.target_word and instance.target_word.validation_status not in allowed:
+            if instance.target_word and instance.target_word.validation_status != 'published':
                 data['target_word'] = None
 
         return data

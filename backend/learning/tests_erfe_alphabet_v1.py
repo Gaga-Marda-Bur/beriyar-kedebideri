@@ -161,10 +161,96 @@ class ErfeAlphabetV1ValidationTests(TestCase):
         # Même avec ?status=draft, un apprenant pilote ne voit jamais les brouillons P01..P06 / V01..V03
         draft_resp = pilot_client.get('/api/learning/units/?status=draft').json()
         draft_units = draft_resp['results'] if isinstance(draft_resp, dict) and 'results' in draft_resp else draft_resp
-        self.assertEqual(len(draft_units), 5)
-        self.assertFalse(any('p0' in u['slug'] or 'v0' in u['slug'] for u in draft_units))
+        self.assertEqual(len(draft_units), 0)
 
         quizzes_resp = pilot_client.get('/api/quizzes/').json()
         quizzes = quizzes_resp['results'] if isinstance(quizzes_resp, dict) and 'results' in quizzes_resp else quizzes_resp
         self.assertEqual(len(quizzes), 25)
         self.assertTrue(all(q['question_type'] == 'text_to_character' for q in quizzes))
+
+    def test_pilot_allowlist_blocks_sixth_validated_unit_even_by_direct_id_and_preserves_published(self):
+        from django.contrib.auth import get_user_model
+        from django.contrib.auth.models import Group
+        from core.permissions import PILOT_GROUP_NAME
+        from learning.models import LearningTheme
+        from lessons.models import Lesson
+        from alphabet.models import Character
+
+        # 6e unité VALIDATED hors pilote + thème/leçon/quiz/caractère associés
+        ext_theme = LearningTheme.objects.create(
+            slug='bk-theme-hors-pilote',
+            title_fr='Thème hors pilote',
+            status=LearningTheme.VALIDATED,
+            is_active=True,
+        )
+        ext_char = Character.objects.create(
+            symbol='𖺹',
+            unicode_code='U+16EB9',
+            name_fr='Hors pilote',
+            validation_status=Character.VALIDATED,
+            is_active=True,
+        )
+        ext_unit = LearningUnit.objects.create(
+            theme=ext_theme,
+            slug='bk-hors-pilote-06',
+            title_fr='Unité hors pilote',
+            status=LearningUnit.VALIDATED,
+            is_active=True,
+        )
+        ext_unit.characters.add(ext_char)
+        ext_lesson = Lesson.objects.create(
+            unit=ext_unit,
+            slug='bk-lesson-hors-pilote-06',
+            title_fr='Leçon hors pilote',
+            status=Lesson.VALIDATED,
+            is_active=True,
+        )
+        ext_quiz = QuizQuestion.objects.create(
+            unit=ext_unit,
+            lesson=ext_lesson,
+            question_type=QuizQuestion.TEXT_TO_CHARACTER,
+            prompt_fr='Quiz hors pilote',
+            status=QuizQuestion.VALIDATED,
+            is_active=True,
+        )
+
+        # Unité déjà PUBLISHED : les règles d'accès normales restent inchangées
+        pub_theme = LearningTheme.objects.create(
+            slug='bk-theme-pub',
+            title_fr='Thème publié',
+            status=LearningTheme.PUBLISHED,
+            is_active=True,
+        )
+        pub_unit = LearningUnit.objects.create(
+            theme=pub_theme,
+            slug='bk-pub-01',
+            title_fr='Unité publiée',
+            status=LearningUnit.PUBLISHED,
+            is_active=True,
+        )
+
+        User = get_user_model()
+        pilot_user = User.objects.create_user(username='pilot_allowlist', password='pw', is_staff=False)
+        pilot_group, _ = Group.objects.get_or_create(name=PILOT_GROUP_NAME)
+        pilot_user.groups.add(pilot_group)
+
+        pilot_client = APIClient()
+        pilot_client.force_authenticate(user=pilot_user)
+
+        # Accès direct par ID à la 6e unité VALIDATED hors pilote -> 404 partout
+        self.assertEqual(pilot_client.get(f'/api/learning/units/{ext_unit.id}/').status_code, 404)
+        self.assertEqual(pilot_client.get(f'/api/learning/units/{ext_unit.id}/core-flow/').status_code, 404)
+        self.assertEqual(pilot_client.get(f'/api/lessons/{ext_lesson.id}/').status_code, 404)
+        self.assertEqual(pilot_client.get(f'/api/quizzes/{ext_quiz.id}/').status_code, 404)
+        self.assertEqual(pilot_client.get(f'/api/alphabet/characters/{ext_char.id}/').status_code, 404)
+
+        # Liste des unités pour le pilote : uniquement les 5 ERF + l'unité PUBLISHED (jamais la 6e validated ni les drafts)
+        units_resp = pilot_client.get('/api/learning/units/').json()
+        units = units_resp['results'] if isinstance(units_resp, dict) and 'results' in units_resp else units_resp
+        unit_slugs = {u['slug'] for u in units}
+        self.assertNotIn('bk-hors-pilote-06', unit_slugs)
+        self.assertIn('bk-pub-01', unit_slugs)
+        self.assertEqual(len(unit_slugs), 6)
+
+        # Accès normal au contenu déjà PUBLISHED préservé
+        self.assertEqual(pilot_client.get(f'/api/learning/units/{pub_unit.id}/').status_code, 200)

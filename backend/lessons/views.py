@@ -1,6 +1,7 @@
+from django.db.models import Q
 from rest_framework import generics
 
-from core.permissions import filter_by_access
+from core.permissions import PILOT_ALLOWED_UNIT_SLUGS, filter_by_access
 from .models import Lesson, LessonItem
 from .serializers import LessonItemSerializer, LessonSerializer
 
@@ -29,7 +30,12 @@ class LessonListAPIView(generics.ListAPIView):
         unit = self.request.query_params.get('unit')
         offline = self.request.query_params.get('offline')
 
-        queryset = filter_by_access(queryset, self.request, status_param=status_param)
+        queryset = filter_by_access(
+            queryset,
+            self.request,
+            status_param=status_param,
+            pilot_q=Q(unit__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+        )
 
         if level:
             queryset = queryset.filter(level=level)
@@ -65,7 +71,11 @@ class LessonDetailAPIView(generics.RetrieveAPIView):
             'items__word__audio_links__audio_asset',
             'items__audio_links__audio_asset',
         )
-        return filter_by_access(queryset, self.request)
+        return filter_by_access(
+            queryset,
+            self.request,
+            pilot_q=Q(unit__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+        )
 
 
 class LessonItemListAPIView(generics.ListAPIView):
@@ -90,7 +100,12 @@ class LessonItemListAPIView(generics.ListAPIView):
         item_type = self.request.query_params.get('type')
         offline = self.request.query_params.get('offline')
 
-        queryset = filter_by_access(queryset, self.request, status_field='lesson__status')
+        queryset = filter_by_access(
+            queryset,
+            self.request,
+            status_field='lesson__status',
+            pilot_q=Q(lesson__unit__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+        )
 
         if lesson:
             queryset = queryset.filter(lesson__slug=lesson)
@@ -125,4 +140,9 @@ class LessonItemDetailAPIView(generics.RetrieveAPIView):
             'character__audio_links__audio_asset',
             'word__audio_links__audio_asset',
         )
-        return filter_by_access(queryset, self.request, status_field='lesson__status')
+        return filter_by_access(
+            queryset,
+            self.request,
+            status_field='lesson__status',
+            pilot_q=Q(lesson__unit__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+        )

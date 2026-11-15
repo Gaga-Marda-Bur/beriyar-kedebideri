@@ -1,6 +1,7 @@
+from django.db.models import Q
 from rest_framework import generics
 
-from core.permissions import filter_by_access
+from core.permissions import PILOT_ALLOWED_UNIT_SLUGS, filter_by_access
 from .models import LearningTheme, LearningUnit
 from .serializers import LearningThemeSerializer, LearningUnitSerializer
 
@@ -21,7 +22,12 @@ class LearningThemeListAPIView(generics.ListAPIView):
         level = self.request.query_params.get('level')
         offline = self.request.query_params.get('offline')
 
-        queryset = filter_by_access(queryset, self.request, status_param=status_param)
+        queryset = filter_by_access(
+            queryset,
+            self.request,
+            status_param=status_param,
+            pilot_q=Q(units__slug__in=PILOT_ALLOWED_UNIT_SLUGS, units__status='validated', units__is_active=True),
+        )
 
         if level:
             queryset = queryset.filter(level=level)
@@ -43,7 +49,11 @@ class LearningThemeDetailAPIView(generics.RetrieveAPIView):
             'units__characters',
             'units__words',
         )
-        return filter_by_access(queryset, self.request)
+        return filter_by_access(
+            queryset,
+            self.request,
+            pilot_q=Q(units__slug__in=PILOT_ALLOWED_UNIT_SLUGS, units__status='validated', units__is_active=True),
+        )
 
 
 class LearningUnitListAPIView(generics.ListAPIView):
@@ -71,7 +81,12 @@ class LearningUnitListAPIView(generics.ListAPIView):
         theme = self.request.query_params.get('theme')
         offline = self.request.query_params.get('offline')
 
-        queryset = filter_by_access(queryset, self.request, status_param=status_param)
+        queryset = filter_by_access(
+            queryset,
+            self.request,
+            status_param=status_param,
+            pilot_q=Q(slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+        )
 
         if level:
             queryset = queryset.filter(level=level)
@@ -104,7 +119,11 @@ class LearningUnitDetailAPIView(generics.RetrieveAPIView):
             'words__category',
             'words__audio_links__audio_asset',
         )
-        return filter_by_access(queryset, self.request)
+        return filter_by_access(
+            queryset,
+            self.request,
+            pilot_q=Q(slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+        )
 
 
 class LearningUnitCoreFlowAPIView(generics.GenericAPIView):
@@ -116,7 +135,11 @@ class LearningUnitCoreFlowAPIView(generics.GenericAPIView):
             'words',
         ).select_related('target_word', 'theme')
 
-        base_qs = filter_by_access(base_qs, request)
+        base_qs = filter_by_access(
+            base_qs,
+            request,
+            pilot_q=Q(slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+        )
 
         unit = generics.get_object_or_404(
             base_qs,

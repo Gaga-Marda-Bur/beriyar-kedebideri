@@ -222,7 +222,7 @@ class LearningUnit(models.Model):
         6. Encodage au clavier restreint (saisie autonome)
         7. Bilan & célébration (score calculé selon pondérations configurées)
         """
-        from core.permissions import allowed_statuses_for_request
+        from core.permissions import PILOT_ALLOWED_UNIT_SLUGS, is_pilot_user, is_staff_preview
         from audio_assets.utils import build_file_url, get_linked_audio_url
 
         if only_published is True:
@@ -230,7 +230,12 @@ class LearningUnit(models.Model):
         elif only_published is False:
             allowed_statuses = None
         elif request is not None:
-            allowed_statuses = allowed_statuses_for_request(request)
+            if is_staff_preview(request):
+                allowed_statuses = None
+            elif is_pilot_user(request) and self.slug in PILOT_ALLOWED_UNIT_SLUGS:
+                allowed_statuses = ('published', 'validated')
+            else:
+                allowed_statuses = ('published',)
         else:
             allowed_statuses = None
 

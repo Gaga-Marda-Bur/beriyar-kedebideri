@@ -1,6 +1,7 @@
+from django.db.models import Q
 from rest_framework import generics
 
-from core.permissions import filter_by_access
+from core.permissions import PILOT_ALLOWED_UNIT_SLUGS, filter_by_access
 from .models import QuizQuestion
 from .serializers import QuizQuestionSerializer
 
@@ -30,7 +31,12 @@ class QuizQuestionListAPIView(generics.ListAPIView):
         lesson = self.request.query_params.get('lesson')
         offline = self.request.query_params.get('offline')
 
-        queryset = filter_by_access(queryset, self.request, status_param=status_param)
+        queryset = filter_by_access(
+            queryset,
+            self.request,
+            status_param=status_param,
+            pilot_q=Q(unit__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+        )
 
         if question_type:
             queryset = queryset.filter(question_type=question_type)
@@ -72,4 +78,8 @@ class QuizQuestionDetailAPIView(generics.RetrieveAPIView):
             'options__word',
             'audio_links__audio_asset',
         )
-        return filter_by_access(queryset, self.request)
+        return filter_by_access(
+            queryset,
+            self.request,
+            pilot_q=Q(unit__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+        )

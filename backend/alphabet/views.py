@@ -1,6 +1,7 @@
+from django.db.models import Q
 from rest_framework import generics
 
-from core.permissions import filter_by_access
+from core.permissions import PILOT_ALLOWED_UNIT_SLUGS, filter_by_access
 from .models import Character
 from .serializers import CharacterSerializer
 
@@ -24,6 +25,7 @@ class CharacterListAPIView(generics.ListAPIView):
             self.request,
             status_field='validation_status',
             status_param=status_param,
+            pilot_q=Q(learning_units__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
         )
 
         if character_type:
@@ -44,4 +46,9 @@ class CharacterDetailAPIView(generics.RetrieveAPIView):
         ).prefetch_related(
             'audio_links__audio_asset',
         )
-        return filter_by_access(queryset, self.request, status_field='validation_status')
+        return filter_by_access(
+            queryset,
+            self.request,
+            status_field='validation_status',
+            pilot_q=Q(learning_units__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+        )

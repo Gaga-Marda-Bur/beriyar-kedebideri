@@ -1,4 +1,13 @@
+from django.db.models import Q
+
 PILOT_GROUP_NAME = 'pilot_erfe_v1'
+PILOT_ALLOWED_UNIT_SLUGS = (
+    'bk-preprod-erf-01',
+    'bk-preprod-erf-02',
+    'bk-preprod-erf-03',
+    'bk-preprod-erf-04',
+    'bk-preprod-erf-05',
+)
 
 
 def is_staff_preview(request):
@@ -43,15 +52,23 @@ def allowed_statuses_for_request(request):
     return ('published',)
 
 
-def filter_by_access(queryset, request, status_field='status', status_param=None):
-    """Filters a queryset according to staff, private pilot, or public rights."""
-    allowed = allowed_statuses_for_request(request)
-    if allowed is None:
+def filter_by_access(queryset, request, status_field='status', status_param=None, pilot_q=None):
+    """
+    Filters a queryset according to staff, private pilot, or public rights.
+    Pilot users keep normal access to `published` items and only see `validated`
+    items explicitly matching `pilot_q` (never blanket `validated`, never `draft`).
+    """
+    if is_staff_preview(request):
         if status_param:
             return queryset.filter(**{status_field: status_param})
         return queryset
-    if status_param and status_param in allowed:
-        return queryset.filter(**{status_field: status_param})
-    if len(allowed) == 1:
-        return queryset.filter(**{status_field: allowed[0]})
-    return queryset.filter(**{f'{status_field}__in': allowed})
+
+    published_q = Q(**{status_field: 'published'})
+    if is_pilot_user(request) and pilot_q is not None:
+        allowed_q = published_q | (Q(**{status_field: 'validated'}) & pilot_q)
+        queryset = queryset.filter(allowed_q).distinct()
+        if status_param:
+            queryset = queryset.filter(**{status_field: status_param})
+        return queryset
+
+    return queryset.filter(published_q)
