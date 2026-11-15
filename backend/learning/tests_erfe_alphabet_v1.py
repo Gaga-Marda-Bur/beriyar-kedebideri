@@ -132,3 +132,39 @@ class ErfeAlphabetV1ValidationTests(TestCase):
         data = resp.json()
         results = data['results'] if isinstance(data, dict) and 'results' in data else data
         self.assertEqual(len(results), 5)
+
+    def test_pilot_group_access_sees_only_erf_01_to_05_never_draft(self):
+        from django.contrib.auth import get_user_model
+        from django.contrib.auth.models import Group
+        from core.permissions import PILOT_GROUP_NAME
+
+        User = get_user_model()
+        pilot_user = User.objects.create_user(username='pilot_learner_1', password='pw', is_staff=False)
+        pilot_group, _ = Group.objects.get_or_create(name=PILOT_GROUP_NAME)
+        pilot_user.groups.add(pilot_group)
+
+        pilot_client = APIClient()
+        pilot_client.force_authenticate(user=pilot_user)
+
+        themes_resp = pilot_client.get('/api/learning/themes/').json()
+        themes = themes_resp['results'] if isinstance(themes_resp, dict) and 'results' in themes_resp else themes_resp
+        self.assertEqual([t['slug'] for t in themes], ['bk-preprod-alphabet-erfe'])
+        self.assertEqual(themes[0]['units_count'], 5)
+
+        units_resp = pilot_client.get('/api/learning/units/').json()
+        units = units_resp['results'] if isinstance(units_resp, dict) and 'results' in units_resp else units_resp
+        self.assertEqual(len(units), 5)
+        self.assertTrue(all(u['slug'].startswith('bk-preprod-erf-') for u in units))
+        self.assertEqual(len(units[0]['characters']), 5)
+        self.assertGreater(len(units[0]['core_flow']), 0)
+
+        # Même avec ?status=draft, un apprenant pilote ne voit jamais les brouillons P01..P06 / V01..V03
+        draft_resp = pilot_client.get('/api/learning/units/?status=draft').json()
+        draft_units = draft_resp['results'] if isinstance(draft_resp, dict) and 'results' in draft_resp else draft_resp
+        self.assertEqual(len(draft_units), 5)
+        self.assertFalse(any('p0' in u['slug'] or 'v0' in u['slug'] for u in draft_units))
+
+        quizzes_resp = pilot_client.get('/api/quizzes/').json()
+        quizzes = quizzes_resp['results'] if isinstance(quizzes_resp, dict) and 'results' in quizzes_resp else quizzes_resp
+        self.assertEqual(len(quizzes), 25)
+        self.assertTrue(all(q['question_type'] == 'text_to_character' for q in quizzes))

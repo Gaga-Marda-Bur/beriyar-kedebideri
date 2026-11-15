@@ -1,6 +1,6 @@
 from rest_framework import generics
 
-from core.permissions import is_staff_preview
+from core.permissions import filter_by_access
 from .models import QuizQuestion
 from .serializers import QuizQuestionSerializer
 
@@ -23,7 +23,6 @@ class QuizQuestionListAPIView(generics.ListAPIView):
             'audio_links__audio_asset',
         )
 
-        is_staff = is_staff_preview(self.request)
         status_param = self.request.query_params.get('status')
         question_type = self.request.query_params.get('type')
         difficulty = self.request.query_params.get('difficulty')
@@ -31,10 +30,7 @@ class QuizQuestionListAPIView(generics.ListAPIView):
         lesson = self.request.query_params.get('lesson')
         offline = self.request.query_params.get('offline')
 
-        if not is_staff:
-            queryset = queryset.filter(status='published')
-        elif status_param:
-            queryset = queryset.filter(status=status_param)
+        queryset = filter_by_access(queryset, self.request, status_param=status_param)
 
         if question_type:
             queryset = queryset.filter(question_type=question_type)
@@ -76,6 +72,4 @@ class QuizQuestionDetailAPIView(generics.RetrieveAPIView):
             'options__word',
             'audio_links__audio_asset',
         )
-        if not is_staff_preview(self.request):
-            queryset = queryset.filter(status='published')
-        return queryset
+        return filter_by_access(queryset, self.request)

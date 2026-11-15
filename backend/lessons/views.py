@@ -1,6 +1,6 @@
 from rest_framework import generics
 
-from core.permissions import is_staff_preview
+from core.permissions import filter_by_access
 from .models import Lesson, LessonItem
 from .serializers import LessonItemSerializer, LessonSerializer
 
@@ -24,16 +24,12 @@ class LessonListAPIView(generics.ListAPIView):
             'items__audio_links__audio_asset',
         )
 
-        is_staff = is_staff_preview(self.request)
         status_param = self.request.query_params.get('status')
         level = self.request.query_params.get('level')
         unit = self.request.query_params.get('unit')
         offline = self.request.query_params.get('offline')
 
-        if not is_staff:
-            queryset = queryset.filter(status='published')
-        elif status_param:
-            queryset = queryset.filter(status=status_param)
+        queryset = filter_by_access(queryset, self.request, status_param=status_param)
 
         if level:
             queryset = queryset.filter(level=level)
@@ -69,9 +65,7 @@ class LessonDetailAPIView(generics.RetrieveAPIView):
             'items__word__audio_links__audio_asset',
             'items__audio_links__audio_asset',
         )
-        if not is_staff_preview(self.request):
-            queryset = queryset.filter(status='published')
-        return queryset
+        return filter_by_access(queryset, self.request)
 
 
 class LessonItemListAPIView(generics.ListAPIView):
@@ -92,13 +86,11 @@ class LessonItemListAPIView(generics.ListAPIView):
             'word__audio_links__audio_asset',
         )
 
-        is_staff = is_staff_preview(self.request)
         lesson = self.request.query_params.get('lesson')
         item_type = self.request.query_params.get('type')
         offline = self.request.query_params.get('offline')
 
-        if not is_staff:
-            queryset = queryset.filter(lesson__status='published')
+        queryset = filter_by_access(queryset, self.request, status_field='lesson__status')
 
         if lesson:
             queryset = queryset.filter(lesson__slug=lesson)
@@ -133,6 +125,4 @@ class LessonItemDetailAPIView(generics.RetrieveAPIView):
             'character__audio_links__audio_asset',
             'word__audio_links__audio_asset',
         )
-        if not is_staff_preview(self.request):
-            queryset = queryset.filter(lesson__status='published')
-        return queryset
+        return filter_by_access(queryset, self.request, status_field='lesson__status')

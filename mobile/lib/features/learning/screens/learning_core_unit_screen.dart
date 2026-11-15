@@ -312,7 +312,10 @@ class _LearningCoreUnitScreenState extends State<LearningCoreUnitScreen> {
     final itemType = (stepType == 'encoding' || step.containsKey('target_word'))
         ? 'word'
         : 'char';
-    final label = (step['french_translation'] ?? step['label'] ?? '')
+    final label = (step['french_translation'] ??
+            step['latin_transcription'] ??
+            step['label'] ??
+            '')
         .toString();
     final audioUrl = step['audio_url'] as String?;
     final hasAudio = _stepHasAudio(step);

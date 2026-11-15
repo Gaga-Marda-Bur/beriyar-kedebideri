@@ -222,24 +222,27 @@ class LearningUnit(models.Model):
         6. Encodage au clavier restreint (saisie autonome)
         7. Bilan & célébration (score calculé selon pondérations configurées)
         """
-        from core.permissions import is_staff_preview
+        from core.permissions import allowed_statuses_for_request
         from audio_assets.utils import build_file_url, get_linked_audio_url
 
-        if only_published is None:
-            if request is not None:
-                only_published = not is_staff_preview(request)
-            else:
-                only_published = False
+        if only_published is True:
+            allowed_statuses = ('published',)
+        elif only_published is False:
+            allowed_statuses = None
+        elif request is not None:
+            allowed_statuses = allowed_statuses_for_request(request)
+        else:
+            allowed_statuses = None
 
         steps = []
-        if only_published:
-            chars = list(self.characters.filter(is_active=True, validation_status='published').order_by('order_index', 'id'))
-            distractors = list(self.distractor_characters.filter(is_active=True, validation_status='published').order_by('order_index', 'id'))
+        if allowed_statuses is not None:
+            chars = list(self.characters.filter(is_active=True, validation_status__in=allowed_statuses).order_by('order_index', 'id'))
+            distractors = list(self.distractor_characters.filter(is_active=True, validation_status__in=allowed_statuses).order_by('order_index', 'id'))
             target_w = self.target_word
-            if target_w and (not target_w.is_active or target_w.validation_status != 'published'):
+            if target_w and (not target_w.is_active or target_w.validation_status not in allowed_statuses):
                 target_w = None
             if not target_w:
-                target_w = self.words.filter(is_active=True, validation_status='published').first()
+                target_w = self.words.filter(is_active=True, validation_status__in=allowed_statuses).first()
         else:
             chars = list(self.characters.filter(is_active=True).order_by('order_index', 'id'))
             distractors = list(self.distractor_characters.filter(is_active=True).order_by('order_index', 'id'))

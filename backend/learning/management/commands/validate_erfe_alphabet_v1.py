@@ -1,7 +1,9 @@
+from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
 from alphabet.models import Character
+from core.permissions import PILOT_GROUP_NAME
 from learning.models import LearningTheme, LearningUnit
 from lessons.models import Lesson
 from quizzes.models import QuizQuestion
@@ -51,6 +53,7 @@ class Command(BaseCommand):
         dry_run = bool(options['dry_run'])
 
         with transaction.atomic():
+            Group.objects.get_or_create(name=PILOT_GROUP_NAME)
             theme = LearningTheme.objects.filter(slug='bk-preprod-alphabet-erfe').first()
             if theme is None:
                 raise CommandError(

@@ -243,11 +243,17 @@ class _SrsReviewSessionScreenState extends State<SrsReviewSessionScreen> {
   Widget _buildQuestionCard(SrsItemRecord item, BkThemePalette palette) {
     final hasAudio = _hasAudio(item);
     final options = _buildOptionsFor(item);
-    final promptHint = item.translationFr.isNotEmpty
-        ? 'Écoutez et touchez l\'écriture Erfe pour « ${item.translationFr} »'
-        : item.phonemeIpa.isNotEmpty && item.phonemeIpa != 'À_VALIDER'
-        ? 'Écoutez et touchez le caractère Erfe du son /${item.phonemeIpa}/'
-        : 'Écoutez l\'enregistrement et touchez l\'écriture Erfe correspondante';
+    final promptHint = !hasAudio
+        ? (item.translationFr.isNotEmpty
+            ? 'Touchez l\'écriture Erfe correspondant à « ${item.translationFr} »'
+            : item.phonemeIpa.isNotEmpty && item.phonemeIpa != 'À_VALIDER'
+            ? 'Touchez le caractère Erfe du son /${item.phonemeIpa}/'
+            : 'Touchez l\'écriture Erfe correspondante')
+        : (item.translationFr.isNotEmpty
+            ? 'Écoutez et touchez l\'écriture Erfe pour « ${item.translationFr} »'
+            : item.phonemeIpa.isNotEmpty && item.phonemeIpa != 'À_VALIDER'
+            ? 'Écoutez et touchez le caractère Erfe du son /${item.phonemeIpa}/'
+            : 'Écoutez l\'enregistrement et touchez l\'écriture Erfe correspondante');
 
     return GlassCard(
       key: ValueKey('srs-question-${item.stableId}'),

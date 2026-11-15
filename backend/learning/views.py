@@ -1,6 +1,6 @@
 from rest_framework import generics
 
-from core.permissions import is_staff_preview
+from core.permissions import filter_by_access
 from .models import LearningTheme, LearningUnit
 from .serializers import LearningThemeSerializer, LearningUnitSerializer
 
@@ -17,15 +17,11 @@ class LearningThemeListAPIView(generics.ListAPIView):
             'units__words',
         )
 
-        is_staff = is_staff_preview(self.request)
         status_param = self.request.query_params.get('status')
         level = self.request.query_params.get('level')
         offline = self.request.query_params.get('offline')
 
-        if not is_staff:
-            queryset = queryset.filter(status='published')
-        elif status_param:
-            queryset = queryset.filter(status=status_param)
+        queryset = filter_by_access(queryset, self.request, status_param=status_param)
 
         if level:
             queryset = queryset.filter(level=level)
@@ -47,9 +43,7 @@ class LearningThemeDetailAPIView(generics.RetrieveAPIView):
             'units__characters',
             'units__words',
         )
-        if not is_staff_preview(self.request):
-            queryset = queryset.filter(status='published')
-        return queryset
+        return filter_by_access(queryset, self.request)
 
 
 class LearningUnitListAPIView(generics.ListAPIView):
@@ -72,16 +66,12 @@ class LearningUnitListAPIView(generics.ListAPIView):
             'words__audio_links__audio_asset',
         )
 
-        is_staff = is_staff_preview(self.request)
         status_param = self.request.query_params.get('status')
         level = self.request.query_params.get('level')
         theme = self.request.query_params.get('theme')
         offline = self.request.query_params.get('offline')
 
-        if not is_staff:
-            queryset = queryset.filter(status='published')
-        elif status_param:
-            queryset = queryset.filter(status=status_param)
+        queryset = filter_by_access(queryset, self.request, status_param=status_param)
 
         if level:
             queryset = queryset.filter(level=level)
@@ -114,9 +104,7 @@ class LearningUnitDetailAPIView(generics.RetrieveAPIView):
             'words__category',
             'words__audio_links__audio_asset',
         )
-        if not is_staff_preview(self.request):
-            queryset = queryset.filter(status='published')
-        return queryset
+        return filter_by_access(queryset, self.request)
 
 
 class LearningUnitCoreFlowAPIView(generics.GenericAPIView):
@@ -128,8 +116,7 @@ class LearningUnitCoreFlowAPIView(generics.GenericAPIView):
             'words',
         ).select_related('target_word', 'theme')
 
-        if not is_staff_preview(request):
-            base_qs = base_qs.filter(status='published')
+        base_qs = filter_by_access(base_qs, request)
 
         unit = generics.get_object_or_404(
             base_qs,
