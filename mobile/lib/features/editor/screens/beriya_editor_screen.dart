@@ -21,6 +21,8 @@ import '../services/beriya_pdf_service.dart';
 
 enum _ActiveField { title, body }
 
+enum _EditorMenuAction { transliterate, copy, newDocument }
+
 class BeriyaEditorScreen extends StatefulWidget {
   const BeriyaEditorScreen({super.key});
 
@@ -416,10 +418,13 @@ class _BeriyaEditorScreenState extends State<BeriyaEditorScreen> {
         backgroundColor: const Color(0xFF061A14),
         elevation: 0,
         title: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               loc.editorTitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 19),
             ),
             Row(
@@ -430,11 +435,15 @@ class _BeriyaEditorScreenState extends State<BeriyaEditorScreen> {
                   color: _isSaving ? const Color(0xFFD4AF37) : Colors.greenAccent,
                 ),
                 const SizedBox(width: 4),
-                Text(
-                  _isSaving ? loc.editorSaving : loc.editorDraftSaved,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: _isSaving ? const Color(0xFFD4AF37) : Colors.greenAccent,
+                Expanded(
+                  child: Text(
+                    _isSaving ? loc.editorSaving : loc.editorDraftSaved,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: _isSaving ? const Color(0xFFD4AF37) : Colors.greenAccent,
+                    ),
                   ),
                 ),
               ],
@@ -442,22 +451,81 @@ class _BeriyaEditorScreenState extends State<BeriyaEditorScreen> {
           ],
         ),
         actions: [
-          IconButton(tooltip: "Erfe | Latin | Arabe", icon: const Icon(Icons.translate),
-            onPressed: () => showTransliterationDialog(context, _activeField == _ActiveField.title ? _titleController : _bodyController, onChanged: _onContentChanged)),
-          IconButton(
-            tooltip: loc.editorCopyText,
-            icon: const Icon(Icons.copy_rounded, color: Colors.white70),
-            onPressed: _copyText,
-          ),
-          IconButton(
-            tooltip: loc.editorNewDoc,
-            icon: const Icon(Icons.note_add_outlined, color: Colors.white70),
-            onPressed: _confirmNewDocument,
-          ),
           IconButton(
             tooltip: loc.editorExport,
             icon: const Icon(Icons.ios_share_rounded, color: Color(0xFFD4AF37)),
             onPressed: _showExportModal,
+          ),
+          PopupMenuButton<_EditorMenuAction>(
+            key: const Key('editor-more-actions'),
+            color: const Color(0xFF0A221A),
+            icon: const Icon(Icons.more_vert_rounded, color: Colors.white70),
+            onSelected: (action) {
+              switch (action) {
+                case _EditorMenuAction.transliterate:
+                  showTransliterationDialog(
+                    context,
+                    _activeField == _ActiveField.title
+                        ? _titleController
+                        : _bodyController,
+                    onChanged: _onContentChanged,
+                  );
+                case _EditorMenuAction.copy:
+                  _copyText();
+                case _EditorMenuAction.newDocument:
+                  _confirmNewDocument();
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: _EditorMenuAction.transliterate,
+                child: Row(
+                  children: const [
+                    Icon(Icons.translate, size: 20, color: Colors.white70),
+                    SizedBox(width: 12),
+                    Flexible(
+                      child: Text(
+                        'Erfe | Latin | Arabe',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: _EditorMenuAction.copy,
+                child: Row(
+                  children: [
+                    const Icon(Icons.copy_rounded, size: 20, color: Colors.white70),
+                    const SizedBox(width: 12),
+                    Flexible(
+                      child: Text(
+                        loc.editorCopyText,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: _EditorMenuAction.newDocument,
+                child: Row(
+                  children: [
+                    const Icon(Icons.note_add_outlined, size: 20, color: Colors.white70),
+                    const SizedBox(width: 12),
+                    Flexible(
+                      child: Text(
+                        loc.editorNewDoc,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -529,13 +597,17 @@ class _BeriyaEditorScreenState extends State<BeriyaEditorScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'Beřiyar Kedebideři',
-                              style: TextStyle(
-                                color: canvasTextColor.withAlpha(160),
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 0.5,
+                            Flexible(
+                              child: Text(
+                                'Beřiyar Kedebideři',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: canvasTextColor.withAlpha(160),
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.5,
+                                ),
                               ),
                             ),
                             Text(
