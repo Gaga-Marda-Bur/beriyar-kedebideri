@@ -1569,49 +1569,50 @@ html[dir="rtl"] .quiz-option-button {
     padding: 6px 10px;
 }
 
-/* Medium desktop: hide secondary links earlier so nav + auth + APK fit at 1280px */
-@media (max-width: 1380px) {
+/* Medium/intermediate desktop: keep primary nav + auth + APK unclipped across FR/EN/AR */
+@media (max-width: 1480px) {
+    .nav-inner {
+        width: min(1480px, calc(100% - 28px));
+        gap: 12px;
+    }
+
+    .brand {
+        min-width: 0;
+        gap: 10px;
+    }
+
+    .nav-links {
+        gap: 12px;
+    }
+
     .nav-links a[href*="feedback"],
     .nav-links a[href*="quiz"],
     .nav-links a[href*="sticker-studio"],
-    .nav-links a[href*="editeur"] {
-        display: none;
-    }
-
-    .nav-actions .btn {
-        padding: 10px 14px;
-        font-size: 13px;
-    }
-
-    .nav-actions .btn-primary {
-        min-width: auto;
-        padding: 10px 16px;
-    }
-}
-
-/* Smaller desktop: keep only core navigation */
-@media (max-width: 1220px) {
+    .nav-links a[href*="editeur"],
     .nav-links a[href*="no-ena"] {
         display: none;
     }
 
-    .brand {
-        min-width: 230px;
+    .mobile-menu-button {
+        display: inline-flex;
+        padding: 10px 14px;
+        font-size: 13px;
     }
 
-    .brand-title {
-        font-size: 18px;
+    .nav-actions .btn {
+        padding: 10px 12px;
+        font-size: 13px;
+        white-space: nowrap;
     }
 
-    .brand-mark {
-        width: 60px;
-        height: 60px;
-        min-width: 60px;
+    .nav-actions .btn-primary {
+        min-width: auto;
+        padding: 10px 14px;
     }
 }
 
-/* Tablet/mobile: switch to mobile menu */
-@media (max-width: 1080px) {
+/* Smaller desktop & tablet/mobile: switch cleanly to mobile/drawer menu */
+@media (max-width: 1180px) {
     .nav-links,
     .nav-actions {
         display: none;
@@ -2038,4 +2039,34 @@ body[dir="rtl"] .quiz-option-button.is-selected::after {
     margin-bottom: 16px;
     color: var(--brand-muted);
     font-size: 14px;
+}
+
+.auth-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.auth-tab {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 14px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--brand-muted);
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.auth-tab.is-active {
+    border-color: var(--brand-gold);
+    background: rgba(212, 175, 55, 0.18);
+    color: var(--brand-gold);
+}
+
+.auth-forgot-note {
+    margin: 4px 0 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--brand-muted);
 }

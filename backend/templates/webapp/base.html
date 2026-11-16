@@ -190,6 +190,9 @@
                     <button type="button" class="btn btn-secondary mobile-auth-btn" data-auth-login-open>
                         {% if current_lang == "ar" %}تسجيل الدخول{% elif current_lang == "en" %}Sign in{% else %}Connexion{% endif %}
                     </button>
+                    <button type="button" class="btn btn-primary mobile-auth-btn" data-auth-register-open>
+                        {% if current_lang == "ar" %}إنشاء حساب{% elif current_lang == "en" %}Create account{% else %}Créer un compte{% endif %}
+                    </button>
                 {% endif %}
 
                 <div class="language-switcher mobile-language-switcher">
@@ -374,8 +377,18 @@
                     {% if current_lang == "ar" %}تسجيل الخروج{% elif current_lang == "en" %}Log out{% else %}Déconnexion{% endif %}
                 </button>
             {% else %}
+                <div class="auth-tabs" role="tablist">
+                    <button type="button" class="auth-tab is-active" data-auth-tab="login" role="tab" aria-selected="true">
+                        {% if current_lang == "ar" %}تسجيل الدخول{% elif current_lang == "en" %}Sign in{% else %}Connexion{% endif %}
+                    </button>
+                    <button type="button" class="auth-tab" data-auth-tab="register" role="tab" aria-selected="false">
+                        {% if current_lang == "ar" %}إنشاء حساب{% elif current_lang == "en" %}Create account{% else %}Créer un compte{% endif %}
+                    </button>
+                </div>
+
+                <div id="authModalError" class="auth-modal-error" hidden></div>
+
                 <form id="authLoginForm" class="auth-modal-form">
-                    <div id="authModalError" class="auth-modal-error" hidden></div>
                     <label>
                         <span>{% if current_lang == "ar" %}اسم المستخدم{% elif current_lang == "en" %}Username{% else %}Nom d’utilisateur{% endif %}</span>
                         <input type="text" name="username" class="input" required autocomplete="username">
@@ -387,6 +400,37 @@
                     <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
                         {% if current_lang == "ar" %}دخول{% elif current_lang == "en" %}Sign in{% else %}Se connecter{% endif %}
                     </button>
+                    <p class="auth-forgot-note">
+                        {% if current_lang == "ar" %}
+                            نسيت كلمة المرور؟ استعادة الحساب عبر البريد الإلكتروني غير مفعّلة بعد؛ تواصل مع الإدارة لإعادة التعيين.
+                        {% elif current_lang == "en" %}
+                            Forgot password? Email recovery is not active yet; please contact an administrator for a reset.
+                        {% else %}
+                            Mot de passe oublié ? La récupération automatique par e-mail n’est pas encore activée ; contacte l’administration pour réinitialiser ton accès.
+                        {% endif %}
+                    </p>
+                </form>
+
+                <form id="authRegisterForm" class="auth-modal-form" hidden>
+                    <label>
+                        <span>{% if current_lang == "ar" %}اسم المستخدم{% elif current_lang == "en" %}Username{% else %}Nom d’utilisateur{% endif %}</span>
+                        <input type="text" name="username" class="input" required minlength="3" maxlength="150" autocomplete="username">
+                    </label>
+                    <label>
+                        <span>{% if current_lang == "ar" %}البريد الإلكتروني (اختياري){% elif current_lang == "en" %}Email (optional){% else %}E-mail (optionnel){% endif %}</span>
+                        <input type="email" name="email" class="input" autocomplete="email">
+                    </label>
+                    <label>
+                        <span>{% if current_lang == "ar" %}كلمة المرور{% elif current_lang == "en" %}Password{% else %}Mot de passe{% endif %}</span>
+                        <input type="password" name="password" class="input" required minlength="8" autocomplete="new-password">
+                    </label>
+                    <label>
+                        <span>{% if current_lang == "ar" %}تأكيد كلمة المرور{% elif current_lang == "en" %}Confirm password{% else %}Confirmer le mot de passe{% endif %}</span>
+                        <input type="password" name="password_confirm" class="input" required minlength="8" autocomplete="new-password">
+                    </label>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        {% if current_lang == "ar" %}إنشاء الحساب{% elif current_lang == "en" %}Create account{% else %}Créer mon compte{% endif %}
+                    </button>
                 </form>
             {% endif %}
         </div>
@@ -396,11 +440,15 @@
         (function () {
             const modal = document.getElementById("authModal");
             const closeBtn = document.getElementById("authModalClose");
+            const modalTitle = document.getElementById("authModalTitle");
             const loginForm = document.getElementById("authLoginForm");
+            const registerForm = document.getElementById("authRegisterForm");
             const errorBox = document.getElementById("authModalError");
             const profileMeta = document.getElementById("authProfileMeta");
+            const tabButtons = document.querySelectorAll("[data-auth-tab]");
             const csrfUrl = "{% url 'core-auth-csrf' %}";
             const loginUrl = "{% url 'core-auth-login' %}";
+            const registerUrl = "{% url 'core-auth-register' %}";
             const logoutUrl = "{% url 'core-auth-logout' %}";
             const meUrl = "{% url 'core-auth-me' %}";
 
@@ -410,10 +458,30 @@
                 return data.csrf_token || "";
             }
 
-            function openModal() {
+            function setAuthTab(mode) {
+                if (!loginForm || !registerForm) return;
+                const isReg = mode === "register";
+                loginForm.hidden = isReg;
+                registerForm.hidden = !isReg;
+                if (errorBox) { errorBox.hidden = true; errorBox.textContent = ""; }
+                tabButtons.forEach(function (btn) {
+                    const active = btn.getAttribute("data-auth-tab") === mode;
+                    btn.classList.toggle("is-active", active);
+                    btn.setAttribute("aria-selected", active ? "true" : "false");
+                });
+                if (modalTitle) {
+                    modalTitle.textContent = isReg
+                        ? "{% if current_lang == 'ar' %}إنشاء حساب{% elif current_lang == 'en' %}Create account{% else %}Créer un compte{% endif %}"
+                        : "{% if current_lang == 'ar' %}تسجيل الدخول{% elif current_lang == 'en' %}Sign in{% else %}Connexion{% endif %}";
+                }
+            }
+
+            function openModal(mode) {
                 if (!modal) return;
+                if (mode) setAuthTab(mode);
                 modal.hidden = false;
-                const firstInput = modal.querySelector("input");
+                const activeForm = mode === "register" && registerForm ? registerForm : loginForm;
+                const firstInput = (activeForm || modal).querySelector("input");
                 if (firstInput) firstInput.focus();
             }
 
@@ -421,8 +489,18 @@
                 if (modal) modal.hidden = true;
             }
 
+            tabButtons.forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    setAuthTab(btn.getAttribute("data-auth-tab"));
+                });
+            });
+
             document.querySelectorAll("[data-auth-login-open]").forEach(function (btn) {
-                btn.addEventListener("click", openModal);
+                btn.addEventListener("click", function () { openModal("login"); });
+            });
+
+            document.querySelectorAll("[data-auth-register-open]").forEach(function (btn) {
+                btn.addEventListener("click", function () { openModal("register"); });
             });
 
             document.querySelectorAll("[data-auth-profile-open]").forEach(function (btn) {
@@ -450,40 +528,62 @@
                 });
             }
 
-            if (loginForm) {
-                loginForm.addEventListener("submit", async function (e) {
-                    e.preventDefault();
-                    if (errorBox) { errorBox.hidden = true; errorBox.textContent = ""; }
-                    const formData = new FormData(loginForm);
-                    try {
-                        const token = await getCsrfToken();
-                        const res = await fetch(loginUrl, {
-                            method: "POST",
-                            credentials: "same-origin",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "X-CSRFToken": token,
-                            },
-                            body: JSON.stringify({
-                                username: formData.get("username"),
-                                password: formData.get("password"),
-                            }),
-                        });
-                        if (res.ok) {
-                            window.location.reload();
-                            return;
-                        }
-                        const data = await res.json().catch(function () { return {}; });
-                        if (errorBox) {
-                            errorBox.textContent = data.detail || "{% if current_lang == 'ar' %}بيانات الدخول غير صحيحة.{% elif current_lang == 'en' %}Invalid credentials.{% else %}Identifiants invalides.{% endif %}";
-                            errorBox.hidden = false;
-                        }
-                    } catch (_) {
-                        if (errorBox) {
-                            errorBox.textContent = "{% if current_lang == 'ar' %}تعذر الاتصال بالخادم.{% elif current_lang == 'en' %}Connection error.{% else %}Erreur de connexion.{% endif %}";
-                            errorBox.hidden = false;
-                        }
+            async function submitAuthForm(url, payload, fallbackError) {
+                if (errorBox) { errorBox.hidden = true; errorBox.textContent = ""; }
+                try {
+                    const token = await getCsrfToken();
+                    const res = await fetch(url, {
+                        method: "POST",
+                        credentials: "same-origin",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": token,
+                        },
+                        body: JSON.stringify(payload),
+                    });
+                    if (res.ok) {
+                        window.location.reload();
+                        return;
                     }
+                    const data = await res.json().catch(function () { return {}; });
+                    if (errorBox) {
+                        errorBox.textContent = data.detail || fallbackError;
+                        errorBox.hidden = false;
+                    }
+                } catch (_) {
+                    if (errorBox) {
+                        errorBox.textContent = "{% if current_lang == 'ar' %}تعذر الاتصال بالخادم.{% elif current_lang == 'en' %}Connection error.{% else %}Erreur de connexion.{% endif %}";
+                        errorBox.hidden = false;
+                    }
+                }
+            }
+
+            if (loginForm) {
+                loginForm.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    const fd = new FormData(loginForm);
+                    submitAuthForm(
+                        loginUrl,
+                        { username: fd.get("username"), password: fd.get("password") },
+                        "{% if current_lang == 'ar' %}بيانات الدخول غير صحيحة.{% elif current_lang == 'en' %}Invalid credentials.{% else %}Identifiants invalides.{% endif %}"
+                    );
+                });
+            }
+
+            if (registerForm) {
+                registerForm.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    const fd = new FormData(registerForm);
+                    submitAuthForm(
+                        registerUrl,
+                        {
+                            username: fd.get("username"),
+                            email: fd.get("email"),
+                            password: fd.get("password"),
+                            password_confirm: fd.get("password_confirm"),
+                        },
+                        "{% if current_lang == 'ar' %}تعذر إنشاء الحساب.{% elif current_lang == 'en' %}Unable to create account.{% else %}Impossible de créer le compte.{% endif %}"
+                    );
                 });
             }
 
