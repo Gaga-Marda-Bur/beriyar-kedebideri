@@ -104,6 +104,19 @@
                 </nav>
 
                 <div class="nav-actions">
+                    {% if request.user.is_authenticated %}
+                        <button type="button" class="btn btn-secondary nav-auth-btn" data-auth-profile-open>
+                            {% if current_lang == "ar" %}الملف الشخصي{% elif current_lang == "en" %}Profile{% else %}Profil{% endif %} ({{ request.user.username }})
+                        </button>
+                        <button type="button" class="btn btn-secondary nav-auth-btn" data-auth-logout>
+                            {% if current_lang == "ar" %}خروج{% elif current_lang == "en" %}Log out{% else %}Déconnexion{% endif %}
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-secondary nav-auth-btn" data-auth-login-open>
+                            {% if current_lang == "ar" %}تسجيل الدخول{% elif current_lang == "en" %}Sign in{% else %}Connexion{% endif %}
+                        </button>
+                    {% endif %}
+
                     <a href="{% url 'web-learning-path' %}" class="btn btn-secondary">
                         {% if current_lang == "ar" %}استكشاف{% elif current_lang == "en" %}Explore{% else %}Explorer{% endif %}
                     </a>
@@ -165,6 +178,19 @@
                 <a href="{{ ANDROID_APK_URL }}">
                     {% if current_lang == "ar" %}تطبيق أندرويد{% elif current_lang == "en" %}Android APK{% else %}APK Android{% endif %}
                 </a>
+
+                {% if request.user.is_authenticated %}
+                    <button type="button" class="btn btn-secondary mobile-auth-btn" data-auth-profile-open>
+                        {% if current_lang == "ar" %}الملف الشخصي{% elif current_lang == "en" %}Profile{% else %}Profil{% endif %} ({{ request.user.username }})
+                    </button>
+                    <button type="button" class="btn btn-secondary mobile-auth-btn" data-auth-logout>
+                        {% if current_lang == "ar" %}خروج{% elif current_lang == "en" %}Log out{% else %}Déconnexion{% endif %}
+                    </button>
+                {% else %}
+                    <button type="button" class="btn btn-secondary mobile-auth-btn" data-auth-login-open>
+                        {% if current_lang == "ar" %}تسجيل الدخول{% elif current_lang == "en" %}Sign in{% else %}Connexion{% endif %}
+                    </button>
+                {% endif %}
 
                 <div class="language-switcher mobile-language-switcher">
                     <a href="?lang=fr">FR</a>
@@ -325,6 +351,156 @@
             systemKeyboard: "{% if current_lang == 'ar' %}📱 لوحة النظام{% elif current_lang == 'en' %}📱 System KB{% else %}📱 Clavier système{% endif %}",
             clickInputFirst: "{% if current_lang == 'ar' %}انقر أولاً في حقل نصي.{% elif current_lang == 'en' %}Click in a text field first.{% else %}Clique d’abord dans un champ de texte.{% endif %}"
         };
+    </script>
+
+    <div id="authModal" class="auth-modal" hidden role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
+        <div class="auth-modal-card glass">
+            <div class="auth-modal-header">
+                <h2 id="authModalTitle">
+                    {% if request.user.is_authenticated %}
+                        {% if current_lang == "ar" %}الملف الشخصي{% elif current_lang == "en" %}Profile{% else %}Profil{% endif %}
+                    {% else %}
+                        {% if current_lang == "ar" %}تسجيل الدخول{% elif current_lang == "en" %}Sign in{% else %}Connexion{% endif %}
+                    {% endif %}
+                </h2>
+                <button type="button" class="auth-modal-close" id="authModalClose" aria-label="Close">×</button>
+            </div>
+
+            {% if request.user.is_authenticated %}
+                <div class="auth-profile-meta" id="authProfileMeta">
+                    <div><strong>{% if current_lang == "ar" %}المستخدم:{% elif current_lang == "en" %}User:{% else %}Utilisateur :{% endif %}</strong> {{ request.user.username }}</div>
+                </div>
+                <button type="button" class="btn btn-primary" style="width: 100%; justify-content: center;" data-auth-logout>
+                    {% if current_lang == "ar" %}تسجيل الخروج{% elif current_lang == "en" %}Log out{% else %}Déconnexion{% endif %}
+                </button>
+            {% else %}
+                <form id="authLoginForm" class="auth-modal-form">
+                    <div id="authModalError" class="auth-modal-error" hidden></div>
+                    <label>
+                        <span>{% if current_lang == "ar" %}اسم المستخدم{% elif current_lang == "en" %}Username{% else %}Nom d’utilisateur{% endif %}</span>
+                        <input type="text" name="username" class="input" required autocomplete="username">
+                    </label>
+                    <label>
+                        <span>{% if current_lang == "ar" %}كلمة المرور{% elif current_lang == "en" %}Password{% else %}Mot de passe{% endif %}</span>
+                        <input type="password" name="password" class="input" required autocomplete="current-password">
+                    </label>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        {% if current_lang == "ar" %}دخول{% elif current_lang == "en" %}Sign in{% else %}Se connecter{% endif %}
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const modal = document.getElementById("authModal");
+            const closeBtn = document.getElementById("authModalClose");
+            const loginForm = document.getElementById("authLoginForm");
+            const errorBox = document.getElementById("authModalError");
+            const profileMeta = document.getElementById("authProfileMeta");
+            const csrfUrl = "{% url 'core-auth-csrf' %}";
+            const loginUrl = "{% url 'core-auth-login' %}";
+            const logoutUrl = "{% url 'core-auth-logout' %}";
+            const meUrl = "{% url 'core-auth-me' %}";
+
+            async function getCsrfToken() {
+                const res = await fetch(csrfUrl, { credentials: "same-origin" });
+                const data = await res.json();
+                return data.csrf_token || "";
+            }
+
+            function openModal() {
+                if (!modal) return;
+                modal.hidden = false;
+                const firstInput = modal.querySelector("input");
+                if (firstInput) firstInput.focus();
+            }
+
+            function closeModal() {
+                if (modal) modal.hidden = true;
+            }
+
+            document.querySelectorAll("[data-auth-login-open]").forEach(function (btn) {
+                btn.addEventListener("click", openModal);
+            });
+
+            document.querySelectorAll("[data-auth-profile-open]").forEach(function (btn) {
+                btn.addEventListener("click", async function () {
+                    openModal();
+                    if (profileMeta) {
+                        try {
+                            const res = await fetch(meUrl, { credentials: "same-origin" });
+                            if (res.ok) {
+                                const info = await res.json();
+                                profileMeta.innerHTML =
+                                    "<div><strong>{% if current_lang == 'ar' %}المستخدم:{% elif current_lang == 'en' %}User:{% else %}Utilisateur :{% endif %}</strong> " +
+                                    String(info.username || "").replace(/[<>&]/g, "") +
+                                    "</div>";
+                            }
+                        } catch (_) {}
+                    }
+                });
+            });
+
+            if (closeBtn) closeBtn.addEventListener("click", closeModal);
+            if (modal) {
+                modal.addEventListener("click", function (e) {
+                    if (e.target === modal) closeModal();
+                });
+            }
+
+            if (loginForm) {
+                loginForm.addEventListener("submit", async function (e) {
+                    e.preventDefault();
+                    if (errorBox) { errorBox.hidden = true; errorBox.textContent = ""; }
+                    const formData = new FormData(loginForm);
+                    try {
+                        const token = await getCsrfToken();
+                        const res = await fetch(loginUrl, {
+                            method: "POST",
+                            credentials: "same-origin",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRFToken": token,
+                            },
+                            body: JSON.stringify({
+                                username: formData.get("username"),
+                                password: formData.get("password"),
+                            }),
+                        });
+                        if (res.ok) {
+                            window.location.reload();
+                            return;
+                        }
+                        const data = await res.json().catch(function () { return {}; });
+                        if (errorBox) {
+                            errorBox.textContent = data.detail || "{% if current_lang == 'ar' %}بيانات الدخول غير صحيحة.{% elif current_lang == 'en' %}Invalid credentials.{% else %}Identifiants invalides.{% endif %}";
+                            errorBox.hidden = false;
+                        }
+                    } catch (_) {
+                        if (errorBox) {
+                            errorBox.textContent = "{% if current_lang == 'ar' %}تعذر الاتصال بالخادم.{% elif current_lang == 'en' %}Connection error.{% else %}Erreur de connexion.{% endif %}";
+                            errorBox.hidden = false;
+                        }
+                    }
+                });
+            }
+
+            document.querySelectorAll("[data-auth-logout]").forEach(function (btn) {
+                btn.addEventListener("click", async function () {
+                    try {
+                        const token = await getCsrfToken();
+                        await fetch(logoutUrl, {
+                            method: "POST",
+                            credentials: "same-origin",
+                            headers: { "X-CSRFToken": token },
+                        });
+                        window.location.reload();
+                    } catch (_) {}
+                });
+            });
+        })();
     </script>
 
     <script src="{% static 'webapp/js/beriya_keyboard_data.js' %}?v=20261112-diacritics" defer></script>
