@@ -1488,14 +1488,14 @@ html[dir="rtl"] .quiz-option-button {
 }
 
 .nav-inner {
-    width: min(1480px, calc(100% - 40px));
+    width: min(1600px, calc(100% - 32px));
     min-height: 82px;
-    gap: 18px;
+    gap: 16px;
 }
 
 .brand {
-    min-width: 250px;
-    gap: 14px;
+    min-width: 0;
+    gap: 12px;
     flex-shrink: 0;
 }
 
@@ -1570,9 +1570,9 @@ html[dir="rtl"] .quiz-option-button {
 }
 
 /* Medium/intermediate desktop: keep primary nav + auth + APK unclipped across FR/EN/AR */
-@media (max-width: 1480px) {
+@media (max-width: 1640px) {
     .nav-inner {
-        width: min(1480px, calc(100% - 28px));
+        width: min(1600px, calc(100% - 28px));
         gap: 12px;
     }
 
@@ -2011,6 +2011,10 @@ body[dir="rtl"] .quiz-option-button.is-selected::after {
 .auth-modal-form {
     display: grid;
     gap: 12px;
+}
+
+.auth-modal-form[hidden] {
+    display: none;
 }
 
 .auth-modal-form label {
