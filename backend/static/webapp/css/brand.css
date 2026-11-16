@@ -1154,7 +1154,7 @@ html[dir="rtl"] .quiz-option-button {
     margin-top: 8px;
 }
 
-@media (min-width: 921px) {
+@media (min-width: 1241px) {
     .mobile-menu {
         display: none !important;
     }
@@ -1450,14 +1450,6 @@ html[dir="rtl"] .quiz-option-button {
     flex-shrink: 0;
 }
 
-@media (max-width: 1280px) {
-    .nav-links a[href*="feedback"],
-    .nav-links a[href*="quiz"],
-    .nav-links a[href*="studio-sticker"] {
-        display: none;
-    }
-}
-
 @media (max-width: 1120px) {
     .nav-links,
     .nav-actions {
@@ -1488,22 +1480,22 @@ html[dir="rtl"] .quiz-option-button {
 }
 
 .nav-inner {
-    width: min(1600px, calc(100% - 32px));
+    width: min(1680px, calc(100% - 28px));
     min-height: 82px;
-    gap: 16px;
+    gap: 12px;
 }
 
 .brand {
     min-width: 0;
-    gap: 12px;
+    gap: 10px;
     flex-shrink: 0;
 }
 
 .brand-mark {
-    width: 66px;
-    height: 66px;
-    min-width: 66px;
-    border-radius: 22px;
+    width: 58px;
+    height: 58px;
+    min-width: 58px;
+    border-radius: 20px;
 }
 
 .brand-logo-wrap {
@@ -1520,99 +1512,195 @@ html[dir="rtl"] .quiz-option-button {
 }
 
 .brand-title {
-    font-size: 20px;
-    line-height: 1.02;
+    font-size: 18px;
+    line-height: 1.05;
     max-width: 150px;
 }
 
 .brand-subtitle {
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.25;
-    max-width: 170px;
+    max-width: 165px;
 }
 
 .nav-links {
-    gap: 16px;
-    font-size: 14px;
+    gap: 13px;
+    font-size: 13.5px;
     flex: 1;
     justify-content: center;
+    min-width: 0;
 }
 
 .nav-links a {
-    font-size: 14px;
+    font-size: 13.5px;
     line-height: 1.08;
     white-space: nowrap;
 }
 
 .nav-actions {
-    gap: 10px;
+    gap: 8px;
     flex-shrink: 0;
 }
 
 .nav-actions .btn {
-    padding: 12px 20px;
+    padding: 10px 14px;
+    font-size: 13px;
+    white-space: nowrap;
 }
 
-/* APK button slightly smaller so it does not eat the whole navbar */
 .nav-actions .btn-primary {
-    padding: 12px 20px;
-    min-width: 116px;
+    padding: 10px 15px;
+    min-width: auto;
 }
 
-/* Language switcher compact */
-.language-switcher {
+/* Compact language dropdown */
+.lang-dropdown {
+    position: relative;
     flex-shrink: 0;
-    padding: 4px;
 }
 
-.language-switcher a {
-    padding: 6px 10px;
+.lang-dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--brand-white);
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
 }
 
-/* Medium/intermediate desktop: keep primary nav + auth + APK unclipped across FR/EN/AR */
-@media (max-width: 1640px) {
+.lang-dropdown-toggle:hover {
+    border-color: rgba(212, 175, 55, 0.45);
+    color: var(--brand-gold);
+}
+
+.lang-dropdown-menu[hidden] {
+    display: none;
+}
+
+.lang-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 138px;
+    padding: 6px;
+    border-radius: 16px;
+    border: 1px solid rgba(212, 175, 55, 0.24);
+    background: rgba(8, 32, 24, 0.98);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    display: grid;
+    gap: 4px;
+    z-index: 60;
+}
+
+html[dir="rtl"] .lang-dropdown-menu,
+body[dir="rtl"] .lang-dropdown-menu {
+    right: auto;
+    left: 0;
+}
+
+.lang-dropdown-menu a {
+    padding: 8px 12px;
+    border-radius: 10px;
+    color: var(--brand-white);
+    font-size: 13.5px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.lang-dropdown-menu a:hover,
+.lang-dropdown-menu a.is-active {
+    background: rgba(212, 175, 55, 0.18);
+    color: var(--brand-gold);
+}
+
+/* Compact desktop (1241px - 1520px): keep ALL 9 horizontal links + Langue + Actions without clipping */
+@media (max-width: 1520px) {
     .nav-inner {
-        width: min(1600px, calc(100% - 28px));
-        gap: 12px;
+        width: calc(100% - 24px);
+        gap: 8px;
     }
 
-    .brand {
-        min-width: 0;
-        gap: 10px;
-    }
-
-    .nav-links {
-        gap: 12px;
-    }
-
-    .nav-links a[href*="feedback"],
-    .nav-links a[href*="quiz"],
-    .nav-links a[href*="sticker-studio"],
-    .nav-links a[href*="editeur"],
-    .nav-links a[href*="no-ena"] {
+    .brand-subtitle {
         display: none;
     }
 
-    .mobile-menu-button {
-        display: inline-flex;
-        padding: 10px 14px;
-        font-size: 13px;
+    .brand-mark {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        border-radius: 16px;
     }
 
-    .nav-actions .btn {
-        padding: 10px 12px;
-        font-size: 13px;
-        white-space: nowrap;
+    .brand-title {
+        font-size: 16px;
+        max-width: 128px;
     }
 
+    .nav-links {
+        gap: 9px;
+    }
+
+    .nav-links a {
+        font-size: 12.5px;
+    }
+
+    .lang-dropdown-toggle {
+        padding: 7px 10px;
+        font-size: 12.5px;
+    }
+
+    .nav-actions {
+        gap: 6px;
+    }
+
+    .nav-actions .btn,
     .nav-actions .btn-primary {
-        min-width: auto;
-        padding: 10px 14px;
+        padding: 8px 10px;
+        font-size: 12px;
     }
 }
 
-/* Smaller desktop & tablet/mobile: switch cleanly to mobile/drawer menu */
-@media (max-width: 1180px) {
+@media (max-width: 1360px) {
+    .brand-mark {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        border-radius: 12px;
+    }
+
+    .brand-title {
+        font-size: 14px;
+        max-width: 105px;
+    }
+
+    .nav-links {
+        gap: 7px;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+    }
+
+    .lang-dropdown-toggle {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+
+    .nav-actions .btn,
+    .nav-actions .btn-primary {
+        padding: 7px 9px;
+        font-size: 12px;
+    }
+}
+
+/* Tablet/small desktop & mobile (<= 1240px): switch cleanly to mobile menu */
+@media (max-width: 1240px) {
     .nav-links,
     .nav-actions {
         display: none;
@@ -1620,10 +1708,6 @@ html[dir="rtl"] .quiz-option-button {
 
     .mobile-menu-button {
         display: inline-flex;
-    }
-
-    .brand {
-        min-width: 0;
     }
 }
 

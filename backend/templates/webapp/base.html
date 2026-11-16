@@ -96,10 +96,23 @@
                         {% if current_lang == "ar" %}محرر بيريا{% elif current_lang == "en" %}Beriya Editor{% else %}Éditeur Beriya{% endif %}
                     </a>
 
-                    <div class="language-switcher">
-                        <a href="?lang=fr">FR</a>
-                        <a href="?lang=en">EN</a>
-                        <a href="?lang=ar">AR</a>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <button
+                            type="button"
+                            class="lang-dropdown-toggle"
+                            id="langDropdownBtn"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            aria-controls="langDropdownMenu"
+                        >
+                            <span>{{ current_lang|default:"fr"|upper }}</span>
+                            <span aria-hidden="true">▾</span>
+                        </button>
+                        <div class="lang-dropdown-menu" id="langDropdownMenu" role="menu" hidden>
+                            <a href="?lang=fr" role="menuitem" data-lang-code="fr" {% if current_lang == "fr" or not current_lang %}class="is-active"{% endif %}>Français</a>
+                            <a href="?lang=en" role="menuitem" data-lang-code="en" {% if current_lang == "en" %}class="is-active"{% endif %}>English</a>
+                            <a href="?lang=ar" role="menuitem" data-lang-code="ar" {% if current_lang == "ar" %}class="is-active"{% endif %}>العربية</a>
+                        </div>
                     </div>
                 </nav>
 
@@ -196,9 +209,9 @@
                 {% endif %}
 
                 <div class="language-switcher mobile-language-switcher">
-                    <a href="?lang=fr">FR</a>
-                    <a href="?lang=en">EN</a>
-                    <a href="?lang=ar">AR</a>
+                    <a href="?lang=fr" data-lang-code="fr">FR</a>
+                    <a href="?lang=en" data-lang-code="en">EN</a>
+                    <a href="?lang=ar" data-lang-code="ar">AR</a>
                 </div>
             </div>
         </div>
@@ -303,6 +316,41 @@
     </div>
 
     <script>
+        (function () {
+            const langDropdown = document.getElementById("langDropdown");
+            const langBtn = document.getElementById("langDropdownBtn");
+            const langMenu = document.getElementById("langDropdownMenu");
+
+            if (langDropdown && langBtn && langMenu) {
+                function setLangMenu(open) {
+                    langMenu.hidden = !open;
+                    langBtn.setAttribute("aria-expanded", open ? "true" : "false");
+                }
+                langBtn.addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    setLangMenu(langMenu.hidden);
+                });
+                document.addEventListener("click", function (e) {
+                    if (!langDropdown.contains(e.target)) setLangMenu(false);
+                });
+                document.addEventListener("keydown", function (e) {
+                    if (e.key === "Escape" && !langMenu.hidden) {
+                        setLangMenu(false);
+                        langBtn.focus();
+                    }
+                });
+            }
+
+            document.querySelectorAll("[data-lang-code]").forEach(function (link) {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const url = new URL(window.location.href);
+                    url.searchParams.set("lang", link.getAttribute("data-lang-code"));
+                    window.location.assign(url.toString());
+                });
+            });
+        })();
+
         const mobileMenuButton = document.getElementById("mobileMenuButton");
         const mobileMenu = document.getElementById("mobileMenu");
 
