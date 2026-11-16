@@ -250,18 +250,39 @@ if (PRIVATE_MEDIA_ROOT.resolve().is_relative_to((BASE_DIR / 'media').resolve())
         or PRIVATE_MEDIA_ROOT.resolve().is_relative_to(STATIC_ROOT.resolve())):
     raise ImproperlyConfigured('PRIVATE_MEDIA_ROOT doit rester hors des racines publiques.')
 if USE_R2:
-    _private_bucket = config('R2_PRIVATE_BUCKET_NAME', default='')
+    _private_bucket = config('R2_PRIVATE_BUCKET_NAME', default='').strip()
+    _private_access_key = config('R2_PRIVATE_ACCESS_KEY_ID', default='').strip()
+    _private_secret_key = config('R2_PRIVATE_SECRET_ACCESS_KEY', default='').strip()
     if (_private_bucket and _private_bucket == AWS_STORAGE_BUCKET_NAME) or (IS_DEPLOYED and not _private_bucket):
         raise ImproperlyConfigured('Un bucket privé distinct est requis pour les pièces jointes feedback.')
+    if (_private_bucket or IS_DEPLOYED) and (not _private_access_key or not _private_secret_key):
+        raise ImproperlyConfigured(
+            'Des identifiants S3 privés distincts (R2_PRIVATE_ACCESS_KEY_ID et R2_PRIVATE_SECRET_ACCESS_KEY) sont requis.'
+        )
+    if _private_bucket and (
+        _private_access_key == AWS_ACCESS_KEY_ID or _private_secret_key == AWS_SECRET_ACCESS_KEY
+    ):
+        raise ImproperlyConfigured(
+            'Les identifiants du stockage privé R2 doivent être distincts des identifiants publics.'
+        )
     STORAGES['private'] = {
         'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
-        'OPTIONS': {'bucket_name': _private_bucket, 'custom_domain': None,
-                    'querystring_auth': True, 'default_acl': None,
-                    'object_parameters': {'CacheControl':'private, no-store'},
-                    'location': 'private'},
+        'OPTIONS': {
+            'bucket_name': _private_bucket,
+            'access_key': _private_access_key,
+            'secret_key': _private_secret_key,
+            'endpoint_url': AWS_S3_ENDPOINT_URL,
+            'region_name': AWS_S3_REGION_NAME,
+            'signature_version': AWS_S3_SIGNATURE_VERSION,
+            'custom_domain': None,
+            'querystring_auth': True,
+            'default_acl': None,
+            'object_parameters': {'CacheControl': 'private, no-store'},
+            'location': 'private',
+        },
     } if _private_bucket else {
-        'BACKEND':'django.core.files.storage.FileSystemStorage',
-        'OPTIONS':{'location':PRIVATE_MEDIA_ROOT},
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        'OPTIONS': {'location': PRIVATE_MEDIA_ROOT},
     }
 else:
     STORAGES['private'] = {
