@@ -470,11 +470,11 @@ class LearningUnit(models.Model):
                 if stripped_word and ' ' not in stripped_word:
                     word_graphemes = _extract_erfe_graphemes(stripped_word)
                     keyboard_symbols = list(dict.fromkeys(base_keyboard_symbols + word_graphemes))
-                    if len(keyboard_symbols) < 4:
+                    if len(keyboard_symbols) < 5:
                         for g in unit_word_graphemes:
                             if g not in keyboard_symbols:
                                 keyboard_symbols.append(g)
-                            if len(keyboard_symbols) >= 10:
+                            if len(keyboard_symbols) >= 5:
                                 break
 
                     word_label = current_w.latin_transcription or current_w.beriya_text

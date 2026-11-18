@@ -185,7 +185,10 @@ class BkContent01BackendTests(TestCase):
         self.assertEqual(resp_pilot.status_code, 200)
 
     def test_lot3b_maison_personnes_all_10_words_and_non_empty_keyboard(self):
+        from learning.models import _extract_erfe_graphemes
+
         flow = self.unit_pub.generate_core_flow(only_published=True, lang="fr")
+        self.assertEqual(len(flow), 20)
         decoding_words = [s["word"] for s in flow if s["step_type"] == "word_decoding"]
         self.assertEqual(len(decoding_words), 10)
         self.assertIn("𖺬𖺯 𖺵𖺠̄", decoding_words)
@@ -193,9 +196,27 @@ class BkContent01BackendTests(TestCase):
         encoding_steps = [s for s in flow if s["step_type"] == "keyboard_encoding"]
         self.assertEqual(len(encoding_steps), 9)  # phrase avec espace exclue du clavier 1.0.2
         for step in encoding_steps:
-            self.assertTrue(len(step["keyboard_keys"]) >= 2)
+            keys = step["keyboard_keys"]
+            self.assertGreaterEqual(len(keys), 2)
+            self.assertLessEqual(len(keys), 5)
+            for grapheme in _extract_erfe_graphemes(step["target_word"]):
+                self.assertIn(grapheme, keys)
             self.assertIn("french_translation", step)
             self.assertIn("translation", step)
+
+        # Un mot comportant >5 graphèmes distincts conserve toutes ses touches indispensables
+        long_word = Word.objects.create(
+            beriya_text="𖺠𖺡𖺢𖺣̄𖺥𖺧",
+            latin_transcription="long",
+            french_translation="Long",
+            difficulty_order=99,
+            validation_status="published",
+        )
+        self.unit_pub.words.add(long_word)
+        flow_long = self.unit_pub.generate_core_flow(only_published=True, lang="fr")
+        long_step = [s for s in flow_long if s.get("target_word") == "𖺠𖺡𖺢𖺣̄𖺥𖺧"][0]
+        self.assertEqual(len(long_step["keyboard_keys"]), 6)
+        self.assertIn("𖺣̄", long_step["keyboard_keys"])
 
     def test_lot3c_web_unit_detail_audio_and_core_flow(self):
         resp = self.client.get("/parcours/maison-personnes/")
