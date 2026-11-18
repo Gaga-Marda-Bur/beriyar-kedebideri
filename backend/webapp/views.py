@@ -1,21 +1,22 @@
-from core.erfe_search import erfe_search_expression
-from core.transliteration import normalize_erfe
+from pathlib import Path
+
+from django.conf import settings
+from django.contrib import messages
+from django.db.models import Prefetch, Q
+from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
 from alphabet.models import Character
+from core.erfe_search import erfe_search_expression
+from core.permissions import PILOT_ALLOWED_UNIT_SLUGS, filter_by_access, is_pilot_user, is_staff_preview
+from core.transliteration import normalize_erfe
+from feedback.models import FeedbackReport
 from learning.models import LearningTheme, LearningUnit
 from no_ena.models import NoEnaPublication
 from no_ena.services import record_publication_view
 from offline_packs.models import LessonPack
-from vocabulary.models import Word
-from django.contrib import messages
-from feedback.models import FeedbackReport
 from quizzes.models import QuizQuestion
-from pathlib import Path
-from core.permissions import is_staff_preview
-
-from django.conf import settings
-from django.http import FileResponse, Http404
+from vocabulary.models import Word
 
 def get_web_lang(request):
     lang = request.GET.get("lang") or request.session.get("web_lang") or "fr"
@@ -185,12 +186,35 @@ def vocabulary_page(request):
 def learning_path_page(request):
     lang = get_web_lang(request)
     themes_qs = LearningTheme.objects.filter(is_active=True)
-    if not is_staff_preview(request):
-        themes_qs = themes_qs.filter(status=LearningTheme.PUBLISHED)
+    themes_qs = filter_by_access(
+        themes_qs,
+        request,
+        pilot_q=Q(units__slug__in=PILOT_ALLOWED_UNIT_SLUGS, units__status='validated', units__is_active=True),
+    )
+
+    units_qs = filter_by_access(
+        LearningUnit.objects.filter(is_active=True),
+        request,
+        pilot_q=Q(slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+    ).order_by('order_index', 'title_fr')
+
+    chars_qs = filter_by_access(
+        Character.objects.filter(is_active=True),
+        request,
+        status_field='validation_status',
+        pilot_q=Q(learning_units__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+    ).order_by('order_index', 'id')
+
+    words_qs = filter_by_access(
+        Word.objects.filter(is_active=True),
+        request,
+        status_field='validation_status',
+    ).order_by('difficulty_order', 'beriya_text')
+
     themes = themes_qs.prefetch_related(
-        'units',
-        'units__characters',
-        'units__words',
+        Prefetch('units', queryset=units_qs),
+        Prefetch('units__characters', queryset=chars_qs),
+        Prefetch('units__words', queryset=words_qs),
     ).order_by(
         'level',
         'order_index',
@@ -210,28 +234,41 @@ def learning_path_page(request):
 def unit_detail_page(request, slug):
     lang = get_web_lang(request)
     units_qs = LearningUnit.objects.select_related('theme')
+    units_qs = filter_by_access(
+        units_qs,
+        request,
+        pilot_q=Q(slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+    )
     if not is_staff_preview(request):
-        units_qs = units_qs.filter(status=LearningUnit.PUBLISHED)
+        theme_q = Q(theme__is_active=True, theme__status=LearningTheme.PUBLISHED)
+        if is_pilot_user(request):
+            theme_q |= Q(theme__is_active=True, slug__in=PILOT_ALLOWED_UNIT_SLUGS)
+        units_qs = units_qs.filter(theme_q)
+
     unit = get_object_or_404(
-        units_qs.select_related(
-            'theme',
-        ).prefetch_related(
-            'characters',
-            'characters__audio_links__audio_asset',
-            'words',
-            'words__category',
-            'words__audio_links__audio_asset',
-            'lessons',
-            'lessons__items',
-            'quiz_questions',
-            'quiz_questions__options',
-        ),
+        units_qs,
         slug=slug,
         is_active=True,
     )
 
-    lessons = unit.lessons.filter(
-        is_active=True,
+    char_pilot_q = Q(pk__in=unit.characters.values_list('pk', flat=True)) if unit.slug in PILOT_ALLOWED_UNIT_SLUGS else None
+    unit_characters = filter_by_access(
+        unit.characters.filter(is_active=True),
+        request,
+        status_field='validation_status',
+        pilot_q=char_pilot_q,
+    ).prefetch_related('audio_links__audio_asset').order_by('order_index', 'id')
+
+    unit_words = filter_by_access(
+        unit.words.filter(is_active=True),
+        request,
+        status_field='validation_status',
+    ).select_related('category').prefetch_related('audio_links__audio_asset').order_by('difficulty_order', 'beriya_text')
+
+    lessons = filter_by_access(
+        unit.lessons.filter(is_active=True),
+        request,
+        pilot_q=Q(unit__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
     ).prefetch_related(
         'items',
         'items__character',
@@ -242,8 +279,10 @@ def unit_detail_page(request, slug):
         'title_fr',
     )
 
-    quizzes = unit.quiz_questions.filter(
-        is_active=True,
+    quizzes = filter_by_access(
+        unit.quiz_questions.filter(is_active=True),
+        request,
+        pilot_q=Q(unit__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
     ).prefetch_related(
         'options',
         'audio_links__audio_asset',
@@ -252,13 +291,22 @@ def unit_detail_page(request, slug):
         'id',
     )
 
+    core_flow_steps = unit.generate_core_flow(request=request, lang=lang)
+    core_flow_actionable_count = sum(
+        1 for step in core_flow_steps if step.get('step_type') != 'celebration'
+    )
+
     return render(
         request,
         'webapp/unit_detail.html',
         {
             'unit': unit,
+            'unit_characters': unit_characters,
+            'unit_words': unit_words,
             'lessons': lessons,
             'quizzes': quizzes,
+            'core_flow_steps': core_flow_steps,
+            'core_flow_actionable_count': core_flow_actionable_count,
             "current_lang": lang,
             "is_rtl": lang == "ar",
         },
@@ -390,10 +438,28 @@ def quiz_page(request):
 
     unit_slug = request.GET.get("unit")
 
-    quizzes = QuizQuestion.objects.filter(
-        is_active=True,
-        status=QuizQuestion.PUBLISHED,
-    ).select_related(
+    quizzes = filter_by_access(
+        QuizQuestion.objects.filter(is_active=True),
+        request,
+        pilot_q=Q(unit__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
+    )
+    if not is_staff_preview(request):
+        unit_q = Q(unit__isnull=True) | Q(
+            unit__is_active=True,
+            unit__status=LearningUnit.PUBLISHED,
+            unit__theme__is_active=True,
+            unit__theme__status=LearningTheme.PUBLISHED,
+        )
+        if is_pilot_user(request):
+            unit_q |= Q(
+                unit__is_active=True,
+                unit__status=LearningUnit.VALIDATED,
+                unit__slug__in=PILOT_ALLOWED_UNIT_SLUGS,
+                unit__theme__is_active=True,
+            )
+        quizzes = quizzes.filter(unit_q).distinct()
+
+    quizzes = quizzes.select_related(
         "unit",
         "lesson",
         "character",

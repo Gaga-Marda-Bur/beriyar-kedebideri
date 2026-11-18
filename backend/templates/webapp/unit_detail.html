@@ -47,7 +47,7 @@
 
             <div class="unit-stats">
                 <span class="pill">
-                    {{ unit.characters.count }}
+                    {{ unit_characters|length }}
                     {% if current_lang == "ar" %}
                         حرف
                     {% elif current_lang == "en" %}
@@ -58,7 +58,7 @@
                 </span>
 
                 <span class="pill">
-                    {{ unit.words.count }}
+                    {{ unit_words|length }}
                     {% if current_lang == "ar" %}
                         كلمة
                     {% elif current_lang == "en" %}
@@ -88,10 +88,33 @@
                         Score minimum {{ unit.min_score_to_pass }}%
                     {% endif %}
                 </span>
+
+                {% if core_flow_actionable_count > 0 %}
+                    <span class="pill">
+                        {% if current_lang == "ar" %}
+                            {{ core_flow_steps|length }} خطوة ({{ core_flow_actionable_count }} قبل الخلاصة)
+                        {% elif current_lang == "en" %}
+                            {{ core_flow_steps|length }} steps ({{ core_flow_actionable_count }} before summary)
+                        {% else %}
+                            {{ core_flow_steps|length }} étapes ({{ core_flow_actionable_count }} avant le bilan)
+                        {% endif %}
+                    </span>
+                {% endif %}
             </div>
 
-            <div style="margin-top: 24px;">
-                <a href="{% url 'web-quiz' %}?unit={{ unit.slug }}" class="btn btn-primary">
+            <div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px;">
+                {% if core_flow_actionable_count > 0 %}
+                    <a href="#core-flow-section" class="btn btn-primary">
+                        {% if current_lang == "ar" %}
+                            بدء المسار التفاعلي
+                        {% elif current_lang == "en" %}
+                            Start interactive path
+                        {% else %}
+                            Démarrer le parcours interactif
+                        {% endif %}
+                    </a>
+                {% endif %}
+                <a href="{% url 'web-quiz' %}?unit={{ unit.slug }}" class="btn {% if core_flow_actionable_count > 0 %}btn-secondary{% else %}btn-primary{% endif %}">
                     {% if current_lang == "ar" %}
                         بدء التدرّب على هذه الوحدة
                     {% elif current_lang == "en" %}
@@ -107,6 +130,122 @@
     <section class="section" style="padding-top: 20px;">
         <div class="container unit-layout">
             <div>
+                {% if core_flow_actionable_count > 0 %}
+                <style>
+                    /* Masquer le clavier flottant global sur la page d'unité qui possède déjà son clavier Erfe intégré */
+                    .beriya-keyboard,
+                    .beriya-keyboard-toggle {
+                        display: none !important;
+                    }
+                    .bk-flow-progress-track {
+                        width: 100%;
+                        height: 8px;
+                        background: rgba(255, 255, 255, 0.14);
+                        border-radius: 999px;
+                        overflow: hidden;
+                        margin-bottom: 14px;
+                    }
+                    .bk-flow-progress-fill {
+                        height: 100%;
+                        width: 0%;
+                        background: var(--brand-gold, #ffc400);
+                        border-radius: 999px;
+                        transition: width 0.25s ease;
+                    }
+                    .bk-flow-audio-btn {
+                        width: auto !important;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-top: 12px;
+                        min-height: 44px;
+                        padding: 8px 20px;
+                    }
+                    .bk-flow-erfe-ltr {
+                        direction: ltr;
+                        unicode-bidi: isolate;
+                    }
+                    .bk-flow-choice {
+                        font-size: 36px;
+                        min-width: 88px;
+                        min-height: 72px;
+                        border: 2px solid rgba(255, 255, 255, 0.22);
+                        transition: border-color 0.15s ease, background-color 0.15s ease;
+                    }
+                    .bk-flow-choice.is-correct {
+                        border-color: #4ade80 !important;
+                        background: rgba(74, 222, 128, 0.18) !important;
+                    }
+                    .bk-flow-choice.is-wrong {
+                        border-color: #f87171 !important;
+                        background: rgba(248, 113, 113, 0.18) !important;
+                    }
+                    .bk-flow-input {
+                        font-size: 34px;
+                        min-height: 54px;
+                        margin: 14px auto;
+                        padding: 8px 16px;
+                        border: 2px solid rgba(255, 255, 255, 0.28);
+                        border-radius: 10px;
+                        max-width: 340px;
+                        letter-spacing: 3px;
+                    }
+                    .bk-flow-input.is-correct {
+                        border-color: #4ade80;
+                        background: rgba(74, 222, 128, 0.12);
+                    }
+                    .bk-flow-input.is-wrong {
+                        border-color: #f87171;
+                        background: rgba(248, 113, 113, 0.12);
+                    }
+                    #bk-core-flow-player button:disabled {
+                        opacity: 0.4;
+                        cursor: not-allowed;
+                        pointer-events: none;
+                        filter: grayscale(0.4);
+                    }
+                    .bk-flow-summary-grid {
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        gap: 10px;
+                        margin-top: 14px;
+                    }
+                </style>
+                <div id="core-flow-section" class="theme-block glass" style="margin-bottom: 18px;">
+                    <div class="section-kicker">
+                        {% if current_lang == "ar" %}
+                            المسار التفاعلي للوحدة
+                        {% elif current_lang == "en" %}
+                            Interactive learning path
+                        {% else %}
+                            Parcours pédagogique interactif
+                        {% endif %}
+                    </div>
+
+                    <div id="bk-core-flow-player" style="margin-top: 16px;" aria-live="polite">
+                        <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap;">
+                            <span id="bk-flow-counter" class="pill">1 / {{ core_flow_steps|length }}</span>
+                            <span id="bk-flow-type" class="word-meta"></span>
+                        </div>
+                        <div class="bk-flow-progress-track" role="progressbar" aria-valuemin="1" aria-valuemax="{{ core_flow_steps|length }}" aria-valuenow="1" id="bk-flow-progressbar">
+                            <div class="bk-flow-progress-fill" id="bk-flow-progress-fill"></div>
+                        </div>
+                        <div id="bk-flow-stage" class="lesson-card glass" style="padding: 20px; text-align: center;"></div>
+                        <div id="bk-flow-feedback" role="status" aria-live="polite" style="margin-top: 12px; min-height: 24px; text-align: center; font-weight: 700;"></div>
+                        <div style="display: flex; justify-content: space-between; gap: 12px; margin-top: 16px;">
+                            <button type="button" id="bk-flow-prev" class="btn btn-secondary">
+                                {% if current_lang == "ar" %}السابق{% elif current_lang == "en" %}Previous{% else %}Précédent{% endif %}
+                            </button>
+                            <button type="button" id="bk-flow-next" class="btn btn-primary">
+                                {% if current_lang == "ar" %}التالي{% elif current_lang == "en" %}Next{% else %}Suivant{% endif %}
+                            </button>
+                        </div>
+                    </div>
+                    {{ core_flow_steps|json_script:"bk-core-flow-data" }}
+                </div>
+                {% endif %}
+
                 <div class="theme-block glass">
                     <div class="section-kicker">
                         {% if current_lang == "ar" %}
@@ -119,7 +258,7 @@
                     </div>
 
                     <div class="alphabet-grid" style="margin-top: 18px;">
-                        {% for character in unit.characters.all %}
+                        {% for character in unit_characters %}
                             <div class="character-card glass">
                                 <div class="character-symbol beriya-font">
                                     {{ character.symbol }}
@@ -264,15 +403,27 @@
                                 {% endfor %}
                             </article>
                         {% empty %}
-                            <div class="empty-state glass">
-                                {% if current_lang == "ar" %}
-                                    لا توجد دروس لهذه الوحدة.
-                                {% elif current_lang == "en" %}
-                                    No lesson for this unit.
-                                {% else %}
-                                    Aucune leçon pour cette unité.
-                                {% endif %}
-                            </div>
+                            {% if core_flow_actionable_count == 0 %}
+                                <div class="empty-state glass">
+                                    {% if current_lang == "ar" %}
+                                        لا توجد دروس لهذه الوحدة.
+                                    {% elif current_lang == "en" %}
+                                        No lesson for this unit.
+                                    {% else %}
+                                        Aucune leçon pour cette unité.
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <p class="word-meta">
+                                    {% if current_lang == "ar" %}
+                                        تتوفّر الأنشطة التفاعلية لهذه الوحدة في المسار التفاعلي أعلاه.
+                                    {% elif current_lang == "en" %}
+                                        Activities for this unit are available in the interactive learning path above.
+                                    {% else %}
+                                        Les activités de cette unité sont disponibles dans le parcours pédagogique interactif ci-dessus.
+                                    {% endif %}
+                                </p>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </div>
@@ -290,7 +441,7 @@
                         {% endif %}
                     </h2>
 
-                    {% for word in unit.words.all %}
+                    {% for word in unit_words %}
                         <div class="lesson-item">
                             <div class="word-text beriya-font" style="font-size: 28px;">
                                 {{ word.beriya_text }}
@@ -311,6 +462,20 @@
                                     {{ word.latin_transcription }}
                                 </div>
                             {% endif %}
+
+                            {% with audio_url=word|published_audio:"normal" %}
+                                {% if audio_url %}
+                                    <button
+                                        type="button"
+                                        class="audio-button"
+                                        data-audio="{{ audio_url }}"
+                                        aria-label="{% if current_lang == 'ar' %}استمع إلى الكلمة {{ word.arabic_translation|default:word.french_translation }}{% elif current_lang == 'en' %}Listen to word {{ word.english_translation|default:word.french_translation }}{% else %}Écouter le mot {{ word.french_translation }}{% endif %}"
+                                        style="margin-top: 8px; min-height: 40px; padding: 6px 12px;"
+                                    >
+                                        {% if current_lang == "ar" %}استمع{% elif current_lang == "en" %}Listen{% else %}Écouter{% endif %}
+                                    </button>
+                                {% endif %}
+                            {% endwith %}
                         </div>
                     {% empty %}
                         <p class="word-meta">
@@ -381,5 +546,377 @@
         </div>
     </section>
 </main>
+
+{% if core_flow_actionable_count > 0 %}
+<script>
+(() => {
+    const dataEl = document.getElementById('bk-core-flow-data');
+    const stageEl = document.getElementById('bk-flow-stage');
+    const counterEl = document.getElementById('bk-flow-counter');
+    const typeEl = document.getElementById('bk-flow-type');
+    const progressFillEl = document.getElementById('bk-flow-progress-fill');
+    const progressBarEl = document.getElementById('bk-flow-progressbar');
+    const feedbackEl = document.getElementById('bk-flow-feedback');
+    const prevBtn = document.getElementById('bk-flow-prev');
+    const nextBtn = document.getElementById('bk-flow-next');
+    if (!dataEl || !stageEl) return;
+
+    const steps = JSON.parse(dataEl.textContent || '[]');
+    if (!Array.isArray(steps) || steps.length === 0) return;
+
+    const minScoreToPass = {{ unit.min_score_to_pass|default:70 }};
+    const EVALUABLE_TYPES = new Set(['discrimination', 'keyboard_encoding']);
+    const lang = '{{ current_lang|escapejs }}' || 'fr';
+    const i18n = {
+        fr: {
+            listen: 'Écouter',
+            noAudio: 'Audio indisponible pour cette étape.',
+            validate: 'Valider',
+            clear: 'Effacer',
+            backspace: '⌫',
+            ok: 'Bravo !',
+            koDisc: 'Incorrect — écoute et essaie une autre lettre.',
+            koKey: 'Incorrect — corrige ta saisie et réessaie.',
+            solveHint: 'Réponds correctement à cet exercice pour continuer.',
+            restart: 'Recommencer',
+            scoreLabel: 'Score',
+            thresholdLabel: 'Seuil',
+            firstTryLabel: '1er essai',
+            errorsLabel: 'Erreurs',
+            failTitle: 'Continue à t’entraîner !',
+            failMsg: (s, t) => `Score de ${s}% (seuil requis : ${t}%). Recommence la séance pour valider l’unité.`,
+            neutralTitle: 'Parcours consulté',
+            neutralMsg: 'Tu as parcouru toutes les étapes de cette unité.',
+            types: { discovery: 'Découverte', discrimination: 'Discrimination', fusion: 'Fusion', word_decoding: 'Mot', keyboard_encoding: 'Clavier', celebration: 'Bilan' }
+        },
+        en: {
+            listen: 'Listen',
+            noAudio: 'Audio unavailable for this step.',
+            validate: 'Check',
+            clear: 'Clear',
+            backspace: '⌫',
+            ok: 'Well done!',
+            koDisc: 'Incorrect — listen and try another letter.',
+            koKey: 'Incorrect — edit your input and try again.',
+            solveHint: 'Answer this exercise correctly to continue.',
+            restart: 'Restart',
+            scoreLabel: 'Score',
+            thresholdLabel: 'Pass threshold',
+            firstTryLabel: 'First try',
+            errorsLabel: 'Errors',
+            failTitle: 'Keep practicing!',
+            failMsg: (s, t) => `Score ${s}% (required: ${t}%). Restart the session to pass this unit.`,
+            neutralTitle: 'Path reviewed',
+            neutralMsg: 'You reviewed all steps in this unit.',
+            types: { discovery: 'Discovery', discrimination: 'Discrimination', fusion: 'Blending', word_decoding: 'Word', keyboard_encoding: 'Keyboard', celebration: 'Summary' }
+        },
+        ar: {
+            listen: 'استمع',
+            noAudio: 'الصوت غير متاح لهذه الخطوة.',
+            validate: 'تحقق',
+            clear: 'مسح',
+            backspace: '⌫',
+            ok: 'أحسنت!',
+            koDisc: 'غير صحيح — استمع وجرّب حرفًا آخر.',
+            koKey: 'غير صحيح — صحّح الإدخال وحاول مجددًا.',
+            solveHint: 'أجب بشكل صحيح للمتابعة.',
+            restart: 'إعادة المحاولة',
+            scoreLabel: 'النتيجة',
+            thresholdLabel: 'الحد الأدنى',
+            firstTryLabel: 'من المحاولة الأولى',
+            errorsLabel: 'الأخطاء',
+            failTitle: 'واصل التدرّب!',
+            failMsg: (s, t) => `النتيجة ${s}% (المطلوب: ${t}%). أعد الجلسة لاجتياز الوحدة.`,
+            neutralTitle: 'تمت مراجعة المسار',
+            neutralMsg: 'لقد اطّلعت على جميع خطوات هذه الوحدة.',
+            types: { discovery: 'اكتشاف', discrimination: 'تمييز', fusion: 'دمج', word_decoding: 'كلمة', keyboard_encoding: 'لوحة المفاتيح', celebration: 'الخلاصة' }
+        }
+    }[lang] || {};
+
+    const audioEl = document.createElement('audio');
+    audioEl.preload = 'none';
+    let idx = 0;
+    let stepStates = [];
+
+    function resetStates() {
+        stepStates = steps.map(() => ({
+            resolved: false,
+            wrongAttempts: 0,
+            selectedSymbol: null,
+            lastWrong: false,
+            typed: ''
+        }));
+    }
+    resetStates();
+
+    function el(tag, attrs, text) {
+        const node = document.createElement(tag);
+        if (attrs) Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
+        if (text !== undefined && text !== null) node.textContent = text;
+        return node;
+    }
+
+    function splitGraphemes(text) {
+        if (!text) return [];
+        if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+            return Array.from(new Intl.Segmenter('und', { granularity: 'grapheme' }).segment(text), s => s.segment);
+        }
+        const out = [];
+        for (const ch of Array.from(text)) {
+            if (/[\u0300-\u036f]/.test(ch) && out.length > 0) {
+                out[out.length - 1] += ch;
+            } else {
+                out.push(ch);
+            }
+        }
+        return out;
+    }
+
+    function countGraphemes(text) {
+        return Math.max(1, splitGraphemes(text).length);
+    }
+
+    function buildPlaceholder(targetWord) {
+        const len = countGraphemes((targetWord || '').trim());
+        return Array.from({ length: Math.min(len, 12) }, () => '_').join(' ');
+    }
+
+    function addAudioBtn(url) {
+        if (!url) {
+            stageEl.appendChild(el('p', { class: 'word-meta', style: 'margin-top: 10px; opacity: 0.75;' }, i18n.noAudio));
+            return;
+        }
+        const btn = el('button', { type: 'button', class: 'audio-button bk-flow-audio-btn' }, i18n.listen);
+        btn.addEventListener('click', () => {
+            audioEl.pause();
+            audioEl.src = url;
+            audioEl.play().catch(() => {});
+        });
+        stageEl.appendChild(btn);
+    }
+
+    function computeScore() {
+        const evalIndices = [];
+        steps.forEach((st, i) => {
+            if (EVALUABLE_TYPES.has(st.step_type)) evalIndices.push(i);
+        });
+        if (evalIndices.length === 0) {
+            return { evaluableCount: 0, scorePercent: null, firstTryCount: 0, totalErrors: 0, passed: true };
+        }
+        let earned = 0;
+        let firstTryCount = 0;
+        let totalErrors = 0;
+        evalIndices.forEach(i => {
+            const st = stepStates[i];
+            totalErrors += st.wrongAttempts;
+            if (st.resolved && st.wrongAttempts === 0) {
+                earned += 1.0;
+                firstTryCount += 1;
+            } else if (st.resolved && st.wrongAttempts === 1) {
+                earned += 0.5;
+            }
+        });
+        const scorePercent = Math.round((earned / evalIndices.length) * 100);
+        return {
+            evaluableCount: evalIndices.length,
+            scorePercent,
+            firstTryCount,
+            totalErrors,
+            passed: scorePercent >= minScoreToPass
+        };
+    }
+
+    function updateNav(step, state) {
+        const isEvaluable = EVALUABLE_TYPES.has(step.step_type);
+        prevBtn.disabled = idx === 0;
+        nextBtn.disabled = idx >= steps.length - 1 || (isEvaluable && !state.resolved);
+        const pct = Math.round(((idx + 1) / steps.length) * 100);
+        if (progressFillEl) progressFillEl.style.width = `${pct}%`;
+        if (progressBarEl) progressBarEl.setAttribute('aria-valuenow', String(idx + 1));
+    }
+
+    function render() {
+        const s = steps[idx];
+        const state = stepStates[idx];
+        feedbackEl.textContent = '';
+        feedbackEl.style.color = '';
+        stageEl.innerHTML = '';
+        counterEl.textContent = `${idx + 1} / ${steps.length}`;
+        typeEl.textContent = (i18n.types && i18n.types[s.step_type]) || s.step_type || '';
+        updateNav(s, state);
+
+        if (s.step_type === 'discovery') {
+            stageEl.appendChild(el('div', { class: 'character-symbol beriya-font bk-flow-erfe-ltr', style: 'font-size: 56px;' }, s.symbol || ''));
+            if (s.latin_transcription) stageEl.appendChild(el('div', { class: 'character-transcription', style: 'margin-top: 6px;' }, s.latin_transcription));
+            stageEl.appendChild(el('p', { class: 'word-meta', style: 'margin-top: 10px;' }, s.label || ''));
+            addAudioBtn(s.audio_url);
+        } else if (s.step_type === 'discrimination') {
+            stageEl.appendChild(el('p', { style: 'font-weight: 700; margin-bottom: 12px;' }, s.instruction || ''));
+            addAudioBtn(s.audio_url);
+            const row = el('div', { class: 'bk-flow-erfe-ltr', style: 'display: flex; justify-content: center; gap: 16px; margin-top: 16px; flex-wrap: wrap;' });
+            const choices = (idx % 2 === 0) ? [s.target_symbol, s.other_symbol] : [s.other_symbol, s.target_symbol];
+            choices.filter(Boolean).forEach(sym => {
+                let cls = 'btn btn-secondary beriya-font bk-flow-choice';
+                if (state.resolved && sym === s.target_symbol) cls += ' is-correct';
+                else if (state.lastWrong && state.selectedSymbol === sym) cls += ' is-wrong';
+                const opt = el('button', { type: 'button', class: cls, 'aria-pressed': String(state.selectedSymbol === sym) }, sym);
+                opt.addEventListener('click', () => {
+                    if (state.resolved) return;
+                    state.selectedSymbol = sym;
+                    if (sym === s.target_symbol) {
+                        state.resolved = true;
+                        state.lastWrong = false;
+                        render();
+                        feedbackEl.textContent = i18n.ok;
+                        feedbackEl.style.color = '#4ade80';
+                    } else {
+                        state.wrongAttempts += 1;
+                        state.lastWrong = true;
+                        render();
+                        feedbackEl.textContent = i18n.koDisc;
+                        feedbackEl.style.color = '#f87171';
+                    }
+                });
+                row.appendChild(opt);
+            });
+            stageEl.appendChild(row);
+            if (state.resolved) {
+                feedbackEl.textContent = i18n.ok;
+                feedbackEl.style.color = '#4ade80';
+            } else {
+                feedbackEl.textContent = i18n.solveHint;
+                feedbackEl.style.color = 'rgba(255,255,255,0.72)';
+            }
+        } else if (s.step_type === 'fusion') {
+            const comp = (s.components || []).join(' + ');
+            stageEl.appendChild(el('div', { class: 'beriya-font bk-flow-erfe-ltr', style: 'font-size: 36px;' }, `${comp} → ${s.result_syllable || ''}`));
+            stageEl.appendChild(el('p', { class: 'word-meta', style: 'margin-top: 10px;' }, s.instruction || ''));
+            addAudioBtn(s.audio_url);
+        } else if (s.step_type === 'word_decoding') {
+            stageEl.appendChild(el('div', { class: 'word-text beriya-font bk-flow-erfe-ltr', style: 'font-size: 48px;' }, s.word || ''));
+            const tr = s.translation || s.french_translation || '';
+            if (tr) stageEl.appendChild(el('div', { style: 'font-size: 20px; font-weight: 700; margin-top: 8px;' }, tr));
+            if (s.latin_transcription) stageEl.appendChild(el('div', { class: 'word-meta' }, s.latin_transcription));
+            if (s.oral_prompt) stageEl.appendChild(el('p', { class: 'word-meta', style: 'margin-top: 8px;' }, s.oral_prompt));
+            addAudioBtn(s.audio_url);
+        } else if (s.step_type === 'keyboard_encoding') {
+            stageEl.appendChild(el('p', { style: 'font-weight: 700;' }, s.instruction || ''));
+            const tr = s.translation || s.french_translation || '';
+            if (tr) stageEl.appendChild(el('div', { class: 'word-meta', style: 'margin-top: 4px;' }, tr));
+            addAudioBtn(s.audio_url);
+            const placeholder = buildPlaceholder(s.target_word);
+            let inputCls = 'beriya-font bk-flow-input bk-flow-erfe-ltr';
+            if (state.resolved) inputCls += ' is-correct';
+            else if (state.lastWrong) inputCls += ' is-wrong';
+            const display = el('div', { class: inputCls }, state.typed || placeholder);
+            stageEl.appendChild(display);
+            const keysWrap = el('div', { class: 'bk-flow-erfe-ltr', style: 'display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 10px;' });
+            (s.keyboard_keys || []).forEach(k => {
+                const kBtn = el('button', { type: 'button', class: 'btn btn-secondary beriya-font', style: 'font-size: 24px; min-width: 48px; min-height: 48px;' }, k);
+                if (state.resolved) kBtn.disabled = true;
+                kBtn.addEventListener('click', () => {
+                    if (state.resolved) return;
+                    state.lastWrong = false;
+                    state.typed += k;
+                    display.className = 'beriya-font bk-flow-input bk-flow-erfe-ltr';
+                    display.textContent = state.typed || placeholder;
+                });
+                keysWrap.appendChild(kBtn);
+            });
+            stageEl.appendChild(keysWrap);
+            const actions = el('div', { style: 'display: flex; justify-content: center; gap: 10px; margin-top: 12px; flex-wrap: wrap;' });
+            const bsBtn = el('button', { type: 'button', class: 'btn btn-secondary' }, i18n.backspace);
+            if (state.resolved) bsBtn.disabled = true;
+            bsBtn.addEventListener('click', () => {
+                if (state.resolved) return;
+                const graphemes = splitGraphemes(state.typed);
+                graphemes.pop();
+                state.typed = graphemes.join('');
+                state.lastWrong = false;
+                display.className = 'beriya-font bk-flow-input bk-flow-erfe-ltr';
+                display.textContent = state.typed || placeholder;
+            });
+            const clrBtn = el('button', { type: 'button', class: 'btn btn-secondary' }, i18n.clear);
+            if (state.resolved) clrBtn.disabled = true;
+            clrBtn.addEventListener('click', () => {
+                if (state.resolved) return;
+                state.typed = '';
+                state.lastWrong = false;
+                display.className = 'beriya-font bk-flow-input bk-flow-erfe-ltr';
+                display.textContent = placeholder;
+                feedbackEl.textContent = i18n.solveHint;
+                feedbackEl.style.color = 'rgba(255,255,255,0.72)';
+            });
+            const valBtn = el('button', { type: 'button', class: 'btn btn-primary' }, i18n.validate);
+            if (state.resolved) valBtn.disabled = true;
+            valBtn.addEventListener('click', () => {
+                if (state.resolved) return;
+                const ok = state.typed.normalize('NFC').trim() === (s.target_word || '').normalize('NFC').trim();
+                if (ok) {
+                    state.resolved = true;
+                    state.lastWrong = false;
+                    render();
+                    feedbackEl.textContent = i18n.ok;
+                    feedbackEl.style.color = '#4ade80';
+                } else {
+                    state.wrongAttempts += 1;
+                    state.lastWrong = true;
+                    render();
+                    feedbackEl.textContent = i18n.koKey;
+                    feedbackEl.style.color = '#f87171';
+                }
+            });
+            actions.appendChild(bsBtn);
+            actions.appendChild(clrBtn);
+            actions.appendChild(valBtn);
+            stageEl.appendChild(actions);
+            if (state.resolved) {
+                feedbackEl.textContent = i18n.ok;
+                feedbackEl.style.color = '#4ade80';
+            } else {
+                feedbackEl.textContent = i18n.solveHint;
+                feedbackEl.style.color = 'rgba(255,255,255,0.72)';
+            }
+        } else if (s.step_type === 'celebration') {
+            const stats = computeScore();
+            if (stats.evaluableCount === 0) {
+                stageEl.appendChild(el('h3', {}, i18n.neutralTitle));
+                stageEl.appendChild(el('p', { class: 'word-meta', style: 'margin-top: 8px;' }, i18n.neutralMsg));
+            } else if (stats.passed) {
+                stageEl.appendChild(el('h3', { style: 'color: #4ade80;' }, s.title || ''));
+                stageEl.appendChild(el('p', { class: 'word-meta', style: 'margin-top: 8px;' }, s.message || ''));
+            } else {
+                stageEl.appendChild(el('h3', { style: 'color: #fbbf24;' }, i18n.failTitle));
+                stageEl.appendChild(el('p', { class: 'word-meta', style: 'margin-top: 8px;' }, i18n.failMsg(stats.scorePercent, minScoreToPass)));
+            }
+            if (stats.evaluableCount > 0) {
+                const grid = el('div', { class: 'bk-flow-summary-grid' });
+                grid.appendChild(el('span', { class: 'pill' }, `${i18n.scoreLabel} : ${stats.scorePercent}%`));
+                grid.appendChild(el('span', { class: 'pill' }, `${i18n.thresholdLabel} : ${minScoreToPass}%`));
+                grid.appendChild(el('span', { class: 'pill' }, `${i18n.firstTryLabel} : ${stats.firstTryCount}/${stats.evaluableCount}`));
+                grid.appendChild(el('span', { class: 'pill' }, `${i18n.errorsLabel} : ${stats.totalErrors}`));
+                stageEl.appendChild(grid);
+            }
+            const restartBtn = el('button', { type: 'button', class: 'btn btn-primary', style: 'margin-top: 16px;' }, i18n.restart);
+            restartBtn.addEventListener('click', () => {
+                idx = 0;
+                resetStates();
+                render();
+            });
+            stageEl.appendChild(restartBtn);
+        }
+    }
+
+    prevBtn.addEventListener('click', () => { if (idx > 0) { idx--; render(); } });
+    nextBtn.addEventListener('click', () => {
+        const s = steps[idx];
+        const state = stepStates[idx];
+        if (EVALUABLE_TYPES.has(s.step_type) && !state.resolved) return;
+        if (idx < steps.length - 1) { idx++; render(); }
+    });
+    render();
+})();
+</script>
+{% endif %}
 
 {% endblock %}

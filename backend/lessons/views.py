@@ -1,9 +1,29 @@
 from django.db.models import Q
 from rest_framework import generics
 
-from core.permissions import PILOT_ALLOWED_UNIT_SLUGS, filter_by_access
+from core.permissions import PILOT_ALLOWED_UNIT_SLUGS, filter_by_access, is_pilot_user, is_staff_preview
 from .models import Lesson, LessonItem
 from .serializers import LessonItemSerializer, LessonSerializer
+
+
+def _filter_lesson_unit_access(queryset, request, prefix='unit'):
+    """Ensure lessons belong to active, accessible units for non-staff callers."""
+    if is_staff_preview(request):
+        return queryset
+    unit_q = Q(**{
+        f'{prefix}__is_active': True,
+        f'{prefix}__status': 'published',
+        f'{prefix}__theme__is_active': True,
+        f'{prefix}__theme__status': 'published',
+    })
+    if is_pilot_user(request):
+        unit_q |= Q(**{
+            f'{prefix}__is_active': True,
+            f'{prefix}__status': 'validated',
+            f'{prefix}__slug__in': PILOT_ALLOWED_UNIT_SLUGS,
+            f'{prefix}__theme__is_active': True,
+        })
+    return queryset.filter(unit_q).distinct()
 
 
 class LessonListAPIView(generics.ListAPIView):
@@ -36,6 +56,7 @@ class LessonListAPIView(generics.ListAPIView):
             status_param=status_param,
             pilot_q=Q(unit__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
         )
+        queryset = _filter_lesson_unit_access(queryset, self.request, prefix='unit')
 
         if level:
             queryset = queryset.filter(level=level)
@@ -71,11 +92,12 @@ class LessonDetailAPIView(generics.RetrieveAPIView):
             'items__word__audio_links__audio_asset',
             'items__audio_links__audio_asset',
         )
-        return filter_by_access(
+        queryset = filter_by_access(
             queryset,
             self.request,
             pilot_q=Q(unit__slug__in=PILOT_ALLOWED_UNIT_SLUGS),
         )
+        return _filter_lesson_unit_access(queryset, self.request, prefix='unit')
 
 
 class LessonItemListAPIView(generics.ListAPIView):

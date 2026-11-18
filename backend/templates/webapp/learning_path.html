@@ -88,11 +88,11 @@
 
                                     <div class="unit-stats">
                                         <span class="pill">
-                                            {{ unit.characters.count }} {% ui_text "characters" current_lang %}
+                                            {{ unit.characters.all|length }} {% ui_text "characters" current_lang %}
                                         </span>
 
                                         <span class="pill">
-                                            {{ unit.words.count }}
+                                            {{ unit.words.all|length }}
                                             {% if current_lang == "ar" %}
                                                 كلمة
                                             {% elif current_lang == "en" %}
