@@ -118,16 +118,16 @@
         </div>
 
         <div style="flex: 1 1 260px; min-width: 0;">
-          <h2 style="margin: 0;">Beřiyar Kedebideři ({{ apk_version }})</h2>
+          <h2 style="margin: 0;">Beřiyar Kedebideři (<bdi dir="ltr">{{ apk_version }}</bdi>)</h2>
           <div class="bk-mobile-meta">
-            <span><strong>Package :</strong> <code>{{ apk_package_id }}</code></span>
+            <span><strong>Package :</strong> <code dir="ltr">{{ apk_package_id }}</code></span>
             <span>
               {% if current_lang == "ar" %}
-                <strong>الحجم:</strong> {{ apk_size_bytes }} بايت (≈ 67.1 ميغابايت)
+                <strong>الحجم:</strong> <bdi dir="ltr">{{ apk_size_bytes }}</bdi> بايت (≈ <bdi dir="ltr">67.1</bdi> ميغابايت)
               {% elif current_lang == "en" %}
-                <strong>Size:</strong> {{ apk_size_bytes }} bytes (≈ 67.1 MiB)
+                <strong>Size:</strong> <bdi dir="ltr">{{ apk_size_bytes }}</bdi> bytes (≈ 67.1 MiB)
               {% else %}
-                <strong>Taille :</strong> {{ apk_size_bytes }} octets (≈ 67,1 Mio)
+                <strong>Taille :</strong> <bdi dir="ltr">{{ apk_size_bytes }}</bdi> octets (≈ 67,1 Mio)
               {% endif %}
             </span>
           </div>
@@ -157,8 +157,8 @@
 
       <div class="bk-mobile-warning" role="note">
         {% if current_lang == "ar" %}
-          <strong>تنبيه مهم لمستخدمي الإصدار 1.0.2+3:</strong>
-          لا تقم بإزالة تثبيت التطبيق الحالي. قم بتثبيت الإصدار {{ apk_version }} فوق الإصدار السابق للحفاظ على تقدمك المحلي.
+          <strong>تنبيه مهم لمستخدمي الإصدار <bdi dir="ltr">1.0.2+3</bdi>:</strong>
+          لا تقم بإزالة تثبيت التطبيق الحالي. قم بتثبيت الإصدار <bdi dir="ltr">{{ apk_version }}</bdi> فوق الإصدار السابق للحفاظ على تقدمك المحلي.
         {% elif current_lang == "en" %}
           <strong>Important for 1.0.2+3 users:</strong>
           Do not uninstall your existing app. Install {{ apk_version }} directly over it to keep your local learning progress.
@@ -198,9 +198,9 @@
 
       <article class="card glass bk-mobile-card">
         {% if current_lang == "ar" %}
-          <h2>تعليمات التحديث من 1.0.2+3</h2>
+          <h2>تعليمات التحديث من <bdi dir="ltr">1.0.2+3</bdi></h2>
           <ol>
-            <li>احتفظ بتطبيق <code>1.0.2+3</code> مثبتاً على هاتفك دون حذفه.</li>
+            <li>احتفظ بتطبيق <code dir="ltr">1.0.2+3</code> مثبتاً على هاتفك دون حذفه.</li>
             <li>بعد تفعيل التحميل الرسمي، افتح ملف <code>APK</code> على جهازك واختر <strong>تحديث</strong>.</li>
             <li>افتح التطبيق وتحقق من بقاء نسبة التقدم المسجلة كما هي.</li>
           </ol>
@@ -225,15 +225,15 @@
         {% if current_lang == "ar" %}
           <h2>الأمان والتحقق من سلامة الملف</h2>
           <p>تحقق من تطابق بصمة <strong>SHA-256</strong> للملف مع البصمة الرسمية التالية قبل التثبيت:</p>
-          <code class="bk-hash-code">{{ apk_sha256 }}</code>
+          <code class="bk-hash-code" dir="ltr">{{ apk_sha256 }}</code>
         {% elif current_lang == "en" %}
           <h2>Security & File Provenance</h2>
           <p>Verify that the downloaded file matches this official <strong>SHA-256</strong> checksum before installing:</p>
-          <code class="bk-hash-code">{{ apk_sha256 }}</code>
+          <code class="bk-hash-code" dir="ltr">{{ apk_sha256 }}</code>
         {% else %}
           <h2>Sécurité et provenance du fichier</h2>
           <p>Vérifiez que l’empreinte <strong>SHA-256</strong> du fichier téléchargé correspond exactement à la valeur officielle suivante :</p>
-          <code class="bk-hash-code">{{ apk_sha256 }}</code>
+          <code class="bk-hash-code" dir="ltr">{{ apk_sha256 }}</code>
         {% endif %}
       </article>
 
