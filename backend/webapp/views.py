@@ -1,4 +1,5 @@
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from django.conf import settings
 from django.contrib import messages
@@ -542,14 +543,29 @@ def privacy_page(request):
     )
 
 
+def _is_authorized_apk_release_url(url: str) -> bool:
+    if not url:
+        return False
+    parsed = urlsplit(url)
+    allowed_hosts = {"media.beriyarkedebideri.com", "beriyarkedebideri.com"}
+    r2_domain = (getattr(settings, "R2_PUBLIC_DOMAIN", "") or "").strip().lower()
+    if r2_domain:
+        allowed_hosts.add(r2_domain)
+    return (
+        parsed.scheme == "https"
+        and bool(parsed.hostname)
+        and parsed.hostname.lower() in allowed_hosts
+        and not parsed.username
+        and not parsed.password
+        and parsed.path.lower().endswith(".apk")
+        and "beriyar-kedebideri-v1.apk" not in url
+    )
+
+
 def mobile_download_page(request):
     lang = get_web_lang(request)
     configured_url = (getattr(settings, "ANDROID_APK_RELEASE_URL", "") or "").strip()
-    apk_download_enabled = bool(
-        configured_url
-        and configured_url.startswith("https://")
-        and "beriyar-kedebideri-v1.apk" not in configured_url
-    )
+    apk_download_enabled = _is_authorized_apk_release_url(configured_url)
 
     return render(
         request,

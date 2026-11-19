@@ -236,6 +236,43 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
             self.assertContains(resp, 'aria-disabled="true"')
             self.assertNotContains(resp, 'beriyar-kedebideri-v1.apk')
 
+    def test_mobile_page_refuses_legacy_env_and_dangerous_or_untrusted_urls(self):
+        from django.test import override_settings
+
+        # Legacy ANDROID_APK_URL must not activate ANDROID_APK_RELEASE_URL
+        with override_settings(
+            ANDROID_APK_URL='https://media.beriyarkedebideri.com/apk/beriyar-kedebideri-v1.1.0+4-release.apk',
+            ANDROID_APK_RELEASE_URL='',
+        ):
+            resp = self.client.get(reverse('web-mobile'))
+            self.assertContains(resp, 'aria-disabled="true"')
+
+        invalid_urls = [
+            'javascript:alert(1)',
+            'data:text/html,<script>alert(1)</script>',
+            'file:///tmp/app.apk',
+            'http://media.beriyarkedebideri.com/apk/beriyar-kedebideri-v1.1.0+4-release.apk',
+            'https://evil.example.com/apk/beriyar-kedebideri-v1.1.0+4-release.apk',
+            'https://user:pass@media.beriyarkedebideri.com/apk/beriyar-kedebideri-v1.1.0+4-release.apk',
+            'https://media.beriyarkedebideri.com/apk/not-an-apk.txt',
+        ]
+        for bad_url in invalid_urls:
+            with override_settings(ANDROID_APK_RELEASE_URL=bad_url):
+                resp = self.client.get(reverse('web-mobile'))
+                self.assertEqual(resp.status_code, 200)
+                self.assertContains(resp, 'aria-disabled="true"')
+                self.assertNotContains(resp, bad_url)
+
+    def test_mobile_page_accepts_authorized_https_domain_apk_url(self):
+        from django.test import override_settings
+
+        valid_url = 'https://media.beriyarkedebideri.com/apk/beriyar-kedebideri-v1.1.0+4-release.apk'
+        with override_settings(ANDROID_APK_RELEASE_URL=valid_url):
+            resp = self.client.get(reverse('web-mobile'))
+            self.assertEqual(resp.status_code, 200)
+            self.assertContains(resp, f'href="{valid_url}"')
+            self.assertNotContains(resp, 'aria-disabled="true"')
+
     def test_navigation_links_to_mobile_and_privacy_without_legacy_apk_link(self):
         resp_home = self.client.get(reverse('web-home'))
         self.assertEqual(resp_home.status_code, 200)
