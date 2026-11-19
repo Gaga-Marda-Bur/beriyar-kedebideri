@@ -200,6 +200,9 @@
       </article>
 
       <div class="bk-legal-actions">
+        <a href="{% url 'web-account-deletion' %}" class="btn btn-secondary">
+          {% if current_lang == "ar" %}طلب حذف الحساب{% elif current_lang == "en" %}Account Deletion Request{% else %}Demander la suppression de compte{% endif %}
+        </a>
         <a href="{% url 'web-mobile' %}" class="btn btn-secondary">
           {% if current_lang == "ar" %}العودة إلى صفحة تطبيق أندرويد{% elif current_lang == "en" %}Back to Android App page{% else %}Retour à la page Android{% endif %}
         </a>

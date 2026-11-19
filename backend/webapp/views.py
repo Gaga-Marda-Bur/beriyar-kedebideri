@@ -3,6 +3,7 @@ from urllib.parse import urlsplit
 
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import authenticate
 from django.db.models import Prefetch, Q
 from django.http import FileResponse, Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -582,3 +583,66 @@ def mobile_download_page(request):
             "apk_sha256": "F302F953245037CE6E4A1E904A4CFAA27AA86E00F06D7219821DCC161CA7F1A7",
         },
     )
+
+
+def account_deletion_page(request):
+    from core.models import AccountDeletionRequest
+
+    lang = get_web_lang(request)
+    deletion_result = None
+    deletion_error = None
+    existing_request = None
+
+    if request.user.is_authenticated and request.user.is_active:
+        existing_request = AccountDeletionRequest.objects.filter(
+            user=request.user,
+            status__in=[
+                AccountDeletionRequest.STATUS_PENDING,
+                AccountDeletionRequest.STATUS_IN_REVIEW,
+            ],
+        ).first()
+
+        if request.method == "POST":
+            password = request.POST.get("password", "")
+            note = (request.POST.get("note", "") or "").strip()[:500]
+            verified_user = authenticate(
+                request,
+                username=request.user.get_username(),
+                password=password,
+            )
+            if verified_user is None or verified_user.pk != request.user.pk:
+                if lang == "ar":
+                    deletion_error = "كلمة المرور غير صحيحة."
+                elif lang == "en":
+                    deletion_error = "Incorrect password."
+                else:
+                    deletion_error = "Mot de passe incorrect."
+            elif existing_request is not None:
+                deletion_result = existing_request
+            else:
+                deletion_result = AccountDeletionRequest.objects.create(
+                    user=request.user,
+                    requested_username=request.user.get_username(),
+                    has_email=bool((request.user.email or "").strip()),
+                    source=AccountDeletionRequest.SOURCE_WEB,
+                    verification_method="session_and_password",
+                    status=AccountDeletionRequest.STATUS_PENDING,
+                    user_note=note,
+                )
+                existing_request = deletion_result
+
+    response = render(
+        request,
+        "webapp/account_deletion.html",
+        {
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
+            "deletion_result": deletion_result,
+            "deletion_error": deletion_error,
+            "existing_request": existing_request,
+        },
+    )
+    if request.user.is_authenticated or request.method == "POST":
+        response["Cache-Control"] = "private, no-store"
+        response["Vary"] = "Cookie"
+    return response

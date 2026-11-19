@@ -10,6 +10,11 @@ urlpatterns = [
     path('auth/register/', LearnerAuthView.as_view(action='register'), name='core-auth-register'),
     path('auth/logout/', LearnerAuthView.as_view(action='logout'), name='core-auth-logout'),
     path('auth/me/', LearnerAuthView.as_view(action='me'), name='core-auth-me'),
+    path(
+        'auth/deletion-request/',
+        LearnerAuthView.as_view(action='deletion_request'),
+        name='core-auth-deletion-request',
+    ),
     path('transliterate/', TransliterationAPIView.as_view(), name='core-transliterate'),
     path('diagnostics/https/', HttpsProxyDiagnosticAPIView.as_view(), name='core-https-diagnostic'),
 ]

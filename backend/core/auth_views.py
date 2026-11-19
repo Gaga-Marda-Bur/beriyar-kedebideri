@@ -13,6 +13,7 @@ from django.views.decorators.csrf import csrf_protect
 import re
 from rest_framework.throttling import AnonRateThrottle
 
+from .models import AccountDeletionRequest
 from .permissions import is_pilot_user, is_staff_preview
 
 
@@ -40,6 +41,20 @@ class LearnerRegisterThrottle(AnonRateThrottle):
     def get_cache_key(self, request, view):
         return self.cache_format % {
             'scope': 'learner_register',
+            'ident': self.get_ident(request),
+        }
+
+
+class LearnerDeletionThrottle(AnonRateThrottle):
+    rate = '5/hour'
+
+    def __init__(self):
+        super().__init__()
+        self.cache = caches['feedback']
+
+    def get_cache_key(self, request, view):
+        return self.cache_format % {
+            'scope': 'learner_deletion_request',
             'ident': self.get_ident(request),
         }
 
@@ -91,6 +106,9 @@ class LearnerAuthView(View):
 
         if self.action == 'register':
             return self._handle_register(request)
+
+        if self.action == 'deletion_request':
+            return self._handle_deletion_request(request)
 
         if self.action != 'login':
             return JsonResponse({'detail': 'Method not allowed'}, status=405)
@@ -186,3 +204,74 @@ class LearnerAuthView(View):
         if hasattr(request, '_bk_is_pilot_user'):
             delattr(request, '_bk_is_pilot_user')
         return JsonResponse(_user_payload(request, user), status=201)
+
+    def _handle_deletion_request(self, request):
+        if not request.user.is_authenticated or not request.user.is_active:
+            return JsonResponse({'detail': 'Authentication required'}, status=401)
+
+        if not LearnerDeletionThrottle().allow_request(request, self):
+            return JsonResponse({'detail': 'Retry later'}, status=429)
+
+        if len(request.body) > 4096:
+            return JsonResponse({'detail': 'Invalid payload'}, status=400)
+
+        try:
+            body = json.loads(request.body)
+            password = body['password']
+            source = body.get('source', AccountDeletionRequest.SOURCE_MOBILE)
+            note = body.get('note', '')
+            if not isinstance(password, str) or not password or len(password) > 1024:
+                raise ValueError
+            if source not in (AccountDeletionRequest.SOURCE_MOBILE, AccountDeletionRequest.SOURCE_WEB):
+                source = AccountDeletionRequest.SOURCE_MOBILE
+            if not isinstance(note, str):
+                note = ''
+            note = note.strip()[:500]
+        except (ValueError, TypeError, KeyError):
+            return JsonResponse({'detail': 'Mot de passe requis pour confirmer la demande.'}, status=400)
+
+        verified_user = authenticate(
+            request,
+            username=request.user.get_username(),
+            password=password,
+        )
+        if verified_user is None or verified_user.pk != request.user.pk:
+            return JsonResponse({'detail': 'Mot de passe incorrect.'}, status=403)
+
+        existing = AccountDeletionRequest.objects.filter(
+            user=request.user,
+            status__in=[AccountDeletionRequest.STATUS_PENDING, AccountDeletionRequest.STATUS_IN_REVIEW],
+        ).first()
+        if existing is not None:
+            return JsonResponse(
+                {
+                    'requested': True,
+                    'already_pending': True,
+                    'status': existing.status,
+                    'reference_code': existing.reference_code,
+                    'deleted_immediately': False,
+                    'detail': 'Une demande est déjà enregistrée pour traitement manuel.',
+                },
+                status=200,
+            )
+
+        deletion_request = AccountDeletionRequest.objects.create(
+            user=request.user,
+            requested_username=request.user.get_username(),
+            has_email=bool((request.user.email or '').strip()),
+            source=source,
+            verification_method='session_and_password',
+            status=AccountDeletionRequest.STATUS_PENDING,
+            user_note=note,
+        )
+        return JsonResponse(
+            {
+                'requested': True,
+                'already_pending': False,
+                'status': deletion_request.status,
+                'reference_code': deletion_request.reference_code,
+                'deleted_immediately': False,
+                'detail': 'Demande enregistrée pour traitement manuel. Le compte n’est pas encore supprimé.',
+            },
+            status=201,
+        )

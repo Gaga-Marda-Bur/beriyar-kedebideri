@@ -279,3 +279,105 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
         self.assertContains(resp_home, reverse('web-mobile'))
         self.assertContains(resp_home, reverse('web-privacy'))
         self.assertNotContains(resp_home, 'beriyar-kedebideri-v1.apk')
+
+
+class AccountDeletionFlowTests(TestCase):
+    def setUp(self):
+        from django.contrib.auth import get_user_model
+
+        self.User = get_user_model()
+        self.user_no_email = self.User.objects.create_user(
+            username='learner_no_email',
+            email='',
+            password='StrongPassword!2026',
+        )
+        self.csrf_client = Client(enforce_csrf_checks=True)
+
+    def _csrf_token(self, client):
+        resp = client.get('/api/core/auth/csrf/')
+        return resp.json()['csrf_token']
+
+    def test_api_deletion_request_requires_auth_and_password_confirmation(self):
+        import json
+
+        token = self._csrf_token(self.csrf_client)
+        unauth = self.csrf_client.post(
+            '/api/core/auth/deletion-request/',
+            data=json.dumps({'password': 'StrongPassword!2026'}),
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=token,
+        )
+        self.assertEqual(unauth.status_code, 401)
+
+        login_resp = self.csrf_client.post(
+            '/api/core/auth/login/',
+            data=json.dumps({'username': 'learner_no_email', 'password': 'StrongPassword!2026'}),
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=token,
+        )
+        self.assertEqual(login_resp.status_code, 200)
+        token = login_resp.json()['csrf_token']
+
+        wrong_pw = self.csrf_client.post(
+            '/api/core/auth/deletion-request/',
+            data=json.dumps({'password': 'WrongPassword!'}),
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=token,
+        )
+        self.assertEqual(wrong_pw.status_code, 403)
+
+        ok_resp = self.csrf_client.post(
+            '/api/core/auth/deletion-request/',
+            data=json.dumps({'password': 'StrongPassword!2026', 'source': 'mobile', 'note': 'Test request'}),
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=token,
+        )
+        self.assertEqual(ok_resp.status_code, 201)
+        payload = ok_resp.json()
+        self.assertTrue(payload['requested'])
+        self.assertFalse(payload['deleted_immediately'])
+        self.assertEqual(payload['status'], 'pending')
+        self.assertTrue(payload['reference_code'].startswith('DEL-'))
+
+        self.user_no_email.refresh_from_db()
+        self.assertTrue(self.user_no_email.is_active)
+
+        from core.models import AccountDeletionRequest
+        req = AccountDeletionRequest.objects.get(reference_code=payload['reference_code'])
+        self.assertFalse(req.has_email)
+        self.assertEqual(req.source, 'mobile')
+
+        dup_resp = self.csrf_client.post(
+            '/api/core/auth/deletion-request/',
+            data=json.dumps({'password': 'StrongPassword!2026', 'source': 'mobile'}),
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=token,
+        )
+        self.assertEqual(dup_resp.status_code, 200)
+        self.assertTrue(dup_resp.json()['already_pending'])
+
+    def test_web_account_deletion_page_multilingual_and_authenticated_submission(self):
+        client = Client()
+        for lang, expected in [
+            ('fr', 'Demande de suppression de compte'),
+            ('en', 'Account Deletion Request'),
+            ('ar', 'طلب حذف الحساب'),
+        ]:
+            resp = client.get(reverse('web-account-deletion') + f'?lang={lang}')
+            self.assertEqual(resp.status_code, 200)
+            self.assertContains(resp, expected)
+            if lang == 'ar':
+                self.assertContains(resp, 'dir="rtl"')
+
+        client.force_login(self.user_no_email)
+        bad_post = client.post(reverse('web-account-deletion') + '?lang=fr', {'password': 'bad'})
+        self.assertEqual(bad_post.status_code, 200)
+        self.assertContains(bad_post, 'Mot de passe incorrect')
+
+        good_post = client.post(
+            reverse('web-account-deletion') + '?lang=fr',
+            {'password': 'StrongPassword!2026', 'note': 'Web test'},
+        )
+        self.assertEqual(good_post.status_code, 200)
+        self.assertContains(good_post, 'DEL-')
+        self.assertContains(good_post, 'pas encore supprimé')

@@ -1,0 +1,190 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}
+  {% if current_lang == "ar" %}طلب حذف الحساب — Beřiyar Kedebideři{% elif current_lang == "en" %}Account Deletion Request — Beřiyar Kedebideři{% else %}Demande de suppression de compte — Beřiyar Kedebideři{% endif %}
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  .bk-del-wrap {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 820px;
+  }
+  .bk-del-card {
+    padding: 1.35rem 1.5rem;
+    border-radius: 18px;
+  }
+  .bk-del-card h2 {
+    margin-top: 0;
+    margin-bottom: 0.65rem;
+    font-size: 1.15rem;
+  }
+  .bk-del-form {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 1rem;
+  }
+  .bk-del-form input,
+  .bk-del-form textarea {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(15, 23, 42, 0.35);
+    color: inherit;
+    font: inherit;
+    box-sizing: border-box;
+  }
+  .bk-del-notice {
+    border: 1px solid #d97706;
+    background: rgba(245, 158, 11, 0.14);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+  }
+  .bk-del-error {
+    border: 1px solid #dc2626;
+    background: rgba(220, 38, 38, 0.16);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+  }
+  .bk-del-ok {
+    border: 1px solid #16a34a;
+    background: rgba(22, 163, 74, 0.16);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main>
+  <section class="page-header">
+    <div class="container">
+      <div class="badge">
+        {% if current_lang == "ar" %}البيانات والحساب{% elif current_lang == "en" %}Data & Account{% else %}Données et compte{% endif %}
+      </div>
+      {% if current_lang == "ar" %}
+        <h1>طلب حذف الحساب</h1>
+        <p>تقديم طلب حذف حساب المتعلّم والبيانات المرتبطة به للمراجعة اليدوية.</p>
+      {% elif current_lang == "en" %}
+        <h1>Account Deletion Request</h1>
+        <p>Submit a learner account deletion request for manual verification and processing.</p>
+      {% else %}
+        <h1>Demande de suppression de compte</h1>
+        <p>Déposer une demande de suppression de compte apprenant pour vérification et traitement manuel.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container bk-del-wrap">
+      {% if deletion_result or existing_request %}
+        {% with req=deletion_result|default:existing_request %}
+        <div class="bk-del-ok" role="status">
+          {% if current_lang == "ar" %}
+            <strong>تم تسجيل طلب الحذف للمراجعة اليدوية.</strong>
+            <p style="margin: 0.45rem 0 0;">رقم المرجع: <code dir="ltr">{{ req.reference_code }}</code> — لم يتم حذف الحساب فوراً بعد، وسيتم التحقق من الطلب ومعالجته يدوياً.</p>
+          {% elif current_lang == "en" %}
+            <strong>Your deletion request has been recorded for manual processing.</strong>
+            <p style="margin: 0.45rem 0 0;">Reference code: <code dir="ltr">{{ req.reference_code }}</code> — Your account is not deleted immediately yet; the request will be reviewed manually.</p>
+          {% else %}
+            <strong>Votre demande de suppression a été enregistrée pour traitement manuel.</strong>
+            <p style="margin: 0.45rem 0 0;">Référence : <code dir="ltr">{{ req.reference_code }}</code> — Le compte n’est pas encore supprimé immédiatement ; votre demande sera traitée manuellement.</p>
+          {% endif %}
+        </div>
+        {% endwith %}
+      {% endif %}
+
+      <article class="card glass bk-del-card">
+        {% if request.user.is_authenticated %}
+          {% if current_lang == "ar" %}
+            <h2>تأكيد الطلب عبر حسابك المسجّل ({{ request.user.username }})</h2>
+            <p>للحماية من الطلبات غير المصرح بها، يرجى تأكيد كلمة المرور الحالية لإرسال الطلب.</p>
+          {% elif current_lang == "en" %}
+            <h2>Confirm request for signed-in account ({{ request.user.username }})</h2>
+            <p>To prevent unauthorized third-party requests, please confirm your current password.</p>
+          {% else %}
+            <h2>Confirmer la demande pour le compte connecté ({{ request.user.username }})</h2>
+            <p>Pour éviter toute demande effectuée par un tiers, veuillez confirmer votre mot de passe actuel.</p>
+          {% endif %}
+
+          {% if deletion_error %}
+            <div class="bk-del-error" role="alert">{{ deletion_error }}</div>
+          {% endif %}
+
+          {% if not existing_request %}
+          <form method="post" class="bk-del-form">
+            {% csrf_token %}
+            <div>
+              <label for="del-password">
+                {% if current_lang == "ar" %}كلمة المرور الحالية{% elif current_lang == "en" %}Current password{% else %}Mot de passe actuel{% endif %}
+              </label>
+              <input id="del-password" name="password" type="password" required autocomplete="current-password">
+            </div>
+            <div>
+              <label for="del-note">
+                {% if current_lang == "ar" %}ملاحظة اختيارية{% elif current_lang == "en" %}Optional note{% else %}Précision optionnelle{% endif %}
+              </label>
+              <textarea id="del-note" name="note" rows="3" maxlength="500"></textarea>
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary">
+                {% if current_lang == "ar" %}تسجيل طلب حذف الحساب{% elif current_lang == "en" %}Submit deletion request{% else %}Enregistrer la demande de suppression{% endif %}
+              </button>
+            </div>
+          </form>
+          {% endif %}
+        {% else %}
+          {% if current_lang == "ar" %}
+            <h2>لا يمكنك الوصول إلى التطبيق أو تسجيل الدخول؟</h2>
+            <p>يمكنك تسجيل الدخول على الموقع لتأكيد الطلب بكلمة المرور، أو مراسلة البريد المخصص للخصوصية <code dir="ltr">privacy@beriyarkedebideri.com</code> (بعد التفعيل الرسمي) مع ذكر اسم المستخدم (<code>username</code>).</p>
+          {% elif current_lang == "en" %}
+            <h2>Cannot access the app or sign in?</h2>
+            <p>You can sign in on this website to submit a password-verified request, or write to <code dir="ltr">privacy@beriyarkedebideri.com</code> (once officially active) mentioning your <code>username</code>.</p>
+          {% else %}
+            <h2>Vous n’avez plus accès à l’application ou à votre session ?</h2>
+            <p>Vous pouvez vous connecter sur le site pour confirmer la demande avec votre mot de passe, ou écrire à <code dir="ltr">privacy@beriyarkedebideri.com</code> (une fois activée) en indiquant votre identifiant (<code>username</code>).</p>
+          {% endif %}
+          <div style="margin-top: 0.75rem;">
+            <button type="button" class="btn btn-secondary" data-auth-login-open>
+              {% if current_lang == "ar" %}تسجيل الدخول{% elif current_lang == "en" %}Sign in{% else %}Se connecter{% endif %}
+            </button>
+          </div>
+        {% endif %}
+      </article>
+
+      <article class="card glass bk-del-card">
+        {% if current_lang == "ar" %}
+          <h2>نطاق الحذف والتحقق من الهوية والنسخ الاحتياطية</h2>
+          <ul>
+            <li>يؤدي تنفيذ الحذف اليدوي إلى إزالة الحساب وتقدمك التعليمي المرتبط به، وفصل أو إخفاء هوية الملاحظات التقنية.</li>
+            <li>الحسابات المنشأة دون بريد إلكتروني تخضع لتحقق إضافي من الهوية قبل أي حذف لحماية حسابات الغير.</li>
+            <li>النسخ الاحتياطية التقنية لقاعدة البيانات تحتفظ بالسجلات مؤقتاً حتى انتهاء دورتها المجدولة.</li>
+          </ul>
+        {% elif current_lang == "en" %}
+          <h2>Deletion Scope, Identity Verification & Backups</h2>
+          <ul>
+            <li>Manual deletion removes your learner account and associated progress, and anonymizes or dissociates technical reports.</li>
+            <li>Accounts created without an email address require additional identity verification to protect against unauthorized third-party deletion.</li>
+            <li>Database backups retain snapshots until their scheduled rotation expires.</li>
+          </ul>
+        {% else %}
+          <h2>Périmètre de suppression, vérification d’identité et sauvegardes</h2>
+          <ul>
+            <li>Le traitement manuel supprime le compte apprenant et les progressions associées, et anonymise ou dissocie les signalements techniques.</li>
+            <li>Les comptes créés sans adresse e-mail nécessitent une vérification complémentaire afin d’empêcher la suppression du compte d’un tiers.</li>
+            <li>Les sauvegardes techniques de base de données conservent les instantanés jusqu’à expiration de leur rotation.</li>
+          </ul>
+        {% endif %}
+      </article>
+
+      <div>
+        <a href="{% url 'web-privacy' %}" class="btn btn-secondary">
+          {% if current_lang == "ar" %}سياسة الخصوصية{% elif current_lang == "en" %}Privacy Policy{% else %}Politique de confidentialité{% endif %}
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

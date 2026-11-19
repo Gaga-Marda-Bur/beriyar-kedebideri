@@ -15,6 +15,7 @@ from .views import (
     editor_page,
     privacy_page,
     mobile_download_page,
+    account_deletion_page,
 )
 
 urlpatterns = [
@@ -32,4 +33,5 @@ urlpatterns = [
     path("editeur/", editor_page, name="web-editor"),
     path("privacy/", privacy_page, name="web-privacy"),
     path("mobile/", mobile_download_page, name="web-mobile"),
+    path("account-deletion/", account_deletion_page, name="web-account-deletion"),
 ]
