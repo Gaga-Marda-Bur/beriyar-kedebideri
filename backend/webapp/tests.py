@@ -172,3 +172,73 @@ class Lot3AccessibilityAndCopyTests(TestCase):
         self.assertContains(response, 'U+16EA1')
         self.assertContains(response, 'audio-button')
         self.assertContains(response, 'btn-primary')
+
+
+class Release02PrivacyAndMobilePagesTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_privacy_page_multilingual_and_draft_notice(self):
+        resp_fr = self.client.get(reverse('web-privacy') + '?lang=fr')
+        self.assertEqual(resp_fr.status_code, 200)
+        self.assertTemplateUsed(resp_fr, 'webapp/privacy.html')
+        self.assertContains(resp_fr, 'Politique de confidentialité')
+        self.assertContains(resp_fr, '[À CONFIRMER PAR LE RESPONSABLE]')
+        self.assertContains(resp_fr, 'non prêt pour publication publique')
+
+        resp_en = self.client.get(reverse('web-privacy') + '?lang=en')
+        self.assertEqual(resp_en.status_code, 200)
+        self.assertContains(resp_en, 'Privacy Policy')
+        self.assertContains(resp_en, '[TO BE CONFIRMED BY OWNER]')
+
+        resp_ar = self.client.get(reverse('web-privacy') + '?lang=ar')
+        self.assertEqual(resp_ar.status_code, 200)
+        self.assertContains(resp_ar, 'dir="rtl"')
+        self.assertContains(resp_ar, 'سياسة الخصوصية')
+        self.assertContains(resp_ar, '[يُؤكَّد من قِبل المسؤول]')
+
+    def test_mobile_page_multilingual_metadata_and_no_premature_download(self):
+        from django.contrib.staticfiles.storage import staticfiles_storage
+
+        resp_fr = self.client.get(reverse('web-mobile') + '?lang=fr')
+        self.assertEqual(resp_fr.status_code, 200)
+        self.assertTemplateUsed(resp_fr, 'webapp/mobile.html')
+        self.assertContains(resp_fr, staticfiles_storage.url('webapp/img/logo.png'))
+        self.assertContains(resp_fr, '1.1.0+4')
+        self.assertContains(resp_fr, '70 333 989')
+        self.assertContains(
+            resp_fr,
+            'F302F953245037CE6E4A1E904A4CFAA27AA86E00F06D7219821DCC161CA7F1A7',
+        )
+        self.assertContains(resp_fr, 'Ne désinstallez pas')
+        self.assertContains(resp_fr, reverse('web-privacy'))
+        self.assertContains(resp_fr, 'aria-disabled="true"')
+        self.assertNotContains(resp_fr, 'beriyar-kedebideri-v1.apk')
+        self.assertNotContains(resp_fr, '.apk"')
+
+        resp_en = self.client.get(reverse('web-mobile') + '?lang=en')
+        self.assertEqual(resp_en.status_code, 200)
+        self.assertContains(resp_en, 'Public download not active yet')
+
+        resp_ar = self.client.get(reverse('web-mobile') + '?lang=ar')
+        self.assertEqual(resp_ar.status_code, 200)
+        self.assertContains(resp_ar, 'dir="rtl"')
+        self.assertContains(resp_ar, 'التحميل العام غير مفعّل بعد')
+
+    def test_mobile_page_refuses_legacy_v1_apk_url(self):
+        from django.test import override_settings
+
+        with override_settings(
+            ANDROID_APK_RELEASE_URL='https://media.beriyarkedebideri.com/apk/beriyar-kedebideri-v1.apk'
+        ):
+            resp = self.client.get(reverse('web-mobile'))
+            self.assertEqual(resp.status_code, 200)
+            self.assertContains(resp, 'aria-disabled="true"')
+            self.assertNotContains(resp, 'beriyar-kedebideri-v1.apk')
+
+    def test_navigation_links_to_mobile_and_privacy_without_legacy_apk_link(self):
+        resp_home = self.client.get(reverse('web-home'))
+        self.assertEqual(resp_home.status_code, 200)
+        self.assertContains(resp_home, reverse('web-mobile'))
+        self.assertContains(resp_home, reverse('web-privacy'))
+        self.assertNotContains(resp_home, 'beriyar-kedebideri-v1.apk')

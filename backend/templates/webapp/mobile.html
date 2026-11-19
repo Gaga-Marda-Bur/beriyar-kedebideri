@@ -1,0 +1,267 @@
+{% extends "webapp/base.html" %}
+{% load static %}
+
+{% block title %}
+  {% if current_lang == "ar" %}تطبيق أندرويد {{ apk_version }} — Beřiyar Kedebideři{% elif current_lang == "en" %}Android App {{ apk_version }} — Beřiyar Kedebideři{% else %}Application Android {{ apk_version }} — Beřiyar Kedebideři{% endif %}
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  .bk-mobile-wrap {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 920px;
+  }
+  .bk-mobile-hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+  .bk-mobile-logo {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+  }
+  .bk-mobile-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem 1.25rem;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+  .bk-mobile-cta-box {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.65rem;
+  }
+  .bk-btn-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  .bk-mobile-warning {
+    border: 1px solid #d97706;
+    background: rgba(245, 158, 11, 0.12);
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+  }
+  .bk-mobile-card {
+    padding: 1.35rem 1.5rem;
+    border-radius: 18px;
+  }
+  .bk-mobile-card h2 {
+    margin-top: 0;
+    margin-bottom: 0.65rem;
+    font-size: 1.15rem;
+  }
+  .bk-mobile-card p,
+  .bk-mobile-card li {
+    line-height: 1.65;
+  }
+  .bk-mobile-card ul,
+  .bk-mobile-card ol {
+    margin: 0.5rem 0 0;
+    padding-inline-start: 1.25rem;
+  }
+  .bk-hash-code {
+    display: block;
+    padding: 0.75rem 0.9rem;
+    border-radius: 10px;
+    background: rgba(15, 23, 42, 0.08);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+  }
+  .bk-mobile-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main>
+  <section class="page-header">
+    <div class="container">
+      <div class="badge">
+        {% if current_lang == "ar" %}تطبيق أندرويد الرسمي{% elif current_lang == "en" %}Official Android App{% else %}Application Android officielle{% endif %}
+      </div>
+      {% if current_lang == "ar" %}
+        <h1>Beřiyar Kedebideři لنظام أندرويد</h1>
+        <p>تعلّم لغة بيريَا إرفي: الأبجدية، المفردات، المسارات التفاعلية ولوحة المفاتيح التعليمية.</p>
+      {% elif current_lang == "en" %}
+        <h1>Beřiyar Kedebideři for Android</h1>
+        <p>Learn the Beriya Erfe language: alphabet, vocabulary, interactive learning paths, and educational keyboard.</p>
+      {% else %}
+        <h1>Beřiyar Kedebideři pour Android</h1>
+        <p>Apprendre la langue Beriya Erfe : alphabet, vocabulaire, parcours interactifs et clavier pédagogique.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container bk-mobile-wrap">
+      <div class="card glass bk-mobile-hero">
+        <div class="brand-mark brand-logo-wrap bk-mobile-logo">
+          <img
+            src="{% static 'webapp/img/logo.png' %}"
+            alt="Beřiyar Kedebideři"
+            class="brand-logo"
+            onerror="this.style.display='none'; this.parentElement.classList.add('brand-logo-fallback');"
+          >
+          <span class="brand-logo-fallback-text">BK</span>
+        </div>
+
+        <div style="flex: 1 1 260px; min-width: 0;">
+          <h2 style="margin: 0;">Beřiyar Kedebideři ({{ apk_version }})</h2>
+          <div class="bk-mobile-meta">
+            <span><strong>Package :</strong> <code>{{ apk_package_id }}</code></span>
+            <span>
+              {% if current_lang == "ar" %}
+                <strong>الحجم:</strong> {{ apk_size_bytes }} بايت (≈ 67.1 ميغابايت)
+              {% elif current_lang == "en" %}
+                <strong>Size:</strong> {{ apk_size_bytes }} bytes (≈ 67.1 MiB)
+              {% else %}
+                <strong>Taille :</strong> {{ apk_size_bytes }} octets (≈ 67,1 Mio)
+              {% endif %}
+            </span>
+          </div>
+
+          <div class="bk-mobile-cta-box">
+            {% if apk_download_enabled %}
+              <a href="{{ apk_download_url }}" class="btn btn-primary" download>
+                {% if current_lang == "ar" %}تحميل APK ({{ apk_version }}){% elif current_lang == "en" %}Download APK ({{ apk_version }}){% else %}Télécharger l’APK ({{ apk_version }}){% endif %}
+              </a>
+            {% else %}
+              <button type="button" class="btn btn-primary bk-btn-disabled" disabled aria-disabled="true">
+                {% if current_lang == "ar" %}التحميل العام غير مفعّل بعد{% elif current_lang == "en" %}Public download not active yet{% else %}Téléchargement public non activé{% endif %}
+              </button>
+              <p style="margin: 0; font-size: 0.92rem;">
+                {% if current_lang == "ar" %}
+                  هذه الصفحة جاهزة تقنياً، لكن نشر ملف APK بانتظار التحقق النهائي من سياسة الخصوصية وموافقة النشر.
+                {% elif current_lang == "en" %}
+                  This download page is technically prepared; public APK distribution awaits final privacy validation and release authorization.
+                {% else %}
+                  Cette page est préparée techniquement ; le téléchargement public reste désactivé tant que la politique de confidentialité et l’autorisation de diffusion ne sont pas validées.
+                {% endif %}
+              </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="bk-mobile-warning" role="note">
+        {% if current_lang == "ar" %}
+          <strong>تنبيه مهم لمستخدمي الإصدار 1.0.2+3:</strong>
+          لا تقم بإزالة تثبيت التطبيق الحالي. قم بتثبيت الإصدار {{ apk_version }} فوق الإصدار السابق للحفاظ على تقدمك المحلي.
+        {% elif current_lang == "en" %}
+          <strong>Important for 1.0.2+3 users:</strong>
+          Do not uninstall your existing app. Install {{ apk_version }} directly over it to keep your local learning progress.
+        {% else %}
+          <strong>Important pour les utilisateurs de la version 1.0.2+3 :</strong>
+          Ne désinstallez pas l’application existante. Installez la version {{ apk_version }} par-dessus pour conserver votre progression locale.
+        {% endif %}
+      </div>
+
+      <article class="card glass bk-mobile-card">
+        {% if current_lang == "ar" %}
+          <h2>الميزات المتوفرة فعلياً</h2>
+          <ul>
+            <li>الأبجدية (الحركات والصوامت)، المفردات ومسارات التعلّم التفاعلية.</li>
+            <li>لوحة المفاتيح التعليمية لكتابة إرفي مع دعم الكلمات والعبارات الطويلة.</li>
+            <li>واجهة كاملة بالفرنسية والإنجليزية والعربية مع دعم الاتجاه من اليمين إلى اليسار (RTL).</li>
+            <li>حفظ التقدم محلياً ومزامنته عند تسجيل الدخول، وإعادة تشغيل الصوتيات المخزنة محلياً.</li>
+          </ul>
+        {% elif current_lang == "en" %}
+          <h2>Actually Available Features</h2>
+          <ul>
+            <li>Alphabet (vowels and consonants), vocabulary, and interactive learning paths.</li>
+            <li>Educational Erfe keyboard with support for long words and spaced expressions.</li>
+            <li>Full French, English, and Arabic interface with proper RTL support.</li>
+            <li>Local progress saving, account sync when signed in, and local replay of cached audio.</li>
+          </ul>
+        {% else %}
+          <h2>Fonctionnalités réellement disponibles</h2>
+          <ul>
+            <li>Alphabet (voyelles et consonnes), vocabulaire et parcours d’apprentissage interactifs.</li>
+            <li>Clavier pédagogique Erfe avec saisie des mots longs et expressions composées.</li>
+            <li>Interface complète en français, anglais et arabe avec alignement RTL.</li>
+            <li>Sauvegarde locale de la progression, synchronisation si connecté et réécoute des audios déjà mis en cache.</li>
+          </ul>
+        {% endif %}
+      </article>
+
+      <article class="card glass bk-mobile-card">
+        {% if current_lang == "ar" %}
+          <h2>تعليمات التحديث من 1.0.2+3</h2>
+          <ol>
+            <li>احتفظ بتطبيق <code>1.0.2+3</code> مثبتاً على هاتفك دون حذفه.</li>
+            <li>بعد تفعيل التحميل الرسمي، افتح ملف <code>APK</code> على جهازك واختر <strong>تحديث</strong>.</li>
+            <li>افتح التطبيق وتحقق من بقاء نسبة التقدم المسجلة كما هي.</li>
+          </ol>
+        {% elif current_lang == "en" %}
+          <h2>Upgrade Instructions from 1.0.2+3</h2>
+          <ol>
+            <li>Keep <code>1.0.2+3</code> installed on your phone — do not uninstall it.</li>
+            <li>Once official distribution is active, open the downloaded <code>APK</code> and tap <strong>Update</strong>.</li>
+            <li>Open the app and confirm your existing progress percentage is preserved.</li>
+          </ol>
+        {% else %}
+          <h2>Instructions de mise à jour depuis 1.0.2+3</h2>
+          <ol>
+            <li>Conservez l’application <code>1.0.2+3</code> installée sur votre téléphone — ne la désinstallez pas.</li>
+            <li>Une fois le téléchargement officiel activé, ouvrez le fichier <code>APK</code> téléchargé puis appuyez sur <strong>Mettre à jour</strong>.</li>
+            <li>Ouvrez l’application et vérifiez que votre progression existante est conservée.</li>
+          </ol>
+        {% endif %}
+      </article>
+
+      <article class="card glass bk-mobile-card">
+        {% if current_lang == "ar" %}
+          <h2>الأمان والتحقق من سلامة الملف</h2>
+          <p>تحقق من تطابق بصمة <strong>SHA-256</strong> للملف مع البصمة الرسمية التالية قبل التثبيت:</p>
+          <code class="bk-hash-code">{{ apk_sha256 }}</code>
+        {% elif current_lang == "en" %}
+          <h2>Security & File Provenance</h2>
+          <p>Verify that the downloaded file matches this official <strong>SHA-256</strong> checksum before installing:</p>
+          <code class="bk-hash-code">{{ apk_sha256 }}</code>
+        {% else %}
+          <h2>Sécurité et provenance du fichier</h2>
+          <p>Vérifiez que l’empreinte <strong>SHA-256</strong> du fichier téléchargé correspond exactement à la valeur officielle suivante :</p>
+          <code class="bk-hash-code">{{ apk_sha256 }}</code>
+        {% endif %}
+      </article>
+
+      <article class="card glass bk-mobile-card">
+        {% if current_lang == "ar" %}
+          <h2>الدعم والخصوصية</h2>
+          <p><strong>جهة الدعم الرسمية:</strong> [يُؤكَّد من قِبل المسؤول — البريد أو القناة الرسمية للدعم]</p>
+          <div class="bk-mobile-links">
+            <a href="{% url 'web-privacy' %}" class="btn btn-secondary">سياسة الخصوصية</a>
+            <a href="{% url 'web-feedback' %}" class="btn btn-secondary">إرسال ملاحظة</a>
+          </div>
+        {% elif current_lang == "en" %}
+          <h2>Support & Privacy</h2>
+          <p><strong>Official support contact:</strong> [TO BE CONFIRMED BY OWNER — official support email or channel]</p>
+          <div class="bk-mobile-links">
+            <a href="{% url 'web-privacy' %}" class="btn btn-secondary">Privacy Policy</a>
+            <a href="{% url 'web-feedback' %}" class="btn btn-secondary">Send Feedback</a>
+          </div>
+        {% else %}
+          <h2>Support et confidentialité</h2>
+          <p><strong>Contact support officiel :</strong> [À CONFIRMER PAR LE RESPONSABLE — e-mail ou canal officiel]</p>
+          <div class="bk-mobile-links">
+            <a href="{% url 'web-privacy' %}" class="btn btn-secondary">Politique de confidentialité</a>
+            <a href="{% url 'web-feedback' %}" class="btn btn-secondary">Envoyer un feedback</a>
+          </div>
+        {% endif %}
+      </article>
+    </div>
+  </section>
+</main>
+{% endblock %}

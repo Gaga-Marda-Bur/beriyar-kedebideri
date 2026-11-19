@@ -61,7 +61,7 @@
                         {% endif %}
                     </a>
 
-                    <a href="{{ ANDROID_APK_URL }}" class="btn btn-secondary">
+                    <a href="{% url 'web-mobile' %}" class="btn btn-secondary">
                         {% if current_lang == "ar" %}تحميل تطبيق أندرويد
                         {% elif current_lang == "en" %}Download Android app
                         {% else %}Télécharger l’application Android

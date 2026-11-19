@@ -134,8 +134,8 @@
                         {% if current_lang == "ar" %}استكشاف{% elif current_lang == "en" %}Explore{% else %}Explorer{% endif %}
                     </a>
 
-                    <a href="{{ ANDROID_APK_URL }}" class="btn btn-primary">
-                        {% if current_lang == "ar" %}تطبيق أندرويد{% elif current_lang == "en" %}Android APK{% else %}APK Android{% endif %}
+                    <a href="{% url 'web-mobile' %}" class="btn btn-primary">
+                        {% if current_lang == "ar" %}تطبيق أندرويد{% elif current_lang == "en" %}Android App{% else %}App Android{% endif %}
                     </a>
                 </div>
 
@@ -188,8 +188,12 @@
                     {% if current_lang == "ar" %}ملاحظات{% elif current_lang == "en" %}Feedback{% else %}Feedback{% endif %}
                 </a>
 
-                <a href="{{ ANDROID_APK_URL }}">
-                    {% if current_lang == "ar" %}تطبيق أندرويد{% elif current_lang == "en" %}Android APK{% else %}APK Android{% endif %}
+                <a href="{% url 'web-mobile' %}">
+                    {% if current_lang == "ar" %}تطبيق أندرويد{% elif current_lang == "en" %}Android App{% else %}Application Android{% endif %}
+                </a>
+
+                <a href="{% url 'web-privacy' %}">
+                    {% if current_lang == "ar" %}سياسة الخصوصية{% elif current_lang == "en" %}Privacy Policy{% else %}Confidentialité{% endif %}
                 </a>
 
                 {% if request.user.is_authenticated %}
@@ -303,8 +307,12 @@
                         {% if current_lang == "ar" %}حزم دون اتصال{% elif current_lang == "en" %}Offline packs{% else %}Packs offline{% endif %}
                     </a>
 
-                    <a href="{{ ANDROID_APK_URL }}">
-                        {% if current_lang == "ar" %}تحميل تطبيق أندرويد{% elif current_lang == "en" %}Download Android APK{% else %}Télécharger APK Android{% endif %}
+                    <a href="{% url 'web-mobile' %}">
+                        {% if current_lang == "ar" %}تطبيق أندرويد{% elif current_lang == "en" %}Android App{% else %}Application Android{% endif %}
+                    </a>
+
+                    <a href="{% url 'web-privacy' %}">
+                        {% if current_lang == "ar" %}سياسة الخصوصية{% elif current_lang == "en" %}Privacy Policy{% else %}Confidentialité{% endif %}
                     </a>
 
                     <a href="{% url 'web-feedback' %}">

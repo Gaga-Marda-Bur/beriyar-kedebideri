@@ -13,6 +13,8 @@ from .views import (
     android_apk_download,
     sticker_studio_page,
     editor_page,
+    privacy_page,
+    mobile_download_page,
 )
 
 urlpatterns = [
@@ -28,4 +30,6 @@ urlpatterns = [
     path("download/android/", android_apk_download, name="web-download-android"),
     path("sticker-studio/", sticker_studio_page, name="web-sticker-studio"),
     path("editeur/", editor_page, name="web-editor"),
+    path("privacy/", privacy_page, name="web-privacy"),
+    path("mobile/", mobile_download_page, name="web-mobile"),
 ]

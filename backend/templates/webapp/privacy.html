@@ -1,0 +1,210 @@
+{% extends "webapp/base.html" %}
+
+{% block title %}
+  {% if current_lang == "ar" %}سياسة الخصوصية — Beřiyar Kedebideři{% elif current_lang == "en" %}Privacy Policy — Beřiyar Kedebideři{% else %}Politique de confidentialité — Beřiyar Kedebideři{% endif %}
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  .bk-legal-wrap {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 860px;
+  }
+  .bk-legal-banner {
+    border: 1px solid #d97706;
+    background: rgba(245, 158, 11, 0.12);
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+  }
+  .bk-legal-banner strong {
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+  .bk-legal-card {
+    padding: 1.35rem 1.5rem;
+    border-radius: 18px;
+  }
+  .bk-legal-card h2 {
+    margin-top: 0;
+    margin-bottom: 0.65rem;
+    font-size: 1.15rem;
+  }
+  .bk-legal-card p,
+  .bk-legal-card li {
+    line-height: 1.65;
+  }
+  .bk-legal-card ul {
+    margin: 0.5rem 0 0;
+    padding-inline-start: 1.25rem;
+  }
+  .bk-placeholder {
+    display: inline-block;
+    padding: 0.1rem 0.45rem;
+    border-radius: 6px;
+    background: rgba(220, 38, 38, 0.12);
+    border: 1px dashed rgba(220, 38, 38, 0.55);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .bk-legal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<main>
+  <section class="page-header">
+    <div class="container">
+      <div class="badge">
+        {% if current_lang == "ar" %}الخصوصية والبيانات{% elif current_lang == "en" %}Privacy & Data{% else %}Confidentialité{% endif %}
+      </div>
+      {% if current_lang == "ar" %}
+        <h1>سياسة الخصوصية — Beřiyar Kedebideři</h1>
+        <p>المبادئ والمعلومات المتعلقة بمعالجة البيانات في تطبيق أندرويد ومنصة Beřiyar Kedebideři.</p>
+      {% elif current_lang == "en" %}
+        <h1>Privacy Policy — Beřiyar Kedebideři</h1>
+        <p>Information on how data is handled in the Beřiyar Kedebideři Android app and web platform.</p>
+      {% else %}
+        <h1>Politique de confidentialité — Beřiyar Kedebideři</h1>
+        <p>Informations relatives au traitement des données dans l’application Android et la plateforme Beřiyar Kedebideři.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: 0;">
+    <div class="container bk-legal-wrap">
+      {% if privacy_draft_incomplete %}
+      <div class="bk-legal-banner" role="note">
+        {% if current_lang == "ar" %}
+          <strong>مسودة تحضيرية محلية — غير جاهزة للنشر العام</strong>
+          تتضمن هذه الصفحة حقولاً موسومة بـ <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول]</span> يجب استكمالها واعتمادها رسمياً قبل أي نشر عام.
+        {% elif current_lang == "en" %}
+          <strong>Local preparation draft — not ready for public publication</strong>
+          This page contains fields marked <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER]</span> that must be completed and approved before public release.
+        {% else %}
+          <strong>Brouillon de préparation local — non prêt pour publication publique</strong>
+          Ce document contient des champs marqués <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE]</span> devant être complétés et validés avant toute mise en ligne publique.
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <article class="card glass bk-legal-card">
+        {% if current_lang == "ar" %}
+          <h2>1. الجهة المسؤولة عن المعالجة وتاريخ التحديث</h2>
+          <p><strong>المسؤول عن المعالجة:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — الاسم / الجهة والوضع القانوني]</span></p>
+          <p><strong>تاريخ آخر تحديث:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — تاريخ النشر الرسمي]</span></p>
+        {% elif current_lang == "en" %}
+          <h2>1. Data Controller and Last Update</h2>
+          <p><strong>Data Controller:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — name / entity and legal status]</span></p>
+          <p><strong>Last updated:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — official publication date]</span></p>
+        {% else %}
+          <h2>1. Responsable du traitement et mise à jour</h2>
+          <p><strong>Responsable du traitement :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — nom / entité et statut juridique]</span></p>
+          <p><strong>Dernière mise à jour :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — date de publication officielle]</span></p>
+        {% endif %}
+      </article>
+
+      <article class="card glass bk-legal-card">
+        {% if current_lang == "ar" %}
+          <h2>2. فئات البيانات التي يتم جمعها</h2>
+          <ul>
+            <li><strong>الاستخدام دون حساب:</strong> يمكنك تصفح الدروس دون تسجيل الدخول؛ تُحفظ لغة الواجهة وتقدمك المحلي على جهازك فقط.</li>
+            <li><strong>بيانات الحساب الاختياري:</strong> عند إنشاء حساب أو تسجيل الدخول، تتم معالجة اسم المستخدم (<code>username</code>)، والبريد الإلكتروني (اختياري)، وكلمة المرور للتحقق من الجلسة.</li>
+            <li><strong>الجلسة والتقدم التعليمي:</strong> معرف المستخدم، حالة التقدم في الوحدات، المراجعات، ورمز الجلسة (<code>sessionid</code> / <code>csrf</code>).</li>
+            <li><strong>البيانات التي لا يطلبها التطبيق:</strong> لا يطلب تطبيق أندرويد أذونات الكاميرا أو الميكروفون أو الموقع الجغرافي أو جهات الاتصال أو الملفات الشخصية، ولا يتضمن أي أدوات تتبع إعلانية.</li>
+          </ul>
+        {% elif current_lang == "en" %}
+          <h2>2. Categories of Data Collected</h2>
+          <ul>
+            <li><strong>Anonymous use:</strong> You can browse learning content without an account; interface language and local progress stay on your device.</li>
+            <li><strong>Optional account data:</strong> If you register or sign in, we process your <code>username</code>, optional <code>email</code>, and password to authenticate your session.</li>
+            <li><strong>Session and learning progress:</strong> User ID, unit/step progress, review state, and authentication session tokens (<code>sessionid</code> / <code>csrf</code>).</li>
+            <li><strong>Data not collected:</strong> The Android app does not request camera, microphone, location, contacts, or personal file permissions, and includes no advertising SDKs or third-party ad trackers.</li>
+          </ul>
+        {% else %}
+          <h2>2. Catégories de données collectées</h2>
+          <ul>
+            <li><strong>Utilisation sans compte :</strong> Vous pouvez utiliser l’application sans créer de compte ; la langue d’interface et votre progression locale restent enregistrées sur votre appareil.</li>
+            <li><strong>Compte apprenant (optionnel) :</strong> En cas d’inscription ou de connexion, nous traitons votre identifiant (<code>username</code>), votre adresse e-mail (optionnelle) et votre mot de passe pour authentifier la session.</li>
+            <li><strong>Session et progression pédagogique :</strong> Identifiant utilisateur, avancement par unité/étape, état de révision et jetons de session (<code>sessionid</code> / <code>csrf</code>).</li>
+            <li><strong>Données non collectées :</strong> L’application Android ne demande ni caméra, ni microphone, ni localisation, ni contacts, ni accès aux fichiers personnels, et n’intègre ni publicité ni traceur publicitaire tiers.</li>
+          </ul>
+        {% endif %}
+      </article>
+
+      <article class="card glass bk-legal-card">
+        {% if current_lang == "ar" %}
+          <h2>3. الأغراض والمصادقة والتخزين المحلي والمزامنة</h2>
+          <ul>
+            <li><strong>الأغراض:</strong> توفير المحتوى التعليمي، حفظ التقدم، ومزامنة التقدم عبر الأجهزة عند تسجيل الدخول.</li>
+            <li><strong>المصادقة والحسابات:</strong> تتم المصادقة عبر HTTPS مع الخادم وتُحفظ بيانات الجلسة محلياً داخل مساحة التخزين الآمنة في أندرويد.</li>
+            <li><strong>التخزين المحلي والمزامنة:</strong> تُخزَّن التفضيلات والتقدم محلياً (<code>SharedPreferences</code>)، كما تُحفظ الملفات الصوتية التي تم تشغيلها محلياً (<code>AudioFileCacheService</code>) لإتاحة إعادة الاستماع، وتتم المزامنة مع الخادم عند الاتصال بحساب نشط.</li>
+          </ul>
+        {% elif current_lang == "en" %}
+          <h2>3. Purposes, Authentication, Local Storage and Sync</h2>
+          <ul>
+            <li><strong>Purposes:</strong> Delivering learning content, saving your progress, and syncing progress across sessions when signed in.</li>
+            <li><strong>Authentication and accounts:</strong> Sign-in and registration occur over HTTPS, and session credentials are stored in Android secure storage.</li>
+            <li><strong>Local storage and sync:</strong> Language and local progress are stored in <code>SharedPreferences</code>; played audio files are cached locally (<code>AudioFileCacheService</code>) for replay, and progress syncs with the server when signed in.</li>
+          </ul>
+        {% else %}
+          <h2>3. Finalités, authentification, stockage local et synchronisation</h2>
+          <ul>
+            <li><strong>Finalités :</strong> Fournir les contenus pédagogiques, enregistrer votre progression et la synchroniser si vous utilisez un compte.</li>
+            <li><strong>Authentification et comptes :</strong> L’inscription et la connexion transitent par HTTPS ; les jetons de session sont conservés dans le stockage sécurisé Android.</li>
+            <li><strong>Stockage local et synchronisation :</strong> Vos préférences et votre progression locale sont enregistrées via <code>SharedPreferences</code> ; les fichiers audio déjà écoutés sont mis en cache localement (<code>AudioFileCacheService</code>) et la progression est synchronisée avec l’API lorsqu’un compte est connecté.</li>
+          </ul>
+        {% endif %}
+      </article>
+
+      <article class="card glass bk-legal-card">
+        {% if current_lang == "ar" %}
+          <h2>4. الخدمات الخارجية ومدة الاحتفاظ</h2>
+          <p><strong>الخدمات الخارجية المستخدمة فعلياً:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — مثلاً Render / Cloudflare R2 / أي مزود فعلي آخر]</span></p>
+          <p><strong>مدة أو معايير الاحتفاظ بالبيانات:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — مدة حفظ الحسابات والسجلات التقنية والنسخ الاحتياطية]</span></p>
+          <p>تبقى البيانات المحلية على جهازك حتى تسجيل الخروج أو إزالة تثبيت التطبيق.</p>
+        {% elif current_lang == "en" %}
+          <h2>4. Third-Party Services and Retention</h2>
+          <p><strong>Third-party services actually used:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — e.g. Render / Cloudflare R2 / other active providers]</span></p>
+          <p><strong>Retention periods or criteria:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — account data, server logs, and backups]</span></p>
+          <p>Local device data remains on your phone until you sign out or uninstall the application.</p>
+        {% else %}
+          <h2>4. Services tiers utilisés et conservation</h2>
+          <p><strong>Services tiers réellement utilisés :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — ex. Render / Cloudflare R2 / autre prestataire actif]</span></p>
+          <p><strong>Durées ou critères de conservation :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — comptes, journaux serveur et sauvegardes]</span></p>
+          <p>Les données locales sur votre appareil sont conservées jusqu’à la déconnexion ou la désinstallation de l’application.</p>
+        {% endif %}
+      </article>
+
+      <article class="card glass bk-legal-card">
+        {% if current_lang == "ar" %}
+          <h2>5. حقوقك (الوصول والتصحيح والحذف) وبيانات التواصل</h2>
+          <p><strong>إجراءات الوصول والتصحيح وحذف الحساب:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — آلية التنفيذ والمهلة]</span></p>
+          <p><strong>البريد الإلكتروني / وسيلة التواصل للبيانات الشخصية:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — البريد الرسمي للخصوصية]</span></p>
+        {% elif current_lang == "en" %}
+          <h2>5. Your Rights (Access, Correction, Deletion) and Contact</h2>
+          <p><strong>Procedure for access, correction, and account deletion:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — operational procedure and timeframe]</span></p>
+          <p><strong>Privacy contact details:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — official privacy contact]</span></p>
+        {% else %}
+          <h2>5. Vos droits (accès, correction, suppression) et contact</h2>
+          <p><strong>Procédure d’accès, de rectification et de suppression de compte :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — modalités effectives et délai]</span></p>
+          <p><strong>Coordonnées de contact données personnelles :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — e-mail officiel confidentialité]</span></p>
+        {% endif %}
+      </article>
+
+      <div class="bk-legal-actions">
+        <a href="{% url 'web-mobile' %}" class="btn btn-secondary">
+          {% if current_lang == "ar" %}العودة إلى صفحة تطبيق أندرويد{% elif current_lang == "en" %}Back to Android App page{% else %}Retour à la page Android{% endif %}
+        </a>
+        <a href="{% url 'web-home' %}" class="btn btn-secondary">
+          {% if current_lang == "ar" %}الصفحة الرئيسية{% elif current_lang == "en" %}Home{% else %}Accueil{% endif %}
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

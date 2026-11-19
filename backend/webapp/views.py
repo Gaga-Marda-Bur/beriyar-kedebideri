@@ -526,3 +526,43 @@ def editor_page(request):
             "is_rtl": lang == "ar",
         },
     )
+
+
+def privacy_page(request):
+    lang = get_web_lang(request)
+
+    return render(
+        request,
+        "webapp/privacy.html",
+        {
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
+            "privacy_draft_incomplete": True,
+        },
+    )
+
+
+def mobile_download_page(request):
+    lang = get_web_lang(request)
+    configured_url = (getattr(settings, "ANDROID_APK_RELEASE_URL", "") or "").strip()
+    apk_download_enabled = bool(
+        configured_url
+        and configured_url.startswith("https://")
+        and "beriyar-kedebideri-v1.apk" not in configured_url
+    )
+
+    return render(
+        request,
+        "webapp/mobile.html",
+        {
+            "current_lang": lang,
+            "is_rtl": lang == "ar",
+            "apk_download_enabled": apk_download_enabled,
+            "apk_download_url": configured_url if apk_download_enabled else "",
+            "apk_package_id": "com.afrigama.beriyarkedebideri",
+            "apk_version": "1.1.0+4",
+            "apk_version_code": 4,
+            "apk_size_bytes": "70 333 989",
+            "apk_sha256": "F302F953245037CE6E4A1E904A4CFAA27AA86E00F06D7219821DCC161CA7F1A7",
+        },
+    )
