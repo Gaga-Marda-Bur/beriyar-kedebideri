@@ -612,3 +612,48 @@ class AccountDeletionFlowTests(TestCase):
             if str(s.get_decoded().get('_auth_user_id', '')) == str(fict.pk)
         ]
         self.assertEqual(active_user_sessions, [])
+
+
+class ChildSafetyGuestAndRegistrationAuditTests(TestCase):
+    def setUp(self):
+        from django.core.cache import caches
+        caches['feedback'].clear()
+
+    def test_guest_learning_and_privacy_multilingual_without_account(self):
+        for path in (reverse('web-home'), reverse('web-learning-path'), reverse('web-privacy')):
+            for lang in ('fr', 'en', 'ar'):
+                resp = self.client.get(f'{path}?lang={lang}')
+                self.assertEqual(resp.status_code, 200)
+                if lang == 'ar':
+                    self.assertContains(resp, 'dir="rtl"')
+        self.assertEqual(self.client.get('/api/learning/units/').status_code, 200)
+        self.assertEqual(self.client.get('/api/offline-packs/').status_code, 200)
+
+    def test_adult_registration_minimal_fields_and_no_unapproved_collection(self):
+        import json
+        from django.contrib.auth import get_user_model
+
+        client = Client(enforce_csrf_checks=True)
+        token = client.get('/api/core/auth/csrf/').json()['csrf_token']
+        resp = client.post(
+            '/api/core/auth/register/',
+            data=json.dumps({
+                'username': 'adult_audit_user',
+                'email': '',
+                'password': 'StrongAdultPass!2026',
+                'password_confirm': 'StrongAdultPass!2026',
+            }),
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=token,
+        )
+        self.assertEqual(resp.status_code, 201)
+        payload = resp.json()
+        self.assertTrue(payload['authenticated'])
+        self.assertEqual(payload['username'], 'adult_audit_user')
+        self.assertFalse(payload['is_staff'])
+
+        User = get_user_model()
+        user = User.objects.get(username='adult_audit_user')
+        self.assertEqual(user.email, '')
+        self.assertEqual(user.first_name, '')
+        self.assertEqual(user.last_name, '')
