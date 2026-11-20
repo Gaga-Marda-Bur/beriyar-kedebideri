@@ -475,3 +475,127 @@ class AccountDeletionFlowTests(TestCase):
         created.save()
         created.refresh_from_db()
         self.assertEqual(created.status, AccountDeletionRequest.STATUS_COMPLETED)
+
+    def test_atomic_admin_account_deletion_erases_and_anonymizes_all_user_data(self):
+        import json
+        from unittest.mock import patch
+        from django.contrib.sessions.models import Session
+        from core.models import AccountDeletionRequest
+        from feedback.models import FeedbackReport
+        from learning.models import LearningTheme, LearningUnit
+        from no_ena.models import NoEnaPublication
+        from progress.models import ProgressDeviceCredential, UnitProgress
+
+        fict = self.User.objects.create_user(
+            username='fict_full_erase',
+            email='fict_full@example.test',
+            password='FictErasePass!2026',
+        )
+        staff = self.User.objects.create_user(
+            username='admin_erase_op',
+            email='',
+            password='AdminErasePass!2026',
+            is_staff=True,
+            is_superuser=True,
+        )
+
+        theme = LearningTheme.objects.create(slug='t-erase', title_fr='T', status=LearningTheme.PUBLISHED)
+        unit = LearningUnit.objects.create(theme=theme, slug='u-erase', title_fr='U', status=LearningUnit.PUBLISHED)
+        ProgressDeviceCredential.objects.create(
+            device_id=f'account:{fict.pk}',
+            token_digest='a' * 64,
+            user=fict,
+            account_bound=True,
+        )
+        UnitProgress.objects.create(
+            user=fict,
+            device_id=f'account:{fict.pk}',
+            unit=unit,
+            status=UnitProgress.COMPLETED,
+            completed=True,
+        )
+        fb = FeedbackReport.objects.create(
+            user=fict,
+            device_id='dev-fict-123',
+            message='Fictitious bug report',
+        )
+        pub = NoEnaPublication.objects.create(
+            slug='noena-fict-erase',
+            title_fr='Test',
+            contributor_user=fict,
+        )
+
+        # Create active session & deletion request via API
+        user_client = Client()
+        token = self._csrf_token(user_client)
+        login_r = user_client.post(
+            '/api/core/auth/login/',
+            data=json.dumps({'username': 'fict_full_erase', 'password': 'FictErasePass!2026'}),
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=token,
+        )
+        self.assertEqual(login_r.status_code, 200)
+        token = login_r.json()['csrf_token']
+        del_r = user_client.post(
+            '/api/core/auth/deletion-request/',
+            data=json.dumps({'password': 'FictErasePass!2026', 'note': 'Mon nom est Fictif'}),
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=token,
+        )
+        self.assertEqual(del_r.status_code, 201)
+        req = AccountDeletionRequest.objects.get(reference_code=del_r.json()['reference_code'])
+
+        # Guard: cannot mark completed via Admin form while user still exists
+        admin_client = Client()
+        admin_client.force_login(staff)
+        change_url = reverse('admin:core_accountdeletionrequest_change', args=[req.pk])
+        guard_resp = admin_client.post(change_url, {'status': AccountDeletionRequest.STATUS_COMPLETED})
+        self.assertEqual(guard_resp.status_code, 200)
+        req.refresh_from_db()
+        self.assertEqual(req.status, AccountDeletionRequest.STATUS_PENDING)
+
+        # Rollback test: failure mid-deletion must not leave partial deletion or mark completed
+        from core.deletion import execute_account_deletion
+        with patch('django.db.models.query.QuerySet.delete', side_effect=RuntimeError('Simulated DB error')):
+            with self.assertRaises(RuntimeError):
+                execute_account_deletion(req)
+        self.assertTrue(self.User.objects.filter(pk=fict.pk).exists())
+        self.assertTrue(UnitProgress.objects.filter(user=fict).exists())
+        req.refresh_from_db()
+        self.assertEqual(req.status, AccountDeletionRequest.STATUS_PENDING)
+
+        # Execute atomic deletion via Django Admin action
+        changelist_url = reverse('admin:core_accountdeletionrequest_changelist')
+        action_resp = admin_client.post(
+            changelist_url,
+            {
+                'action': 'execute_selected_account_deletions',
+                '_selected_action': [str(req.pk)],
+            },
+        )
+        self.assertEqual(action_resp.status_code, 302)
+
+        # Verify post-deletion state across all models
+        self.assertFalse(self.User.objects.filter(pk=fict.pk).exists())
+        self.assertFalse(UnitProgress.objects.filter(device_id=f'account:{fict.pk}').exists())
+        self.assertFalse(ProgressDeviceCredential.objects.filter(device_id=f'account:{fict.pk}').exists())
+
+        fb.refresh_from_db()
+        self.assertIsNone(fb.user)
+        self.assertEqual(fb.device_id, '')
+
+        pub.refresh_from_db()
+        self.assertIsNone(pub.contributor_user)
+
+        req.refresh_from_db()
+        self.assertIsNone(req.user)
+        self.assertEqual(req.status, AccountDeletionRequest.STATUS_COMPLETED)
+        self.assertEqual(req.requested_username, f'[deleted:{req.reference_code}]')
+        self.assertEqual(req.user_note, '')
+        self.assertIsNotNone(req.processed_at)
+
+        active_user_sessions = [
+            s for s in Session.objects.all()
+            if str(s.get_decoded().get('_auth_user_id', '')) == str(fict.pk)
+        ]
+        self.assertEqual(active_user_sessions, [])
