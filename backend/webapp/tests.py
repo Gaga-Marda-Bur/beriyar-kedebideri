@@ -689,5 +689,202 @@ class ChildSafetyGuestAndRegistrationAuditTests(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertContains(resp, expected)
             self.assertContains(resp, reverse('web-privacy'))
+            self.assertContains(resp, 'id="authOrientationStep"')
+            self.assertContains(resp, 'data-orientation-choice="adult"')
+            self.assertContains(resp, 'data-orientation-choice="minor"')
             if lang == 'ar':
                 self.assertContains(resp, 'dir="rtl"')
+
+
+class RegistrationAgeSafeguardTests(TestCase):
+    def setUp(self):
+        from django.core.cache import caches
+        caches['feedback'].clear()
+
+    def _csrf(self, client):
+        return client.get('/api/core/auth/csrf/').json()['csrf_token']
+
+    def test_adult_orientation_and_registration_allowed_and_token_is_single_use(self):
+        import json
+        from django.test import override_settings
+
+        with override_settings(REGISTRATION_AGE_GATE_MODE='adult_orientation_required'):
+            client = Client(enforce_csrf_checks=True)
+            csrf = self._csrf(client)
+            orient = client.post(
+                '/api/core/auth/registration-orientation/',
+                data=json.dumps({'profile_category': 'adult'}),
+                content_type='application/json',
+                HTTP_X_CSRFTOKEN=csrf,
+            )
+            self.assertEqual(orient.status_code, 200)
+            orient_data = orient.json()
+            self.assertTrue(orient_data['allowed'])
+            orient_token = orient_data['orientation_token']
+
+            reg = client.post(
+                '/api/core/auth/register/',
+                data=json.dumps({
+                    'username': 'adult_oriented_1',
+                    'email': '',
+                    'password': 'StrongAdultPass!2026',
+                    'password_confirm': 'StrongAdultPass!2026',
+                    'profile_category': 'adult',
+                    'orientation_token': orient_token,
+                }),
+                content_type='application/json',
+                HTTP_X_CSRFTOKEN=csrf,
+            )
+            self.assertEqual(reg.status_code, 201)
+
+            # Token reuse must be refused (single-use)
+            csrf2 = self._csrf(client)
+            reuse = client.post(
+                '/api/core/auth/register/',
+                data=json.dumps({
+                    'username': 'adult_oriented_2',
+                    'email': '',
+                    'password': 'StrongAdultPass!2026',
+                    'password_confirm': 'StrongAdultPass!2026',
+                    'profile_category': 'adult',
+                    'orientation_token': orient_token,
+                }),
+                content_type='application/json',
+                HTTP_X_CSRFTOKEN=csrf2,
+            )
+            self.assertEqual(reuse.status_code, 403)
+            self.assertEqual(reuse.json()['code'], 'orientation_required')
+
+    def test_minor_orientation_and_direct_api_bypass_attempts_refused(self):
+        import json
+        from django.test import override_settings
+
+        with override_settings(REGISTRATION_AGE_GATE_MODE='adult_orientation_required'):
+            client = Client(enforce_csrf_checks=True)
+            csrf = self._csrf(client)
+
+            # 1. Minor orientation returns allowed=False
+            minor_orient = client.post(
+                '/api/core/auth/registration-orientation/',
+                data=json.dumps({'profile_category': 'minor'}),
+                content_type='application/json',
+                HTTP_X_CSRFTOKEN=csrf,
+            )
+            self.assertEqual(minor_orient.status_code, 200)
+            self.assertFalse(minor_orient.json()['allowed'])
+            self.assertEqual(minor_orient.json()['code'], 'minor_guest_mode_required')
+
+            # 2. Minor cannot register
+            minor_reg = client.post(
+                '/api/core/auth/register/',
+                data=json.dumps({
+                    'username': 'minor_blocked_1',
+                    'password': 'StrongMinorPass!2026',
+                    'password_confirm': 'StrongMinorPass!2026',
+                    'profile_category': 'minor',
+                }),
+                content_type='application/json',
+                HTTP_X_CSRFTOKEN=csrf,
+            )
+            self.assertEqual(minor_reg.status_code, 403)
+            self.assertEqual(minor_reg.json()['code'], 'minor_guest_mode_required')
+
+            # 3. Direct API call without valid orientation token or with falsified token refused
+            direct_client = Client(enforce_csrf_checks=True)
+            csrf_d = self._csrf(direct_client)
+            direct_reg = direct_client.post(
+                '/api/core/auth/register/',
+                data=json.dumps({
+                    'username': 'direct_bypass_1',
+                    'password': 'StrongBypassPass!2026',
+                    'password_confirm': 'StrongBypassPass!2026',
+                    'profile_category': 'adult',
+                    'orientation_token': 'forged-token-123',
+                }),
+                content_type='application/json',
+                HTTP_X_CSRFTOKEN=csrf_d,
+            )
+            self.assertEqual(direct_reg.status_code, 403)
+            self.assertEqual(direct_reg.json()['code'], 'orientation_required')
+
+            # 4. Invalid/missing orientation category returns 400
+            bad_cat = direct_client.post(
+                '/api/core/auth/registration-orientation/',
+                data=json.dumps({'profile_category': 'unknown'}),
+                content_type='application/json',
+                HTTP_X_CSRFTOKEN=csrf_d,
+            )
+            self.assertEqual(bad_cat.status_code, 400)
+
+    def test_misconfigured_gate_fails_closed_and_off_mode_still_blocks_declared_minor(self):
+        import json
+        from django.test import override_settings
+
+        # Misconfigured mode -> 503 fail-closed
+        with override_settings(REGISTRATION_AGE_GATE_MODE='broken_mode'):
+            client = Client(enforce_csrf_checks=True)
+            csrf = self._csrf(client)
+            resp = client.post(
+                '/api/core/auth/register/',
+                data=json.dumps({
+                    'username': 'failclosed_user',
+                    'password': 'StrongPass!2026',
+                    'password_confirm': 'StrongPass!2026',
+                }),
+                content_type='application/json',
+                HTTP_X_CSRFTOKEN=csrf,
+            )
+            self.assertEqual(resp.status_code, 503)
+            self.assertEqual(resp.json()['code'], 'registration_gate_misconfigured')
+
+        # Off mode (default) still refuses explicitly declared minor
+        with override_settings(REGISTRATION_AGE_GATE_MODE='off'):
+            client = Client(enforce_csrf_checks=True)
+            csrf = self._csrf(client)
+            minor_resp = client.post(
+                '/api/core/auth/register/',
+                data=json.dumps({
+                    'username': 'declared_minor_off',
+                    'password': 'StrongPass!2026',
+                    'password_confirm': 'StrongPass!2026',
+                    'profile_category': 'minor',
+                }),
+                content_type='application/json',
+                HTTP_X_CSRFTOKEN=csrf,
+            )
+            self.assertEqual(minor_resp.status_code, 403)
+
+    def test_self_declaration_limitation_explicit_proof(self):
+        """
+        Preuve explicite de la limite de l'autodéclaration :
+        un utilisateur (même mineur en réalité) qui fournit une déclaration 'adult'
+        et un jeton d'orientation valide ne peut pas être identifié comme mineur
+        par ce seul mécanisme déclaratif.
+        """
+        import json
+        from django.test import override_settings
+
+        with override_settings(REGISTRATION_AGE_GATE_MODE='adult_orientation_required'):
+            client = Client(enforce_csrf_checks=True)
+            csrf = self._csrf(client)
+            orient = client.post(
+                '/api/core/auth/registration-orientation/',
+                data=json.dumps({'profile_category': 'adult'}),
+                content_type='application/json',
+                HTTP_X_CSRFTOKEN=csrf,
+            )
+            token = orient.json()['orientation_token']
+            resp = client.post(
+                '/api/core/auth/register/',
+                data=json.dumps({
+                    'username': 'self_declared_adult_limit',
+                    'email': '',
+                    'password': 'StrongLimitPass!2026',
+                    'password_confirm': 'StrongLimitPass!2026',
+                    'profile_category': 'adult',
+                    'orientation_token': token,
+                }),
+                content_type='application/json',
+                HTTP_X_CSRFTOKEN=csrf,
+            )
+            self.assertEqual(resp.status_code, 201)

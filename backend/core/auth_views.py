@@ -1,5 +1,9 @@
 import json
+import re
+import secrets
+import time
 
+from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.password_validation import validate_password
 from django.core.cache import caches
@@ -7,10 +11,10 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
+from django.utils.crypto import constant_time_compare
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_protect
-import re
 from rest_framework.throttling import AnonRateThrottle
 
 from .models import AccountDeletionRequest
@@ -60,6 +64,17 @@ class LearnerDeletionThrottle(AnonRateThrottle):
 
 
 _USERNAME_RE = re.compile(r'^[A-Za-z0-9_.@-]{3,150}$')
+_VALID_REGISTRATION_GATE_MODES = ('off', 'adult_orientation_required')
+_ORIENTATION_TOKEN_TTL_SECONDS = 600
+_ORIENTATION_SESSION_KEY = 'bk_reg_orientation_token'
+_ORIENTATION_MINOR_SESSION_KEY = 'bk_reg_orientation_minor'
+
+
+def _get_registration_age_gate_mode() -> str:
+    raw = getattr(settings, 'REGISTRATION_AGE_GATE_MODE', 'off')
+    if not isinstance(raw, str):
+        return 'invalid'
+    return raw.strip().lower()
 
 
 def _user_payload(request, user):
@@ -89,7 +104,10 @@ class LearnerAuthView(View):
 
     def get(self, request):
         if self.action == 'csrf':
-            return JsonResponse({'csrf_token': get_token(request)})
+            return JsonResponse({
+                'csrf_token': get_token(request),
+                'registration_age_gate_mode': _get_registration_age_gate_mode(),
+            })
 
         if self.action != 'me':
             return JsonResponse({'detail': 'Method not allowed'}, status=405)
@@ -103,6 +121,9 @@ class LearnerAuthView(View):
         if self.action == 'logout':
             logout(request)
             return JsonResponse({'signed_out': True})
+
+        if self.action == 'registration_orientation':
+            return self._handle_registration_orientation(request)
 
         if self.action == 'register':
             return self._handle_register(request)
@@ -143,7 +164,87 @@ class LearnerAuthView(View):
             delattr(request, '_bk_is_pilot_user')
         return JsonResponse(_user_payload(request, user))
 
+    def _handle_registration_orientation(self, request):
+        mode = _get_registration_age_gate_mode()
+        if mode not in _VALID_REGISTRATION_GATE_MODES:
+            return JsonResponse(
+                {
+                    'detail': 'Configuration du parcours d’inscription invalide.',
+                    'code': 'registration_gate_misconfigured',
+                },
+                status=503,
+            )
+
+        if not LearnerRegisterThrottle().allow_request(request, self):
+            return JsonResponse({'detail': 'Retry later'}, status=429)
+
+        if len(request.body) > 1024:
+            return JsonResponse(
+                {'detail': 'Requête d’orientation invalide.', 'code': 'invalid_orientation_category'},
+                status=400,
+            )
+
+        try:
+            body = json.loads(request.body)
+            category = body.get('profile_category')
+            if not isinstance(category, str):
+                raise ValueError
+            category = category.strip().lower()
+        except (ValueError, TypeError):
+            return JsonResponse(
+                {'detail': 'Catégorie de profil invalide.', 'code': 'invalid_orientation_category'},
+                status=400,
+            )
+
+        if category == 'minor':
+            request.session.pop(_ORIENTATION_SESSION_KEY, None)
+            request.session[_ORIENTATION_MINOR_SESSION_KEY] = True
+            return JsonResponse(
+                {
+                    'allowed': False,
+                    'profile_category': 'minor',
+                    'code': 'minor_guest_mode_required',
+                    'detail': (
+                        'Tu peux apprendre gratuitement sur Beriyar Kedebideri sans créer de compte. '
+                        'Pour le moment, les comptes personnels ne sont pas disponibles pour les enfants. '
+                        'Tu peux continuer en mode invité.'
+                    ),
+                },
+                status=200,
+            )
+
+        if category == 'adult':
+            token = secrets.token_urlsafe(24)
+            request.session.pop(_ORIENTATION_MINOR_SESSION_KEY, None)
+            request.session[_ORIENTATION_SESSION_KEY] = {
+                'token': token,
+                'expires_at': int(time.time()) + _ORIENTATION_TOKEN_TTL_SECONDS,
+            }
+            return JsonResponse(
+                {
+                    'allowed': True,
+                    'profile_category': 'adult',
+                    'orientation_token': token,
+                },
+                status=200,
+            )
+
+        return JsonResponse(
+            {'detail': 'Catégorie de profil non reconnue.', 'code': 'invalid_orientation_category'},
+            status=400,
+        )
+
     def _handle_register(self, request):
+        mode = _get_registration_age_gate_mode()
+        if mode not in _VALID_REGISTRATION_GATE_MODES:
+            return JsonResponse(
+                {
+                    'detail': 'Configuration du parcours d’inscription invalide.',
+                    'code': 'registration_gate_misconfigured',
+                },
+                status=503,
+            )
+
         if not LearnerRegisterThrottle().allow_request(request, self):
             return JsonResponse({'detail': 'Retry later'}, status=429)
 
@@ -156,12 +257,68 @@ class LearnerAuthView(View):
             password = body['password']
             password_confirm = body.get('password_confirm', password)
             email = body.get('email', '')
-            if not isinstance(username, str) or not isinstance(password, str) or not isinstance(email, str):
+            profile_category = body.get('profile_category', '')
+            orientation_token = body.get('orientation_token', '')
+            if (
+                not isinstance(username, str)
+                or not isinstance(password, str)
+                or not isinstance(email, str)
+                or not isinstance(profile_category, str)
+                or not isinstance(orientation_token, str)
+            ):
                 raise ValueError
             username = username.strip()
             email = email.strip()
+            profile_category = profile_category.strip().lower()
+            orientation_token = orientation_token.strip()
         except (ValueError, TypeError, KeyError):
             return JsonResponse({'detail': 'Invalid registration payload'}, status=400)
+
+        # Un profil explicitement déclaré mineur est toujours orienté vers le mode invité.
+        if profile_category == 'minor':
+            return JsonResponse(
+                {
+                    'detail': (
+                        'Tu peux apprendre gratuitement sur Beriyar Kedebideri sans créer de compte. '
+                        'Pour le moment, les comptes personnels ne sont pas disponibles pour les enfants. '
+                        'Tu peux continuer en mode invité.'
+                    ),
+                    'code': 'minor_guest_mode_required',
+                },
+                status=403,
+            )
+
+        if mode == 'adult_orientation_required':
+            stored = request.session.get(_ORIENTATION_SESSION_KEY)
+            if request.session.get(_ORIENTATION_MINOR_SESSION_KEY) and not stored:
+                return JsonResponse(
+                    {
+                        'detail': (
+                            'Tu peux apprendre gratuitement sur Beriyar Kedebideri sans créer de compte. '
+                            'Pour le moment, les comptes personnels ne sont pas disponibles pour les enfants. '
+                            'Tu peux continuer en mode invité.'
+                        ),
+                        'code': 'minor_guest_mode_required',
+                    },
+                    status=403,
+                )
+            if (
+                profile_category != 'adult'
+                or not orientation_token
+                or not isinstance(stored, dict)
+                or not isinstance(stored.get('token'), str)
+                or int(stored.get('expires_at', 0)) < int(time.time())
+                or not constant_time_compare(stored['token'], orientation_token)
+            ):
+                return JsonResponse(
+                    {
+                        'detail': 'Étape d’orientation préalable requise avant la création de compte.',
+                        'code': 'orientation_required',
+                    },
+                    status=403,
+                )
+            # Jeton à usage unique : consommé immédiatement pour empêcher toute réutilisation.
+            request.session.pop(_ORIENTATION_SESSION_KEY, None)
 
         if not _USERNAME_RE.fullmatch(username):
             return JsonResponse(

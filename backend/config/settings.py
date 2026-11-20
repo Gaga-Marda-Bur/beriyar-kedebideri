@@ -295,6 +295,8 @@ ANDROID_APK_URL = config(
     default="https://media.beriyarkedebideri.com/apk/beriyar-kedebideri-v1.apk",
 )
 ANDROID_APK_RELEASE_URL = config("ANDROID_APK_RELEASE_URL", default="")
+# Mode du parcours d'orientation à l'inscription ('off' par défaut, ou 'adult_orientation_required').
+REGISTRATION_AGE_GATE_MODE = config("REGISTRATION_AGE_GATE_MODE", default="off").strip().lower()
 
 # Réglages HTTPS / HSTS / cookies : voir config/security.py (bloc unique A14).
 
