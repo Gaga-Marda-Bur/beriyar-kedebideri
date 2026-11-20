@@ -577,21 +577,23 @@ def mobile_download_page(request):
             "apk_download_enabled": apk_download_enabled,
             "apk_download_url": configured_url if apk_download_enabled else "",
             "apk_package_id": "com.afrigama.beriyarkedebideri",
-            "apk_version": "1.1.0+4",
-            "apk_version_code": 4,
-            "apk_size_bytes": "70 333 989",
-            "apk_sha256": "F302F953245037CE6E4A1E904A4CFAA27AA86E00F06D7219821DCC161CA7F1A7",
+            "apk_version": "1.1.1+5",
+            "apk_version_code": 5,
+            "apk_size_bytes": "70 694 645",
+            "apk_sha256": "4D3E636119D9A924E2B05CB49B11EACC438F2D3A353EF51FF453CA7C62671213",
         },
     )
 
 
 def account_deletion_page(request):
+    from core.auth_views import LearnerDeletionThrottle
     from core.models import AccountDeletionRequest
 
     lang = get_web_lang(request)
     deletion_result = None
     deletion_error = None
     existing_request = None
+    status_code = 200
 
     if request.user.is_authenticated and request.user.is_active:
         existing_request = AccountDeletionRequest.objects.filter(
@@ -603,33 +605,42 @@ def account_deletion_page(request):
         ).first()
 
         if request.method == "POST":
-            password = request.POST.get("password", "")
-            note = (request.POST.get("note", "") or "").strip()[:500]
-            verified_user = authenticate(
-                request,
-                username=request.user.get_username(),
-                password=password,
-            )
-            if verified_user is None or verified_user.pk != request.user.pk:
+            if not LearnerDeletionThrottle().allow_request(request, None):
+                status_code = 429
                 if lang == "ar":
-                    deletion_error = "كلمة المرور غير صحيحة."
+                    deletion_error = "تم تجاوز الحد المسموح به من الطلبات. يرجى المحاولة لاحقاً."
                 elif lang == "en":
-                    deletion_error = "Incorrect password."
+                    deletion_error = "Too many requests. Please try again later."
                 else:
-                    deletion_error = "Mot de passe incorrect."
-            elif existing_request is not None:
-                deletion_result = existing_request
+                    deletion_error = "Trop de tentatives. Veuillez réessayer plus tard."
             else:
-                deletion_result = AccountDeletionRequest.objects.create(
-                    user=request.user,
-                    requested_username=request.user.get_username(),
-                    has_email=bool((request.user.email or "").strip()),
-                    source=AccountDeletionRequest.SOURCE_WEB,
-                    verification_method="session_and_password",
-                    status=AccountDeletionRequest.STATUS_PENDING,
-                    user_note=note,
+                password = request.POST.get("password", "")
+                note = (request.POST.get("note", "") or "").strip()[:500]
+                verified_user = authenticate(
+                    request,
+                    username=request.user.get_username(),
+                    password=password,
                 )
-                existing_request = deletion_result
+                if verified_user is None or verified_user.pk != request.user.pk:
+                    if lang == "ar":
+                        deletion_error = "كلمة المرور غير صحيحة."
+                    elif lang == "en":
+                        deletion_error = "Incorrect password."
+                    else:
+                        deletion_error = "Mot de passe incorrect."
+                elif existing_request is not None:
+                    deletion_result = existing_request
+                else:
+                    deletion_result = AccountDeletionRequest.objects.create(
+                        user=request.user,
+                        requested_username=request.user.get_username(),
+                        has_email=bool((request.user.email or "").strip()),
+                        source=AccountDeletionRequest.SOURCE_WEB,
+                        verification_method="session_and_password",
+                        status=AccountDeletionRequest.STATUS_PENDING,
+                        user_note=note,
+                    )
+                    existing_request = deletion_result
 
     response = render(
         request,
@@ -641,6 +652,7 @@ def account_deletion_page(request):
             "deletion_error": deletion_error,
             "existing_request": existing_request,
         },
+        status=status_code,
     )
     if request.user.is_authenticated or request.method == "POST":
         response["Cache-Control"] = "private, no-store"

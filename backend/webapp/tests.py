@@ -204,11 +204,11 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
         self.assertEqual(resp_fr.status_code, 200)
         self.assertTemplateUsed(resp_fr, 'webapp/mobile.html')
         self.assertContains(resp_fr, staticfiles_storage.url('webapp/img/logo.png'))
-        self.assertContains(resp_fr, '1.1.0+4')
-        self.assertContains(resp_fr, '70 333 989')
+        self.assertContains(resp_fr, '1.1.1+5')
+        self.assertContains(resp_fr, '70 694 645')
         self.assertContains(
             resp_fr,
-            'F302F953245037CE6E4A1E904A4CFAA27AA86E00F06D7219821DCC161CA7F1A7',
+            '4D3E636119D9A924E2B05CB49B11EACC438F2D3A353EF51FF453CA7C62671213',
         )
         self.assertContains(resp_fr, 'Ne désinstallez pas')
         self.assertContains(resp_fr, reverse('web-privacy'))
@@ -284,7 +284,9 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
 class AccountDeletionFlowTests(TestCase):
     def setUp(self):
         from django.contrib.auth import get_user_model
+        from django.core.cache import caches
 
+        caches['feedback'].clear()
         self.User = get_user_model()
         self.user_no_email = self.User.objects.create_user(
             username='learner_no_email',
@@ -381,3 +383,95 @@ class AccountDeletionFlowTests(TestCase):
         self.assertEqual(good_post.status_code, 200)
         self.assertContains(good_post, 'DEL-')
         self.assertContains(good_post, 'pas encore supprimé')
+
+    def test_deletion_security_csrf_rate_limit_third_party_and_admin_access(self):
+        import json
+        from django.core.cache import caches
+        from django.utils import timezone
+        from core.models import AccountDeletionRequest
+
+        caches['feedback'].clear()
+
+        # 1. CSRF enforcement on API deletion request
+        no_csrf = self.csrf_client.post(
+            '/api/core/auth/deletion-request/',
+            data=json.dumps({'password': 'StrongPassword!2026'}),
+            content_type='application/json',
+        )
+        self.assertEqual(no_csrf.status_code, 403)
+
+        # 2. Third-party protection: payload targeting another user is ignored; only request.user is used
+        other_user = self.User.objects.create_user(
+            username='victim_user',
+            email='victim@example.test',
+            password='VictimPassword!2026',
+        )
+        token = self._csrf_token(self.csrf_client)
+        login_resp = self.csrf_client.post(
+            '/api/core/auth/login/',
+            data=json.dumps({'username': 'learner_no_email', 'password': 'StrongPassword!2026'}),
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=token,
+        )
+        self.assertEqual(login_resp.status_code, 200)
+        token = login_resp.json()['csrf_token']
+
+        spoof_resp = self.csrf_client.post(
+            '/api/core/auth/deletion-request/',
+            data=json.dumps({
+                'password': 'StrongPassword!2026',
+                'username': 'victim_user',
+                'user_id': other_user.pk,
+                'source': 'mobile',
+            }),
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=token,
+        )
+        self.assertEqual(spoof_resp.status_code, 201)
+        self.assertFalse(AccountDeletionRequest.objects.filter(user=other_user).exists())
+        created = AccountDeletionRequest.objects.get(user=self.user_no_email)
+        self.assertEqual(created.requested_username, 'learner_no_email')
+
+        # 3. Rate limiting (5/hour -> 6th request returns 429)
+        for _ in range(4):
+            r = self.csrf_client.post(
+                '/api/core/auth/deletion-request/',
+                data=json.dumps({'password': 'WrongPassword!'}),
+                content_type='application/json',
+                HTTP_X_CSRFTOKEN=token,
+            )
+            self.assertEqual(r.status_code, 403)
+        throttled = self.csrf_client.post(
+            '/api/core/auth/deletion-request/',
+            data=json.dumps({'password': 'StrongPassword!2026'}),
+            content_type='application/json',
+            HTTP_X_CSRFTOKEN=token,
+        )
+        self.assertEqual(throttled.status_code, 429)
+
+        # 4. Admin-only access & manual workflow
+        learner_client = Client()
+        learner_client.force_login(self.user_no_email)
+        admin_url = reverse('admin:core_accountdeletionrequest_changelist')
+        learner_admin = learner_client.get(admin_url)
+        self.assertIn(learner_admin.status_code, (302, 403))
+
+        staff_user = self.User.objects.create_user(
+            username='admin_reviewer',
+            email='',
+            password='AdminPassword!2026',
+            is_staff=True,
+            is_superuser=True,
+        )
+        admin_client = Client()
+        admin_client.force_login(staff_user)
+        staff_admin = admin_client.get(admin_url)
+        self.assertEqual(staff_admin.status_code, 200)
+        self.assertContains(staff_admin, created.reference_code)
+
+        created.status = AccountDeletionRequest.STATUS_COMPLETED
+        created.processed_at = timezone.now()
+        created.admin_notes = 'Manual test deletion verified'
+        created.save()
+        created.refresh_from_db()
+        self.assertEqual(created.status, AccountDeletionRequest.STATUS_COMPLETED)
