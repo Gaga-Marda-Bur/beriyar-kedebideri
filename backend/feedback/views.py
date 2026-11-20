@@ -40,7 +40,10 @@ class FeedbackReportCreateAPIView(generics.CreateAPIView):
             context={"request": request},
         )
         serializer.is_valid(raise_exception=True)
-        feedback = serializer.save()
+        save_kwargs = {}
+        if not request.user.is_authenticated:
+            save_kwargs["device_id"] = ""
+        feedback = serializer.save(**save_kwargs)
 
         return Response(
             {

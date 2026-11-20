@@ -217,11 +217,11 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
         self.assertEqual(resp_fr.status_code, 200)
         self.assertTemplateUsed(resp_fr, 'webapp/mobile.html')
         self.assertContains(resp_fr, staticfiles_storage.url('webapp/img/logo.png'))
-        self.assertContains(resp_fr, '1.1.1+5')
-        self.assertContains(resp_fr, '70 694 645')
+        self.assertContains(resp_fr, '1.1.2+6')
+        self.assertContains(resp_fr, '70 694 649')
         self.assertContains(
             resp_fr,
-            '4D3E636119D9A924E2B05CB49B11EACC438F2D3A353EF51FF453CA7C62671213',
+            'F96AB0D35C764244B055E773E2869AAF6C131D70593B94A2279705D7DE4F128F',
         )
         self.assertContains(resp_fr, 'Ne désinstallez pas')
         self.assertContains(resp_fr, reverse('web-privacy'))
@@ -657,3 +657,37 @@ class ChildSafetyGuestAndRegistrationAuditTests(TestCase):
         self.assertEqual(user.email, '')
         self.assertEqual(user.first_name, '')
         self.assertEqual(user.last_name, '')
+
+    def test_guest_feedback_strips_persistent_device_id_server_side(self):
+        import json
+        from feedback.models import FeedbackReport
+
+        resp = self.client.post(
+            '/api/feedback/create/',
+            data=json.dumps({
+                'feedback_type': 'technical',
+                'title': 'Guest test',
+                'message': 'Guest report without storing device_id',
+                'device_id': 'guest-device-xyz-123',
+                'platform': 'android',
+                'language_code': 'fr',
+            }),
+            content_type='application/json',
+        )
+        self.assertEqual(resp.status_code, 201)
+        fb = FeedbackReport.objects.get(pk=resp.json()['id'])
+        self.assertIsNone(fb.user)
+        self.assertEqual(fb.device_id, '')
+
+    def test_web_registration_modal_shows_parental_and_guest_notice_fr_en_ar(self):
+        for lang, expected in [
+            ('fr', 'privilégie le <strong>mode invité</strong>'),
+            ('en', 'prefer <strong>guest mode</strong>'),
+            ('ar', '<strong>وضع الضيف</strong>'),
+        ]:
+            resp = self.client.get(reverse('web-home') + f'?lang={lang}')
+            self.assertEqual(resp.status_code, 200)
+            self.assertContains(resp, expected)
+            self.assertContains(resp, reverse('web-privacy'))
+            if lang == 'ar':
+                self.assertContains(resp, 'dir="rtl"')

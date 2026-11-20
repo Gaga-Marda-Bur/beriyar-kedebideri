@@ -468,6 +468,18 @@
                 </form>
 
                 <form id="authRegisterForm" class="auth-modal-form" hidden>
+                    <div class="auth-child-notice" role="note" style="padding: 0.75rem 0.9rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.22); background: rgba(15, 23, 42, 0.28); font-size: 0.88rem; line-height: 1.5; margin-bottom: 0.35rem;">
+                        {% if current_lang == "ar" %}
+                            <p style="margin: 0 0 0.4rem;">يتيح لك تطبيق Beriyar Kedebideri التعلّم مجاناً دون إنشاء حساب. إذا كنت طفلاً، يُفضَّل استخدام <strong>وضع الضيف</strong> وطلب مرافقة أحد الوالدين أو الولي. يخضع إنشاء حساب للقُصّر لشروط خاصة.</p>
+                            <p style="margin: 0;">الحساب اختياري ومخصّص فقط لمزامنة التقدم. <a href="{% url 'web-privacy' %}" style="text-decoration: underline;">سياسة الخصوصية</a></p>
+                        {% elif current_lang == "en" %}
+                            <p style="margin: 0 0 0.4rem;">Beriyar Kedebideri lets you learn for free without creating an account. If you are a child, prefer <strong>guest mode</strong> and ask a parent or guardian for guidance. Account creation for minors is subject to specific conditions.</p>
+                            <p style="margin: 0;">An account is optional and only used to sync progress. <a href="{% url 'web-privacy' %}" style="text-decoration: underline;">Privacy Policy</a></p>
+                        {% else %}
+                            <p style="margin: 0 0 0.4rem;">Beriyar Kedebideri permet d’apprendre gratuitement sans créer de compte. Si tu es un enfant, privilégie le <strong>mode invité</strong> et demande l’accompagnement d’un parent ou d’un responsable. La création d’un compte pour les mineurs est soumise à des conditions particulières.</p>
+                            <p style="margin: 0;">Le compte est optionnel et sert uniquement à synchroniser la progression. <a href="{% url 'web-privacy' %}" style="text-decoration: underline;">Politique de confidentialité</a></p>
+                        {% endif %}
+                    </div>
                     <label>
                         <span>{% if current_lang == "ar" %}اسم المستخدم{% elif current_lang == "en" %}Username{% else %}Nom d’utilisateur{% endif %}</span>
                         <input type="text" name="username" class="input" required minlength="3" maxlength="150" autocomplete="username">

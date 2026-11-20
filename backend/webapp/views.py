@@ -577,10 +577,10 @@ def mobile_download_page(request):
             "apk_download_enabled": apk_download_enabled,
             "apk_download_url": configured_url if apk_download_enabled else "",
             "apk_package_id": "com.afrigama.beriyarkedebideri",
-            "apk_version": "1.1.1+5",
-            "apk_version_code": 5,
-            "apk_size_bytes": "70 694 645",
-            "apk_sha256": "4D3E636119D9A924E2B05CB49B11EACC438F2D3A353EF51FF453CA7C62671213",
+            "apk_version": "1.1.2+6",
+            "apk_version_code": 6,
+            "apk_size_bytes": "70 694 649",
+            "apk_sha256": "F96AB0D35C764244B055E773E2869AAF6C131D70593B94A2279705D7DE4F128F",
         },
     )
 
