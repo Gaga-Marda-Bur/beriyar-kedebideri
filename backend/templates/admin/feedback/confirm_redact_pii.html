@@ -1,0 +1,42 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>Confirmation de suppression / caviardage des données personnelles (FeedbackReport)</h1>
+<p><strong>Attention :</strong> la dissociation d’un compte ne suffit pas à anonymiser un texte libre. Vérifiez manuellement chaque champ ci-dessous.</p>
+
+<form method="post">
+  {% csrf_token %}
+  <input type="hidden" name="action" value="redact_feedback_pii_action">
+  <input type="hidden" name="confirm_redact" value="yes">
+  {% for obj in queryset %}
+    <input type="hidden" name="_selected_action" value="{{ obj.pk }}">
+  {% endfor %}
+
+  <div style="margin: 1rem 0;">
+    <label><strong>Mode de traitement :</strong></label><br>
+    <label><input type="radio" name="redaction_mode" value="clear_all" checked> Suppression complète des champs personnels (titre, message, device_id ; métadonnées techniques conservées)</label><br>
+    <label><input type="radio" name="redaction_mode" value="manual"> Caviardage manuel (saisir les textes nettoyés ci-dessous)</label>
+  </div>
+
+  <div style="margin: 1rem 0;">
+    <label><input type="checkbox" name="clear_admin_note" value="1"> Effacer aussi <code>admin_note</code></label><br>
+    <label><input type="checkbox" name="clear_user" value="1"> Dissocier également <code>user</code></label>
+  </div>
+
+  {% for item in preview_items %}
+  <fieldset style="border: 1px solid #ccc; padding: 10px; margin-bottom: 12px;">
+    <legend><strong>Feedback #{{ item.obj.pk }}</strong> ({{ item.obj.feedback_type }} — {{ item.obj.status }})</legend>
+    {% if item.hints %}
+      <p style="color: #b45309;">Indices détectés (non exhaustifs) : {{ item.hints|join:", " }}</p>
+    {% endif %}
+    <p><label>Titre nettoyé (mode manuel) :</label><br>
+      <input type="text" name="manual_title_{{ item.obj.pk }}" value="{{ item.obj.title }}" style="width: 100%;"></p>
+    <p><label>Message nettoyé (mode manuel) :</label><br>
+      <textarea name="manual_message_{{ item.obj.pk }}" rows="3" style="width: 100%;">{{ item.obj.message }}</textarea></p>
+  </fieldset>
+  {% endfor %}
+
+  <button type="submit" class="default" style="padding: 8px 16px;">Confirmer le caviardage / la suppression PII</button>
+  <a href="." class="button cancel-link" style="margin-left: 10px;">Annuler</a>
+</form>
+{% endblock %}

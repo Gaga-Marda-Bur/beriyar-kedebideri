@@ -1,0 +1,47 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>Confirmation de suppression contrôlée des médias de feedback (R2 / stockage privé)</h1>
+<p><strong>Prévisualisation (dry-run) :</strong> aucun fichier n’a encore été supprimé. Vérifiez les chemins validés avant de confirmer.</p>
+
+<table style="width:100%; border-collapse: collapse; margin: 1rem 0;">
+  <thead>
+    <tr>
+      <th style="text-align:left; border-bottom:1px solid #ccc; padding:6px;">Feedback ID</th>
+      <th style="text-align:left; border-bottom:1px solid #ccc; padding:6px;">Type</th>
+      <th style="text-align:left; border-bottom:1px solid #ccc; padding:6px;">Chemin validé / refusé</th>
+      <th style="text-align:left; border-bottom:1px solid #ccc; padding:6px;">Statut prévisualisation</th>
+      <th style="text-align:left; border-bottom:1px solid #ccc; padding:6px;">Détail</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for rep in preview_reports %}
+      {% for item in rep.items %}
+      <tr>
+        <td style="padding:6px; border-bottom:1px solid #eee;">#{{ rep.feedback_id }}</td>
+        <td style="padding:6px; border-bottom:1px solid #eee;">{{ item.kind }}</td>
+        <td style="padding:6px; border-bottom:1px solid #eee;"><code>{{ item.path }}</code></td>
+        <td style="padding:6px; border-bottom:1px solid #eee;"><strong>{{ item.status }}</strong></td>
+        <td style="padding:6px; border-bottom:1px solid #eee;">{{ item.detail }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td style="padding:6px; border-bottom:1px solid #eee;">#{{ rep.feedback_id }}</td>
+        <td colspan="4" style="padding:6px; border-bottom:1px solid #eee;">Aucun média attaché.</td>
+      </tr>
+      {% endfor %}
+    {% endfor %}
+  </tbody>
+</table>
+
+<form method="post">
+  {% csrf_token %}
+  <input type="hidden" name="action" value="purge_feedback_media_action">
+  <input type="hidden" name="confirm_execute" value="yes">
+  {% for obj in queryset %}
+    <input type="hidden" name="_selected_action" value="{{ obj.pk }}">
+  {% endfor %}
+  <button type="submit" class="default" style="padding: 8px 16px;">Confirmer la suppression des médias validés</button>
+  <a href="." class="button cancel-link" style="margin-left: 10px;">Annuler</a>
+</form>
+{% endblock %}
