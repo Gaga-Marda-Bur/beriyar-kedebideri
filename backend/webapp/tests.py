@@ -197,6 +197,17 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
         self.assertContains(resp_ar, 'سياسة الخصوصية')
         self.assertContains(resp_ar, '[يُؤكَّد من قِبل المسؤول]')
 
+        for resp in (resp_fr, resp_en, resp_ar):
+            self.assertContains(resp, 'privacy@beriyarkedebideri.com')
+            self.assertContains(resp, 'support@beriyarkedebideri.com')
+            self.assertNotContains(resp, 'gmail.com')
+
+        for path in (reverse('web-home'), reverse('web-mobile'), reverse('web-account-deletion')):
+            for lang in ('fr', 'en', 'ar'):
+                r = self.client.get(f'{path}?lang={lang}')
+                self.assertEqual(r.status_code, 200)
+                self.assertNotContains(r, 'gmail.com')
+
     def test_mobile_page_multilingual_metadata_and_no_premature_download(self):
         from django.contrib.staticfiles.storage import staticfiles_storage
 

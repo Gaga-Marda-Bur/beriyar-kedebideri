@@ -138,13 +138,13 @@
         {% else %}
           {% if current_lang == "ar" %}
             <h2>لا يمكنك الوصول إلى التطبيق أو تسجيل الدخول؟</h2>
-            <p>يمكنك تسجيل الدخول على الموقع لتأكيد الطلب بكلمة المرور، أو مراسلة البريد المخصص للخصوصية <code dir="ltr">privacy@beriyarkedebideri.com</code> (بعد التفعيل الرسمي) مع ذكر اسم المستخدم (<code>username</code>).</p>
+            <p>يمكنك تسجيل الدخول على الموقع لتأكيد الطلب بكلمة المرور، أو إرسال طلب إلى البريد المخصص لاستقبال طلبات الخصوصية <code dir="ltr">privacy@beriyarkedebideri.com</code> مع ذكر اسم المستخدم (<code>username</code>).</p>
           {% elif current_lang == "en" %}
             <h2>Cannot access the app or sign in?</h2>
-            <p>You can sign in on this website to submit a password-verified request, or write to <code dir="ltr">privacy@beriyarkedebideri.com</code> (once officially active) mentioning your <code>username</code>.</p>
+            <p>You can sign in on this website to submit a password-verified request, or send a request to <code dir="ltr">privacy@beriyarkedebideri.com</code> mentioning your <code>username</code>.</p>
           {% else %}
             <h2>Vous n’avez plus accès à l’application ou à votre session ?</h2>
-            <p>Vous pouvez vous connecter sur le site pour confirmer la demande avec votre mot de passe, ou écrire à <code dir="ltr">privacy@beriyarkedebideri.com</code> (une fois activée) en indiquant votre identifiant (<code>username</code>).</p>
+            <p>Vous pouvez vous connecter sur le site pour confirmer la demande avec votre mot de passe, ou envoyer une demande à <code dir="ltr">privacy@beriyarkedebideri.com</code> en indiquant votre identifiant (<code>username</code>).</p>
           {% endif %}
           <div style="margin-top: 0.75rem;">
             <button type="button" class="btn btn-secondary" data-auth-login-open>
@@ -158,23 +158,26 @@
         {% if current_lang == "ar" %}
           <h2>نطاق الحذف والتحقق من الهوية والنسخ الاحتياطية</h2>
           <ul>
-            <li>يؤدي تنفيذ الحذف اليدوي إلى إزالة الحساب وتقدمك التعليمي المرتبط به، وفصل أو إخفاء هوية الملاحظات التقنية.</li>
+            <li>لا يتم الحذف تلقائياً ولا فورياً: يُراجع الطلب ويُنفّذ يدوياً من قِبل الإدارة بشكل ذري.</li>
+            <li>يزيل التنفيذ الإداري الحساب وتقدمك التعليمي المرتبط به وبيانات اعتماد المزامنة وجلساتك النشطة، ويُخفي هوية الملاحظات التقنية (بما في ذلك معرف الجهاز)، ويفصل رابط المساهم عن منشورات No Ena، ويمحو اسم المستخدم والملاحظة من سجل الطلب مع حفظ رمز مرجعي أدنى فقط.</li>
             <li>الحسابات المنشأة دون بريد إلكتروني تخضع لتحقق إضافي من الهوية قبل أي حذف لحماية حسابات الغير.</li>
-            <li>النسخ الاحتياطية التقنية لقاعدة البيانات تحتفظ بالسجلات مؤقتاً حتى انتهاء دورتها المجدولة.</li>
+            <li>النسخ الاحتياطية التقنية لقاعدة البيانات وسجلات المزودين الخارجيين تحتفظ ببياناتها مؤقتاً حتى انتهاء دورتها المجدولة.</li>
           </ul>
         {% elif current_lang == "en" %}
-          <h2>Deletion Scope, Identity Verification & Backups</h2>
+          <h2>Deletion Scope, Identity Verification &amp; Backups</h2>
           <ul>
-            <li>Manual deletion removes your learner account and associated progress, and anonymizes or dissociates technical reports.</li>
+            <li>Deletion is not automatic or instantaneous: requests are verified and executed manually by an administrator in an atomic operation.</li>
+            <li>Execution deletes your learner account, associated learning progress, sync credentials, and active sessions; anonymizes technical reports (including device ID); dissociates No Ena contributions; and scrubs your username and note from the request record while keeping only a minimal non-identifying reference trace.</li>
             <li>Accounts created without an email address require additional identity verification to protect against unauthorized third-party deletion.</li>
-            <li>Database backups retain snapshots until their scheduled rotation expires.</li>
+            <li>Database backups and external provider logs retain snapshots until their scheduled rotation expires.</li>
           </ul>
         {% else %}
           <h2>Périmètre de suppression, vérification d’identité et sauvegardes</h2>
           <ul>
-            <li>Le traitement manuel supprime le compte apprenant et les progressions associées, et anonymise ou dissocie les signalements techniques.</li>
+            <li>La suppression n’est ni automatique ni instantanée : la demande est vérifiée puis exécutée manuellement et de manière atomique par l’administration.</li>
+            <li>L’exécution supprime le compte apprenant, les progressions pédagogiques associées, les jetons de synchronisation et les sessions actives ; anonymise les signalements techniques (y compris l’identifiant d’appareil) ; dissocie le lien utilisateur des contributions No Ena ; et purge l’identifiant ainsi que la note libre du dossier de demande en ne conservant qu’une trace minimale non identifiante.</li>
             <li>Les comptes créés sans adresse e-mail nécessitent une vérification complémentaire afin d’empêcher la suppression du compte d’un tiers.</li>
-            <li>Les sauvegardes techniques de base de données conservent les instantanés jusqu’à expiration de leur rotation.</li>
+            <li>Les sauvegardes techniques de base de données et les journaux des prestataires d’infrastructure conservent leurs données jusqu’à expiration de leur cycle de rotation.</li>
           </ul>
         {% endif %}
       </article>

@@ -94,17 +94,20 @@
 
       <article class="card glass bk-legal-card">
         {% if current_lang == "ar" %}
-          <h2>1. الجهة المسؤولة عن المعالجة وتاريخ التحديث</h2>
-          <p><strong>المسؤول عن المعالجة:</strong> Beriyar Kedebideri (BK)، مشروع تعليمي مستقل يُدار من قِبل شخص طبيعي (الإقامة: تركيا — <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — الاسم الكامل]</span>).</p>
-          <p><strong>تاريخ آخر تحديث:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — تاريخ النشر الرسمي]</span></p>
+          <h2>1. الجهة المسؤولة عن المعالجة ووسائل التواصل</h2>
+          <p><strong>المسؤول عن المعالجة:</strong> Beriyar Kedebideri (BK)، منصة تعليمية مستقلة يُديرها شخص طبيعي. ليست المنصة حالياً شركة مسجّلة ولا فرعاً رسمياً لـ GAGADO أو Unique Lingua Center أو جمعية ABH (<span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — الاسم القانوني الكامل والعنوان إن لزم]</span>).</p>
+          <p><strong>تواصل الخصوصية والبيانات الشخصية (استقبال الطلبات):</strong> <code dir="ltr">privacy@beriyarkedebideri.com</code></p>
+          <p><strong>الدعم التقني (استقبال الرسائل):</strong> <code dir="ltr">support@beriyarkedebideri.com</code></p>
         {% elif current_lang == "en" %}
-          <h2>1. Data Controller and Last Update</h2>
-          <p><strong>Data Controller:</strong> Beriyar Kedebideri (BK), an independent educational project operated by a natural person (residence: Turkey — <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — full name]</span>).</p>
-          <p><strong>Last updated:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — official publication date]</span></p>
+          <h2>1. Data Controller and Contact Details</h2>
+          <p><strong>Data Controller:</strong> Beriyar Kedebideri (BK), an independent educational platform operated by a natural person. It is currently neither a registered company nor an official branch of GAGADO, Unique Lingua Center, or the ABH association (<span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — full legal name and address if required]</span>).</p>
+          <p><strong>Privacy &amp; data protection contact (receiving requests):</strong> <code dir="ltr">privacy@beriyarkedebideri.com</code></p>
+          <p><strong>Technical support contact (receiving messages):</strong> <code dir="ltr">support@beriyarkedebideri.com</code></p>
         {% else %}
-          <h2>1. Responsable du traitement et mise à jour</h2>
-          <p><strong>Responsable du traitement :</strong> Beriyar Kedebideri (BK), projet éducatif indépendant exploité par une personne physique (résidence : Turquie — <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — identité complète]</span>).</p>
-          <p><strong>Dernière mise à jour :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — date de publication officielle]</span></p>
+          <h2>1. Responsable du traitement et coordonnées de contact</h2>
+          <p><strong>Responsable du traitement :</strong> Beriyar Kedebideri (BK), plateforme éducative indépendante exploitée par une personne physique. Elle n’est actuellement ni une société enregistrée ni une branche officielle de GAGADO, Unique Lingua Center ou de l’association ABH (<span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — nom légal complet et adresse si requise]</span>).</p>
+          <p><strong>Contact confidentialité et données personnelles (réception des demandes) :</strong> <code dir="ltr">privacy@beriyarkedebideri.com</code></p>
+          <p><strong>Contact support technique (réception des messages) :</strong> <code dir="ltr">support@beriyarkedebideri.com</code></p>
         {% endif %}
       </article>
 
@@ -112,90 +115,143 @@
         {% if current_lang == "ar" %}
           <h2>2. فئات البيانات التي يتم جمعها</h2>
           <ul>
-            <li><strong>الاستخدام دون حساب:</strong> يمكنك تصفح الدروس دون تسجيل الدخول؛ تُحفظ لغة الواجهة وتقدمك المحلي على جهازك فقط.</li>
-            <li><strong>بيانات الحساب الاختياري:</strong> عند إنشاء حساب أو تسجيل الدخول، تتم معالجة اسم المستخدم (<code>username</code>)، والبريد الإلكتروني (اختياري)، وكلمة المرور للتحقق من الجلسة.</li>
-            <li><strong>الجلسة والتقدم التعليمي:</strong> معرف المستخدم، حالة التقدم في الوحدات، المراجعات، ورمز الجلسة (<code>sessionid</code> / <code>csrf</code>).</li>
-            <li><strong>البيانات التي لا يطلبها التطبيق:</strong> لا يطلب تطبيق أندرويد أذونات الكاميرا أو الميكروفون أو الموقع الجغرافي أو جهات الاتصال أو الملفات الشخصية، ولا يتضمن أي أدوات تتبع إعلانية.</li>
+            <li><strong>الاستخدام كضيف (دون حساب):</strong> يمكنك استخدام التطبيق وتصفح الدروس دون إنشاء حساب؛ تُحفظ لغة الواجهة وتقدمك المحلي والملفات الصوتية المخبأة على جهازك فقط.</li>
+            <li><strong>بيانات الحساب الاختياري:</strong> عند التسجيل أو تسجيل الدخول، تتم معالجة اسم المستخدم (<code>username</code>)، والبريد الإلكتروني (اختياري تماماً)، وكلمة المرور (محفوظة بصيغة مشفّرة غير قابلة للعكس).</li>
+            <li><strong>الجلسة والتقدم التعليمي:</strong> معرف المستخدم، التقدم في الوحدات والدروس، حالة المراجعة، معرف التثبيت/الحساب للمزامنة، ورموز الجلسة (<code>sessionid</code> / <code>csrf</code>).</li>
+            <li><strong>الملاحظات التقنية (اختيارية):</strong> نص الملاحظة، ولقطة شاشة أو مقطع صوتي إن أرفقتها طوعاً.</li>
+            <li><strong>البيانات التي لا يجمعها التطبيق:</strong> لا يجمع التطبيق تاريخ الميلاد، ولا يطلب أذونات الكاميرا أو الميكروفون أو الموقع الجغرافي أو جهات الاتصال، ولا يتضمن أي إعلانات أو مدفوعات أو أدوات تتبع إعلانية.</li>
           </ul>
         {% elif current_lang == "en" %}
           <h2>2. Categories of Data Collected</h2>
           <ul>
-            <li><strong>Anonymous use:</strong> You can browse learning content without an account; interface language and local progress stay on your device.</li>
-            <li><strong>Optional account data:</strong> If you register or sign in, we process your <code>username</code>, optional <code>email</code>, and password to authenticate your session.</li>
-            <li><strong>Session and learning progress:</strong> User ID, unit/step progress, review state, and authentication session tokens (<code>sessionid</code> / <code>csrf</code>).</li>
-            <li><strong>Data not collected:</strong> The Android app does not request camera, microphone, location, contacts, or personal file permissions, and includes no advertising SDKs or third-party ad trackers.</li>
+            <li><strong>Guest use (no account):</strong> You can use the app and browse lessons without creating an account; interface language, local progress, and cached audio remain on your device only.</li>
+            <li><strong>Optional account data:</strong> If you register or sign in, we process your <code>username</code>, optional <code>email</code>, and password (stored in hashed form).</li>
+            <li><strong>Session and learning progress:</strong> User ID, unit/lesson progress, review state, sync identifier, and authentication session tokens (<code>sessionid</code> / <code>csrf</code>).</li>
+            <li><strong>Optional technical feedback:</strong> Message text, and any screenshot or audio file you voluntarily attach.</li>
+            <li><strong>Data not collected:</strong> The app does not collect date of birth, does not request camera, microphone, location, or contacts permissions, and includes no advertising, payments, or third-party ad tracking SDKs.</li>
           </ul>
         {% else %}
           <h2>2. Catégories de données collectées</h2>
           <ul>
-            <li><strong>Utilisation sans compte :</strong> Vous pouvez utiliser l’application sans créer de compte ; la langue d’interface et votre progression locale restent enregistrées sur votre appareil.</li>
-            <li><strong>Compte apprenant (optionnel) :</strong> En cas d’inscription ou de connexion, nous traitons votre identifiant (<code>username</code>), votre adresse e-mail (optionnelle) et votre mot de passe pour authentifier la session.</li>
-            <li><strong>Session et progression pédagogique :</strong> Identifiant utilisateur, avancement par unité/étape, état de révision et jetons de session (<code>sessionid</code> / <code>csrf</code>).</li>
-            <li><strong>Données non collectées :</strong> L’application Android ne demande ni caméra, ni microphone, ni localisation, ni contacts, ni accès aux fichiers personnels, et n’intègre ni publicité ni traceur publicitaire tiers.</li>
+            <li><strong>Utilisation en mode invité (sans compte) :</strong> Vous pouvez utiliser l’application et suivre les leçons sans créer de compte ; la langue d’interface, la progression locale et l’audio mis en cache restent uniquement sur votre appareil.</li>
+            <li><strong>Compte apprenant (optionnel) :</strong> En cas d’inscription ou de connexion, nous traitons votre identifiant (<code>username</code>), votre adresse e-mail (strictement optionnelle) et votre mot de passe (conservé sous forme hachée).</li>
+            <li><strong>Session et progression pédagogique :</strong> Identifiant utilisateur, avancement par unité/étape, état de révision, identifiant de synchronisation et jetons de session (<code>sessionid</code> / <code>csrf</code>).</li>
+            <li><strong>Signalements techniques (optionnels) :</strong> Texte du signalement et, si vous les joignez volontairement, capture d’écran ou enregistrement audio.</li>
+            <li><strong>Données non collectées :</strong> L’application ne collecte pas de date de naissance, ne demande ni caméra, ni microphone, ni localisation, ni contacts, et n’intègre ni publicité, ni paiement, ni SDK de suivi publicitaire.</li>
           </ul>
         {% endif %}
       </article>
 
       <article class="card glass bk-legal-card">
         {% if current_lang == "ar" %}
-          <h2>3. الأغراض والمصادقة والتخزين المحلي والمزامنة</h2>
+          <h2>3. الأغراض والأسس القانونية للمعالجة</h2>
           <ul>
-            <li><strong>الأغراض:</strong> توفير المحتوى التعليمي، حفظ التقدم، ومزامنة التقدم عبر الأجهزة عند تسجيل الدخول.</li>
-            <li><strong>المصادقة والحسابات:</strong> تتم المصادقة عبر HTTPS مع الخادم وتُحفظ بيانات الجلسة محلياً داخل مساحة التخزين الآمنة في أندرويد.</li>
-            <li><strong>التخزين المحلي والمزامنة:</strong> تُخزَّن التفضيلات والتقدم محلياً (<code>SharedPreferences</code>)، كما تُحفظ الملفات الصوتية التي تم تشغيلها محلياً (<code>AudioFileCacheService</code>) لإتاحة إعادة الاستماع، وتتم المزامنة مع الخادم عند الاتصال بحساب نشط.</li>
+            <li><strong>الأغراض:</strong> توفير المحتوى التعليمي، حفظ ومزامنة التقدم عند تسجيل الدخول، تأمين الحسابات (حماية الجلسات وحدّ المعدل ضد الإساءة)، ومعالجة الملاحظات التقنية وطلبات حذف الحساب.</li>
+            <li><strong>الأسس القانونية:</strong> تنفيذ الخدمة التعليمية المطلوبة من المستخدم، والمصلحة المشروعة في أمان المنصة وصيانتها، والامتثال للالتزامات القانونية أو موافقة المستخدم/الولي عند الاقتضاء (<span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول وفق القوانين المنطبقة في تشاد والسودان وتركيا وغيرها]</span>).</li>
           </ul>
         {% elif current_lang == "en" %}
-          <h2>3. Purposes, Authentication, Local Storage and Sync</h2>
+          <h2>3. Purposes and Legal Bases of Processing</h2>
           <ul>
-            <li><strong>Purposes:</strong> Delivering learning content, saving your progress, and syncing progress across sessions when signed in.</li>
-            <li><strong>Authentication and accounts:</strong> Sign-in and registration occur over HTTPS, and session credentials are stored in Android secure storage.</li>
-            <li><strong>Local storage and sync:</strong> Language and local progress are stored in <code>SharedPreferences</code>; played audio files are cached locally (<code>AudioFileCacheService</code>) for replay, and progress syncs with the server when signed in.</li>
+            <li><strong>Purposes:</strong> Delivering educational content, saving and syncing learning progress when signed in, securing accounts (session protection and rate limiting against abuse), and handling technical feedback and account deletion requests.</li>
+            <li><strong>Legal bases:</strong> Performance of the educational service requested by the user, legitimate interest in platform security and maintenance, compliance with legal obligations, or user/parental consent where applicable (<span class="bk-placeholder">[TO BE CONFIRMED BY OWNER under applicable laws in Chad, Sudan, Turkey, and other relevant jurisdictions]</span>).</li>
           </ul>
         {% else %}
-          <h2>3. Finalités, authentification, stockage local et synchronisation</h2>
+          <h2>3. Finalités et bases juridiques des traitements</h2>
           <ul>
-            <li><strong>Finalités :</strong> Fournir les contenus pédagogiques, enregistrer votre progression et la synchroniser si vous utilisez un compte.</li>
-            <li><strong>Authentification et comptes :</strong> L’inscription et la connexion transitent par HTTPS ; les jetons de session sont conservés dans le stockage sécurisé Android.</li>
-            <li><strong>Stockage local et synchronisation :</strong> Vos préférences et votre progression locale sont enregistrées via <code>SharedPreferences</code> ; les fichiers audio déjà écoutés sont mis en cache localement (<code>AudioFileCacheService</code>) et la progression est synchronisée avec l’API lorsqu’un compte est connecté.</li>
+            <li><strong>Finalités :</strong> Fournir les contenus pédagogiques, enregistrer et synchroniser la progression lorsqu’un compte est utilisé, sécuriser les sessions et prévenir les abus (limitation de débit), traiter les signalements techniques et les demandes de suppression de compte.</li>
+            <li><strong>Bases juridiques :</strong> Exécution du service éducatif demandé par l’utilisateur, intérêt légitime à assurer la sécurité et la maintenance de la plateforme, respect d’obligations légales ou consentement de l’utilisateur / du représentant légal selon les cas (<span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE selon les juridictions pertinentes : Tchad, Soudan, Turquie, etc.]</span>).</li>
           </ul>
         {% endif %}
       </article>
 
       <article class="card glass bk-legal-card">
         {% if current_lang == "ar" %}
-          <h2>4. الخدمات الخارجية، النقل الدولي، القُصّر ومدة الاحتفاظ</h2>
-          <p><strong>الخدمات الخارجية ومواقع الخوادم:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — مثلاً Render / Cloudflare R2 ومناطق الاستضافة]</span></p>
-          <p><strong>القُصّر:</strong> التطبيق موجّه للبالغين والقُصّر ويمكن استخدامه دون إنشاء حساب. <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — شروط موافقة الولي عند إنشاء الحساب]</span></p>
-          <p><strong>مدة أو معايير الاحتفاظ بالبيانات:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — مدة حفظ الحسابات والسجلات التقنية والنسخ الاحتياطية]</span></p>
-          <p>تبقى البيانات المحلية على جهازك حتى تسجيل الخروج أو إزالة تثبيت التطبيق.</p>
+          <h2>4. الاستضافة والنقل الدولي ومدة الاحتفاظ بالبيانات</h2>
+          <p><strong>الاستضافة ومزودو الخدمة:</strong> تستعين المنصة بـ Render (الخادم وقاعدة البيانات PostgreSQL) وCloudflare (توجيه البريد الإلكتروني وتخزين الوسائط/المرفقات عبر R2، مع دلو خاص منفصل لمرفقات الملاحظات). <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — مناطق الاستضافة الفعلية وضمانات النقل الدولي]</span></p>
+          <p><strong>مدة الاحتفاظ بالبيانات:</strong></p>
+          <ul>
+            <li>تبقى البيانات المحلية على جهازك حتى تسجيل الخروج أو إزالة تثبيت التطبيق.</li>
+            <li>تنتهي صلاحية جلسات المصادقة تلقائياً بعد 14 يوماً (الإعداد الافتراضي لـ Django) أو فوراً عند تسجيل الخروج أو حذف الحساب.</li>
+            <li>الحسابات النشطة، السجلات التقنية، الملاحظات، والنسخ الاحتياطية لقاعدة البيانات: <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — المدد الرسمية للاحتفاظ]</span>.</li>
+          </ul>
         {% elif current_lang == "en" %}
-          <h2>4. Third-Party Services, Cross-Border Transfers, Minors and Retention</h2>
-          <p><strong>Third-party services and server locations:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — e.g. Render / Cloudflare R2 and hosting regions]</span></p>
-          <p><strong>Minors:</strong> The app is intended for adults and minors and can be used without creating an account. <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — parental/guardian consent rules for accounts]</span></p>
-          <p><strong>Retention periods or criteria:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — account data, server logs, and backups]</span></p>
-          <p>Local device data remains on your phone until you sign out or uninstall the application.</p>
+          <h2>4. Hosting, International Transfers, and Data Retention</h2>
+          <p><strong>Hosting and infrastructure providers:</strong> The platform uses Render (application server and PostgreSQL database) and Cloudflare (Email Routing and R2 media/attachment storage, including a separate private bucket for feedback screenshots). <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — exact hosting regions and cross-border transfer safeguards]</span></p>
+          <p><strong>Data retention:</strong></p>
+          <ul>
+            <li>Local device data remains on your phone until you sign out or uninstall the application.</li>
+            <li>Authentication sessions expire automatically after 14 days (Django default) or immediately upon sign-out or account deletion.</li>
+            <li>Active accounts, server logs, technical feedback, and database backups: <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — official retention periods]</span>.</li>
+          </ul>
         {% else %}
-          <h2>4. Services tiers, transferts internationaux, mineurs et conservation</h2>
-          <p><strong>Services tiers et localisation des serveurs :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — ex. Render / Cloudflare R2 et régions d’hébergement]</span></p>
-          <p><strong>Mineurs :</strong> L’application s’adresse aux adultes et aux mineurs et peut être utilisée sans créer de compte. <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — modalités d’accord parental pour les comptes]</span></p>
-          <p><strong>Durées ou critères de conservation :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — comptes, journaux serveur et sauvegardes]</span></p>
-          <p>Les données locales sur votre appareil sont conservées jusqu’à la déconnexion ou la désinstallation de l’application.</p>
+          <h2>4. Hébergement, transferts internationaux et conservation des données</h2>
+          <p><strong>Hébergement et prestataires techniques :</strong> La plateforme utilise Render (serveur applicatif et base de données PostgreSQL) et Cloudflare (Cloudflare Email Routing et stockage Cloudflare R2, dont un espace privé distinct pour les pièces jointes de signalement). <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — régions exactes d’hébergement et garanties de transfert international]</span></p>
+          <p><strong>Conservation des données :</strong></p>
+          <ul>
+            <li>Les données locales sur votre appareil restent stockées jusqu’à la déconnexion ou la désinstallation de l’application.</li>
+            <li>Les sessions d’authentification expirent par défaut au bout de 14 jours (réglage Django par défaut) ou immédiatement lors de la déconnexion ou de la suppression du compte.</li>
+            <li>Comptes actifs, journaux serveur, signalements techniques et sauvegardes de base de données : <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — durées officielles de conservation]</span>.</li>
+          </ul>
         {% endif %}
       </article>
 
       <article class="card glass bk-legal-card">
         {% if current_lang == "ar" %}
-          <h2>5. حقوقك (الوصول والتصحيح والحذف) وبيانات التواصل</h2>
-          <p><strong>إجراءات الوصول والتصحيح وحذف الحساب:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — آلية التنفيذ والمهلة]</span></p>
-          <p><strong>البريد الإلكتروني / وسيلة التواصل للبيانات الشخصية:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — البريد الرسمي للخصوصية]</span></p>
+          <h2>5. القُصّر (حماية الأطفال والمتعلمين الصغار)</h2>
+          <p>تتوجّه منصة Beriyar Kedebideri بشكل رئيسي إلى المتعلمين في تشاد والسودان، وقد يستخدمها قُصّر. يمكن التعلّم الكامل عبر وضع الضيف دون إنشاء حساب ودون تقديم أي بيانات شخصية. لا يجمع التطبيق تاريخ الميلاد ولا يتضمن إعلانات أو تفاعلات اجتماعية مفتوحة بين المستخدمين.</p>
+          <p><strong>إنشاء الحساب للقُصّر:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — شروط موافقة الولي أو الإشراف الأبوي عند إنشاء حساب]</span>. يمكن لأي ولي أمر طلب حذف حساب قاصر عبر <code dir="ltr">privacy@beriyarkedebideri.com</code>.</p>
         {% elif current_lang == "en" %}
-          <h2>5. Your Rights (Access, Correction, Deletion) and Contact</h2>
-          <p><strong>Procedure for access, correction, and account deletion:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — operational procedure and timeframe]</span></p>
-          <p><strong>Privacy contact details:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — official privacy contact]</span></p>
+          <h2>5. Minors and Child Protection</h2>
+          <p>Beriyar Kedebideri is primarily intended for learners in Chad and Sudan and may be used by minors. Full learning access is available in guest mode without creating an account or submitting personal data. The platform does not collect date of birth, includes no advertising, and provides no open user-to-user messaging or social feeds.</p>
+          <p><strong>Account creation by minors:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — parental/guardian consent or supervision rule for account creation]</span>. A parent or guardian may request deletion of a minor’s account via <code dir="ltr">privacy@beriyarkedebideri.com</code>.</p>
         {% else %}
-          <h2>5. Vos droits (accès, correction, suppression) et contact</h2>
-          <p><strong>Procédure d’accès, de rectification et de suppression de compte :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — modalités effectives et délai]</span></p>
-          <p><strong>Coordonnées de contact données personnelles :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — e-mail officiel confidentialité]</span></p>
+          <h2>5. Conditions applicables aux mineurs</h2>
+          <p>Beriyar Kedebideri s’adresse principalement aux apprenants du Tchad et du Soudan et peut être utilisée par des mineurs. L’apprentissage est accessible en mode invité sans création de compte ni transmission de données personnelles. La plateforme ne collecte pas de date de naissance, n’affiche aucune publicité et ne comporte aucune messagerie ni interaction sociale ouverte entre utilisateurs.</p>
+          <p><strong>Création de compte par un mineur :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — modalités d’accord ou de supervision parentale pour l’inscription]</span>. Un parent ou représentant légal peut demander la suppression du compte d’un mineur via <code dir="ltr">privacy@beriyarkedebideri.com</code>.</p>
+        {% endif %}
+      </article>
+
+      <article class="card glass bk-legal-card">
+        {% if current_lang == "ar" %}
+          <h2>6. حقوقك وإجراءات حذف الحساب</h2>
+          <p>يمكنك طلب الوصول إلى بياناتك أو تصحيحها أو حذف حسابك عبر <code dir="ltr">privacy@beriyarkedebideri.com</code>، أو تقديم طلب حذف مؤكد بكلمة المرور مباشرة من إعدادات تطبيق أندرويد أو عبر صفحة <a href="{% url 'web-account-deletion' %}">/account-deletion/</a>.</p>
+          <ul>
+            <li><strong>المعالجة اليدوية (ليست فورية):</strong> يسجّل الطلب رمز مرجع (<code dir="ltr">DEL-...</code>) دون حذف فوري تلقائي، ثم ينفّذه المسؤول يدوياً بعد التحقق.</li>
+            <li><strong>نطاق الحذف وإخفاء الهوية:</strong> عند التنفيذ الإداري الذري، يُحذف الحساب وتقدمه التعليمي وبيانات اعتماد المزامنة وجلساته النشطة؛ وتُخفى هوية الملاحظات التقنية (إزالة رابط المستخدم ومعرف الجهاز)؛ ويُفصل رابط المساهم عن منشورات No Ena العامة؛ ويُمحى اسم المستخدم وملاحظة الطلب من سجل الطلب مع الاحتفاظ بأثر إداري أدنى غير مُعرّف (رمز المرجع والتواريخ والحالة).</li>
+            <li><strong>الحدود:</strong> تحتفظ النسخ الاحتياطية لقاعدة البيانات والسجلات التقنية للمزودين الخارجيين ببياناتها حتى انتهاء دورة تدويرها. <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — المهلة الرسمية لمعالجة الطلبات]</span></li>
+          </ul>
+        {% elif current_lang == "en" %}
+          <h2>6. Your Rights and Account Deletion Procedure</h2>
+          <p>You may request access to, correction of, or deletion of your data by writing to <code dir="ltr">privacy@beriyarkedebideri.com</code>, or submit a password-verified deletion request directly from the Android app settings or via <a href="{% url 'web-account-deletion' %}">/account-deletion/</a>.</p>
+          <ul>
+            <li><strong>Manual processing (not instantaneous):</strong> Submitting a request records a reference code (<code dir="ltr">DEL-...</code>) without immediate automatic deletion; an administrator verifies and executes the deletion manually.</li>
+            <li><strong>Scope of erasure and anonymization:</strong> Atomic administrative execution deletes the user account, associated learning progress, sync credentials, and active sessions; anonymizes technical feedback (clearing both user link and device identifier); dissociates the user link from public No Ena publications; and scrubs the username and free-text note from the deletion request record while keeping a minimal non-identifying audit trace (reference code, status, timestamps).</li>
+            <li><strong>Limits:</strong> Database backups and external infrastructure logs retain snapshots until their scheduled rotation expires. <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — official request processing timeframe]</span></li>
+          </ul>
+        {% else %}
+          <h2>6. Vos droits et procédure de suppression de compte</h2>
+          <p>Vous pouvez demander l’accès, la rectification ou la suppression de vos données en écrivant à <code dir="ltr">privacy@beriyarkedebideri.com</code>, ou déposer une demande de suppression confirmée par mot de passe depuis les réglages de l’application Android ou la page <a href="{% url 'web-account-deletion' %}">/account-deletion/</a>.</p>
+          <ul>
+            <li><strong>Traitement administratif manuel (non instantané) :</strong> L’envoi d’une demande enregistre un code de référence (<code dir="ltr">DEL-...</code>) sans suppression automatique immédiate ; l’administrateur vérifie et exécute l’effacement manuellement.</li>
+            <li><strong>Périmètre d’effacement et d’anonymisation :</strong> L’exécution administrative atomique supprime le compte utilisateur, les progressions pédagogiques associées, les jetons de synchronisation et les sessions actives ; anonymise les signalements techniques (suppression du lien utilisateur et de l’identifiant d’appareil) ; dissocie le lien utilisateur des publications publiques No Ena ; et purge l’identifiant ainsi que la note libre de la demande de suppression en ne conservant qu’une trace minimale non identifiante (référence, statut, dates).</li>
+            <li><strong>Limites :</strong> Les sauvegardes techniques de base de données et les journaux des prestataires d’infrastructure subsistent jusqu’à l’expiration de leur cycle de rotation. <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — délai officiel de traitement des demandes]</span></li>
+          </ul>
+        {% endif %}
+      </article>
+
+      <article class="card glass bk-legal-card">
+        {% if current_lang == "ar" %}
+          <h2>7. تاريخ النشر وتعديل هذه السياسة</h2>
+          <p><strong>تاريخ النشر / آخر تحديث:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — تاريخ النشر الرسمي]</span></p>
+          <p>قد يتم تحديث هذه السياسة لتعكس التطورات التقنية أو القانونية؛ ويُشار إلى تاريخ آخر تحديث في هذه الصفحة. <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — آلية إشعار المستخدمين بالتغييرات الجوهرية]</span></p>
+        {% elif current_lang == "en" %}
+          <h2>7. Publication Date and Policy Updates</h2>
+          <p><strong>Publication / last updated date:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — official publication date]</span></p>
+          <p>This policy may be updated to reflect technical or legal changes; the latest update date is displayed on this page. <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — method of notifying users of material changes]</span></p>
+        {% else %}
+          <h2>7. Date de publication et modification de la politique</h2>
+          <p><strong>Date de publication / dernière mise à jour :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — date de publication officielle]</span></p>
+          <p>La présente politique peut être mise à jour pour refléter des évolutions techniques ou juridiques ; la date de dernière mise à jour figure sur cette page. <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — modalités d’information des utilisateurs en cas de changement substantiel]</span></p>
         {% endif %}
       </article>
 
