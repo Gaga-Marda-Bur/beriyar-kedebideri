@@ -200,6 +200,8 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
         for resp in (resp_fr, resp_en, resp_ar):
             self.assertContains(resp, 'privacy@beriyarkedebideri.com')
             self.assertContains(resp, 'support@beriyarkedebideri.com')
+            self.assertContains(resp, 'Oregon')
+            self.assertContains(resp, 'Eastern Europe (EEUR)')
             self.assertNotContains(resp, 'gmail.com')
 
         for path in (reverse('web-home'), reverse('web-mobile'), reverse('web-account-deletion')):

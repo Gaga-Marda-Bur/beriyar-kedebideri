@@ -167,30 +167,30 @@
       <article class="card glass bk-legal-card">
         {% if current_lang == "ar" %}
           <h2>4. الاستضافة والنقل الدولي ومدة الاحتفاظ بالبيانات</h2>
-          <p><strong>الاستضافة ومزودو الخدمة:</strong> تستعين المنصة بـ Render (الخادم وقاعدة البيانات PostgreSQL) وCloudflare (توجيه البريد الإلكتروني وتخزين الوسائط/المرفقات عبر R2، مع دلو خاص منفصل لمرفقات الملاحظات). <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — مناطق الاستضافة الفعلية وضمانات النقل الدولي]</span></p>
-          <p><strong>مدة الاحتفاظ بالبيانات:</strong></p>
+          <p><strong>الاستضافة ومزودو الخدمة:</strong> تستعين المنصة بـ Render للخادم التطبيقي وقاعدة بيانات PostgreSQL (المنطقة المهيّأة: <bdi dir="ltr">Oregon, United States</bdi>) وبـ Cloudflare لتوجيه البريد الإلكتروني وتخزين الوسائط/المرفقات عبر R2 (المنطقة المهيّأة: <bdi dir="ltr">Eastern Europe (EEUR)</bdi>، مع دلو خاص منفصل لمرفقات الملاحظات). لا يعني ذلك أن جميع النسخ الاحتياطية أو السجلات التقنية أو العمليات الداخلية للمزودين تبقى حصرياً داخل هذه المناطق؛ وقد ينطوي استخدام الخدمة على نقل دولي للبيانات. <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — الضمانات القانونية للنقل الدولي]</span></p>
+          <p><strong>مبدأ الاحتفاظ الأدنى بالبيانات:</strong> تحتفظ BK فقط بالبيانات اللازمة للتعلّم والأمان وتشغيل الخدمة، للمدة اللازمة لهذه الأغراض، مع مراعاة الالتزامات القانونية المنطبقة.</p>
           <ul>
             <li>تبقى البيانات المحلية على جهازك حتى تسجيل الخروج أو إزالة تثبيت التطبيق.</li>
             <li>تنتهي صلاحية جلسات المصادقة تلقائياً بعد 14 يوماً (الإعداد الافتراضي لـ Django) أو فوراً عند تسجيل الخروج أو حذف الحساب.</li>
-            <li>الحسابات النشطة، السجلات التقنية، الملاحظات، والنسخ الاحتياطية لقاعدة البيانات: <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — المدد الرسمية للاحتفاظ]</span>.</li>
+            <li>المدد الرسمية المعتمدة للحسابات النشطة والسجلات التقنية والملاحظات والنسخ الاحتياطية لقاعدة البيانات: <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — المدد الرسمية المعتمدة]</span>.</li>
           </ul>
         {% elif current_lang == "en" %}
           <h2>4. Hosting, International Transfers, and Data Retention</h2>
-          <p><strong>Hosting and infrastructure providers:</strong> The platform uses Render (application server and PostgreSQL database) and Cloudflare (Email Routing and R2 media/attachment storage, including a separate private bucket for feedback screenshots). <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — exact hosting regions and cross-border transfer safeguards]</span></p>
-          <p><strong>Data retention:</strong></p>
+          <p><strong>Hosting and infrastructure providers:</strong> The platform uses Render for the application server and PostgreSQL database (configured region: Oregon, United States) and Cloudflare for Email Routing and R2 media/attachment storage (configured region: Eastern Europe (EEUR), including a separate private bucket for feedback screenshots). This does not guarantee that all backups, technical logs, or internal provider operations remain exclusively within those regions; using the service may involve international data transfers. <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — legal safeguards for international transfers]</span></p>
+          <p><strong>Minimal retention principle:</strong> BK retains only the data necessary for learning, security, and service operation, for the duration needed for those purposes, subject to applicable legal obligations.</p>
           <ul>
             <li>Local device data remains on your phone until you sign out or uninstall the application.</li>
             <li>Authentication sessions expire automatically after 14 days (Django default) or immediately upon sign-out or account deletion.</li>
-            <li>Active accounts, server logs, technical feedback, and database backups: <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — official retention periods]</span>.</li>
+            <li>Officially approved retention periods for active accounts, server logs, technical feedback, and database backups: <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — officially approved durations]</span>.</li>
           </ul>
         {% else %}
           <h2>4. Hébergement, transferts internationaux et conservation des données</h2>
-          <p><strong>Hébergement et prestataires techniques :</strong> La plateforme utilise Render (serveur applicatif et base de données PostgreSQL) et Cloudflare (Cloudflare Email Routing et stockage Cloudflare R2, dont un espace privé distinct pour les pièces jointes de signalement). <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — régions exactes d’hébergement et garanties de transfert international]</span></p>
-          <p><strong>Conservation des données :</strong></p>
+          <p><strong>Hébergement et prestataires techniques :</strong> La plateforme utilise Render pour le serveur applicatif et la base de données PostgreSQL (région configurée : Oregon, États-Unis) ainsi que Cloudflare pour Cloudflare Email Routing et le stockage Cloudflare R2 (région configurée : Eastern Europe (EEUR), dont un espace privé distinct pour les pièces jointes de signalement). Cela n’implique pas que l’ensemble des sauvegardes, journaux techniques ou opérations internes des prestataires restent exclusivement dans ces régions ; l’utilisation du service peut impliquer des transferts internationaux de données. <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — garanties juridiques encadrant les transferts internationaux]</span></p>
+          <p><strong>Principe de conservation minimale :</strong> BK conserve uniquement les données nécessaires à l’apprentissage, à la sécurité et au fonctionnement du service, pendant la durée nécessaire à ces finalités, sous réserve des obligations légales applicables.</p>
           <ul>
             <li>Les données locales sur votre appareil restent stockées jusqu’à la déconnexion ou la désinstallation de l’application.</li>
             <li>Les sessions d’authentification expirent par défaut au bout de 14 jours (réglage Django par défaut) ou immédiatement lors de la déconnexion ou de la suppression du compte.</li>
-            <li>Comptes actifs, journaux serveur, signalements techniques et sauvegardes de base de données : <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — durées officielles de conservation]</span>.</li>
+            <li>Durées officiellement approuvées pour les comptes actifs, journaux serveur, signalements techniques et sauvegardes de base de données : <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — durées officiellement approuvées]</span>.</li>
           </ul>
         {% endif %}
       </article>
@@ -198,16 +198,16 @@
       <article class="card glass bk-legal-card">
         {% if current_lang == "ar" %}
           <h2>5. القُصّر (حماية الأطفال والمتعلمين الصغار)</h2>
-          <p>تتوجّه منصة Beriyar Kedebideri بشكل رئيسي إلى المتعلمين في تشاد والسودان، وقد يستخدمها قُصّر. يمكن التعلّم الكامل عبر وضع الضيف دون إنشاء حساب ودون تقديم أي بيانات شخصية. لا يجمع التطبيق تاريخ الميلاد ولا يتضمن إعلانات أو تفاعلات اجتماعية مفتوحة بين المستخدمين.</p>
-          <p><strong>إنشاء الحساب للقُصّر:</strong> <span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — شروط موافقة الولي أو الإشراف الأبوي عند إنشاء حساب]</span>. يمكن لأي ولي أمر طلب حذف حساب قاصر عبر <code dir="ltr">privacy@beriyarkedebideri.com</code>.</p>
+          <p>تتوجّه منصة Beriyar Kedebideri بشكل رئيسي إلى المتعلمين في تشاد والسودان، وقد يستخدمها قُصّر. نوصي القُصّر باستخدام <strong>وضع الضيف</strong> للتعلّم الكامل دون إنشاء حساب ودون تقديم بيانات شخصية. لا تجمع المنصة تاريخ الميلاد، ولا تعرض إعلانات، ولا تتضمن تتبعاً إعلانياً أو تفاعلات اجتماعية مفتوحة بين المستخدمين.</p>
+          <p><strong>إنشاء الحساب للقُصّر:</strong> يهدف المشروع إلى الحد من إنشاء الحسابات للقُصّر ما لم تُحدَّد الضمانات اللازمة وتُطبَّق (<span class="bk-placeholder">[يُؤكَّد من قِبل المسؤول — القاعدة النهائية وتدابير التقييد أو موافقة الولي]</span>). يمكن لأي ولي أمر طلب حذف حساب قاصر عبر <code dir="ltr">privacy@beriyarkedebideri.com</code>.</p>
         {% elif current_lang == "en" %}
           <h2>5. Minors and Child Protection</h2>
-          <p>Beriyar Kedebideri is primarily intended for learners in Chad and Sudan and may be used by minors. Full learning access is available in guest mode without creating an account or submitting personal data. The platform does not collect date of birth, includes no advertising, and provides no open user-to-user messaging or social feeds.</p>
-          <p><strong>Account creation by minors:</strong> <span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — parental/guardian consent or supervision rule for account creation]</span>. A parent or guardian may request deletion of a minor’s account via <code dir="ltr">privacy@beriyarkedebideri.com</code>.</p>
+          <p>Beriyar Kedebideri is primarily intended for learners in Chad and Sudan and may be used by minors. We favor <strong>guest mode</strong> for minors so they can learn without creating an account or submitting personal data. The platform does not collect date of birth, displays no advertising, includes no ad tracking, and provides no open user-to-user messaging or social feeds.</p>
+          <p><strong>Account creation by minors:</strong> The project aims to limit account creation by minors until the necessary safeguards are defined and implemented (<span class="bk-placeholder">[TO BE CONFIRMED BY OWNER — final rule and restriction or parental consent measures]</span>). A parent or guardian may request deletion of a minor’s account via <code dir="ltr">privacy@beriyarkedebideri.com</code>.</p>
         {% else %}
           <h2>5. Conditions applicables aux mineurs</h2>
-          <p>Beriyar Kedebideri s’adresse principalement aux apprenants du Tchad et du Soudan et peut être utilisée par des mineurs. L’apprentissage est accessible en mode invité sans création de compte ni transmission de données personnelles. La plateforme ne collecte pas de date de naissance, n’affiche aucune publicité et ne comporte aucune messagerie ni interaction sociale ouverte entre utilisateurs.</p>
-          <p><strong>Création de compte par un mineur :</strong> <span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — modalités d’accord ou de supervision parentale pour l’inscription]</span>. Un parent ou représentant légal peut demander la suppression du compte d’un mineur via <code dir="ltr">privacy@beriyarkedebideri.com</code>.</p>
+          <p>Beriyar Kedebideri s’adresse principalement aux apprenants du Tchad et du Soudan et peut être utilisée par des mineurs. Nous privilégions le <strong>mode invité</strong> pour les mineurs afin de permettre l’apprentissage sans création de compte ni transmission de données personnelles. La plateforme ne collecte pas de date de naissance, n’affiche aucune publicité, n’intègre aucun suivi publicitaire et ne comporte aucune messagerie ni interaction sociale ouverte entre utilisateurs.</p>
+          <p><strong>Création de compte par un mineur :</strong> Le projet vise à limiter la création de comptes pour les mineurs tant que les garanties nécessaires ne sont pas définies et mises en œuvre (<span class="bk-placeholder">[À CONFIRMER PAR LE RESPONSABLE — règle finale et mesures d’encadrement ou d’accord parental]</span>). Un parent ou représentant légal peut demander la suppression du compte d’un mineur via <code dir="ltr">privacy@beriyarkedebideri.com</code>.</p>
         {% endif %}
       </article>
 
