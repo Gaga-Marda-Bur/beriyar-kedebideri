@@ -539,7 +539,7 @@ def privacy_page(request):
         {
             "current_lang": lang,
             "is_rtl": lang == "ar",
-            "privacy_draft_incomplete": True,
+            "privacy_draft_incomplete": False,
         },
     )
 

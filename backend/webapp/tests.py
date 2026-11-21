@@ -183,19 +183,22 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
         self.assertEqual(resp_fr.status_code, 200)
         self.assertTemplateUsed(resp_fr, 'webapp/privacy.html')
         self.assertContains(resp_fr, 'Politique de confidentialité')
-        self.assertContains(resp_fr, '[À CONFIRMER PAR LE RESPONSABLE]')
-        self.assertContains(resp_fr, 'non prêt pour publication publique')
+        self.assertContains(resp_fr, 'Date de dernière mise à jour du document')
+        self.assertNotContains(resp_fr, '[À CONFIRMER PAR LE RESPONSABLE]')
+        self.assertNotContains(resp_fr, 'non prêt pour publication publique')
 
         resp_en = self.client.get(reverse('web-privacy') + '?lang=en')
         self.assertEqual(resp_en.status_code, 200)
         self.assertContains(resp_en, 'Privacy Policy')
-        self.assertContains(resp_en, '[TO BE CONFIRMED BY OWNER]')
+        self.assertContains(resp_en, 'Document last updated:')
+        self.assertNotContains(resp_en, '[TO BE CONFIRMED BY OWNER]')
 
         resp_ar = self.client.get(reverse('web-privacy') + '?lang=ar')
         self.assertEqual(resp_ar.status_code, 200)
         self.assertContains(resp_ar, 'dir="rtl"')
         self.assertContains(resp_ar, 'سياسة الخصوصية')
-        self.assertContains(resp_ar, '[يُؤكَّد من قِبل المسؤول]')
+        self.assertContains(resp_ar, 'تاريخ آخر تحديث للوثيقة')
+        self.assertNotContains(resp_ar, '[يُؤكَّد من قِبل المسؤول]')
 
         for resp in (resp_fr, resp_en, resp_ar):
             self.assertContains(resp, 'Mahamat Ahmat Hamat GAGA (Mahamat GAGA)')

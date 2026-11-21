@@ -187,7 +187,7 @@
             <li><strong>Cloudflare Logpush:</strong> الاشتراك غير مفعّل وفق ما يظهر في لوحة التحكم.</li>
           </ul>
           <p><strong>التمييز بين نوافذ المعاينة والمحو الداخلي:</strong> المدد المذكورة أعلاه (<bdi dir="ltr">7</bdi> أيام لسجلات Render و<bdi dir="ltr">30</bdi> يوماً لسجل Cloudflare Email Routing و<bdi dir="ltr">3</bdi> أيام للاستعادة الزمنية في PostgreSQL) تمثل نوافذ المعاينة أو الاستعادة الظاهرة للمسؤول؛ ولا تثبت بالضرورة المدة الدقيقة للمحو الداخلي النهائي لدى المزودين، والتي ليست جميعها مُثبتة تقنياً لدينا.</p>
-          <p>قد ينطوي استخدام الخدمة على نقل دولي للبيانات خارج بلد إقامة المستخدم (Render في الولايات المتحدة، وCloudflare R2 في أوروبا الشرقية). يعود اختيار هذه الاستضافة الخارجية إلى عدم توفر بنية استضافة ذاتية لدى المسؤول؛ ولا تُقدَّم أي ضمانة قانونية إضافية خاصة للنقل الدولي بخلاف الشروط القياسية لمزودي البنية التحتية المختارين.</p>
+          <p>قد ينطوي استخدام الخدمة على نقل دولي للبيانات خارج بلد إقامة المستخدم (Render في الولايات المتحدة، وCloudflare R2 في أوروبا الشرقية). يعود اختيار هذه الاستضافة الخارجية إلى عدم توفر بنية استضافة ذاتية لدى المسؤول؛ ولا توجد ضمانة قانونية خاصة مُثبتة أو موعودة بشأن النقل الدولي، إذ تعتمد الخدمة فقط على الشروط القياسية للمزودين المختارين.</p>
         {% elif current_lang == "en" %}
           <h2>4. Verified Infrastructure and International Transfers</h2>
           <p>The platform relies on the following technical infrastructure as verified in provider dashboards:</p>
@@ -199,7 +199,7 @@
             <li><strong>Cloudflare Logpush:</strong> Subscription is not enabled according to the dashboard.</li>
           </ul>
           <p><strong>Distinction between visible windows and internal erasure:</strong> The durations stated above (7-day Render log window, 30-day Cloudflare Email Routing history, 3-day PostgreSQL PITR) reflect the consultation or recovery windows visible to the operator; they do not demonstrate the exact underlying internal erasure timelines of each third-party provider, which are not all independently demonstrated.</p>
-          <p>Using the service may involve international data transfers outside the user’s country of residence (Render in the United States, Cloudflare R2 in Eastern Europe). This external hosting choice reflects the operator’s lack of self-hosted infrastructure; no additional bespoke legal transfer guarantee is offered beyond the standard terms of the selected infrastructure providers.</p>
+          <p>Using the service may involve international data transfers outside the user’s country of residence (Render in the United States, Cloudflare R2 in Eastern Europe). This external hosting choice reflects the operator’s lack of self-hosted infrastructure; no specific legal guarantee regarding international transfers is demonstrated or promised, as the service relies solely on the standard terms of the selected providers.</p>
         {% else %}
           <h2>4. Infrastructure vérifiée et transferts internationaux</h2>
           <p>La plateforme repose sur l’infrastructure technique suivante, vérifiée dans les tableaux de bord des prestataires :</p>
@@ -211,7 +211,7 @@
             <li><strong>Cloudflare Logpush :</strong> Abonnement non activé d’après le tableau de bord.</li>
           </ul>
           <p><strong>Distinction entre fenêtres de consultation et effacement interne :</strong> Les durées indiquées ci-dessus (7 jours de journaux Render, 30 jours d’historique Cloudflare Email Routing, 3 jours de PITR PostgreSQL) correspondent aux fenêtres visibles de consultation ou de restauration ; elles ne préjugent pas des durées exactes d’effacement interne propre à chaque prestataire, qui ne sont pas toutes démontrées.</p>
-          <p>L’utilisation du service peut impliquer des transferts internationaux de données hors du pays de résidence de l’utilisateur (Render aux États-Unis, Cloudflare R2 en Europe de l’Est). Ce choix d’hébergement externe résulte de l’absence d’infrastructure propre au responsable ; aucune garantie juridique supplémentaire spécifique n’est offerte au-delà des conditions standards des prestataires retenus.</p>
+          <p>L’utilisation du service peut impliquer des transferts internationaux de données hors du pays de résidence de l’utilisateur (Render aux États-Unis, Cloudflare R2 en Europe de l’Est). Ce choix d’hébergement externe résulte de l’absence d’infrastructure propre au responsable ; aucune garantie juridique spécifique sur les transferts internationaux n’est démontrée ni promise, le service reposant uniquement sur les conditions standards des prestataires retenus.</p>
         {% endif %}
       </article>
 
@@ -313,16 +313,16 @@
 
       <article class="card glass bk-legal-card">
         {% if current_lang == "ar" %}
-          <h2>8. تاريخ النشر وتعديل هذه السياسة</h2>
-          <p><strong>تاريخ النشر / آخر تحديث:</strong> <bdi dir="ltr">21 نوفمبر 2026</bdi></p>
+          <h2>8. آخر تحديث وتعديل هذه السياسة</h2>
+          <p><strong>تاريخ آخر تحديث للوثيقة:</strong> <bdi dir="ltr">21 نوفمبر 2026</bdi></p>
           <p>قد يتم تحديث هذه السياسة لتعكس التطورات التقنية أو القانونية. في حال إجراء تعديل جوهري، يتم تحديث تاريخ آخر تعديل في صفحة <code dir="ltr">/privacy/</code> وعرض إشعار توضيحي على الموقع وفي صفحة <code dir="ltr">/mobile/</code> (دون استخدام إرسال بريد آلي عبر SMTP).</p>
         {% elif current_lang == "en" %}
-          <h2>8. Publication Date and Policy Updates</h2>
-          <p><strong>Publication / last updated date:</strong> 21 November 2026</p>
+          <h2>8. Last Update and Policy Changes</h2>
+          <p><strong>Document last updated:</strong> 21 November 2026</p>
           <p>This policy may be updated to reflect technical or legal changes. In the event of material changes, the last updated date on <code dir="ltr">/privacy/</code> is updated and an informational notice is displayed on the website and on the <code dir="ltr">/mobile/</code> page (no automated outbound SMTP email is used).</p>
         {% else %}
-          <h2>8. Date de publication et modification de la politique</h2>
-          <p><strong>Date de publication / dernière mise à jour :</strong> 21 novembre 2026</p>
+          <h2>8. Dernière mise à jour et modification de la politique</h2>
+          <p><strong>Date de dernière mise à jour du document :</strong> 21 novembre 2026</p>
           <p>La présente politique peut être mise à jour pour refléter des évolutions techniques ou juridiques. En cas de changement substantiel, la date de dernière mise à jour sur <code dir="ltr">/privacy/</code> est actualisée et une notice informative est affichée sur le site ainsi que sur la page <code dir="ltr">/mobile/</code> (aucun envoi d’e-mail automatisé SMTP n’est utilisé).</p>
         {% endif %}
       </article>
