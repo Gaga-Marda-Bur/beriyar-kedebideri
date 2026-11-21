@@ -93,13 +93,13 @@
       </div>
       {% if current_lang == "ar" %}
         <h1>Beřiyar Kedebideři لنظام أندرويد</h1>
-        <p>تعلّم لغة بيريَا إرفي: الأبجدية، المفردات، المسارات التفاعلية ولوحة المفاتيح التعليمية.</p>
+        <p>تطبيق تعليمي مجاني لتعلّم لغة بيريَا إرفي: الأبجدية، المفردات، المسارات التفاعلية، حزم العمل دون اتصال ولوحة المفاتيح التعليمية.</p>
       {% elif current_lang == "en" %}
         <h1>Beřiyar Kedebideři for Android</h1>
-        <p>Learn the Beriya Erfe language: alphabet, vocabulary, interactive learning paths, and educational keyboard.</p>
+        <p>Free educational app to learn the Beriya Erfe language: alphabet, vocabulary, interactive learning paths, offline packs, and educational keyboard.</p>
       {% else %}
         <h1>Beřiyar Kedebideři pour Android</h1>
-        <p>Apprendre la langue Beriya Erfe : alphabet, vocabulaire, parcours interactifs et clavier pédagogique.</p>
+        <p>Application éducative gratuite pour apprendre la langue Beriya Erfe : alphabet, vocabulaire, parcours interactifs, packs hors ligne et clavier pédagogique.</p>
       {% endif %}
     </div>
   </section>
@@ -120,14 +120,26 @@
         <div style="flex: 1 1 260px; min-width: 0;">
           <h2 style="margin: 0;">Beřiyar Kedebideři (<bdi dir="ltr">{{ apk_version }}</bdi>)</h2>
           <div class="bk-mobile-meta">
-            <span><strong>Package :</strong> <code dir="ltr">{{ apk_package_id }}</code></span>
+            <span>
+              {% if current_lang == "ar" %}<strong>الحزمة:</strong>{% elif current_lang == "en" %}<strong>Package:</strong>{% else %}<strong>Package :</strong>{% endif %}
+              <code dir="ltr">{{ apk_package_id }}</code>
+            </span>
             <span>
               {% if current_lang == "ar" %}
                 <strong>الحجم:</strong> <bdi dir="ltr">{{ apk_size_bytes }}</bdi> بايت (≈ <bdi dir="ltr">67.4</bdi> ميغابايت)
               {% elif current_lang == "en" %}
-                <strong>Size:</strong> <bdi dir="ltr">{{ apk_size_bytes }}</bdi> bytes (≈ 67.4 MiB)
+                <strong>Size:</strong> <bdi dir="ltr">{{ apk_size_bytes }}</bdi> bytes (≈ 67.4 MiB / 70.7 MB)
               {% else %}
-                <strong>Taille :</strong> <bdi dir="ltr">{{ apk_size_bytes }}</bdi> octets (≈ 67,4 Mio)
+                <strong>Taille :</strong> <bdi dir="ltr">{{ apk_size_bytes }}</bdi> octets (≈ 67,4 Mio / 70,7 Mo)
+              {% endif %}
+            </span>
+            <span>
+              {% if current_lang == "ar" %}
+                <strong>قناة التوزيع:</strong> ملف APK مباشر عبر <code dir="ltr">beriyarkedebideri.com</code> (خارج Google Play)
+              {% elif current_lang == "en" %}
+                <strong>Distribution channel:</strong> Direct APK via <code dir="ltr">beriyarkedebideri.com</code> (outside Google Play)
+              {% else %}
+                <strong>Canal de distribution :</strong> APK direct via <code dir="ltr">beriyarkedebideri.com</code> (hors Google Play)
               {% endif %}
             </span>
           </div>
@@ -135,7 +147,7 @@
           <div class="bk-mobile-cta-box">
             {% if apk_download_enabled %}
               <a href="{{ apk_download_url }}" class="btn btn-primary" download>
-                {% if current_lang == "ar" %}تحميل APK ({{ apk_version }}){% elif current_lang == "en" %}Download APK ({{ apk_version }}){% else %}Télécharger l’APK ({{ apk_version }}){% endif %}
+                {% if current_lang == "ar" %}تحميل APK (<bdi dir="ltr">{{ apk_version }}</bdi>){% elif current_lang == "en" %}Download APK ({{ apk_version }}){% else %}Télécharger l’APK ({{ apk_version }}){% endif %}
               </a>
             {% else %}
               <button type="button" class="btn btn-primary bk-btn-disabled" disabled aria-disabled="true">
@@ -143,11 +155,11 @@
               </button>
               <p style="margin: 0; font-size: 0.92rem;">
                 {% if current_lang == "ar" %}
-                  هذه الصفحة جاهزة تقنياً، لكن نشر ملف APK بانتظار التحقق النهائي من سياسة الخصوصية وموافقة النشر.
+                  هذه الصفحة جاهزة تقنياً للإصدار <bdi dir="ltr">{{ apk_version }}</bdi>، لكن نشر ملف APK بانتظار التحقق النهائي من سياسة الخصوصية وموافقة النشر.
                 {% elif current_lang == "en" %}
-                  This download page is technically prepared; public APK distribution awaits final privacy validation and release authorization.
+                  This download page is technically prepared for {{ apk_version }}; public APK distribution awaits final privacy validation and release authorization.
                 {% else %}
-                  Cette page est préparée techniquement ; le téléchargement public reste désactivé tant que la politique de confidentialité et l’autorisation de diffusion ne sont pas validées.
+                  Cette page est préparée techniquement pour la version {{ apk_version }} ; le téléchargement public reste désactivé tant que la politique de confidentialité et l’autorisation de diffusion ne sont pas validées.
                 {% endif %}
               </p>
             {% endif %}
@@ -157,82 +169,144 @@
 
       <div class="bk-mobile-warning" role="note">
         {% if current_lang == "ar" %}
-          <strong>تنبيه مهم لمستخدمي الإصدار <bdi dir="ltr">1.0.2+3</bdi>:</strong>
-          لا تقم بإزالة تثبيت التطبيق الحالي. قم بتثبيت الإصدار <bdi dir="ltr">{{ apk_version }}</bdi> فوق الإصدار السابق للحفاظ على تقدمك المحلي.
+          <strong>تنبيه حول التثبيت خارج Google Play:</strong>
+          يُوزَّع الإصدار الأول من Beřiyar Kedebideři بصيغة ملف APK مباشر عبر <code dir="ltr">beriyarkedebideri.com</code> وليس عبر متجر Google Play. يعرض نظام أندرويد تحذيراً قياسياً عند تثبيت ملفات APK الخارجية. حمّل الملف حصرياً من هذا الموقع الرسمي وتحقق من تطابق بصمة <bdi dir="ltr">SHA-256</bdi> أدناه قبل التثبيت.
         {% elif current_lang == "en" %}
-          <strong>Important for 1.0.2+3 users:</strong>
-          Do not uninstall your existing app. Install {{ apk_version }} directly over it to keep your local learning progress.
+          <strong>Notice about installing an APK outside Google Play:</strong>
+          The initial release of Beřiyar Kedebideři is distributed as a direct APK on <code dir="ltr">beriyarkedebideri.com</code> rather than Google Play. Android displays a standard security prompt when installing external APK files. Download the file exclusively from this official domain and verify the SHA-256 checksum below before installing.
         {% else %}
-          <strong>Important pour les utilisateurs de la version 1.0.2+3 :</strong>
-          Ne désinstallez pas l’application existante. Installez la version {{ apk_version }} par-dessus pour conserver votre progression locale.
+          <strong>Avertissement relatif à l’installation d’un APK hors Google Play :</strong>
+          La première diffusion de Beřiyar Kedebideři se fait par téléchargement direct d’un fichier APK sur <code dir="ltr">beriyarkedebideri.com</code>, et non via Google Play. Android affiche un avertissement standard lors de l’installation d’un APK externe. Téléchargez le fichier uniquement depuis ce domaine officiel et vérifiez l’empreinte SHA-256 ci-dessous avant d’installer.
         {% endif %}
       </div>
 
       <article class="card glass bk-mobile-card">
         {% if current_lang == "ar" %}
-          <h2>الميزات المتوفرة فعلياً</h2>
+          <h2>تقديم التطبيق والميزات المتوفرة فعلياً</h2>
           <ul>
-            <li>الأبجدية (الحركات والصوامت)، المفردات ومسارات التعلّم التفاعلية.</li>
-            <li>لوحة المفاتيح التعليمية لكتابة إرفي مع دعم الكلمات والعبارات الطويلة.</li>
-            <li>واجهة كاملة بالفرنسية والإنجليزية والعربية مع دعم الاتجاه من اليمين إلى اليسار (RTL).</li>
-            <li>حفظ التقدم محلياً ومزامنته عند تسجيل الدخول، وإعادة تشغيل الصوتيات المخزنة محلياً.</li>
+            <li><strong>الأبجدية والمفردات والمسارات التفاعلية:</strong> تعلّم الحركات والصوامت والكلمات عبر دروس وتمارين تدريجية.</li>
+            <li><strong>لوحة المفاتيح التعليمية لكتابة إرفي:</strong> دعم الكلمات والعبارات المركّبة بمسافات.</li>
+            <li><strong>الاستخدام كضيف أو بحساب:</strong> حفظ التقدم محلياً على الجهاز دون حساب، أو مزامنته عند تسجيل الدخول لحساب بالغ.</li>
+            <li><strong>العمل دون اتصال وإعادة تشغيل الصوتيات:</strong> حزم دروس دون اتصال وإعادة تشغيل الصوتيات المخزّنة محلياً (مع استمرار الدروس النصية عند عدم توفر ملف صوتي).</li>
+            <li><strong>واجهة متعددة اللغات:</strong> فرنسية وإنجليزية وعربية مع دعم الاتجاه من اليمين إلى اليسار (<bdi dir="ltr">RTL</bdi>).</li>
           </ul>
         {% elif current_lang == "en" %}
-          <h2>Actually Available Features</h2>
+          <h2>App Overview &amp; Available Features</h2>
           <ul>
-            <li>Alphabet (vowels and consonants), vocabulary, and interactive learning paths.</li>
-            <li>Educational Erfe keyboard with support for long words and spaced expressions.</li>
-            <li>Full French, English, and Arabic interface with proper RTL support.</li>
-            <li>Local progress saving, account sync when signed in, and local replay of cached audio.</li>
+            <li><strong>Alphabet, vocabulary, and interactive paths:</strong> Learn vowels, consonants, and words through progressive lessons and exercises.</li>
+            <li><strong>Educational Erfe keyboard:</strong> Compose words and spaced expressions directly in the exercises.</li>
+            <li><strong>Guest mode or optional account:</strong> Keep learning progress locally on your device without an account, or sync it when signed in as an adult.</li>
+            <li><strong>Offline packs &amp; audio handling:</strong> Downloadable offline lesson packs and local audio replay (text lessons remain accessible even when an audio clip is unavailable).</li>
+            <li><strong>Multilingual interface:</strong> French, English, and Arabic with full RTL layout support.</li>
           </ul>
         {% else %}
-          <h2>Fonctionnalités réellement disponibles</h2>
+          <h2>Présentation de l’application et fonctionnalités disponibles</h2>
           <ul>
-            <li>Alphabet (voyelles et consonnes), vocabulaire et parcours d’apprentissage interactifs.</li>
-            <li>Clavier pédagogique Erfe avec saisie des mots longs et expressions composées.</li>
-            <li>Interface complète en français, anglais et arabe avec alignement RTL.</li>
-            <li>Sauvegarde locale de la progression, synchronisation si connecté et réécoute des audios déjà mis en cache.</li>
+            <li><strong>Alphabet, vocabulaire et parcours interactifs :</strong> Apprentissage des voyelles, consonnes et mots à travers des leçons et exercices progressifs.</li>
+            <li><strong>Clavier pédagogique Erfe :</strong> Saisie des mots et expressions composées directement dans les exercices.</li>
+            <li><strong>Mode invité ou compte optionnel :</strong> Sauvegarde locale de la progression sans créer de compte, ou synchronisation lors d’une connexion adulte.</li>
+            <li><strong>Packs hors ligne et gestion audio :</strong> Téléchargement de packs hors ligne et réécoute des audios en cache (les leçons textuelles restent accessibles si un audio manque).</li>
+            <li><strong>Interface multilingue :</strong> Français, anglais et arabe avec prise en charge complète de l’affichage RTL.</li>
           </ul>
         {% endif %}
       </article>
 
       <article class="card glass bk-mobile-card">
         {% if current_lang == "ar" %}
-          <h2>تعليمات التحديث من <bdi dir="ltr">1.0.2+3</bdi></h2>
+          <h2>تعليمات التثبيت على أندرويد</h2>
           <ol>
-            <li>احتفظ بتطبيق <code dir="ltr">1.0.2+3</code> مثبتاً على هاتفك دون حذفه.</li>
-            <li>بعد تفعيل التحميل الرسمي، افتح ملف <code>APK</code> على جهازك واختر <strong>تحديث</strong>.</li>
-            <li>افتح التطبيق وتحقق من بقاء نسبة التقدم المسجلة كما هي.</li>
+            <li>بعد تفعيل التحميل الرسمي، قم بتحميل ملف <code>APK</code> للإصدار <bdi dir="ltr">{{ apk_version }}</bdi> من <code dir="ltr">beriyarkedebideri.com</code>.</li>
+            <li>تحقق من مطابقة بصمة <bdi dir="ltr">SHA-256</bdi> للملف مع القيمة الرسمية المعروضة أدناه.</li>
+            <li>افتح الملف من المتصفح أو مدير الملفات؛ وإذا طلب أندرويد الإذن، فعّل خيار <strong>التثبيت من مصادر غير معروفة</strong> لهذا التطبيق فقط ثم اضغط على <strong>تثبيت</strong>.</li>
+            <li>افتح Beřiyar Kedebideři واختر <strong>وضع الضيف</strong> للبدء الفوري دون حساب أو سجّل الدخول إن كنت بالغاً.</li>
           </ol>
         {% elif current_lang == "en" %}
-          <h2>Upgrade Instructions from 1.0.2+3</h2>
+          <h2>Android Installation Instructions</h2>
           <ol>
-            <li>Keep <code>1.0.2+3</code> installed on your phone — do not uninstall it.</li>
-            <li>Once official distribution is active, open the downloaded <code>APK</code> and tap <strong>Update</strong>.</li>
-            <li>Open the app and confirm your existing progress percentage is preserved.</li>
+            <li>Once public download is enabled, download the {{ apk_version }} <code>APK</code> file from <code dir="ltr">beriyarkedebideri.com</code>.</li>
+            <li>Verify that the file’s SHA-256 checksum matches the official value listed below.</li>
+            <li>Open the downloaded file from your browser or file manager; if Android prompts you, allow <strong>Install unknown apps</strong> for that app and tap <strong>Install</strong>.</li>
+            <li>Launch Beřiyar Kedebideři and choose <strong>Guest mode</strong> to start immediately without an account, or sign in if you are an adult.</li>
           </ol>
         {% else %}
-          <h2>Instructions de mise à jour depuis 1.0.2+3</h2>
+          <h2>Instructions d’installation sur Android</h2>
           <ol>
-            <li>Conservez l’application <code>1.0.2+3</code> installée sur votre téléphone — ne la désinstallez pas.</li>
-            <li>Une fois le téléchargement officiel activé, ouvrez le fichier <code>APK</code> téléchargé puis appuyez sur <strong>Mettre à jour</strong>.</li>
-            <li>Ouvrez l’application et vérifiez que votre progression existante est conservée.</li>
+            <li>Une fois le téléchargement public activé, téléchargez le fichier <code>APK</code> de la version {{ apk_version }} depuis <code dir="ltr">beriyarkedebideri.com</code>.</li>
+            <li>Vérifiez que l’empreinte SHA-256 du fichier correspond à la valeur officielle indiquée ci-dessous.</li>
+            <li>Ouvrez le fichier depuis votre navigateur ou gestionnaire de fichiers ; si Android le demande, autorisez l’option <strong>Installer des applications inconnues</strong> pour cette application puis appuyez sur <strong>Installer</strong>.</li>
+            <li>Ouvrez Beřiyar Kedebideři et choisissez le <strong>mode invité</strong> pour apprendre sans compte, ou connectez-vous si vous êtes adulte.</li>
           </ol>
         {% endif %}
       </article>
 
       <article class="card glass bk-mobile-card">
         {% if current_lang == "ar" %}
-          <h2>الأمان والتحقق من سلامة الملف</h2>
-          <p>تحقق من تطابق بصمة <strong>SHA-256</strong> للملف مع البصمة الرسمية التالية قبل التثبيت:</p>
+          <h2>تحديث الإصدارات السابقة (<bdi dir="ltr">1.0.2+3</bdi> حتى <bdi dir="ltr">1.1.2+6</bdi>)</h2>
+          <p><strong>لا تقم بإزالة تثبيت التطبيق الحالي.</strong> قم بتثبيت الإصدار <bdi dir="ltr">{{ apk_version }}</bdi> مباشرة فوق الإصدار المثبت للحفاظ على تقدمك المحلي.</p>
+          <ol>
+            <li>احتفظ بالتطبيق السابق مثبتاً على هاتفك دون حذفه.</li>
+            <li>افتح ملف <code>APK</code> الجديد (<bdi dir="ltr">{{ apk_version }}</bdi>) واختر <strong>تحديث</strong>.</li>
+            <li>افتح التطبيق وتحقق من بقاء تقدمك المحلي محفوظاً.</li>
+          </ol>
+        {% elif current_lang == "en" %}
+          <h2>Upgrading from Previous Versions (1.0.2+3 through 1.1.2+6)</h2>
+          <p><strong>Do not uninstall your existing app.</strong> Install {{ apk_version }} directly over the previous version to preserve your local learning progress.</p>
+          <ol>
+            <li>Keep the previous version installed on your phone — do not uninstall it.</li>
+            <li>Open the new {{ apk_version }} <code>APK</code> file and tap <strong>Update</strong>.</li>
+            <li>Launch the app and confirm your existing local progress is preserved.</li>
+          </ol>
+        {% else %}
+          <h2>Mise à jour depuis une version précédente (1.0.2+3 à 1.1.2+6)</h2>
+          <p><strong>Ne désinstallez pas l’application existante.</strong> Installez la version {{ apk_version }} directement par-dessus pour conserver votre progression locale.</p>
+          <ol>
+            <li>Conservez l’application précédente installée sur votre téléphone — ne la désinstallez pas.</li>
+            <li>Ouvrez le nouveau fichier <code>APK</code> ({{ apk_version }}) puis appuyez sur <strong>Mettre à jour</strong>.</li>
+            <li>Ouvrez l’application et vérifiez que votre progression locale est conservée.</li>
+          </ol>
+        {% endif %}
+      </article>
+
+      <article class="card glass bk-mobile-card">
+        {% if current_lang == "ar" %}
+          <h2>معلومات لأولياء الأمور والقُصّر</h2>
+          <ul>
+            <li>ترحّب Beřiyar Kedebideři بجميع الأعمار، ويتيح <strong>وضع الضيف</strong> للقُصّر التعلّم الكامل دون إنشاء حساب ودون إرسال بيانات شخصية.</li>
+            <li>لا يحتوي التطبيق على إعلانات أو مدفوعات أو أدوات تتبع إعلانية أو محادثات مفتوحة بين المستخدمين، ولا يجمع تاريخ الميلاد.</li>
+            <li>يتضمن مسار التسجيل خطوة توجيه محايدة تدعو القُصّر إلى وضع الضيف، لكنها تعتمد على الإقرار الذاتي <strong>ولا تمثّل نظاماً معتمداً للتحقق من العمر</strong>.</li>
+            <li>يمكن لأي ولي أمر طلب حذف حساب أنشأه قاصر عبر <code dir="ltr">privacy@beriyarkedebideri.com</code>.</li>
+          </ul>
+        {% elif current_lang == "en" %}
+          <h2>Information for Parents and Guardians</h2>
+          <ul>
+            <li>Beřiyar Kedebideři welcomes all ages; <strong>guest mode</strong> lets minors access lessons and exercises without creating an account or sharing personal data.</li>
+            <li>The app contains no ads, no payments, no third-party ad tracking, no open user-to-user messaging, and does not collect date of birth.</li>
+            <li>Registration includes a neutral adult/minor orientation step directing minors to guest mode, but it relies on self-declaration and <strong>is not a certified age verification system</strong>.</li>
+            <li>Parents or guardians may request deletion of a minor’s account by emailing <code dir="ltr">privacy@beriyarkedebideri.com</code>.</li>
+          </ul>
+        {% else %}
+          <h2>Informations pour les parents et représentants légaux</h2>
+          <ul>
+            <li>Beřiyar Kedebideři accueille tous les âges ; le <strong>mode invité</strong> permet aux mineurs de suivre les leçons et exercices sans créer de compte ni transmettre de données personnelles.</li>
+            <li>L’application ne comporte aucune publicité, aucun paiement, aucun suivi publicitaire tiers, aucune messagerie ouverte entre utilisateurs et ne collecte pas de date de naissance.</li>
+            <li>Le parcours d’inscription propose une orientation neutre adulte/mineur orientant les mineurs vers le mode invité, mais cette autodéclaration <strong>ne constitue pas une vérification d’âge certifiée</strong>.</li>
+            <li>Un parent ou représentant légal peut demander la suppression du compte d’un mineur en écrivant à <code dir="ltr">privacy@beriyarkedebideri.com</code>.</li>
+          </ul>
+        {% endif %}
+      </article>
+
+      <article class="card glass bk-mobile-card">
+        {% if current_lang == "ar" %}
+          <h2>الأمان والتحقق من سلامة الملف (SHA-256)</h2>
+          <p>تحقق من تطابق بصمة <strong>SHA-256</strong> للملف مع البصمة الرسمية التالية للإصدار <bdi dir="ltr">{{ apk_version }}</bdi> قبل التثبيت:</p>
           <code class="bk-hash-code" dir="ltr">{{ apk_sha256 }}</code>
         {% elif current_lang == "en" %}
-          <h2>Security & File Provenance</h2>
-          <p>Verify that the downloaded file matches this official <strong>SHA-256</strong> checksum before installing:</p>
+          <h2>Security &amp; File Integrity (SHA-256)</h2>
+          <p>Verify that the downloaded file matches this official <strong>SHA-256</strong> checksum for version {{ apk_version }} before installing:</p>
           <code class="bk-hash-code" dir="ltr">{{ apk_sha256 }}</code>
         {% else %}
-          <h2>Sécurité et provenance du fichier</h2>
-          <p>Vérifiez que l’empreinte <strong>SHA-256</strong> du fichier téléchargé correspond exactement à la valeur officielle suivante :</p>
+          <h2>Sécurité et intégrité du fichier (SHA-256)</h2>
+          <p>Vérifiez que l’empreinte <strong>SHA-256</strong> du fichier téléchargé correspond exactement à la valeur officielle suivante pour la version {{ apk_version }} :</p>
           <code class="bk-hash-code" dir="ltr">{{ apk_sha256 }}</code>
         {% endif %}
       </article>
@@ -240,23 +314,29 @@
       <article class="card glass bk-mobile-card">
         {% if current_lang == "ar" %}
           <h2>الدعم والخصوصية</h2>
-          <p><strong>جهة الدعم الرسمية:</strong> [يُؤكَّد من قِبل المسؤول — البريد أو القناة الرسمية للدعم]</p>
+          <p><strong>الدعم التقني:</strong> <code dir="ltr">support@beriyarkedebideri.com</code></p>
+          <p><strong>الخصوصية وحذف البيانات:</strong> <code dir="ltr">privacy@beriyarkedebideri.com</code></p>
           <div class="bk-mobile-links">
             <a href="{% url 'web-privacy' %}" class="btn btn-secondary">سياسة الخصوصية</a>
+            <a href="{% url 'web-account-deletion' %}" class="btn btn-secondary">طلب حذف الحساب</a>
             <a href="{% url 'web-feedback' %}" class="btn btn-secondary">إرسال ملاحظة</a>
           </div>
         {% elif current_lang == "en" %}
-          <h2>Support & Privacy</h2>
-          <p><strong>Official support contact:</strong> [TO BE CONFIRMED BY OWNER — official support email or channel]</p>
+          <h2>Support &amp; Privacy</h2>
+          <p><strong>Technical support:</strong> <code dir="ltr">support@beriyarkedebideri.com</code></p>
+          <p><strong>Privacy &amp; data deletion:</strong> <code dir="ltr">privacy@beriyarkedebideri.com</code></p>
           <div class="bk-mobile-links">
             <a href="{% url 'web-privacy' %}" class="btn btn-secondary">Privacy Policy</a>
+            <a href="{% url 'web-account-deletion' %}" class="btn btn-secondary">Account Deletion</a>
             <a href="{% url 'web-feedback' %}" class="btn btn-secondary">Send Feedback</a>
           </div>
         {% else %}
           <h2>Support et confidentialité</h2>
-          <p><strong>Contact support officiel :</strong> [À CONFIRMER PAR LE RESPONSABLE — e-mail ou canal officiel]</p>
+          <p><strong>Support technique :</strong> <code dir="ltr">support@beriyarkedebideri.com</code></p>
+          <p><strong>Confidentialité et suppression de données :</strong> <code dir="ltr">privacy@beriyarkedebideri.com</code></p>
           <div class="bk-mobile-links">
             <a href="{% url 'web-privacy' %}" class="btn btn-secondary">Politique de confidentialité</a>
+            <a href="{% url 'web-account-deletion' %}" class="btn btn-secondary">Suppression de compte</a>
             <a href="{% url 'web-feedback' %}" class="btn btn-secondary">Envoyer un feedback</a>
           </div>
         {% endif %}

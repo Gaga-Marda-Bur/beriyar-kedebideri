@@ -202,7 +202,18 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
             self.assertContains(resp, 'support@beriyarkedebideri.com')
             self.assertContains(resp, 'Oregon')
             self.assertContains(resp, 'Eastern Europe (EEUR)')
+            self.assertContains(resp, 'Logpush')
+            self.assertContains(resp, '90')
+            self.assertContains(resp, '24')
+            self.assertContains(resp, '30')
             self.assertNotContains(resp, 'gmail.com')
+
+        self.assertContains(resp_fr, '15 novembre 2026')
+        self.assertContains(resp_en, '15 November 2026')
+        self.assertContains(resp_ar, '15 نوفمبر 2026')
+        self.assertContains(resp_fr, 'caviardage manuel')
+        self.assertContains(resp_en, 'manual PII redaction')
+        self.assertContains(resp_ar, 'تنقيح/طمس البيانات الشخصية')
 
         for path in (reverse('web-home'), reverse('web-mobile'), reverse('web-account-deletion')):
             for lang in ('fr', 'en', 'ar'):
@@ -217,14 +228,19 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
         self.assertEqual(resp_fr.status_code, 200)
         self.assertTemplateUsed(resp_fr, 'webapp/mobile.html')
         self.assertContains(resp_fr, staticfiles_storage.url('webapp/img/logo.png'))
-        self.assertContains(resp_fr, '1.1.2+6')
+        self.assertContains(resp_fr, '1.1.3+7')
         self.assertContains(resp_fr, '70 694 649')
         self.assertContains(
             resp_fr,
-            'F96AB0D35C764244B055E773E2869AAF6C131D70593B94A2279705D7DE4F128F',
+            '6B02C6B07C8E819F4E85D54C2284EFBB49296BD6F9216D5D04377E6E6C43D6F1',
         )
         self.assertContains(resp_fr, 'Ne désinstallez pas')
+        self.assertContains(resp_fr, 'hors Google Play')
+        self.assertContains(resp_fr, 'parents et représentants légaux')
+        self.assertContains(resp_fr, 'support@beriyarkedebideri.com')
+        self.assertContains(resp_fr, 'privacy@beriyarkedebideri.com')
         self.assertContains(resp_fr, reverse('web-privacy'))
+        self.assertContains(resp_fr, reverse('web-account-deletion'))
         self.assertContains(resp_fr, 'aria-disabled="true"')
         self.assertNotContains(resp_fr, 'beriyar-kedebideri-v1.apk')
         self.assertNotContains(resp_fr, '.apk"')
@@ -232,11 +248,17 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
         resp_en = self.client.get(reverse('web-mobile') + '?lang=en')
         self.assertEqual(resp_en.status_code, 200)
         self.assertContains(resp_en, 'Public download not active yet')
+        self.assertContains(resp_en, '1.1.3+7')
+        self.assertContains(resp_en, 'outside Google Play')
+        self.assertContains(resp_en, 'Information for Parents and Guardians')
 
         resp_ar = self.client.get(reverse('web-mobile') + '?lang=ar')
         self.assertEqual(resp_ar.status_code, 200)
         self.assertContains(resp_ar, 'dir="rtl"')
         self.assertContains(resp_ar, 'التحميل العام غير مفعّل بعد')
+        self.assertContains(resp_ar, '1.1.3+7')
+        self.assertContains(resp_ar, 'خارج Google Play')
+        self.assertContains(resp_ar, 'معلومات لأولياء الأمور والقُصّر')
 
     def test_mobile_page_refuses_legacy_v1_apk_url(self):
         from django.test import override_settings
@@ -689,9 +711,12 @@ class ChildSafetyGuestAndRegistrationAuditTests(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertContains(resp, expected)
             self.assertContains(resp, reverse('web-privacy'))
-            self.assertContains(resp, 'id="authOrientationStep"')
+            self.assertContains(resp, 'id="authOrientationStep" class="auth-orientation-panel"')
+            self.assertContains(resp, 'id="authMinorGuestBox" class="auth-orientation-panel"')
+            self.assertContains(resp, 'id="authRegisterFields" class="auth-orientation-panel"')
             self.assertContains(resp, 'data-orientation-choice="adult"')
             self.assertContains(resp, 'data-orientation-choice="minor"')
+            self.assertContains(resp, 'e.key === "Escape"')
             if lang == 'ar':
                 self.assertContains(resp, 'dir="rtl"')
 
