@@ -211,6 +211,9 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
             self.assertContains(resp, '24')
             self.assertContains(resp, '30')
             self.assertNotContains(resp, 'gmail.com')
+            self.assertNotContains(resp, 'GAGADO')
+            self.assertNotContains(resp, 'Unique Lingua Center')
+            self.assertNotContains(resp, 'SMTP')
 
         self.assertContains(resp_fr, '15 novembre 2026')
         self.assertContains(resp_en, '15 November 2026')
