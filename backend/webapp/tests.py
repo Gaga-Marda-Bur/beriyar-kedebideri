@@ -198,6 +198,7 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
         self.assertContains(resp_ar, '[يُؤكَّد من قِبل المسؤول]')
 
         for resp in (resp_fr, resp_en, resp_ar):
+            self.assertContains(resp, 'Mahamat Ahmat Hamat GAGA (Mahamat GAGA)')
             self.assertContains(resp, 'privacy@beriyarkedebideri.com')
             self.assertContains(resp, 'support@beriyarkedebideri.com')
             self.assertContains(resp, 'Oregon')
@@ -211,6 +212,12 @@ class Release02PrivacyAndMobilePagesTests(TestCase):
         self.assertContains(resp_fr, '15 novembre 2026')
         self.assertContains(resp_en, '15 November 2026')
         self.assertContains(resp_ar, '15 نوفمبر 2026')
+        self.assertContains(resp_fr, '21 novembre 2026')
+        self.assertContains(resp_en, '21 November 2026')
+        self.assertContains(resp_ar, '21 نوفمبر 2026')
+        self.assertNotContains(resp_fr, '[À CONFIRMER PAR LE RESPONSABLE —')
+        self.assertNotContains(resp_en, '[TO BE CONFIRMED BY OWNER —')
+        self.assertNotContains(resp_ar, '[يُؤكَّد من قِبل المسؤول —')
         self.assertContains(resp_fr, 'caviardage manuel')
         self.assertContains(resp_en, 'manual PII redaction')
         self.assertContains(resp_ar, 'تنقيح/طمس البيانات الشخصية')
