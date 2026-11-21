@@ -172,39 +172,36 @@
       <article class="card glass bk-legal-card">
         {% if current_lang == "ar" %}
           <h2>4. البنية التحتية المُتحقَّق منها والنقل الدولي</h2>
-          <p>تعتمد المنصة على البنية التقنية التالية كما جرى التحقق منها في لوحات التحكم:</p>
+          <p>تعتمد المنصة على مزودي البنية التحتية التاليين:</p>
           <ul>
-            <li><strong>Render Web (خطة <bdi dir="ltr">Free</bdi> — المنطقة المهيّأة: <bdi dir="ltr">Oregon, United States</bdi>):</strong> خادم التطبيق والواجهة البرمجية؛ نافذة استعراض السجلات المرئية في لوحة Render هي <bdi dir="ltr">7</bdi> أيام.</li>
+            <li><strong>Render Web (خطة <bdi dir="ltr">Free</bdi> — المنطقة المهيّأة: <bdi dir="ltr">Oregon, United States</bdi>):</strong> خادم التطبيق والواجهة البرمجية؛ نافذة استعراض السجلات التقنية المتاحة هي <bdi dir="ltr">7</bdi> أيام.</li>
             <li><strong>Render PostgreSQL (خطة <bdi dir="ltr">Starter</bdi> — المنطقة المهيّأة: <bdi dir="ltr">Oregon, United States</bdi>):</strong> قاعدة البيانات؛ الاستعادة الزمنية (<bdi dir="ltr">Point-in-Time Recovery</bdi>) متاحة لمدة <bdi dir="ltr">3</bdi> أيام. كما يوجد تصدير لقاعدة بيانات PostgreSQL بتاريخ <bdi dir="ltr">15 نوفمبر 2026</bdi> مع نسخة محلية محفوظة.</li>
             <li><strong>Cloudflare R2 (المنطقة المهيّأة: <bdi dir="ltr">Eastern Europe (EEUR)</bdi>):</strong> تخزين الوسائط التعليمية العامة، ودلو خاص منفصل لمرفقات الملاحظات التقنية. لا توجد حالياً أي قاعدة انتهاء صلاحية تلقائية (lifecycle expiration) على وسائط الملاحظات؛ وتتم جميع عمليات حذف وسائط R2 يدوياً وتحت رقابة إدارية.</li>
-            <li><strong>Cloudflare Email Routing:</strong> استقبال رسائل البريد على <code dir="ltr">privacy@</code> و<code dir="ltr">support@</code>؛ سجل النشاط القابل للمعاينة في لوحة Cloudflare هو <bdi dir="ltr">30</bdi> يوماً.</li>
-            <li><strong>Cloudflare Logpush:</strong> الاشتراك غير مفعّل وفق ما يظهر في لوحة التحكم.</li>
+            <li><strong>Cloudflare Logpush:</strong> غير مفعّل.</li>
           </ul>
-          <p><strong>التمييز بين نوافذ المعاينة والمحو الداخلي:</strong> المدد المذكورة أعلاه (<bdi dir="ltr">7</bdi> أيام لسجلات Render و<bdi dir="ltr">30</bdi> يوماً لسجل Cloudflare Email Routing و<bdi dir="ltr">3</bdi> أيام للاستعادة الزمنية في PostgreSQL) تمثل نوافذ المعاينة أو الاستعادة الظاهرة للمسؤول؛ ولا تثبت بالضرورة المدة الدقيقة للمحو الداخلي النهائي لدى المزودين، والتي ليست جميعها مُثبتة تقنياً لدينا.</p>
+          <p><strong>التمييز بين نوافذ المعاينة والمحو الداخلي:</strong> المدد المذكورة أعلاه (<bdi dir="ltr">7</bdi> أيام لسجلات Render و<bdi dir="ltr">3</bdi> أيام للاستعادة الزمنية في PostgreSQL) تمثل نوافذ المعاينة أو الاستعادة المتاحة؛ ولا تثبت بالضرورة المدة الدقيقة للمحو الداخلي النهائي لدى المزودين، والتي ليست جميعها مُثبتة تقنياً لدينا.</p>
           <p>قد ينطوي استخدام الخدمة على نقل دولي للبيانات خارج بلد إقامة المستخدم (Render في الولايات المتحدة، وCloudflare R2 في أوروبا الشرقية). يعود اختيار هذه الاستضافة الخارجية إلى عدم توفر بنية استضافة ذاتية لدى المسؤول؛ ولا توجد ضمانة قانونية خاصة مُثبتة أو موعودة بشأن النقل الدولي، إذ تعتمد الخدمة فقط على الشروط القياسية للمزودين المختارين.</p>
         {% elif current_lang == "en" %}
           <h2>4. Verified Infrastructure and International Transfers</h2>
-          <p>The platform relies on the following technical infrastructure as verified in provider dashboards:</p>
+          <p>The platform relies on the following infrastructure providers:</p>
           <ul>
-            <li><strong>Render Web (Free plan — configured region: Oregon, United States):</strong> Application and API server; the visible log consultation window in the Render dashboard is 7 days.</li>
+            <li><strong>Render Web (Free plan — configured region: Oregon, United States):</strong> Application and API server; the available technical log consultation window is 7 days.</li>
             <li><strong>Render PostgreSQL (Starter plan — configured region: Oregon, United States):</strong> Relational database; Point-in-Time Recovery (PITR) covers 3 days. A PostgreSQL export dated 15 November 2026 also exists with a local copy.</li>
             <li><strong>Cloudflare R2 (configured region: Eastern Europe (EEUR)):</strong> Public educational media storage and a separate private bucket for feedback attachments. There is currently no automatic expiration rule on feedback media; R2 media deletions remain manual and controlled.</li>
-            <li><strong>Cloudflare Email Routing:</strong> Inbound routing for <code dir="ltr">privacy@</code> and <code dir="ltr">support@</code>; viewable routing history in the Cloudflare dashboard is 30 days.</li>
-            <li><strong>Cloudflare Logpush:</strong> Subscription is not enabled according to the dashboard.</li>
+            <li><strong>Cloudflare Logpush:</strong> Not enabled.</li>
           </ul>
-          <p><strong>Distinction between visible windows and internal erasure:</strong> The durations stated above (7-day Render log window, 30-day Cloudflare Email Routing history, 3-day PostgreSQL PITR) reflect the consultation or recovery windows visible to the operator; they do not demonstrate the exact underlying internal erasure timelines of each third-party provider, which are not all independently demonstrated.</p>
+          <p><strong>Distinction between visible windows and internal erasure:</strong> The durations stated above (7-day Render log window and 3-day PostgreSQL PITR) reflect the consultation or recovery windows available to the operator; they do not demonstrate the exact underlying internal erasure timelines of each third-party provider, which are not all independently demonstrated.</p>
           <p>Using the service may involve international data transfers outside the user’s country of residence (Render in the United States, Cloudflare R2 in Eastern Europe). This external hosting choice reflects the operator’s lack of self-hosted infrastructure; no specific legal guarantee regarding international transfers is demonstrated or promised, as the service relies solely on the standard terms of the selected providers.</p>
         {% else %}
           <h2>4. Infrastructure vérifiée et transferts internationaux</h2>
-          <p>La plateforme repose sur l’infrastructure technique suivante, vérifiée dans les tableaux de bord des prestataires :</p>
+          <p>La plateforme repose sur les prestataires d’infrastructure suivants :</p>
           <ul>
-            <li><strong>Render Web (offre Free — région configurée : Oregon, États-Unis) :</strong> Serveur applicatif et API ; la fenêtre de consultation visible des journaux Render est de 7 jours.</li>
+            <li><strong>Render Web (offre Free — région configurée : Oregon, États-Unis) :</strong> Serveur applicatif et API ; la fenêtre de consultation disponible des journaux techniques est de 7 jours.</li>
             <li><strong>Render PostgreSQL (offre Starter — région configurée : Oregon, États-Unis) :</strong> Base de données relationnelle ; le Point-in-Time Recovery (PITR) couvre 3 jours. Un export PostgreSQL daté du 15 novembre 2026 existe également avec une copie locale.</li>
             <li><strong>Cloudflare R2 (région configurée : Eastern Europe (EEUR)) :</strong> Stockage des médias pédagogiques publics et bucket privé distinct pour les pièces jointes de signalement. Aucune règle d’expiration automatique n’est activée sur les médias de feedback ; leurs suppressions sur R2 restent manuelles et contrôlées.</li>
-            <li><strong>Cloudflare Email Routing :</strong> Routage entrant pour <code dir="ltr">privacy@</code> et <code dir="ltr">support@</code> ; l’historique consultable dans le tableau de bord Cloudflare est de 30 jours.</li>
-            <li><strong>Cloudflare Logpush :</strong> Abonnement non activé d’après le tableau de bord.</li>
+            <li><strong>Cloudflare Logpush :</strong> Non activé.</li>
           </ul>
-          <p><strong>Distinction entre fenêtres de consultation et effacement interne :</strong> Les durées indiquées ci-dessus (7 jours de journaux Render, 30 jours d’historique Cloudflare Email Routing, 3 jours de PITR PostgreSQL) correspondent aux fenêtres visibles de consultation ou de restauration ; elles ne préjugent pas des durées exactes d’effacement interne propre à chaque prestataire, qui ne sont pas toutes démontrées.</p>
+          <p><strong>Distinction entre fenêtres de consultation et effacement interne :</strong> Les durées indiquées ci-dessus (7 jours de journaux Render et 3 jours de PITR PostgreSQL) correspondent aux fenêtres disponibles de consultation ou de restauration ; elles ne préjugent pas des durées exactes d’effacement interne propre à chaque prestataire, qui ne sont pas toutes démontrées.</p>
           <p>L’utilisation du service peut impliquer des transferts internationaux de données hors du pays de résidence de l’utilisateur (Render aux États-Unis, Cloudflare R2 en Europe de l’Est). Ce choix d’hébergement externe résulte de l’absence d’infrastructure propre au responsable ; aucune garantie juridique spécifique sur les transferts internationaux n’est démontrée ni promise, le service reposant uniquement sur les conditions standards des prestataires retenus.</p>
         {% endif %}
       </article>
